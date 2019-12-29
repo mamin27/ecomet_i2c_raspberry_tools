@@ -1,2 +1,10 @@
 # ecomet_i2c_tools
-I2C devices communication
+
+**Last modification:** 29.12.2019
+
+**Scope:**
+This code tools contains python scripts uses I2C communication of raspberry pi with many IOT modules
+
+**List of modules:**
+[EEPROM module](i2c_pkg/eeprom_pkg/documentation/eeprom_IIC.md) 
+
