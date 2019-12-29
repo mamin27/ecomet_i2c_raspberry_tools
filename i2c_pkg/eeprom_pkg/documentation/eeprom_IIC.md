@@ -1,4 +1,4 @@
-<h1> ﻿EEPROM Data Storage Module IIC I2C Interface Data Memory Module</h1>
+# EPROM Data Storage Module IIC I2C Interface Data Memory Module #
 
 **Last update:**  Sunday, 29. December 2019
 **Author:** Marian Minar
@@ -12,11 +12,11 @@ https://pixelelectric.com/at24c256-iic-eeprom-memory-module/
 
 ![Schematics_2](Schematics_2.PNG)
 
-- Configuration for /dev/i2c-1
-- port 2 (SDA), port 3 (SCL)
-- pull-up resistor is used from module board (R2,R3)
+* Configuration for /dev/i2c-1
+* port 2 (SDA), port 3 (SCL)
+* pull-up resistor is used from module board (R2,R3)
 
-<h3>How to install?</h3>
+### How to install? ###
 `git clone https://github.com/mamin27/ecomet_i2c_tools.git`
 
 used modules:
@@ -31,7 +31,7 @@ RPi.GPIO,smbu2,colorama,yaml,re,randrange,os
 
 Check settings in config file (i2c_config.yaml)
 
-<h4> Python scipt:</h4>
+#### Python scipt: ####>
 
 `eeprom_mgr.py <option>`
    
@@ -61,22 +61,22 @@ Check settings in config file (i2c_config.yaml)
 `   row - row hexadecimal mode`
 `   wide - explaining hexadecimal mode`
 
-<h4>Usable Chips</h4>
-|  Chip Name | Size  | Address Bits | Address Size | Tested? |
-|-----------------|------|-------------------|------------------|-------------|
-|24c01|1-Kbit (128x8)|A6  - A0|007F|
-|24c02|2-Kbit (256x8)|A7  - A0|00FF|
-|24c04|4-Kbit (512x8)|A8  - A0|01FF|tested|
- |24c08|8-Kbit (1024x8)|A9  - A0|03FF|
- |24c16|16-Kbit (2048x8)|A10 - A0|07FF|
- |24c32|32-Kbit (4096x8)|A11 - A0|0FFF|tested|
- |24c64|64-Kbit (8192x8)|A12 - A0|1FFF|tested|
- |24c128|128-Kbit (16384x8)|A13 - A0|3FFF|
- |24c256|256-Kbit (32768x8)|A14 - A0|7FFF|
- |24c512|512-Kbit (65536x8)|A15 - A0|FFFF|
- |24c1024|1024-Kbit (1048576x8)|A16 - A0|FFFFF|
+#### Usable Chips ####
+Chip Name | Size  | Address Bits | Address Size | Tested?
+----------------: | ------ | ------------------- | ------------------ | -------------
+24c01 | 1-Kbit (128x8) | A6  - A0 | 007F
+24c02 | 2-Kbit (256x8) | A7  - A0 | 00FF
+24c04 | 4-Kbit (512x8) | A8  - A0 | 01FF | tested
+24c08 | 8-Kbit (1024x8) | A9  - A0 | 03FF
+24c16 | 16-Kbit (2048x8) | A10 - A0 | 07FF
+24c32 | 32-Kbit (4096x8) | A11 - A0 | 0FFF | tested
+24c64 | 64-Kbit (8192x8) | A12 - A0 | 1FFF | tested
+24c128 | 128-Kbit (16384x8) | A13 - A0 | 3FFF
+24c256 | 256-Kbit (32768x8) | A14 - A0 | 7FFF
+24c512 | 512-Kbit (65536x8) | A15 - A0 | FFFF
+24c1024 | 1024-Kbit (1048576x8) | A16 - A0 | FFFFF
 
-<h4>Examples:</h4>
+#### Examples: ####
 Test if eeprom chip is correct. This check write random numbers and compare them with read content. Test will pass full size of EEPROM
 `sudo python3 eeprom_mng.py -p 24c32 --test`
 
@@ -91,7 +91,7 @@ Wipe content of EEPROM with '0xFF' data
  Write data into EEPROM from default file data/eeprom_chip.hex
  `sudo python3 eeprom_mng.py -p 24c32 --write`
 
-<h4>Format of hex file:</h4>
+#### Format of hex file: ####
 
 `0000:  02 ff ff ff  ff ff ff ff  ff ff ff ff  ff ff ff ff`
 `0010:  ff ff ff ff  ff ff ff ff  ff ff ff ff  ff ff 00 11`
@@ -102,5 +102,3 @@ Wipe content of EEPROM with '0xFF' data
 `0060:  ff ff ff ff  ff ff ff ff  ff ff ff ff  ff ff ff ff`
 `0070:  ff ff ff ff  ff ff ff ff  ff ff ff ff  ff ff ff ff`
 
-<h4>Feedback:</h4>
-mail: <mminar7@gmail.com>
