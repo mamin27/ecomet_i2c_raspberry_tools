@@ -17,49 +17,54 @@ https://pixelelectric.com/at24c256-iic-eeprom-memory-module/
 * pull-up resistor is used from module board (R2,R3)
 
 ### How to install? ###
-`git clone https://github.com/mamin27/ecomet_i2c_tools.git`
+```console
+git clone https://github.com/mamin27/ecomet_i2c_tools.git
+```
 
 used modules:
 RPi.GPIO,smbu2,colorama,yaml,re,randrange,os
 
-`sudo pip3 install RPi.GPIO smbus2 colorama PyYAML`
-`Looking in indexes: https://pypi.org/simple,`
-`Requirement already satisfied: RPi.GPIO in /usr/lib/python3/dist-packages (0.7.0)`
-`Requirement already satisfied: smbus2 in /usr/local/lib/python3.7/dist-packages (0.3.0)`
-`Requirement already satisfied: colorama in /usr/lib/python3/dist-packages (0.3.7)`
-`Requirement already satisfied: PyYAML in /usr/local/lib/python3.7/dist-packages (5.2)`
+```console
+sudo pip3 install RPi.GPIO smbus2 colorama PyYAML
+Looking in indexes: https://pypi.org/simple,
+Requirement already satisfied: RPi.GPIO in /usr/lib/python3/dist-packages (0.7.0)
+Requirement already satisfied: smbus2 in /usr/local/lib/python3.7/dist-packages (0.3.0)
+Requirement already satisfied: colorama in /usr/lib/python3/dist-packages (0.3.7)
+Requirement already satisfied: PyYAML in /usr/local/lib/python3.7/dist-packages (5.2)
+```
 
 Check settings in config file (i2c_config.yaml)
 
-#### Python scipt: ####>
-
-`eeprom_mgr.py <option>`
+#### Python scipt: ####
+```console
+eeprom_mgr.py <option>
    
-`   option:`
-`     -h help`
-`     -p chip name`
-`     -t run in test mode`
-`     -wipe wipe eeprom`
-`     -r read content of chip`
-`     -w write into chip`
-`     -f file name, used with read and write commands`
+   option:
+     -h help
+     -p chip name
+     -t run in test mode
+     -wipe wipe eeprom
+     -r read content of chip
+     -w write into chip
+     -f file name, used with read and write commands
    
-` <-p>,<--chip> chip name:`
-`   list of these chips are usable 24C02,24C04,24C08,24C16,24C32,24C64,24C128,24C256,24C512,24C1024`
+ <-p>,<--chip> chip name:
+   list of these chips are usable 24C02,24C04,24C08,24C16,24C32,24C64,24C128,24C256,24C512,24C1024
    
-` <-t>|<--test> test mode:`
-`   test mode will write random number into chip, read contentant and compare`
-` <--wipe> wipe:`
-`    wipping data at chip`
-` <-r> read:`
-`   read content of chip and write into file <-f>`
-` <-w> write:`
-`   write content from file <-f> into chip`
-` Note: when file attribute is not added will be used default file name`
-` <-m> file mod:`
-`   file could be stored in two mods:`
-`   row - row hexadecimal mode`
-`   wide - explaining hexadecimal mode`
+ <-t>|<--test> test mode:
+   test mode will write random number into chip, read contentant and compare
+ <--wipe> wipe:
+    wipping data at chip
+ <-r> read:
+   read content of chip and write into file <-f>
+ <-w> write:
+   write content from file <-f> into chip
+ Note: when file attribute is not added will be used default file name
+ <-m> file mod:
+   file could be stored in two mods:
+   row - row hexadecimal mode
+   wide - explaining hexadecimal mode
+```
 
 #### Usable Chips ####
 Chip Name | Size  | Address Bits | Address Size | Tested?
@@ -78,27 +83,36 @@ Chip Name | Size  | Address Bits | Address Size | Tested?
 
 #### Examples: ####
 Test if eeprom chip is correct. This check write random numbers and compare them with read content. Test will pass full size of EEPROM
-`sudo python3 eeprom_mng.py -p 24c32 --test`
-
+```console
+sudo python3 eeprom_mng.py -p 24c32 --test
+```
 Wipe content of EEPROM with '0xFF' data
- `sudo python3 eeprom_mng.py -p 24c32 --wipe`
+```console
+sudo python3 eeprom_mng.py -p 24c32 --wipe
+ ```
+Read data into default file in directory data (eeprom_chip.hex)
+```console
+sudo python3 eeprom_mng.py -p 24c32 --read
+```
+Read data into file set with --file attribute
+```console
+sudo python3 eeprom_mng.py -p 24c32 --read --file=eeprom_my.hex
+```
  
- Read data into default file in directory data (eeprom_chip.hex)
- `sudo python3 eeprom_mng.py -p 24c32 --read`
- Read data into file set with --file attribute
-  `sudo python3 eeprom_mng.py -p 24c32 --read --file=eeprom_my.hex`
- 
- Write data into EEPROM from default file data/eeprom_chip.hex
- `sudo python3 eeprom_mng.py -p 24c32 --write`
+Write data into EEPROM from default file data/eeprom_chip.hex
+```console
+sudo python3 eeprom_mng.py -p 24c32 --write
+```
 
 #### Format of hex file: ####
-
-`0000:  02 ff ff ff  ff ff ff ff  ff ff ff ff  ff ff ff ff`
-`0010:  ff ff ff ff  ff ff ff ff  ff ff ff ff  ff ff 00 11`
-`0020:  ff ff ff ff  ff ff ff ff  ff ff ff ff  ff ff ff ff`
-`0030:  ff ff ff ff  ff ff ff ff  ff ff ff ff  ff ff ff ff`
-`0040:  ff ff ff ff  ff ff ff ff  ff ff ff ff  ff ff ff ff`
-`0050:  ff ff ff ff  ff ff ff ff  ff ff ff ff  ff ff ff ff`
-`0060:  ff ff ff ff  ff ff ff ff  ff ff ff ff  ff ff ff ff`
-`0070:  ff ff ff ff  ff ff ff ff  ff ff ff ff  ff ff ff ff`
+```console
+0000:  02 ff ff ff  ff ff ff ff  ff ff ff ff  ff ff ff ff
+0010:  ff ff ff ff  ff ff ff ff  ff ff ff ff  ff ff 00 11
+0020:  ff ff ff ff  ff ff ff ff  ff ff ff ff  ff ff ff ff
+0030:  ff ff ff ff  ff ff ff ff  ff ff ff ff  ff ff ff ff
+0040:  ff ff ff ff  ff ff ff ff  ff ff ff ff  ff ff ff ff
+0050:  ff ff ff ff  ff ff ff ff  ff ff ff ff  ff ff ff ff
+0060:  ff ff ff ff  ff ff ff ff  ff ff ff ff  ff ff ff ff
+0070:  ff ff ff ff  ff ff ff ff  ff ff ff ff  ff ff ff ff
+```
 
