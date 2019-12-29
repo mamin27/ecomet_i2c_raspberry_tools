@@ -11,6 +11,11 @@ from .. import i2c_command
 
 
 def wipe (smb,slaveaddr,writestrobe,chip) :
+    
+    try: 
+        chip_list.xchip[chip][1]
+    except:
+        return 2
 
     print ('Wiping ...')
     

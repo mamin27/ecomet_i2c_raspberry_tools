@@ -14,6 +14,11 @@ from .. import i2c_command
 
 def filecmp (file1,file2,smb,slaveaddr,writestrobe,chip) :
     
+    try: 
+        chip_list.xchip[chip][1]
+    except:
+        return 3
+    
     f = open(file1,"w+")
     print ("Write ...")
 
@@ -67,7 +72,7 @@ def filecmp (file1,file2,smb,slaveaddr,writestrobe,chip) :
             line1 = cmp1.readlines()
             line2 = cmp2.readlines()
             if line1 != line2 :
-                return 3
+                return 4
         cmp2.close()
     cmp1.close()
 

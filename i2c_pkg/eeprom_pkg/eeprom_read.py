@@ -11,8 +11,14 @@ from .. import i2c_command
 
 def read_full_to_file (file,smb,slaveaddr,writestrobe,chip) :
     
+    try: 
+        chip_list.xchip[chip][1]
+    except:
+        return 2
+        
     f = open(file,"w+")
     print ("Read EEprom ...")
+    
     for addr in range (0,chip_list.xchip[chip][1],16):
 
         idx = 0
@@ -21,7 +27,7 @@ def read_full_to_file (file,smb,slaveaddr,writestrobe,chip) :
             try:
                 data = i2c_command.eeprom_read_byte(addr,smb,slaveaddr,chip_list.xchip[chip][0])
             except IOError:
-                return 2
+                return 1
             datax.append(data)
             idx = idx + 1
             addr = addr + 1

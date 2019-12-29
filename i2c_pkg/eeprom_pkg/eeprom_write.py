@@ -11,6 +11,11 @@ from .. import i2c_command
 
 def write_full_from_file (file,smb,slaveaddr,writestrobe,chip) :
     
+    try: 
+        chip_list.xchip[chip][1]
+    except:
+        return 3
+    
     f = open(file,"r")
     print ("Write EEprom ...")
     datax = list()
