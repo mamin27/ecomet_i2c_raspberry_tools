@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <Version Value="11"/>
+    <BuildModes Active="Default"/>
+    <Units Count="7">
+      <Unit0>
+        <Filename Value="pca_6532.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <CursorPos X="23" Y="20"/>
+        <UsageCount Value="236"/>
+        <Loaded Value="True"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="pca_display.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="Form1"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="3"/>
+        <CursorPos X="27" Y="149"/>
+        <ComponentState Value="1"/>
+        <UsageCount Value="230"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="pca_pyth_util.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="1"/>
+        <CursorPos X="17" Y="196"/>
+        <UsageCount Value="230"/>
+        <Loaded Value="True"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="pca_regex.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="4"/>
+        <TopLine Value="16"/>
+        <CursorPos X="6" Y="54"/>
+        <UsageCount Value="23"/>
+        <Loaded Value="True"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="proc_py.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="2"/>
+        <UsageCount Value="23"/>
+        <Loaded Value="True"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="pca_python.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="64"/>
+        <CursorPos X="3" Y="93"/>
+        <UsageCount Value="22"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="../Python-for-Lazarus/python4lazarus/Sources/Core/PythonEngine.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="5285"/>
+        <CursorPos Y="5305"/>
+        <UsageCount Value="10"/>
+      </Unit6>
+    </Units>
+    <JumpHistory Count="29" HistoryIndex="28">
+      <Position1>
+        <Filename Value="pca_pyth_util.pas"/>
+        <Caret Line="194" Column="21" TopLine="175"/>
+      </Position1>
+      <Position2>
+        <Filename Value="pca_pyth_util.pas"/>
+        <Caret Line="11" Column="53"/>
+      </Position2>
+      <Position3>
+        <Filename Value="pca_display.pas"/>
+        <Caret Line="9" Column="68" TopLine="7"/>
+      </Position3>
+      <Position4>
+        <Filename Value="pca_display.pas"/>
+        <Caret Line="221" Column="26" TopLine="209"/>
+      </Position4>
+      <Position5>
+        <Filename Value="pca_pyth_util.pas"/>
+        <Caret Line="11" Column="40"/>
+      </Position5>
+      <Position6>
+        <Filename Value="pca_display.pas"/>
+        <Caret Line="183" TopLine="157"/>
+      </Position6>
+      <Position7>
+        <Filename Value="pca_display.pas"/>
+        <Caret Line="150" TopLine="131"/>
+      </Position7>
+      <Position8>
+        <Filename Value="pca_display.pas"/>
+        <Caret Line="151" TopLine="131"/>
+      </Position8>
+      <Position9>
+        <Filename Value="pca_display.pas"/>
+        <Caret Line="152" TopLine="131"/>
+      </Position9>
+      <Position10>
+        <Filename Value="pca_display.pas"/>
+        <Caret Line="140" Column="81" TopLine="102"/>
+      </Position10>
+      <Position11>
+        <Filename Value="pca_display.pas"/>
+        <Caret Line="188" Column="29" TopLine="169"/>
+      </Position11>
+      <Position12>
+        <Filename Value="pca_display.pas"/>
+        <Caret Line="173" Column="60" TopLine="169"/>
+      </Position12>
+      <Position13>
+        <Filename Value="pca_display.pas"/>
+        <Caret Line="154" Column="3" TopLine="144"/>
+      </Position13>
+      <Position14>
+        <Filename Value="pca_display.pas"/>
+        <Caret Line="159" Column="60" TopLine="147"/>
+      </Position14>
+      <Position15>
+        <Filename Value="pca_display.pas"/>
+        <Caret Line="157" Column="20" TopLine="144"/>
+      </Position15>
+      <Position16>
+        <Filename Value="pca_display.pas"/>
+        <Caret Line="155" TopLine="140"/>
+      </Position16>
+      <Position17>
+        <Filename Value="pca_display.pas"/>
+        <Caret Line="157" TopLine="140"/>
+      </Position17>
+      <Position18>
+        <Filename Value="pca_display.pas"/>
+        <Caret Line="158" TopLine="140"/>
+      </Position18>
+      <Position19>
+        <Filename Value="pca_display.pas"/>
+        <Caret Line="160" TopLine="140"/>
+      </Position19>
+      <Position20>
+        <Filename Value="pca_pyth_util.pas"/>
+        <Caret Line="203" Column="57" TopLine="168"/>
+      </Position20>
+      <Position21>
+        <Filename Value="pca_pyth_util.pas"/>
+        <Caret Line="175" Column="61" TopLine="169"/>
+      </Position21>
+      <Position22>
+        <Filename Value="pca_pyth_util.pas"/>
+        <Caret Line="206" TopLine="175"/>
+      </Position22>
+      <Position23>
+        <Filename Value="pca_pyth_util.pas"/>
+        <Caret Line="207" TopLine="176"/>
+      </Position23>
+      <Position24>
+        <Filename Value="pca_pyth_util.pas"/>
+        <Caret Line="208" TopLine="177"/>
+      </Position24>
+      <Position25>
+        <Filename Value="pca_pyth_util.pas"/>
+        <Caret Line="209" TopLine="178"/>
+      </Position25>
+      <Position26>
+        <Filename Value="pca_pyth_util.pas"/>
+        <Caret Line="210" TopLine="179"/>
+      </Position26>
+      <Position27>
+        <Filename Value="pca_pyth_util.pas"/>
+        <Caret Line="211" TopLine="180"/>
+      </Position27>
+      <Position28>
+        <Filename Value="pca_pyth_util.pas"/>
+        <Caret Line="68" Column="28" TopLine="60"/>
+      </Position28>
+      <Position29>
+        <Filename Value="pca_pyth_util.pas"/>
+        <Caret Line="180" Column="50" TopLine="158"/>
+      </Position29>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes Count="0" ActiveMode=""/>
+    </RunParams>
+  </ProjectSession>
+  <Debugging>
+    <Watches Count="15">
+      <Item1>
+        <Expression Value="data"/>
+      </Item1>
+      <Item2>
+        <Expression Value="pca_str"/>
+      </Item2>
+      <Item3>
+        <Expression Value="pca_attr"/>
+      </Item3>
+      <Item4>
+        <Expression Value="pca"/>
+      </Item4>
+      <Item5>
+        <Expression Value="Ob_pca_attr"/>
+      </Item5>
+      <Item6>
+        <Expression Value="Ob_pca_attr[1]"/>
+      </Item6>
+      <Item7>
+        <Expression Value="re.Match[1]"/>
+      </Item7>
+      <Item8>
+        <Expression Value="re"/>
+      </Item8>
+      <Item9>
+        <Expression Value="test"/>
+      </Item9>
+      <Item10>
+        <Expression Value="pca_str"/>
+      </Item10>
+      <Item11>
+        <Expression Value="Ob_pca_attr[idx_pca_attr].attr_name"/>
+      </Item11>
+      <Item12>
+        <Expression Value="Ob_pca_c_attr[idx_pca_c_attr]"/>
+      </Item12>
+      <Item13>
+        <Expression Value="Count"/>
+      </Item13>
+      <Item14>
+        <Expression Value="TArray"/>
+      </Item14>
+      <Item15>
+        <Expression Value="keys"/>
+      </Item15>
+    </Watches>
+  </Debugging>
+</CONFIG>
