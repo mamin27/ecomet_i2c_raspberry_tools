@@ -46,9 +46,20 @@ type
     destructor Destroy; override;
    end;
 
+   PyRecordIOb = class(TObject)
+   public
+    code_type : String[15];
+    attr_name : String[12];
+    attr_val: String[12];
+    attr_val_selector: boolean;
+    attr_val_obj: pca6532Ob_c;
+    constructor Init;
+    destructor Destroy; override;
+   end;
+
    pca6532Ob = class(TObject)
    public
-    attr1: PyRecordOb;
+    attr1: PyRecordIOb;
     attr2: PyRecordOb;
     attr3: PyRecordOb;
     attr4: PyRecordOb;
@@ -84,6 +95,27 @@ end;
 
 destructor PyRecordOb.Destroy;
 begin
+    attr_name := '';
+    attr_val := '';
+    attr_val_selector := false;
+    attr_val_obj := nil;
+    inherited Destroy;
+end;
+
+constructor PyRecordIOb.Init;
+begin
+//    inherited Create;
+    code_type := '';
+    attr_name := '';
+    attr_val := '';
+    attr_val_selector := false;
+    attr_val_obj := nil;
+
+end;
+
+destructor PyRecordIOb.Destroy;
+begin
+    code_type := '';
     attr_name := '';
     attr_val := '';
     attr_val_selector := false;
@@ -175,7 +207,8 @@ var
   // pca_c:  pca6532Ob_c;
   // pca_c_attr: PyRecordOb_c;
   Ob_pca_c_attr: array[1..50] of PyRecordOb_c;
-  Ob_pca_attr: array[1..50] of PyRecordOb;
+  ObI_pca_attr: array[1..2] of PyRecordIOb;
+  Ob_pca_attr: array[2..50] of PyRecordOb;
   Ob_pca_c: array[1..50] of pca6532Ob_c;
   idx_pca_attr,idx_pca_c_attr,idx_pca_c: integer;
   keys: TParts;
@@ -187,7 +220,11 @@ begin
   for i in [1..50] do
     begin
     Ob_pca_c_attr[i]:= PyRecordOb_c.Init;
-    Ob_pca_attr[i]:= PyRecordOb.Init;
+    if i=1 then
+       ObI_pca_attr[1]:= PyRecordIOb.Init
+     else
+       Ob_pca_attr[i]:= PyRecordOb.Init;
+
     Ob_pca_c[i]:= pca6532Ob_c.Init;
     end;
 
@@ -205,51 +242,52 @@ begin
 
   keys := StringSplit(pca_str,':');
 
-  Ob_pca_attr[idx_pca_attr].attr_name:=keys[1];                       //'MODE1'
-  Ob_pca_attr[idx_pca_attr].attr_val_selector:=true;
-  pca.attr1:=Ob_pca_attr[idx_pca_attr];
-  Ob_pca_c_attr[idx_pca_c_attr].attr_name:=keys[2];                   //'ALLCALL'
-  Ob_pca_c_attr[idx_pca_c_attr].attr_val:=keys[3];
+  ObI_pca_attr[idx_pca_attr].code_type:=keys[1];
+  ObI_pca_attr[idx_pca_attr].attr_name:=keys[2];                      //'MODE1'
+  ObI_pca_attr[idx_pca_attr].attr_val_selector:=true;
+  pca.attr1:=ObI_pca_attr[idx_pca_attr];
+  Ob_pca_c_attr[idx_pca_c_attr].attr_name:=keys[3];                   //'ALLCALL'
+  Ob_pca_c_attr[idx_pca_c_attr].attr_val:=keys[4];
   Ob_pca_c[idx_pca_c].attr1:=Ob_pca_c_attr[idx_pca_c_attr];
   idx_pca_c_attr := idx_pca_c_attr +1;
-  Ob_pca_c_attr[idx_pca_c_attr].attr_name:=keys[4];                   //'SUB3'
-  Ob_pca_c_attr[idx_pca_c_attr].attr_val:=keys[5];
+  Ob_pca_c_attr[idx_pca_c_attr].attr_name:=keys[5];                   //'SUB3'
+  Ob_pca_c_attr[idx_pca_c_attr].attr_val:=keys[6];
   Ob_pca_c[idx_pca_c].attr2:=Ob_pca_c_attr[idx_pca_c_attr];
   idx_pca_c_attr := idx_pca_c_attr +1;
-  Ob_pca_c_attr[idx_pca_c_attr].attr_name:=keys[6];                   //'SUB2'
-  Ob_pca_c_attr[idx_pca_c_attr].attr_val:=keys[7];
+  Ob_pca_c_attr[idx_pca_c_attr].attr_name:=keys[7];                   //'SUB2'
+  Ob_pca_c_attr[idx_pca_c_attr].attr_val:=keys[8];
   Ob_pca_c[idx_pca_c].attr3:=Ob_pca_c_attr[idx_pca_c_attr];
   idx_pca_c_attr := idx_pca_c_attr +1;
-  Ob_pca_c_attr[idx_pca_c_attr].attr_name:=keys[8];                   //'SUB1'
-  Ob_pca_c_attr[idx_pca_c_attr].attr_val:=keys[9];
+  Ob_pca_c_attr[idx_pca_c_attr].attr_name:=keys[9];                   //'SUB1'
+  Ob_pca_c_attr[idx_pca_c_attr].attr_val:=keys[10];
   Ob_pca_c[idx_pca_c].attr4:=Ob_pca_c_attr[idx_pca_c_attr];
   idx_pca_c_attr := idx_pca_c_attr +1;
-  Ob_pca_c_attr[idx_pca_c_attr].attr_name:=keys[10];                  //'SLEEP'
-  Ob_pca_c_attr[idx_pca_c_attr].attr_val:=keys[11];
+  Ob_pca_c_attr[idx_pca_c_attr].attr_name:=keys[11];                  //'SLEEP'
+  Ob_pca_c_attr[idx_pca_c_attr].attr_val:=keys[12];
   Ob_pca_c[idx_pca_c].attr5:=Ob_pca_c_attr[idx_pca_c_attr];
   idx_pca_c_attr := idx_pca_c_attr +1;
-  Ob_pca_attr[idx_pca_attr].attr_val_obj:=Ob_pca_c[idx_pca_c];
+  ObI_pca_attr[idx_pca_attr].attr_val_obj:=Ob_pca_c[idx_pca_c];
 
   idx_pca_attr := idx_pca_attr +1;
   idx_pca_c := idx_pca_c +1;
 
-  Ob_pca_attr[idx_pca_attr].attr_name:=keys[12];                      //'MODE2'
+  Ob_pca_attr[idx_pca_attr].attr_name:=keys[13];                      //'MODE2'
   Ob_pca_attr[idx_pca_attr].attr_val_selector:=true;
   pca.attr2:=Ob_pca_attr[idx_pca_attr];
-  Ob_pca_c_attr[idx_pca_c_attr].attr_name:=keys[13];                  //'OUTDRV'
-  Ob_pca_c_attr[idx_pca_c_attr].attr_val:=keys[14];
+  Ob_pca_c_attr[idx_pca_c_attr].attr_name:=keys[14];                  //'OUTDRV'
+  Ob_pca_c_attr[idx_pca_c_attr].attr_val:=keys[15];
   Ob_pca_c[idx_pca_c].attr1:=Ob_pca_c_attr[idx_pca_c_attr];
   idx_pca_c_attr := idx_pca_c_attr +1;
-  Ob_pca_c_attr[idx_pca_c_attr].attr_name:=keys[15];                  //'OCH'
-  Ob_pca_c_attr[idx_pca_c_attr].attr_val:=keys[16];
+  Ob_pca_c_attr[idx_pca_c_attr].attr_name:=keys[16];                  //'OCH'
+  Ob_pca_c_attr[idx_pca_c_attr].attr_val:=keys[17];
   Ob_pca_c[idx_pca_c].attr2:=Ob_pca_c_attr[idx_pca_c_attr];
   idx_pca_c_attr := idx_pca_c_attr +1;
-  Ob_pca_c_attr[idx_pca_c_attr].attr_name:=keys[17];                  //'INVRT'
-  Ob_pca_c_attr[idx_pca_c_attr].attr_val:=keys[18];
+  Ob_pca_c_attr[idx_pca_c_attr].attr_name:=keys[18];                  //'INVRT'
+  Ob_pca_c_attr[idx_pca_c_attr].attr_val:=keys[19];
   Ob_pca_c[idx_pca_c].attr3:=Ob_pca_c_attr[idx_pca_c_attr];
   idx_pca_c_attr := idx_pca_c_attr +1;
-  Ob_pca_c_attr[idx_pca_c_attr].attr_name:=keys[19];                  //'DMBLINK'
-  Ob_pca_c_attr[idx_pca_c_attr].attr_val:=keys[20];
+  Ob_pca_c_attr[idx_pca_c_attr].attr_name:=keys[20];                  //'DMBLINK'
+  Ob_pca_c_attr[idx_pca_c_attr].attr_val:=keys[21];
   Ob_pca_c[idx_pca_c].attr4:=Ob_pca_c_attr[idx_pca_c_attr];
   idx_pca_c_attr := idx_pca_c_attr +1;
   Ob_pca_attr[idx_pca_attr].attr_val_obj:=Ob_pca_c[idx_pca_c];
@@ -257,79 +295,79 @@ begin
   idx_pca_attr := idx_pca_attr +1;
   idx_pca_c := idx_pca_c +1;
 
-  Ob_pca_attr[idx_pca_attr].attr_name:=keys[21];                      //'PWM0'
+  Ob_pca_attr[idx_pca_attr].attr_name:=keys[22];                      //'PWM0'
   Ob_pca_attr[idx_pca_attr].attr_val_selector:=false;
   pca.attr3:=Ob_pca_attr[idx_pca_attr];
-  Ob_pca_attr[idx_pca_attr].attr_val:=keys[22];
+  Ob_pca_attr[idx_pca_attr].attr_val:=keys[23];
   idx_pca_attr := idx_pca_attr +1;
-  Ob_pca_attr[idx_pca_attr].attr_name:=keys[23];                      //'PWM1'
+  Ob_pca_attr[idx_pca_attr].attr_name:=keys[24];                      //'PWM1'
   Ob_pca_attr[idx_pca_attr].attr_val_selector:=false;
   pca.attr4:=Ob_pca_attr[idx_pca_attr];
-  Ob_pca_attr[idx_pca_attr].attr_val:=keys[24];
+  Ob_pca_attr[idx_pca_attr].attr_val:=keys[25];
   idx_pca_attr := idx_pca_attr +1;
-  Ob_pca_attr[idx_pca_attr].attr_name:=keys[25];                      //'PWM2'
+  Ob_pca_attr[idx_pca_attr].attr_name:=keys[26];                      //'PWM2'
   Ob_pca_attr[idx_pca_attr].attr_val_selector:=false;
   pca.attr5:=Ob_pca_attr[idx_pca_attr];
-  Ob_pca_attr[idx_pca_attr].attr_val:=keys[26];
+  Ob_pca_attr[idx_pca_attr].attr_val:=keys[27];
   idx_pca_attr := idx_pca_attr +1;
-  Ob_pca_attr[idx_pca_attr].attr_name:=keys[27];                      //'PWM3'
+  Ob_pca_attr[idx_pca_attr].attr_name:=keys[28];                      //'PWM3'
   Ob_pca_attr[idx_pca_attr].attr_val_selector:=false;
   pca.attr6:=Ob_pca_attr[idx_pca_attr];
-  Ob_pca_attr[idx_pca_attr].attr_val:=keys[28];
+  Ob_pca_attr[idx_pca_attr].attr_val:=keys[29];
   idx_pca_attr := idx_pca_attr +1;
-  Ob_pca_attr[idx_pca_attr].attr_name:=keys[29];                      //'GRPPWM'
+  Ob_pca_attr[idx_pca_attr].attr_name:=keys[30];                      //'GRPPWM'
   Ob_pca_attr[idx_pca_attr].attr_val_selector:=false;
   pca.attr7:=Ob_pca_attr[idx_pca_attr];
-  Ob_pca_attr[idx_pca_attr].attr_val:=keys[30];
+  Ob_pca_attr[idx_pca_attr].attr_val:=keys[31];
   idx_pca_attr := idx_pca_attr +1;
-  Ob_pca_attr[idx_pca_attr].attr_name:=keys[31];                      //'GRPFREQ'
+  Ob_pca_attr[idx_pca_attr].attr_name:=keys[32];                      //'GRPFREQ'
   Ob_pca_attr[idx_pca_attr].attr_val_selector:=false;
   pca.attr8:=Ob_pca_attr[idx_pca_attr];
-  Ob_pca_attr[idx_pca_attr].attr_val:=keys[32];
+  Ob_pca_attr[idx_pca_attr].attr_val:=keys[33];
   idx_pca_attr := idx_pca_attr +1;
 
-  Ob_pca_attr[idx_pca_attr].attr_name:=keys[33];                      //'SUBADR1'
+  Ob_pca_attr[idx_pca_attr].attr_name:=keys[34];                      //'SUBADR1'
   Ob_pca_attr[idx_pca_attr].attr_val_selector:=false;
   pca.attr9:=Ob_pca_attr[idx_pca_attr];
-  Ob_pca_attr[idx_pca_attr].attr_val:=keys[34];
+  Ob_pca_attr[idx_pca_attr].attr_val:=keys[35];
   idx_pca_attr := idx_pca_attr +1;
-  Ob_pca_attr[idx_pca_attr].attr_name:=keys[35];                      //'SUBADR2'
+  Ob_pca_attr[idx_pca_attr].attr_name:=keys[36];                      //'SUBADR2'
   Ob_pca_attr[idx_pca_attr].attr_val_selector:=false;
   pca.attr10:=Ob_pca_attr[idx_pca_attr];
-  Ob_pca_attr[idx_pca_attr].attr_val:=keys[36];
+  Ob_pca_attr[idx_pca_attr].attr_val:=keys[37];
   idx_pca_attr := idx_pca_attr +1;
-  Ob_pca_attr[idx_pca_attr].attr_name:=keys[37];                      //'SUBADR3'
+  Ob_pca_attr[idx_pca_attr].attr_name:=keys[38];                      //'SUBADR3'
   Ob_pca_attr[idx_pca_attr].attr_val_selector:=false;
   pca.attr11:=Ob_pca_attr[idx_pca_attr];
-  Ob_pca_attr[idx_pca_attr].attr_val:=keys[38];
+  Ob_pca_attr[idx_pca_attr].attr_val:=keys[39];
   idx_pca_attr := idx_pca_attr +1;
 
-  Ob_pca_attr[idx_pca_attr].attr_name:=keys[39];                      //'LEDOUT'
+  Ob_pca_attr[idx_pca_attr].attr_name:=keys[40];                      //'LEDOUT'
   Ob_pca_attr[idx_pca_attr].attr_val_selector:=true;
   pca.attr12:=Ob_pca_attr[idx_pca_attr];
-  Ob_pca_c_attr[idx_pca_c_attr].attr_name:=keys[40];                  //'LDR0'
-  Ob_pca_c_attr[idx_pca_c_attr].attr_val:=keys[41];
+  Ob_pca_c_attr[idx_pca_c_attr].attr_name:=keys[41];                  //'LDR0'
+  Ob_pca_c_attr[idx_pca_c_attr].attr_val:=keys[42];
   Ob_pca_c[idx_pca_c].attr1:=Ob_pca_c_attr[idx_pca_c_attr];
   idx_pca_c_attr := idx_pca_c_attr +1;
-  Ob_pca_c_attr[idx_pca_c_attr].attr_name:=keys[42];                  //'LDR1'
-  Ob_pca_c_attr[idx_pca_c_attr].attr_val:=keys[43];
+  Ob_pca_c_attr[idx_pca_c_attr].attr_name:=keys[43];                  //'LDR1'
+  Ob_pca_c_attr[idx_pca_c_attr].attr_val:=keys[44];
   Ob_pca_c[idx_pca_c].attr2:=Ob_pca_c_attr[idx_pca_c_attr];
   idx_pca_c_attr := idx_pca_c_attr +1;
-  Ob_pca_c_attr[idx_pca_c_attr].attr_name:=keys[44];                  //'LDR2'
-  Ob_pca_c_attr[idx_pca_c_attr].attr_val:=keys[45];
+  Ob_pca_c_attr[idx_pca_c_attr].attr_name:=keys[45];                  //'LDR2'
+  Ob_pca_c_attr[idx_pca_c_attr].attr_val:=keys[46];
   Ob_pca_c[idx_pca_c].attr3:=Ob_pca_c_attr[idx_pca_c_attr];
   idx_pca_c_attr := idx_pca_c_attr +1;
-  Ob_pca_c_attr[idx_pca_c_attr].attr_name:=keys[46];                  //'LDR4'
-  Ob_pca_c_attr[idx_pca_c_attr].attr_val:=keys[47];
+  Ob_pca_c_attr[idx_pca_c_attr].attr_name:=keys[47];                  //'LDR4'
+  Ob_pca_c_attr[idx_pca_c_attr].attr_val:=keys[48];
   Ob_pca_c[idx_pca_c].attr4:=Ob_pca_c_attr[idx_pca_c_attr];
   idx_pca_c_attr := idx_pca_c_attr +1;
   Ob_pca_attr[idx_pca_attr].attr_val_obj:=Ob_pca_c[idx_pca_c];
   idx_pca_attr := idx_pca_attr +1;
 
-  Ob_pca_attr[idx_pca_attr].attr_name:=keys[48];                      //'ALLCALLADR'
+  Ob_pca_attr[idx_pca_attr].attr_name:=keys[49];                      //'ALLCALLADR'
   Ob_pca_attr[idx_pca_attr].attr_val_selector:=false;
   pca.attr13:=Ob_pca_attr[idx_pca_attr];
-  Ob_pca_attr[idx_pca_attr].attr_val:=keys[49];
+  Ob_pca_attr[idx_pca_attr].attr_val:=keys[50];
 
   Result := pca;
 

@@ -6,7 +6,7 @@ interface
 
 type
 
-  TParts = array [1..50] of String;
+  TParts = array [1..100] of String;
 
  function StringPart(Source: string; seperator: char; Index: integer): string;
  function StringParts(Source: string; seperator: char): integer;

@@ -6,8 +6,8 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Buttons,
-  ComboEx, ComCtrls, ExtCtrls, Spin, Types, StrUtils, PythonEngine,
-  pca_pyth_util;
+  ComboEx, ComCtrls, ExtCtrls, Spin, Types, StrUtils,
+  pca_pyth_util, PythonEngine;
 
 type
 
@@ -79,8 +79,7 @@ type
     procedure RadioButton1Change(Sender: TObject);
   private
   public
-    procedure DoPy_InitEngine;
-
+   procedure DoPy_InitEngine;
   end;
 
 var
@@ -114,12 +113,10 @@ var
 
 implementation
 
+uses pca_read;
+
 const
   cPyLibraryLinux = 'libpython3.7m.so.1.0';
-
-{$R *.lfm}
-
-{ TForm1 }
 
 procedure ComboBox_init (Item1, Item2: TComboExItem; ComboBoxEx: TComboBoxEx);
 begin
@@ -145,59 +142,27 @@ begin
     then Result := 1;
 end;
 
+{$R *.lfm}
+
+{ TForm1 }
+
 procedure TForm1.PythonInputOutput1SendData(Sender: TObject;
   const Data: AnsiString);
 begin
 
   pca := StrToObj(data);
 
+
+  {
   write('ATTR3: ',pca.attr3.attr_name);
   write(':',pca.attr3.attr_val);
-  writeln();
+  writeln(); }
 
-  ComboBoxEx1.ItemIndex:=EnumToInt(pca.attr1.attr_val_obj.attr1.attr_val);       //ALLCALL 0-N/A, 0-ON, 1-OFF
-  ComboBoxEx2.ItemIndex:=EnumToInt(pca.attr1.attr_val_obj.attr2.attr_val);       //SUB3 2-N/A, 0-ON, 1-OFF
-  ComboBoxEx3.ItemIndex:=EnumToInt(pca.attr1.attr_val_obj.attr3.attr_val);       //SUB2 2-N/A, 0-ON, 1-OFF
-  ComboBoxEx4.ItemIndex:=EnumToInt(pca.attr1.attr_val_obj.attr4.attr_val);       //SUB1 2-N/A, 0-ON, 1-OFF
-  ComboBoxEx5.ItemIndex:=EnumToInt(pca.attr1.attr_val_obj.attr5.attr_val);       //SLEEP 2-N/A, 0-ON, 1-OFF
 
-  ComboBoxEx6.ItemIndex:=EnumToInt(pca.attr2.attr_val_obj.attr1.attr_val);       //OUTDRV 2-N/A, 0-ON, 1-OFF
-  ComboBoxEx7.ItemIndex:=EnumToInt(pca.attr2.attr_val_obj.attr2.attr_val);       //OCH 2-N/A, 0-ON, 1-OFF
-  ComboBoxEx8.ItemIndex:=EnumToInt(pca.attr2.attr_val_obj.attr3.attr_val);       //INVRT 2-N/A, 0-ON, 1-OFF
-  ComboBoxEx9.ItemIndex:=EnumToInt(pca.attr2.attr_val_obj.attr4.attr_val);       //DMBLNK 2-N/A, 0-ON, 1-OFF
-
-  Edit1.Text:= pca.attr3.attr_val;  //PWM0
-  Edit1.Alignment:=taRightJustify;
-  Edit2.Text:= pca.attr4.attr_val;  //PWM1
-  Edit2.Alignment:=taRightJustify;
-  Edit3.Text:= pca.attr5.attr_val;  //PWM2
-  Edit3.Alignment:=taRightJustify;
-  Edit4.Text:= pca.attr6.attr_val;  //PWM3
-  Edit4.Alignment:=taRightJustify;
-  Edit5.Text:= pca.attr7.attr_val;  //GRPPWM
-  Edit5.Alignment:=taRightJustify;
-  Edit6.Text:= pca.attr8.attr_val;  //GRPFREQ
-  Edit6.Alignment:=taRightJustify;
-
-  Edit7.Text:= pca.attr9.attr_val;  //SUBADR1
-  Edit7.Alignment:=taRightJustify;
-  Edit8.Text:= pca.attr10.attr_val;  //SUBADR2
-  Edit8.Alignment:=taRightJustify;
-  Edit9.Text:= pca.attr11.attr_val;  //SUBADR3
-  Edit9.Alignment:=taRightJustify;
-
-  ComboBoxEx10.ItemIndex:=EnumToInt(pca.attr12.attr_val_obj.attr1.attr_val);       //LDR0 2-N/A, 0-ON, 1-OFF
-  ComboBoxEx11.ItemIndex:=EnumToInt(pca.attr12.attr_val_obj.attr2.attr_val);       //LDR1 2-N/A, 0-ON, 1-OFF
-  ComboBoxEx12.ItemIndex:=EnumToInt(pca.attr12.attr_val_obj.attr3.attr_val);       //LDR2 2-N/A, 0-ON, 1-OFF
-  ComboBoxEx13.ItemIndex:=EnumToInt(pca.attr12.attr_val_obj.attr4.attr_val);       //LDR3 2-N/A, 0-ON, 1-OFF
-
-  Edit10.Text:= pca.attr13.attr_val;  //ALLCALLADR
-  Edit10.Alignment:=taRightJustify;
-
-  Image1.Stretch:= true;
-  Image1.Proportional:= true;
-  ImageList2.GetBitmap(1,Image1.Picture.Bitmap);
-//  ImageList2.GetBitmap(0,Image1.Picture.Bitmap);
+  if pca.attr1.code_type = 'READ_PCA' then
+    read_output_pca(pca)
+  else
+    exit;
 
 end;
 
@@ -213,9 +178,6 @@ begin
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);
-var
-  i : Integer;
-  Py_S: TStringList;
 begin
 
   DoPy_InitEngine;
@@ -236,15 +198,7 @@ begin
   ComboBox_init (ItemEx121,ItemEx122,ComboBoxEx12); // LDR2 ON/OFF
   ComboBox_init (ItemEx131,ItemEx132,ComboBoxEx13); // LDR3 ON/OFF
 
-  Py_S := TStringList.Create;
-  Py_S.Delimiter := '|';
-  Py_S.StrictDelimiter := True;
-  Py_S.DelimitedText := 'from  i2c_pkg.pca9632_pkg import pca9632_driver|' +
-                        'reg_view = pca9632_driver.read_pca9632()|' +
-                        'print ("{}".format(reg_view))|';
-
-  PythonEngine1.ExecStrings(Py_S);
-  Py_S.Free;
+  read_pca;
 
 end;
 
