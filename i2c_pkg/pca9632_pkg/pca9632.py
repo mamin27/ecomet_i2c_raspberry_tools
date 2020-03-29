@@ -2,7 +2,8 @@ from __future__ import division
 import logging
 import time
 import math
-import pca9632_constant
+from i2c_pkg.pca9632_pkg import pca9632_constant
+#import pca9632_constant
 #import i2c_command_oop
 
 
@@ -52,33 +53,136 @@ led_bit_mode = { 'OFF' : pca9632_constant.OFF,
                 }
 
 logger = logging.getLogger(__name__)
+
+def read_pca9632() :
+   
+   register = {}
+
+   mode1_bit_list = { 'SLEEP' : pca9632_constant.SLEEP,
+                      'SUB1' : pca9632_constant.SUB1,
+                      'SUB2' : pca9632_constant.SUB2,
+                      'SUB3' : pca9632_constant.SUB3,
+                      'ALLCALL' : pca9632_constant.ALLCALL }
+             
+   reg_mode1 = {}
+   reg_mode2 = {}
+   reg_ledout = {}
+   
+   reg_mode1['ALLCALL'] = 'ON' if PCA9632().read_register( register = 'MODE1' ) & mode1_bit_list['ALLCALL'] > 0  else 'OFF'
+   reg_mode1['SUB3'] = 'ON' if PCA9632().read_register( register = 'MODE1' ) & mode1_bit_list['SUB3'] > 0 else 'OFF'      
+   reg_mode1['SUB2'] = 'ON' if PCA9632().read_register( register = 'MODE1' ) & mode1_bit_list['SUB2'] > 0 else 'OFF'      
+   reg_mode1['SUB1'] = 'ON' if PCA9632().read_register( register = 'MODE1' ) & mode1_bit_list['SUB1'] > 0 else 'OFF'      
+   reg_mode1['SLEEP'] = 'ON' if PCA9632().read_register( register = 'MODE1' ) & mode1_bit_list['SLEEP'] > 0 else 'OFF'
+      
+   register['MODE1'] = reg_mode1
+   
+   mode2_bit_list = { 'DMBLNK' : pca9632_constant.DMBLNK,
+                      'INVRT' : pca9632_constant.INVRT,
+                      'OCH' : pca9632_constant.OCH,
+                      'OUTDRV' : pca9632_constant.OUTDRV }             
+   
+   reg_mode2['OUTDRV'] = 'ON' if PCA9632().read_register( register = 'MODE2' ) & mode2_bit_list['OUTDRV'] > 0 else 'OFF'
+   reg_mode2['OCH'] = 'ON' if PCA9632().read_register( register = 'MODE2' ) & mode2_bit_list['OCH'] > 0 else 'OFF'
+   reg_mode2['INVRT'] = 'ON' if PCA9632().read_register( register = 'MODE2' ) & mode2_bit_list['INVRT'] > 0 else 'OFF'
+   reg_mode2['DMBLNK'] = 'ON' if PCA9632().read_register( register = 'MODE2' ) & mode2_bit_list['DMBLNK'] > 0 else 'OFF'
+   
+   register['MODE2'] = reg_mode2
+
+   register['PWM0'] = round(PCA9632().read_register( register = 'PWM0' ) / 255 * 100,1)
+   register['PWM1'] = round(PCA9632().read_register( register = 'PWM1' ) / 255 * 100,1)
+   register['PWM2'] = round(PCA9632().read_register( register = 'PWM2' ) / 255 * 100,1)
+   register['PWM3'] = round(PCA9632().read_register( register = 'PWM3' ) / 255 * 100,1)
+   register['GRPPWM'] = round(PCA9632().read_register( register = 'GRPPWM' ) / 255 * 100,1)
+   register['GRPFREQ'] = str(round(1/ (PCA9632().read_register( register = 'GRPFREQ' ) + 1 / 24),1)) + ' Hz' if reg_mode2['DMBLNK'] == 'ON' else '0 Hz' 
+   
+   reg_ledout_list = { 'LDR0' : pca9632_constant.LDR0,
+                       'LDR1' : pca9632_constant.LDR1,
+                       'LDR2' : pca9632_constant.LDR2,
+                       'LDR3' : pca9632_constant.LDR3 }
+                       
+   ledout_mode = { 'OFF' : pca9632_constant.OFF,
+                   'ON'  : pca9632_constant.ON,
+                   'PWM' : pca9632_constant.PWM,
+                   'PWM_GRPPWM' : pca9632_constant.PWM_GRPPWM }
+                   
+   ldr0 = PCA9632().read_register( register = 'LEDOUT' ) & 0x03 
+   ldr1 = (PCA9632().read_register( register = 'LEDOUT' ) & 0x0c) >> 2
+   ldr2 = (PCA9632().read_register( register = 'LEDOUT' ) & 0x30) >> 4
+   ldr3 = (PCA9632().read_register( register = 'LEDOUT' ) & 0xc0) >> 6
+   
+   if ldr0 == ledout_mode ['OFF'] :
+      reg_ledout['LDR0'] = 'OFF'
+   elif ldr0 == ledout_mode ['ON'] :
+      reg_ledout['LDR0'] = 'ON'
+   elif ldr0 == ledout_mode ['PWM'] :
+      reg_ledout['LDR0'] = 'PWM'
+   elif ldr0 == ledout_mode ['PWM_GRPPWM'] :
+      reg_ledout['LDR0'] = 'PWM_GRPPWM'
+
+   if ldr1 == ledout_mode ['OFF'] :
+      reg_ledout['LDR1'] = 'OFF'
+   elif ldr1 == ledout_mode ['ON'] :
+      reg_ledout['LDR1'] = 'ON'
+   elif ldr1 == ledout_mode ['PWM'] :
+      reg_ledout['LDR1'] = 'PWM'
+   elif ldr1 == ledout_mode ['PWM_GRPPWM'] :
+      reg_ledout['LDR1'] = 'PWM_GRPPWM'
+     
+   if ldr2 == ledout_mode ['OFF'] :
+      reg_ledout['LDR2'] = 'OFF'
+   elif ldr2 == ledout_mode ['ON'] :
+      reg_ledout['LDR2'] = 'ON'
+   elif ldr2 == ledout_mode ['PWM'] :
+      reg_ledout['LDR2'] = 'PWM'
+   elif ldr2 == ledout_mode ['PWM_GRPPWM'] :
+      reg_ledout['LDR2'] = 'PWM_GRPPWM'
+     
+   if ldr3 == ledout_mode ['OFF'] :
+      reg_ledout['LDR3'] = 'OFF'
+   elif ldr3 == ledout_mode ['ON'] :
+      reg_ledout['LDR3'] = 'ON'
+   elif ldr3 == ledout_mode ['PWM'] :
+      reg_ledout['LDR3'] = 'PWM'
+   elif ldr3 == ledout_mode ['PWM_GRPPWM'] :
+      reg_ledout['LDR3'] = 'PWM_GRPPWM'
+      
+      
+   register['SUBADR1'] = str(hex((PCA9632().read_register( register = 'SUBADR1' ) & 0xFE) >> 1))
+   register['SUBADR2'] = str(hex((PCA9632().read_register( register = 'SUBADR2' ) & 0xFE) >> 1))
+   register['SUBADR3'] = str(hex((PCA9632().read_register( register = 'SUBADR3' ) & 0xFE) >> 1))
+   
+   register['LEDOUT'] = reg_ledout
+   
+   register['ALLCALLADR'] = str(hex((PCA9632().read_register( register = 'ALLCALLADR' ) & 0xFE) >> 1))
+   
+   return (register)
  
-def software_reset (i2c=None, **kwargs):
+def software_reset (address=pca9632_constant.PCA9632_SWRESET, i2c=None, **kwargs):
     '''Sends a software reset (SWRST) command to all servo drivers on the bus.'''
     # Setup I2C interface for device 0x00 to talk to all of them.
 
     if i2c is None:
         import Adafruit_GPIO.I2C as I2C
         i2c = I2C
-    self._device = i2c.get_i2c_device(0x00, **kwargs)
-    self._device.writeRaw8(pca9632_constant.PCA9632_SWRESET)  # SWRST
-    self._device.writeRaw8(0xa5)
-    self._device.writeRaw8(0x5a)
-'''    
-def read_subadr(register, address, suba=None, **kwargs) :
-     sub_list = { 'SUBADR1' : SUBADR1_R,
-                  'SUBADR2' : SUBADR2_R,
-                  'SUBADR3' : SUBADR3_R 
-                 }
-     if suba is None:
-         import Adafruit_GPIO.I2C as I2C
-         suba = I2C
-     _sub = suba.get_i2c_device(sub_list[register], **kwargs)
-     return _sub.readU8(address)
-'''
+    try:
+      device = i2c.get_i2c_device(address, **kwargs) # SWRST
+      device.writeRaw8(0xa5)
+      device.writeRaw8(0x5a)
+    except:
+      return 1
+    else:
+      return 0
+      
+def ledout_clear ():
+   try:
+    PCA9632().write_register(register = 'LEDOUT', bits = [{'LDR0' : 'OFF'},{'LDR1' : 'OFF'},{'LDR2' : 'OFF'},{'LDR3' : 'OFF'}])
+   except:
+      return 1
+   else:
+      return 0
 
 class PCA9632(object):
-    '''PCA9632 PWM LED/servo controller.'''
+    '''PCA9632() PWM LED/servo controller.'''
 
     def __init__(self, address=pca9632_constant.PCA9632_ADDRESS, i2c=None, **kwargs) :
         '''Initialize the PCA9685.'''
@@ -87,11 +191,11 @@ class PCA9632(object):
             import Adafruit_GPIO.I2C as I2C
             i2c = I2C
         self._device = i2c.get_i2c_device(address, **kwargs)
-        self._device.write8(pca9632_constant.LEDOUT,0x00)
         #self._device.write8(PWM0,0x7D)
     def read_register(self, register) :
         return self._device.readU8(reg_list[register])
     def write_register(self, register, bits) :
+          ret = 0
           reg_status = self.read_register( register = register )
           if register == 'MODE1' :
            for ibit in bits :
@@ -101,6 +205,13 @@ class PCA9632(object):
              except :
                 bit = mode1_bit_off_list[ibit]
                 reg_status = reg_status & bit
+             finally:
+                try :
+                  self._device.write8(reg_list[register],int(reg_status))
+                except :
+                  ret = ret + 1
+                else :
+                  ret = ret + 0
           elif register == 'MODE2' :
            for ibit in bits :
              try :
@@ -109,6 +220,13 @@ class PCA9632(object):
              except :
                 bit = mode2_bit_off_list[ibit]
                 reg_status = reg_status & bit
+             finally:
+                try :
+                  self._device.write8(reg_list[register],int(reg_status))
+                except :
+                  ret = ret + 1
+                else :
+                  ret = ret + 0
           elif register == 'LEDOUT' :
            for ibit in bits :
               bit_key = list(ibit)[0]
@@ -125,12 +243,12 @@ class PCA9632(object):
                     bit_m2 = '000000'[:(2 - len(bin(bit_led)[2:]))] + bin(bit_led)[2:] + '00'
               else :
                     bit_m2 = '00000000'[:(8 - len(bin(bit_led)[2:]))] + bin(bit_led)[2:]
-                    
-                  
-              reg_status = int(bit_m1,2) ^ int(bit_m2,2)
-          try :
-           self._device.write8(reg_list[register],int(reg_status))
-          except :
-             return 1
-          else :
-             return 0
+              try :
+                reg_status = int(bit_m1,2) ^ int(bit_m2,2) 
+                self._device.write8(reg_list[register],int(reg_status))
+              except :
+                 ret = ret + 1
+              else :
+                 ret = ret + 0
+          return ret
+             

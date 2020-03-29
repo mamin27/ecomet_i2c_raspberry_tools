@@ -18,6 +18,8 @@ type
   public
     attr_name : String[12];
     attr_val: String[12];
+    attr_new_val: String[12];
+    attr_chg: boolean;
     constructor Init;
     destructor Destroy; override;
    end;
@@ -40,8 +42,10 @@ type
   public
     attr_name : String[12];
     attr_val: String[12];
+    attr_new_val: String[12];
     attr_val_selector: boolean;
     attr_val_obj: pca6532Ob_c;
+    attr_chg: boolean;
     constructor Init;
     destructor Destroy; override;
    end;
@@ -51,8 +55,10 @@ type
     code_type : String[15];
     attr_name : String[12];
     attr_val: String[12];
+    attr_new_val: String[12];
     attr_val_selector: boolean;
     attr_val_obj: pca6532Ob_c;
+    attr_chg: boolean;
     constructor Init;
     destructor Destroy; override;
    end;
@@ -88,8 +94,10 @@ begin
 //    inherited Create;
     attr_name := '';
     attr_val := '';
+    attr_new_val := '';
     attr_val_selector := false;
     attr_val_obj := nil;
+    attr_chg := false;
 
 end;
 
@@ -97,8 +105,10 @@ destructor PyRecordOb.Destroy;
 begin
     attr_name := '';
     attr_val := '';
+    attr_new_val := '';
     attr_val_selector := false;
     attr_val_obj := nil;
+    attr_chg := false;
     inherited Destroy;
 end;
 
@@ -108,8 +118,10 @@ begin
     code_type := '';
     attr_name := '';
     attr_val := '';
+    attr_new_val := '';
     attr_val_selector := false;
     attr_val_obj := nil;
+    attr_chg := false;
 
 end;
 
@@ -118,8 +130,10 @@ begin
     code_type := '';
     attr_name := '';
     attr_val := '';
+    attr_new_val := '';
     attr_val_selector := false;
     attr_val_obj := nil;
+    attr_chg := false;
     inherited Destroy;
 end;
 
@@ -164,12 +178,16 @@ begin
 //    inherited Create;
     attr_name := '';
     attr_val := '';
+    attr_new_val := '';
+    attr_chg := false;
 end;
 
 destructor PyRecordOb_c.Destroy;
 begin
     attr_name := '';
     attr_val := '';
+    attr_new_val := '';
+    attr_chg := false;
     inherited Destroy;
 end;
 

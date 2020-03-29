@@ -22,8 +22,8 @@ begin
 Py_S := TStringList.Create;
 Py_S.Delimiter := '|';
 Py_S.StrictDelimiter := True;
-Py_S.DelimitedText := 'from  i2c_pkg.pca9632_pkg import pca9632_driver|' +
-                      'reg_view = pca9632_driver.read_pca9632()|' +
+Py_S.DelimitedText := 'from  i2c_pkg.pca9632_pkg import pca9632|' +
+                      'reg_view = pca9632.read_pca9632()|' +
                       'print (":READ_PCA:{}".format(reg_view))|';
 
 Form1.PythonEngine1.ExecStrings(Py_S);
@@ -71,13 +71,16 @@ begin
   Form1.Edit9.Text:= pca.attr11.attr_val;  //SUBADR3
   Form1.Edit9.Alignment:=taRightJustify;
 
-  Form1.ComboBoxEx10.ItemIndex:=EnumToInt(pca.attr12.attr_val_obj.attr1.attr_val);       //LDR0 2-N/A, 0-ON, 1-OFF
-  Form1.ComboBoxEx11.ItemIndex:=EnumToInt(pca.attr12.attr_val_obj.attr2.attr_val);       //LDR1 2-N/A, 0-ON, 1-OFF
-  Form1.ComboBoxEx12.ItemIndex:=EnumToInt(pca.attr12.attr_val_obj.attr3.attr_val);       //LDR2 2-N/A, 0-ON, 1-OFF
-  Form1.ComboBoxEx13.ItemIndex:=EnumToInt(pca.attr12.attr_val_obj.attr4.attr_val);       //LDR3 2-N/A, 0-ON, 1-OFF
+  Form1.ComboBoxEx10.ItemIndex:=EnumToIntLdr(pca.attr12.attr_val_obj.attr1.attr_val);       //LDR0 2-N/A, 0-ON, 1-OFF, 2-PWM, 3-GRPPWM
+  Form1.ComboBoxEx11.ItemIndex:=EnumToIntLdr(pca.attr12.attr_val_obj.attr2.attr_val);       //LDR1 2-N/A, 0-ON, 1-OFF, 2-PWM, 3-GRPPWM
+  Form1.ComboBoxEx12.ItemIndex:=EnumToIntLdr(pca.attr12.attr_val_obj.attr3.attr_val);       //LDR2 2-N/A, 0-ON, 1-OFF, 2-PWM, 3-GRPPWM
+  Form1.ComboBoxEx13.ItemIndex:=EnumToIntLdr(pca.attr12.attr_val_obj.attr4.attr_val);       //LDR3 2-N/A, 0-ON, 1-OFF, 2-PWM, 3-GRPPWM
 
   Form1.Edit10.Text:= pca.attr13.attr_val;  //ALLCALLADR
   Form1.Edit10.Alignment:=taRightJustify;
+
+  sleep(1000);
+//  Form1.ImageList2.GetBitmap(1,Form1.Image1.Picture.Bitmap);
 
 //  Image1.Stretch:= true;
 //  Image1.Proportional:= true;

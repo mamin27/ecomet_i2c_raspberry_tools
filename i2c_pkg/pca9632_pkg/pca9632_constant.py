@@ -1,7 +1,7 @@
 # Address:
 
 PCA9632_ADDRESS    = 0x62      # 8 bit version
-PCA9632_SWRESET    = 0x03      # Software reset add 0xA5 & 0x5A bytes
+PCA9632_SWRESET    = 0x06      # Software reset add 0xA5 & 0x5A bytes
 PCA9632_LEDALLCALL = 0x70      # LED ALL CALL address
 
 PCA9632_SUBADR1    = 0x71

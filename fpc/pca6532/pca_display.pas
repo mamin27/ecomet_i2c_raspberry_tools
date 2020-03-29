@@ -14,6 +14,7 @@ type
   { TForm1 }
 
   TForm1 = class(TForm)
+    BitBtn1: TBitBtn;
     ComboBoxEx1: TComboBoxEx;
     ComboBoxEx10: TComboBoxEx;
     ComboBoxEx11: TComboBoxEx;
@@ -37,11 +38,12 @@ type
     Edit7: TEdit;
     Edit8: TEdit;
     Edit9: TEdit;
-    Image1: TImage;
     ImageList1: TImageList;
-    ImageList2: TImageList;
     PythonEngine1: TPythonEngine;
     PythonInputOutput1: TPythonInputOutput;
+    Shape1,Shape2,Shape3,Shape4,Shape5: TShape;
+    Shape6,Shape7,Shape8,Shape9: TShape;
+    Shape20,Shape21,Shape22,Shape23: TShape;
     StaticText1: TStaticText;
     StaticText10: TStaticText;
     StaticText11: TStaticText;
@@ -70,8 +72,22 @@ type
     StaticText7: TStaticText;
     StaticText8: TStaticText;
     StaticText9: TStaticText;
-    ToggleBox1: TToggleBox;
     TrackBar1: TTrackBar;
+    procedure BitBtn1Click(Sender: TObject);
+    procedure ComboBoxEx10Change(Sender: TObject);
+    procedure ComboBoxEx11Change(Sender: TObject);
+    procedure ComboBoxEx12Change(Sender: TObject);
+    procedure ComboBoxEx13Change(Sender: TObject);
+    procedure ComboBoxEx1Change(Sender: TObject);
+    procedure ComboBoxEx2Change(Sender: TObject);
+    procedure ComboBoxEx3Change(Sender: TObject);
+    procedure ComboBoxEx4Change(Sender: TObject);
+    procedure ComboBoxEx5Change(Sender: TObject);
+    procedure ComboBoxEx6Change(Sender: TObject);
+    procedure ComboBoxEx7Change(Sender: TObject);
+    procedure ComboBoxEx8Change(Sender: TObject);
+    procedure ComboBoxEx9Change(Sender: TObject);
+    procedure Edit1EditingDone(Sender: TObject);
     procedure PythonInputOutput1SendData(Sender: TObject; const Data: AnsiString);
     procedure Edit1Click(Sender: TObject);
     procedure Edit2Click(Sender: TObject);
@@ -95,10 +111,10 @@ var
   ItemEx080,ItemEx081,ItemEx082: TComboExItem;
   ItemEx090,ItemEx091,ItemEx092: TComboExItem;
 
-  ItemEx100,ItemEx101,ItemEx102: TComboExItem;
-  ItemEx110,ItemEx111,ItemEx112: TComboExItem;
-  ItemEx120,ItemEx121,ItemEx122: TComboExItem;
-  ItemEx130,ItemEx131,ItemEx132: TComboExItem;
+  ItemEx100,ItemEx101,ItemEx102,ItemEx103,ItemEx104: TComboExItem;
+  ItemEx110,ItemEx111,ItemEx112,ItemEx113,ItemEx114: TComboExItem;
+  ItemEx120,ItemEx121,ItemEx122,ItemEx123,ItemEx124: TComboExItem;
+  ItemEx130,ItemEx131,ItemEx132,ItemEx133,ItemEx134: TComboExItem;
 
   pca: pca6532Ob;
   pca_attr: PyRecordOb;
@@ -109,11 +125,15 @@ var
   Ob_pca_c: array[1..50] of pca6532Ob_c;
 
   procedure ComboBox_init (Item1, Item2: TComboExItem; ComboBoxEx: TComboBoxEx);
+  procedure ComboBoxLdr_init (Item1, Item2, Item3, Item4: TComboExItem; ComboBoxEx: TComboBoxEx);
   function EnumToInt (S: String) : Integer;
+  function IntToEnum (S: Integer) : String;
+  function EnumToIntLdr (S: String) : Integer;
+  function IntToEnumLdr (S: Integer) : String;
 
 implementation
 
-uses pca_read;
+uses pca_read, pca_write;
 
 const
   cPyLibraryLinux = 'libpython3.7m.so.1.0';
@@ -134,12 +154,64 @@ begin
   Item2.Index:=1;
 end;
 
+procedure ComboBoxLdr_init (Item1, Item2, Item3, Item4: TComboExItem; ComboBoxEx: TComboBoxEx);
+begin
+  Item1 := ComboBoxEx.ItemsEx.Add;
+  Item1.Caption:= '';
+  Item1.ImageIndex:=0;
+  Item1.Index:=0;
+  Item2 := ComboBoxEx.ItemsEx.Add;
+  Item2.Caption:= '';
+  Item2.ImageIndex:=1;
+  Item2.Index:=1;
+  Item3 := ComboBoxEx.ItemsEx.Add;
+  Item3.Caption:= '';
+  Item3.ImageIndex:=2;
+  Item3.Index:=2;
+  Item4 := ComboBoxEx.ItemsEx.Add;
+  Item4.Caption:= '';
+  Item4.ImageIndex:=3;
+  Item4.Index:=3;
+end;
+
 function EnumToInt (S: String) : Integer;
 begin
   if S = 'ON'
     then Result := 0;
   if S = 'OFF'
     then Result := 1;
+end;
+
+function IntToEnum (S: Integer) : String;
+begin
+  if S = 0
+    then Result := 'ON';
+  if S = 1
+    then Result := 'OFF';
+end;
+
+function EnumToIntLdr (S: String) : Integer;
+begin
+  if S = 'ON'
+    then Result := 0;
+  if S = 'OFF'
+    then Result := 1;
+  if S = 'PWM'
+    then Result := 2;
+  if S = 'PWM_GRPPWM'
+    then Result := 3;
+end;
+
+function IntToEnumLdr (S: Integer) : String;
+begin
+  if S = 0
+    then Result := 'ON';
+  if S = 1
+    then Result := 'OFF';
+  if S = 2
+    then Result := 'PWM';
+  if S = 3
+    then Result := 'GRP';
 end;
 
 {$R *.lfm}
@@ -159,11 +231,195 @@ begin
   writeln(); }
 
 
-  if pca.attr1.code_type = 'READ_PCA' then
-    read_output_pca(pca)
-  else
-    exit;
+  case pca.attr1.code_type of
+   'READ_PCA':
+     read_output_pca(pca);
+   'WRITE_REG_PCA_0':
+    begin
+      writeln('WRITE_REG_PCA correct');
+    end;
+   'WRITE_REG_PCA_1':
+     writeln('WRITE_REG_PCA error');
+    else
+     exit;
+    end;
 
+end;
+
+procedure TForm1.BitBtn1Click(Sender: TObject);
+begin
+
+  write_mode1_reg;
+  write_mode2_reg;
+
+  write_ledout_reg;
+  read_pca;
+end;
+
+procedure TForm1.Edit1EditingDone(Sender: TObject);
+begin
+  pca.attr3.attr_chg:=true;
+  pca.attr3.attr_new_val:=Edit1.Text;
+  write('PWM0: ',Edit1.Text);
+  writeln();
+  Edit1.ReadOnly:=true;
+  Edit1.Color:=clLime;
+end;
+
+procedure TForm1.ComboBoxEx1Change(Sender: TObject);
+var
+  S: String;
+begin
+  S:=IntToEnum(ComboBoxEx1.ItemIndex);
+  write('ALLCALL: ',S);
+  writeln();
+  pca.attr1.attr_val_obj.attr1.attr_chg:=true;
+  pca.attr1.attr_val_obj.attr1.attr_new_val:=S;
+  Shape1.Visible:=True;
+end;
+
+procedure TForm1.ComboBoxEx2Change(Sender: TObject);
+var
+  S: String;
+begin
+  S:=IntToEnum(ComboBoxEx2.ItemIndex);
+  write('SUB3: ',S);
+  writeln();
+  pca.attr1.attr_val_obj.attr2.attr_chg:=true;
+  pca.attr1.attr_val_obj.attr2.attr_new_val:=S;
+  Shape2.Visible:=True;
+end;
+
+procedure TForm1.ComboBoxEx3Change(Sender: TObject);
+var
+  S: String;
+begin
+  S:=IntToEnum(ComboBoxEx3.ItemIndex);
+  write('SUB2: ',S);
+  writeln();
+  pca.attr1.attr_val_obj.attr3.attr_chg:=true;
+  pca.attr1.attr_val_obj.attr3.attr_new_val:=S;
+  Shape3.Visible:=True;
+end;
+
+procedure TForm1.ComboBoxEx4Change(Sender: TObject);
+var
+  S: String;
+begin
+  S:=IntToEnum(ComboBoxEx4.ItemIndex);
+  write('SUB1: ',S);
+  writeln();
+  pca.attr1.attr_val_obj.attr4.attr_chg:=true;
+  pca.attr1.attr_val_obj.attr4.attr_new_val:=S;
+  Shape4.Visible:=True;
+end;
+
+procedure TForm1.ComboBoxEx5Change(Sender: TObject);
+var
+  S: String;
+begin
+  S:=IntToEnum(ComboBoxEx5.ItemIndex);
+  write('SLEEP: ',S);
+  writeln();
+  pca.attr1.attr_val_obj.attr5.attr_chg:=true;
+  pca.attr1.attr_val_obj.attr5.attr_new_val:=S;
+  Shape5.Visible:=True;
+end;
+
+procedure TForm1.ComboBoxEx6Change(Sender: TObject);
+var
+  S: String;
+begin
+  S:=IntToEnum(ComboBoxEx6.ItemIndex);
+  write('OUTDRV: ',S);
+  writeln();
+  pca.attr2.attr_val_obj.attr1.attr_chg:=true;
+  pca.attr2.attr_val_obj.attr1.attr_new_val:=S;
+  Shape6.Visible:=True;
+end;
+
+procedure TForm1.ComboBoxEx7Change(Sender: TObject);
+var
+  S: String;
+begin
+  S:=IntToEnum(ComboBoxEx7.ItemIndex);
+  write('OCH: ',S);
+  writeln();
+  pca.attr2.attr_val_obj.attr2.attr_chg:=true;
+  pca.attr2.attr_val_obj.attr2.attr_new_val:=S;
+  Shape7.Visible:=True;
+end;
+
+procedure TForm1.ComboBoxEx8Change(Sender: TObject);
+var
+  S: String;
+begin
+  S:=IntToEnum(ComboBoxEx8.ItemIndex);
+  write('INVRT: ',S);
+  writeln();
+  pca.attr2.attr_val_obj.attr3.attr_chg:=true;
+  pca.attr2.attr_val_obj.attr3.attr_new_val:=S;
+  Shape8.Visible:=True;
+end;
+
+procedure TForm1.ComboBoxEx9Change(Sender: TObject);
+var
+  S: String;
+begin
+  S:=IntToEnum(ComboBoxEx9.ItemIndex);
+  write('DMBLNK: ',S);
+  writeln();
+  pca.attr2.attr_val_obj.attr4.attr_chg:=true;
+  pca.attr2.attr_val_obj.attr4.attr_new_val:=S;
+  Shape9.Visible:=True;
+end;
+
+procedure TForm1.ComboBoxEx10Change(Sender: TObject);
+var
+  S: String;
+begin
+  S:=IntToEnumLdr(ComboBoxEx10.ItemIndex);
+  write('LDR0: ',S);
+  writeln();
+  pca.attr12.attr_val_obj.attr1.attr_chg:=true;
+  pca.attr12.attr_val_obj.attr1.attr_new_val:=S;
+  Shape20.Visible:=True;
+end;
+
+procedure TForm1.ComboBoxEx11Change(Sender: TObject);
+var
+  S: String;
+begin
+  S:=IntToEnumLdr(ComboBoxEx11.ItemIndex);
+  write('LDR1: ',S);
+  writeln();
+  pca.attr12.attr_val_obj.attr2.attr_chg:=true;
+  pca.attr12.attr_val_obj.attr2.attr_new_val:=S;
+  Shape21.Visible:=True;
+end;
+
+procedure TForm1.ComboBoxEx12Change(Sender: TObject);
+var
+  S: String;
+begin
+  S:=IntToEnumLdr(ComboBoxEx12.ItemIndex);
+  write('LDR2: ',S);
+  writeln();
+  pca.attr12.attr_val_obj.attr3.attr_chg:=true;
+  pca.attr12.attr_val_obj.attr3.attr_new_val:=S;
+  Shape22.Visible:=True;
+end;
+
+procedure TForm1.ComboBoxEx13Change(Sender: TObject);
+var
+  S: String;
+begin
+  S:=IntToEnumLdr(ComboBoxEx13.ItemIndex);
+  write('LDR3: ',S);
+  writeln();
+  pca.attr12.attr_val_obj.attr4.attr_chg:=true;
+  pca.attr12.attr_val_obj.attr4.attr_new_val:=S;
+  Shape23.Visible:=True;
 end;
 
 procedure TForm1.DoPy_InitEngine;
@@ -193,12 +449,17 @@ begin
   ComboBox_init (ItemEx081,ItemEx082,ComboBoxEx8);  // INVRT ON/OFF
   ComboBox_init (ItemEx091,ItemEx092,ComboBoxEx9);  // DMBLNK ON/OFF
 
-  ComboBox_init (ItemEx101,ItemEx102,ComboBoxEx10); // LDR0 ON/OFF
-  ComboBox_init (ItemEx111,ItemEx112,ComboBoxEx11); // LDR1 ON/OFF
-  ComboBox_init (ItemEx121,ItemEx122,ComboBoxEx12); // LDR2 ON/OFF
-  ComboBox_init (ItemEx131,ItemEx132,ComboBoxEx13); // LDR3 ON/OFF
+  ComboBoxLdr_init (ItemEx101,ItemEx102,ItemEx103,ItemEx104,ComboBoxEx10); // LDR0 ON/OFF/PWM/GRPPWM
+  ComboBoxLdr_init (ItemEx111,ItemEx112,ItemEx113,ItemEx114,ComboBoxEx11); // LDR1 ON/OFF/PWM/GRPPWM
+  ComboBoxLdr_init (ItemEx121,ItemEx122,ItemEx123,ItemEx124,ComboBoxEx12); // LDR2 ON/OFF/PWM/GRPPWM
+  ComboBoxLdr_init (ItemEx131,ItemEx132,ItemEx133,ItemEx134,ComboBoxEx13); // LDR3 ON/OFF/PWM/GRPPWM
 
   read_pca;
+
+  //Image1.Stretch:= true;
+  //Image1.Proportional:= true;
+  //ImageList2.Draw(Image1.Picture.Bitmap.Canvas, 0, 0, 1);
+  //ImageList2.GetBitmap(1,Image1.Picture.Bitmap);
 
 end;
 
