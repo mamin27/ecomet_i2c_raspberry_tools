@@ -1,6 +1,6 @@
 # pca9632_IIC module
 
-**Last modification:** 21.03.2020
+**Last modification:** 29.03.2020
 
 **Schematics of Module:**
 *schematics in working process*
@@ -29,12 +29,19 @@ ecomet_i2c_tools/pca_6532
 **Features:**
 
 *  Read status of pca_6532 chip and show on concole
-*  Click at button (with values) changed to color to white. Then able to change value
+*  Click at Enumerated Buttons (as ALLCALL), choice from values for register (MODE1, MODE2, LEDOUT)
+*  Write to Register - Actually modified value visible by red rectangular (example SLEEP button) 
+*  Apply write changes for all actually selected attributes (buttons) - click at **APPLY** button
+*  Click at button (with values) changed to color to white. Then able to change value - !to be done!
+
+**    >>Sub Features: **
+
+* Register MODE1, MODE2 enumerate ON, OFF status
+* Register LEDOUT, enumerate ON, OFF, PWM, PWM_GRPPWM status
 
 **Limitations**
  
-* All Registers are correctly read after application run
-* Buttons are switchable but without effect
+* Register PWMx, SUBADDRx,GRPPWM, GRPFREQ only in read mode
 
 ![console](pca6532_console.png  "Console")
 
