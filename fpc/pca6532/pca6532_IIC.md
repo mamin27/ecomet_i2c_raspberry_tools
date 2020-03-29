@@ -3,14 +3,14 @@
 **Last modification:** 29.03.2020
 
 **Schematics of Module:**
-*schematics in working process*
+*schematics for testing will be added later*
 
 ![Schematics](Schematics.PNG)
 
 **Reconnection with Raspberry PI 3+:**
 
-![Schematics_2](Schematics_2.PNG)
-* schematics in working process*
+![Interface to PI](pca9632_schema.PNG)
+* schematics of PI reconnection*
 
 * Configuration for /dev/i2c-1
 * port 2 (SDA), port 3 (SCL)
