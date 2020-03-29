@@ -61,7 +61,7 @@ ssh -l pi -X <ip_address>
 lazarus-ide
 ```
 
-###Pre-requisited library for lazarus###
+### Pre-requisited library for lazarus ###
 compile Python-for-Lazarus libraries
 
 * was tailored and tested for python3 at raspberry 3+
@@ -70,7 +70,7 @@ compile Python-for-Lazarus libraries
 [GCC 8.3.0]
 ```
 
-###How to compile Free Pascal code of project?###
+### How to compile Free Pascal code of project? ###
 * copy sources to main directory
 
 ```console

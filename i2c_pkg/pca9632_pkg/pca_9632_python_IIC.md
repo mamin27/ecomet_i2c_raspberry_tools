@@ -2,7 +2,7 @@
 
 **Last modification:** 29.03.2020
 
-###List of python files:###
+### List of python files: ###
 
 **pca9632_constant.py**
 
@@ -19,7 +19,7 @@
 
 ### How to call python sub? ###
 
-see **pca_6532_i2c_test.py **script
+see **pca_6532_i2c_test.py** script
 
 initialization:
 ```python
@@ -44,6 +44,6 @@ ret = pwm.write_register( register = 'LEDOUT', bits = [{'LDR0' : 'ON' }, {'LDR1'
 
 Register status value:
 
-INVERT - ON INVERT status
-INVERT_N - OFF INVERT status
-see pca9632_constat.py
+* INVERT - ON INVERT status
+* INVERT_N - OFF INVERT status
+see **pca9632_constat.py**

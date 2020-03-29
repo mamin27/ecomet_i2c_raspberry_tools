@@ -34,7 +34,7 @@ ecomet_i2c_tools/pca_6532
 *  Apply write changes for all actually selected attributes (buttons) - click at **APPLY** button
 *  Click at button (with values) changed to color to white. Then able to change value - !to be done!
 
-**    >>Sub Features: **
+   **>>Sub Features:**
 
 * Register MODE1, MODE2 enumerate ON, OFF status
 * Register LEDOUT, enumerate ON, OFF, PWM, PWM_GRPPWM status
