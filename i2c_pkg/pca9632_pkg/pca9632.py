@@ -87,13 +87,6 @@ def read_pca9632() :
    reg_mode2['DMBLNK'] = 'ON' if PCA9632().read_register( register = 'MODE2' ) & mode2_bit_list['DMBLNK'] > 0 else 'OFF'
    
    register['MODE2'] = reg_mode2
-
-   register['PWM0'] = round(PCA9632().read_register( register = 'PWM0' ) / 255 * 100,1)
-   register['PWM1'] = round(PCA9632().read_register( register = 'PWM1' ) / 255 * 100,1)
-   register['PWM2'] = round(PCA9632().read_register( register = 'PWM2' ) / 255 * 100,1)
-   register['PWM3'] = round(PCA9632().read_register( register = 'PWM3' ) / 255 * 100,1)
-   register['GRPPWM'] = round(PCA9632().read_register( register = 'GRPPWM' ) / 255 * 100,1)
-   register['GRPFREQ'] = str(round(1/ (PCA9632().read_register( register = 'GRPFREQ' ) + 1 / 24),1)) + ' Hz' if reg_mode2['DMBLNK'] == 'ON' else '0 Hz' 
    
    reg_ledout_list = { 'LDR0' : pca9632_constant.LDR0,
                        'LDR1' : pca9632_constant.LDR1,
@@ -109,6 +102,35 @@ def read_pca9632() :
    ldr1 = (PCA9632().read_register( register = 'LEDOUT' ) & 0x0c) >> 2
    ldr2 = (PCA9632().read_register( register = 'LEDOUT' ) & 0x30) >> 4
    ldr3 = (PCA9632().read_register( register = 'LEDOUT' ) & 0xc0) >> 6
+   
+   if ldr0 == ledout_mode ['PWM'] or ldr0 == ledout_mode ['PWM_GRPPWM'] :
+     register['PWM0'] = round(PCA9632().read_register( register = 'PWM0' ) / 256 * 100,1)
+   elif ldr0 == ledout_mode ['ON'] :
+     register['PWM0'] = 100
+   else:
+     register['PWM0'] = 0
+   if ldr1 == ledout_mode ['PWM'] or ldr1 == ledout_mode ['PWM_GRPPWM'] :
+     print ('Value: {}'.format(bin(PCA9632().read_register( register = 'PWM1' ))))
+     register['PWM1'] = round(PCA9632().read_register( register = 'PWM1' ) / 256 * 100,1)
+   elif ldr1 == ledout_mode ['ON'] :
+     register['PWM1'] = 100
+   else:
+     register['PWM1'] = 0
+   if ldr2 == ledout_mode ['PWM'] or ldr2 == ledout_mode ['PWM_GRPPWM'] :
+     register['PWM2'] = round(PCA9632().read_register( register = 'PWM2' ) / 256 * 100,1)
+   elif ldr2 == ledout_mode ['ON'] :
+     register['PWM2'] = 100
+   else:
+     register['PWM2'] = 0
+   if ldr3 == ledout_mode ['PWM'] or ldr3 == ledout_mode ['PWM_GRPPWM'] :
+     register['PWM3'] = round(PCA9632().read_register( register = 'PWM3' ) / 256 * 100,1)
+   elif ldr3 == ledout_mode ['ON'] :
+     register['PWM3'] = 100
+   else:
+     register['PWM3'] = 0
+   register['GRPPWM'] = round(PCA9632().read_register( register = 'GRPPWM' ) / 255 * 100,1)
+   register['GRPFREQ'] = str(round(1/ (PCA9632().read_register( register = 'GRPFREQ' ) + 1 / 24),1)) + ' Hz' if reg_mode2['DMBLNK'] == 'ON' else '0 Hz' 
+                   
    
    if ldr0 == ledout_mode ['OFF'] :
       reg_ledout['LDR0'] = 'OFF'
@@ -227,10 +249,59 @@ class PCA9632(object):
                   ret = ret + 1
                 else :
                   ret = ret + 0
+          elif register == 'PWM0' :
+           for key, value in bits[0].items() :
+              if key == 'PWM' :
+                 pass
+              elif key == 'GRPPWM' :
+                 value = value & 0xFC
+              try:
+                 self._device.write8(reg_list[register],int(value))
+              except :
+                 ret = 1
+              else :
+                 ret = 0
+          elif register == 'PWM1' :
+           for key, value in bits[0].items() :
+              if key == 'PWM' :
+                 pass
+              elif key == 'GRPPWM' :
+                 value = value & 0xFC
+              try:
+                 self._device.write8(reg_list[register],int(value))
+              except :
+                 ret = 1
+              else :
+                 ret = 0
+          elif register == 'PWM2' :
+           for key, value in bits[0].items() :
+              if key == 'PWM' :
+                 pass
+              elif key == 'GRPPWM' :
+                 value = value & 0xFC
+              try:
+                 self._device.write8(reg_list[register],int(value))
+              except :
+                 ret = 1
+              else :
+                 ret = 0
+          elif register == 'PWM3' :
+           for key, value in bits[0].items() :
+              if key == 'PWM' :
+                 pass
+              elif key == 'GRPPWM' :
+                 value = value & 0xFC
+              try:
+                 self._device.write8(reg_list[register],int(value))
+              except :
+                 ret = 1
+              else :
+                 ret = 0
           elif register == 'LEDOUT' :
            for ibit in bits :
               bit_key = list(ibit)[0]
               bit_value = ibit[bit_key]
+              self.set_def_LDRx( register = bit_key, mode = bit_value)
               index = bit_key[3:]
               bit_led = led_bit_mode[bit_value]
               bit_m1 = reg_status & led_bit_list[bit_key]
@@ -251,4 +322,26 @@ class PCA9632(object):
               else :
                  ret = ret + 0
           return ret
-             
+    def set_def_LDRx(self, register, mode) :
+          ret = 0
+          if register == 'LDR0' :
+             write_reg = 'PWM0'
+          elif register == 'LDR1' :
+             write_reg = 'PWM1'
+          elif register == 'LDR2' :
+             write_reg = 'PWM2'
+          else :
+             write_reg = 'PWM3'
+          if mode == 'OFF' or mode == 'PWM' or mode == 'GRPPWM' :
+            set_value = 0x00
+          elif mode == 'ON' :
+            set_value = 0xFF
+          try:
+            self._device.write8(reg_list[write_reg],set_value)
+          except :
+                 ret = ret + 1
+          else :
+                 ret = ret + 0
+          return ret
+                
+                      
