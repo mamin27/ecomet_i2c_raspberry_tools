@@ -1,9 +1,9 @@
 # ecomet_i2c_tools
 
-**Last modification:** 21.03.2020
+**Last modification:** 30.03.2020
 
 **Scope:**
-This code tools contains python scripts uses I2C communication of raspberry pi with IOT module
+This code tools contains python & free pascal code focused to I2C communication of raspberry pi with IOT module
 
 **List of modules:**
 
