@@ -16,6 +16,7 @@ type
 
 procedure write_reg_pca (register: String; bits: Array of String);
 procedure write_led_reg_pca (register: String; bits: Array of TDict);
+procedure write_pwm_reg_pca (register: String; bits: TDict);
 function pre_write(cond1:boolean; cond2,attr:String): String;
 function pre_wr_led(cond1:boolean; cond2,attr:String): TDict;
 procedure write_mode1_reg ();
@@ -111,6 +112,31 @@ begin
     Result := Dict;
   end
   else Result.key := '';
+end;
+
+procedure write_pwm_reg_pca (register: String; bits: TDict);
+var
+  Py_S: TStringList;
+  content: String[100];
+begin
+content := 'register = ' + #39 + register + #39 + ', bits = [';
+content := content + '{' + #39 + bits.key + #39 +  ' : ' + #39 + bits.kval + #39 + '}' + ',';
+
+content := Copy(content,0,Length(content)-1);
+content := content + ']';
+writeln(content);
+
+
+Py_S := TStringList.Create;
+Py_S.Delimiter := '|';
+Py_S.StrictDelimiter := True;
+Py_S.DelimitedText := 'from  i2c_pkg.pca9632_pkg import pca9632|' +
+                      'pwm = pca9632.PCA9632()|' +
+                      'ret = pwm.write_register(' + content + ')|' +
+                      'print (":WRITE_REG_PWM_0:") if ret == 0 else print (":WRITE_REG_PWM_1:")|';
+
+Form1.PythonEngine1.ExecStrings(Py_S);
+Py_S.Free;
 end;
 
 procedure write_mode1_reg ();

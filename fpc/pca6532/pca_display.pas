@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Buttons,
-  ComboEx, ComCtrls, ExtCtrls, Spin, Types, StrUtils,
+  ComboEx, ComCtrls, ExtCtrls, Spin, Types, StrUtils, Math,
   pca_pyth_util, PythonEngine;
 
 type
@@ -29,7 +29,6 @@ type
     ComboBoxEx8: TComboBoxEx;
     ComboBoxEx9: TComboBoxEx;
     Edit1: TEdit;
-    Edit10: TEdit;
     Edit2: TEdit;
     Edit3: TEdit;
     Edit4: TEdit;
@@ -38,11 +37,17 @@ type
     Edit7: TEdit;
     Edit8: TEdit;
     Edit9: TEdit;
+    Edit10: TEdit;
+    Edit11: TEdit;
+    Edit12: TEdit;
+    Edit13: TEdit;
+    Edit14: TEdit;
     ImageList1: TImageList;
     PythonEngine1: TPythonEngine;
     PythonInputOutput1: TPythonInputOutput;
     Shape1,Shape2,Shape3,Shape4,Shape5: TShape;
     Shape6,Shape7,Shape8,Shape9: TShape;
+    Shape10,Shape11,Shape12,Shape13: TShape;
     Shape20,Shape21,Shape22,Shape23: TShape;
     StaticText1: TStaticText;
     StaticText10: TStaticText;
@@ -92,7 +97,7 @@ type
     procedure Edit1Click(Sender: TObject);
     procedure Edit2Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure RadioButton1Change(Sender: TObject);
+    procedure TrackBar1Change(Sender: TObject);
   private
   public
    procedure DoPy_InitEngine;
@@ -126,6 +131,7 @@ var
 
   procedure ComboBox_init (Item1, Item2: TComboExItem; ComboBoxEx: TComboBoxEx);
   procedure ComboBoxLdr_init (Item1, Item2, Item3, Item4: TComboExItem; ComboBoxEx: TComboBoxEx);
+  function pwm_input_check (pwm_input: PChar): Real;
   function EnumToInt (S: String) : Integer;
   function IntToEnum (S: Integer) : String;
   function EnumToIntLdr (S: String) : Integer;
@@ -218,6 +224,45 @@ end;
 
 { TForm1 }
 
+function pwm_input_check (pwm_input: PChar): Real;
+var
+  filter: String;
+  test_n: Real;
+const
+  ALLOWED = ['0'..'9',' ','.',','];
+Function Valid: Boolean;
+    var
+      i: Integer;
+    begin
+      Result := Length(filter) > 0;
+      i := 1;
+      while Result and (i <= Length(filter)) do
+      begin
+        Result := Result AND (filter[i] in ALLOWED);
+        inc(i);
+      end;
+      if  Length(filter) = 0 then Result := true;
+end;
+begin
+
+  filter := StringReplace(pwm_input,' ','',[rfReplaceAll]);
+  filter := StringReplace(filter,',','.',[rfReplaceAll]);
+
+  if Valid then begin
+    test_n := StrToFloat(filter);
+    if (test_n <= 100) then
+      Result := test_n
+    else begin
+      writeln('Number exceed 100');
+      Result := -2;
+    end;
+  end
+  else  begin
+    writeln('Wrong Input please fix');
+    Result := -1;
+  end;
+end;
+
 procedure TForm1.PythonInputOutput1SendData(Sender: TObject;
   const Data: AnsiString);
 begin
@@ -235,11 +280,13 @@ begin
    'READ_PCA':
      read_output_pca(pca);
    'WRITE_REG_PCA_0':
-    begin
       writeln('WRITE_REG_PCA correct');
-    end;
    'WRITE_REG_PCA_1':
-     writeln('WRITE_REG_PCA error');
+      writeln('WRITE_REG_PCA error');
+   'WRITE_REG_PWM_0':
+      writeln('WRITE_REG_PWM correct');
+   'WRITE_REG_PWM_1':
+      writeln('WRITE_REG_PWM error');
     else
      exit;
     end;
@@ -254,16 +301,6 @@ begin
 
   write_ledout_reg;
   read_pca;
-end;
-
-procedure TForm1.Edit1EditingDone(Sender: TObject);
-begin
-  pca.attr3.attr_chg:=true;
-  pca.attr3.attr_new_val:=Edit1.Text;
-  write('PWM0: ',Edit1.Text);
-  writeln();
-  Edit1.ReadOnly:=true;
-  Edit1.Color:=clLime;
 end;
 
 procedure TForm1.ComboBoxEx1Change(Sender: TObject);
@@ -438,6 +475,15 @@ begin
 
   DoPy_InitEngine;
 
+  Edit11.Color:= clBlue;
+  Edit11.Font.Color:=clWhite;
+  Edit12.Color:= clBlue;
+  Edit12.Font.Color:=clWhite;
+  Edit13.Color:= clBlue;
+  Edit13.Font.Color:=clWhite;
+  Edit14.Color:= clBlue;
+  Edit14.Font.Color:=clWhite;
+
   ComboBox_init (ItemEx011,ItemEx012,ComboBoxEx1);  // ALLCALL ON/OFF
   ComboBox_init (ItemEx021,ItemEx022,ComboBoxEx2);  // SUB3 ON/OFF
   ComboBox_init (ItemEx031,ItemEx032,ComboBoxEx3);  // SUB2 ON/OFF
@@ -463,7 +509,7 @@ begin
 
 end;
 
-procedure TForm1.RadioButton1Change(Sender: TObject);
+procedure TForm1.TrackBar1Change(Sender: TObject);
 begin
 
 end;
@@ -472,12 +518,45 @@ procedure TForm1.Edit1Click(Sender: TObject);
 begin
   Edit1.ReadOnly:=false;
   Edit1.Color:=clWhite;
+  Shape10.Visible:=True;
+end;
+
+procedure TForm1.Edit1EditingDone(Sender: TObject);
+var
+  in_buffer: PChar;
+  Size: Byte;
+  perc: Real;
+  pwm_value: String;
+  cmd: TDict;
+begin
+  Size := 20;
+  GetMem(in_buffer, Size);
+  Edit1.GetTextBuf(in_buffer,Size);
+  perc := pwm_input_check (in_buffer);
+  FreeMem(in_buffer, Size);
+  pwm_value := IntToStr(round((perc*255)/100));
+
+  cmd.key := 'PWM';
+  cmd.kval := pwm_value;
+
+  write_pwm_reg_pca('PWM0',cmd);
+  //pca.attr3.attr_chg:=true;
+  //pca.attr3.attr_new_val:=Edit1.Text;
+  write('PWM0: ',Edit1.Text);
+  writeln();
+  Edit1.Color:=clMenubar;
+  Shape10.Visible:=false;
+  Edit1.ReadOnly:=true;
+
+  read_pca;
+
 end;
 
 procedure TForm1.Edit2Click(Sender: TObject);
 begin
   Edit2.ReadOnly:=false;
   Edit2.Color:=clWhite;
+  Shape11.Visible:=True;
 end;
 
 end.

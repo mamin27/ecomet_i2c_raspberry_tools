@@ -1,3 +1,4 @@
+
 #!/usr/bin/env python3
 
 import sys
@@ -6,6 +7,11 @@ from  i2c_pkg.pca9632_pkg import pca9632
 #from  i2c_pkg.pca9632_pkg import pca9632_constant
 
 pwm = pca9632.PCA9632()
+
+print("Current Status")
+reg_view = pca9632.read_pca9632();
+print ("{}".format(reg_view));
+
 print ("SW Reset")
 ret = pca9632.software_reset()
 ret = pca9632.ledout_clear()
@@ -36,5 +42,29 @@ print ("LEDOUT => (LDR0->ON, LDR1->GRPPWM, LDR3->PWM)")
 print ("LEDOUT => 1011 0001 => 1->13->13->141");
 ret = pwm.write_register( register = 'LEDOUT', bits = [{'LDR0' : 'ON' }, {'LDR1' : 'PWM_GRPPWM'}, {'LDR2' : 'OFF'}, {'LDR3' : 'PWM'}])
 print("LEDOUT Write correct") if ret ==0 else print ("Write error")
+reg_view = pca9632.read_pca9632()
+print ("{}".format(reg_view))
+
+print ("PWM0 set to 50%")
+ret = pwm.write_register( register = 'PWM0', bits = [{'PWM' : 0x88 }])
+print("PWM0 Write correct") if ret ==0 else print ("Write error")
+reg_view = pca9632.read_pca9632()
+print ("{}".format(reg_view))
+
+print ("PWM1 set to 100%")
+ret = pwm.write_register( register = 'PWM1', bits = [{'GRPPWM' : 0xFF }])
+print("PWM1 Write correct") if ret ==0 else print ("Write error")
+reg_view = pca9632.read_pca9632()
+print ("{}".format(reg_view))
+
+print ("PWM2 set to 100%")
+ret = pwm.write_register( register = 'PWM2', bits = [{'GRPPWM' : 0xFF }])
+print("PWM2 Write correct") if ret ==0 else print ("Write error")
+reg_view = pca9632.read_pca9632()
+print ("{}".format(reg_view))
+
+print ("PWM3 set to 100%")
+ret = pwm.write_register( register = 'PWM3', bits = [{'PWM' : 0xFF }])
+print("PWM3 Write correct") if ret ==0 else print ("Write error")
 reg_view = pca9632.read_pca9632()
 print ("{}".format(reg_view))

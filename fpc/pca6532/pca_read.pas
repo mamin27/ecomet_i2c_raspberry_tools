@@ -8,12 +8,41 @@ uses
   Classes, SysUtils, StrUtils,
   pca_pyth_util;
 
+procedure set_freq (ldr, status: Integer);
+procedure set_freq_value (ldr: Integer; val: String);
 procedure read_pca ();
 procedure read_output_pca (pca: pca6532Ob);
 
 Implementation
 
 uses pca_display;
+
+const
+  LDR0 = 0;
+  LDR1 = 1;
+  LDR2 = 2;
+  LDR3 = 3;
+
+procedure set_freq (ldr, status: Integer);
+begin
+  case status of
+  0: set_freq_value (ldr, '');
+  1: set_freq_value (ldr, '');
+  2: set_freq_value (ldr, '1.5625 kHz');
+  3: set_freq_value (ldr, '6.25 kHz');
+  end;
+end;
+
+procedure set_freq_value (ldr: Integer; val: String);
+begin
+  case ldr of
+  0:   Form1.Edit11.Text := val;
+  1:   Form1.Edit12.Text := val;
+  2:   Form1.Edit13.Text := val;
+  3:   Form1.Edit14.Text := val;
+  end;
+
+end;
 
 procedure read_pca ();
 var
@@ -51,8 +80,10 @@ begin
   Form1.ComboBoxEx8.ItemIndex:=EnumToInt(pca.attr2.attr_val_obj.attr3.attr_val);       //INVRT 2-N/A, 0-ON, 1-OFF
   Form1.ComboBoxEx9.ItemIndex:=EnumToInt(pca.attr2.attr_val_obj.attr4.attr_val);       //DMBLNK 2-N/A, 0-ON, 1-OFF
 
+  //Form1.Edit1.ReadOnly:=false;
   Form1.Edit1.Text:= pca.attr3.attr_val;  //PWM0
   Form1.Edit1.Alignment:=taRightJustify;
+  //Form1.Edit1.ReadOnly:=true;
   Form1.Edit2.Text:= pca.attr4.attr_val;  //PWM1
   Form1.Edit2.Alignment:=taRightJustify;
   Form1.Edit3.Text:= pca.attr5.attr_val;  //PWM2
@@ -75,6 +106,11 @@ begin
   Form1.ComboBoxEx11.ItemIndex:=EnumToIntLdr(pca.attr12.attr_val_obj.attr2.attr_val);       //LDR1 2-N/A, 0-ON, 1-OFF, 2-PWM, 3-GRPPWM
   Form1.ComboBoxEx12.ItemIndex:=EnumToIntLdr(pca.attr12.attr_val_obj.attr3.attr_val);       //LDR2 2-N/A, 0-ON, 1-OFF, 2-PWM, 3-GRPPWM
   Form1.ComboBoxEx13.ItemIndex:=EnumToIntLdr(pca.attr12.attr_val_obj.attr4.attr_val);       //LDR3 2-N/A, 0-ON, 1-OFF, 2-PWM, 3-GRPPWM
+
+  set_freq (LDR0, Form1.ComboBoxEx10.ItemIndex);
+  set_freq (LDR1, Form1.ComboBoxEx11.ItemIndex);
+  set_freq (LDR2, Form1.ComboBoxEx12.ItemIndex);
+  set_freq (LDR3, Form1.ComboBoxEx13.ItemIndex);
 
   Form1.Edit10.Text:= pca.attr13.attr_val;  //ALLCALLADR
   Form1.Edit10.Alignment:=taRightJustify;

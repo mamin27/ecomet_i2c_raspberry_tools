@@ -1,7 +1,7 @@
 object Form1: TForm1
-  Left = 759
+  Left = 240
   Height = 366
-  Top = 372
+  Top = 184
   Width = 821
   Caption = 'Form1'
   ClientHeight = 366
@@ -158,7 +158,7 @@ object Form1: TForm1
     Height = 20
     Top = 136
     Width = 65
-    Caption = 'PWM0'
+    Caption = 'PWM0 [%]'
     Font.Color = clBlack
     Font.Height = -12
     Font.Name = 'DejaVu Sans Mono'
@@ -170,7 +170,7 @@ object Form1: TForm1
     Height = 20
     Top = 136
     Width = 65
-    Caption = 'PWM1'
+    Caption = 'PWM1 [%]'
     Font.Color = clBlack
     Font.Height = -12
     Font.Name = 'DejaVu Sans Mono'
@@ -182,7 +182,7 @@ object Form1: TForm1
     Height = 20
     Top = 136
     Width = 65
-    Caption = 'PWM2'
+    Caption = 'PWM2 [%]'
     Font.Color = clBlack
     Font.Height = -12
     Font.Name = 'DejaVu Sans Mono'
@@ -194,7 +194,7 @@ object Form1: TForm1
     Height = 20
     Top = 136
     Width = 65
-    Caption = 'PWM3'
+    Caption = 'PWM3 [%]'
     Font.Color = clBlack
     Font.Height = -12
     Font.Name = 'DejaVu Sans Mono'
@@ -495,6 +495,7 @@ object Form1: TForm1
     Width = 100
     Color = clActiveBorder
     OnClick = Edit1Click
+    OnEditingDone = Edit1EditingDone
     ReadOnly = True
     TabOrder = 41
   end
@@ -586,7 +587,9 @@ object Form1: TForm1
     Top = 202
     Width = 216
     Max = 255
+    OnChange = TrackBar1Change
     Position = 0
+    ParentColor = False
     TabOrder = 51
   end
   object Shape1: TShape
@@ -616,7 +619,6 @@ object Form1: TForm1
     Top = 323
     Width = 100
     Color = clActiveBorder
-    OnClick = Edit1Click
     ReadOnly = True
     TabOrder = 53
   end
@@ -626,7 +628,6 @@ object Form1: TForm1
     Top = 323
     Width = 100
     Color = clActiveBorder
-    OnClick = Edit2Click
     ReadOnly = True
     TabOrder = 54
   end
