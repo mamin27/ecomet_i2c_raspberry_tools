@@ -80,10 +80,8 @@ begin
   Form1.ComboBoxEx8.ItemIndex:=EnumToInt(pca.attr2.attr_val_obj.attr3.attr_val);       //INVRT 2-N/A, 0-ON, 1-OFF
   Form1.ComboBoxEx9.ItemIndex:=EnumToInt(pca.attr2.attr_val_obj.attr4.attr_val);       //DMBLNK 2-N/A, 0-ON, 1-OFF
 
-  //Form1.Edit1.ReadOnly:=false;
   Form1.Edit1.Text:= pca.attr3.attr_val;  //PWM0
   Form1.Edit1.Alignment:=taRightJustify;
-  //Form1.Edit1.ReadOnly:=true;
   Form1.Edit2.Text:= pca.attr4.attr_val;  //PWM1
   Form1.Edit2.Alignment:=taRightJustify;
   Form1.Edit3.Text:= pca.attr5.attr_val;  //PWM2

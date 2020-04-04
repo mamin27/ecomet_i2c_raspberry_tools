@@ -506,6 +506,7 @@ object Form1: TForm1
     Width = 100
     Color = clActiveBorder
     OnClick = Edit2Click
+    OnEditingDone = Edit2EditingDone
     ReadOnly = True
     TabOrder = 42
   end
@@ -515,6 +516,8 @@ object Form1: TForm1
     Top = 160
     Width = 100
     Color = clActiveBorder
+    OnClick = Edit3Click
+    OnEditingDone = Edit3EditingDone
     ReadOnly = True
     TabOrder = 43
   end
@@ -524,6 +527,8 @@ object Form1: TForm1
     Top = 160
     Width = 100
     Color = clActiveBorder
+    OnClick = Edit4Click
+    OnEditingDone = Edit4EditingDone
     ReadOnly = True
     TabOrder = 44
   end

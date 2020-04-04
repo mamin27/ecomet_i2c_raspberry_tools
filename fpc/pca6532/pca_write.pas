@@ -120,7 +120,7 @@ var
   content: String[100];
 begin
 content := 'register = ' + #39 + register + #39 + ', bits = [';
-content := content + '{' + #39 + bits.key + #39 +  ' : ' + #39 + bits.kval + #39 + '}' + ',';
+content := content + '{' + #39 + bits.key + #39 + ' : ' +  #39 + bits.kval +  #39 +'}' + ',';
 
 content := Copy(content,0,Length(content)-1);
 content := content + ']';
@@ -130,10 +130,16 @@ writeln(content);
 Py_S := TStringList.Create;
 Py_S.Delimiter := '|';
 Py_S.StrictDelimiter := True;
-Py_S.DelimitedText := 'from  i2c_pkg.pca9632_pkg import pca9632|' +
-                      'pwm = pca9632.PCA9632()|' +
-                      'ret = pwm.write_register(' + content + ')|' +
-                      'print (":WRITE_REG_PWM_0:") if ret == 0 else print (":WRITE_REG_PWM_1:")|';
+if bits.key = 'PWM' then
+  Py_S.DelimitedText := 'from  i2c_pkg.pca9632_pkg import pca9632|' +
+                        'pwm = pca9632.PCA9632()|' +
+                        'ret = pwm.write_register(' + content + ')|' +
+                        'print (":WRITE_REG_PWM_0:") if ret == 0 else print (":WRITE_REG_PWM_1:")|';
+if bits.key = 'GRPPWM' then
+ Py_S.DelimitedText := 'from  i2c_pkg.pca9632_pkg import pca9632|' +
+                        'pwm = pca9632.PCA9632()|' +
+                        'ret = pwm.write_register(' + content + ')|' +
+                        'print (":WRITE_REG_GRPPWM_0:") if ret == 0 else print (":WRITE_REG_GRPPWM_1:")|';
 
 Form1.PythonEngine1.ExecStrings(Py_S);
 Py_S.Free;

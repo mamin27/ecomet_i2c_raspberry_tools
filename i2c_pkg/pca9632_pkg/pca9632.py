@@ -103,27 +103,34 @@ def read_pca9632() :
    ldr2 = (PCA9632().read_register( register = 'LEDOUT' ) & 0x30) >> 4
    ldr3 = (PCA9632().read_register( register = 'LEDOUT' ) & 0xc0) >> 6
    
-   if ldr0 == ledout_mode ['PWM'] or ldr0 == ledout_mode ['PWM_GRPPWM'] :
+   if ldr0 == ledout_mode ['PWM'] : 
      register['PWM0'] = round(PCA9632().read_register( register = 'PWM0' ) / 256 * 100,1)
+   elif ldr0 == ledout_mode ['PWM_GRPPWM'] :
+     register['PWM0'] = round((PCA9632().read_register( register = 'PWM0' ) & 0xFC) / 256 * 100,1) 
    elif ldr0 == ledout_mode ['ON'] :
      register['PWM0'] = 100
    else:
      register['PWM0'] = 0
-   if ldr1 == ledout_mode ['PWM'] or ldr1 == ledout_mode ['PWM_GRPPWM'] :
-     print ('Value: {}'.format(bin(PCA9632().read_register( register = 'PWM1' ))))
+   if ldr1 == ledout_mode ['PWM'] : 
      register['PWM1'] = round(PCA9632().read_register( register = 'PWM1' ) / 256 * 100,1)
+   elif ldr1 == ledout_mode ['PWM_GRPPWM'] :
+     register['PWM1'] = round((PCA9632().read_register( register = 'PWM1' ) & 0xFC) / 256 * 100,1) 
    elif ldr1 == ledout_mode ['ON'] :
      register['PWM1'] = 100
    else:
      register['PWM1'] = 0
-   if ldr2 == ledout_mode ['PWM'] or ldr2 == ledout_mode ['PWM_GRPPWM'] :
+   if ldr2 == ledout_mode ['PWM'] : 
      register['PWM2'] = round(PCA9632().read_register( register = 'PWM2' ) / 256 * 100,1)
+   elif ldr2 == ledout_mode ['PWM_GRPPWM'] :
+     register['PWM2'] = round((PCA9632().read_register( register = 'PWM2' ) & 0xFC) / 256 * 100,1) 
    elif ldr2 == ledout_mode ['ON'] :
      register['PWM2'] = 100
    else:
      register['PWM2'] = 0
-   if ldr3 == ledout_mode ['PWM'] or ldr3 == ledout_mode ['PWM_GRPPWM'] :
+   if ldr3 == ledout_mode ['PWM'] : 
      register['PWM3'] = round(PCA9632().read_register( register = 'PWM3' ) / 256 * 100,1)
+   elif ldr3 == ledout_mode ['PWM_GRPPWM'] :
+     register['PWM3'] = round((PCA9632().read_register( register = 'PWM3' ) & 0xFC) / 256 * 100,1) 
    elif ldr3 == ledout_mode ['ON'] :
      register['PWM3'] = 100
    else:
@@ -254,7 +261,7 @@ class PCA9632(object):
               if key == 'PWM' :
                  pass
               elif key == 'GRPPWM' :
-                 value = value & 0xFC
+                 value = int(value) & 0xFC
               try:
                  self._device.write8(reg_list[register],int(value))
               except :
@@ -266,7 +273,7 @@ class PCA9632(object):
               if key == 'PWM' :
                  pass
               elif key == 'GRPPWM' :
-                 value = value & 0xFC
+                 value = int(value) & 0xFC
               try:
                  self._device.write8(reg_list[register],int(value))
               except :
@@ -278,7 +285,7 @@ class PCA9632(object):
               if key == 'PWM' :
                  pass
               elif key == 'GRPPWM' :
-                 value = value & 0xFC
+                 value = int(value) & 0xFC
               try:
                  self._device.write8(reg_list[register],int(value))
               except :
@@ -290,7 +297,7 @@ class PCA9632(object):
               if key == 'PWM' :
                  pass
               elif key == 'GRPPWM' :
-                 value = value & 0xFC
+                 value = int(value) & 0xFC
               try:
                  self._device.write8(reg_list[register],int(value))
               except :
@@ -332,7 +339,7 @@ class PCA9632(object):
              write_reg = 'PWM2'
           else :
              write_reg = 'PWM3'
-          if mode == 'OFF' or mode == 'PWM' or mode == 'GRPPWM' :
+          if mode == 'OFF' :
             set_value = 0x00
           elif mode == 'ON' :
             set_value = 0xFF

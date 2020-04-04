@@ -93,9 +93,14 @@ type
     procedure ComboBoxEx8Change(Sender: TObject);
     procedure ComboBoxEx9Change(Sender: TObject);
     procedure Edit1EditingDone(Sender: TObject);
+    procedure Edit2EditingDone(Sender: TObject);
+    procedure Edit3EditingDone(Sender: TObject);
+    procedure Edit4EditingDone(Sender: TObject);
     procedure PythonInputOutput1SendData(Sender: TObject; const Data: AnsiString);
     procedure Edit1Click(Sender: TObject);
     procedure Edit2Click(Sender: TObject);
+    procedure Edit3Click(Sender: TObject);
+    procedure Edit4Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure TrackBar1Change(Sender: TObject);
   private
@@ -139,7 +144,9 @@ var
 
 implementation
 
-uses pca_read, pca_write;
+uses pca_read, pca_write, pca_grppwm;
+var
+  grppwm: GWM;
 
 const
   cPyLibraryLinux = 'libpython3.7m.so.1.0';
@@ -287,6 +294,10 @@ begin
       writeln('WRITE_REG_PWM correct');
    'WRITE_REG_PWM_1':
       writeln('WRITE_REG_PWM error');
+   'WRITE_REG_GRPPWM_0':
+      writeln('WRITE_REG_GRPPWM correct');
+   'WRITE_REG_GRPPWM_1':
+      writeln('WRITE_REG_GPRPWM error');
     else
      exit;
     end;
@@ -500,6 +511,8 @@ begin
   ComboBoxLdr_init (ItemEx121,ItemEx122,ItemEx123,ItemEx124,ComboBoxEx12); // LDR2 ON/OFF/PWM/GRPPWM
   ComboBoxLdr_init (ItemEx131,ItemEx132,ItemEx133,ItemEx134,ComboBoxEx13); // LDR3 ON/OFF/PWM/GRPPWM
 
+  grppwm := initialize_gwm;
+
   read_pca;
 
   //Image1.Stretch:= true;
@@ -526,8 +539,10 @@ var
   in_buffer: PChar;
   Size: Byte;
   perc: Real;
+  min,max: Real;
   pwm_value: String;
   cmd: TDict;
+  i: Integer;
 begin
   Size := 20;
   GetMem(in_buffer, Size);
@@ -536,14 +551,41 @@ begin
   FreeMem(in_buffer, Size);
   pwm_value := IntToStr(round((perc*255)/100));
 
-  cmd.key := 'PWM';
-  cmd.kval := pwm_value;
+  if pca.attr12.attr_val_obj.attr1.attr_val = 'PWM' then begin
+    cmd.key := 'PWM';
+    cmd.kval := pwm_value;
 
-  write_pwm_reg_pca('PWM0',cmd);
-  //pca.attr3.attr_chg:=true;
-  //pca.attr3.attr_new_val:=Edit1.Text;
-  write('PWM0: ',Edit1.Text);
-  writeln();
+    write_pwm_reg_pca('PWM0',cmd);
+    //pca.attr3.attr_chg:=true;
+    //pca.attr3.attr_new_val:=Edi): ',Edit1.Text);
+    write('PWM0(PWM): ',Edit1.Text);
+    writeln();
+    end
+  else
+    if pca.attr12.attr_val_obj.attr1.attr_val = 'PWM_GRPPWM' then
+      begin
+      cmd.key := 'GRPPWM';
+      cmd.kval := pwm_value;
+
+      for i:= 1 to 64 do
+        begin
+        min := abs(grppwm[i].value - StrToInt(cmd.kval));
+        if min <= 3 then
+          begin
+           max := abs(grppwm[i+1].value - StrToInt(cmd.kval));
+           if min < max then cmd.kval := IntToStr(grppwm[i].value)
+            else cmd.kval := IntToStr(grppwm[i+1].value);
+           write_pwm_reg_pca('PWM0',cmd);
+           break;
+          end
+        else continue;
+       end;
+    //pca.attr3.attr_chg:=true;
+    //pca.attr3.attr_new_val:=Edit1.Text;
+    write('PWM0(GRPPWM): ',Edit1.Text);
+    writeln();
+     end;
+
   Edit1.Color:=clMenubar;
   Shape10.Visible:=false;
   Edit1.ReadOnly:=true;
@@ -557,6 +599,200 @@ begin
   Edit2.ReadOnly:=false;
   Edit2.Color:=clWhite;
   Shape11.Visible:=True;
+end;
+
+procedure TForm1.Edit2EditingDone(Sender: TObject);
+var
+  in_buffer: PChar;
+  Size: Byte;
+  perc: Real;
+  min,max: Real;
+  pwm_value: String;
+  cmd: TDict;
+  i: Integer;
+begin
+  Size := 20;
+  GetMem(in_buffer, Size);
+  Edit2.GetTextBuf(in_buffer,Size);
+  perc := pwm_input_check (in_buffer);
+  FreeMem(in_buffer, Size);
+  pwm_value := IntToStr(round((perc*255)/100));
+
+  if pca.attr12.attr_val_obj.attr2.attr_val = 'PWM' then begin
+    cmd.key := 'PWM';
+    cmd.kval := pwm_value;
+
+    write_pwm_reg_pca('PWM1',cmd);
+    //pca.attr3.attr_chg:=true;
+    //pca.attr3.attr_new_val:=Edi): ',Edit1.Text);
+    write('PWM1(PWM): ',Edit2.Text);
+    writeln();
+    end
+  else
+    if pca.attr12.attr_val_obj.attr2.attr_val = 'PWM_GRPPWM' then
+      begin
+      cmd.key := 'GRPPWM';
+      cmd.kval := pwm_value;
+
+      for i:= 1 to 64 do
+        begin
+        min := abs(grppwm[i].value - StrToInt(cmd.kval));
+        if min <= 3 then
+          begin
+           max := abs(grppwm[i+1].value - StrToInt(cmd.kval));
+           if min < max then cmd.kval := IntToStr(grppwm[i].value)
+            else cmd.kval := IntToStr(grppwm[i+1].value);
+           write_pwm_reg_pca('PWM1',cmd);
+           break;
+          end
+        else continue;
+       end;
+    //pca.attr3.attr_chg:=true;
+    //pca.attr3.attr_new_val:=Edit1.Text;
+    write('PWM1(GRPPWM): ',Edit2.Text);
+    writeln();
+     end;
+
+  Edit2.Color:=clMenubar;
+  Shape11.Visible:=false;
+  Edit2.ReadOnly:=true;
+
+  read_pca;
+
+end;
+
+procedure TForm1.Edit3Click(Sender: TObject);
+begin
+  Edit3.ReadOnly:=false;
+  Edit3.Color:=clWhite;
+  Shape12.Visible:=True;
+end;
+
+procedure TForm1.Edit3EditingDone(Sender: TObject);
+var
+  in_buffer: PChar;
+  Size: Byte;
+  perc: Real;
+  min,max: Real;
+  pwm_value: String;
+  cmd: TDict;
+  i: Integer;
+begin
+  Size := 20;
+  GetMem(in_buffer, Size);
+  Edit3.GetTextBuf(in_buffer,Size);
+  perc := pwm_input_check (in_buffer);
+  FreeMem(in_buffer, Size);
+  pwm_value := IntToStr(round((perc*255)/100));
+
+  if pca.attr12.attr_val_obj.attr3.attr_val = 'PWM' then begin
+    cmd.key := 'PWM';
+    cmd.kval := pwm_value;
+
+    write_pwm_reg_pca('PWM2',cmd);
+    //pca.attr3.attr_chg:=true;
+    //pca.attr3.attr_new_val:=Edi): ',Edit1.Text);
+    write('PWM2(PWM): ',Edit3.Text);
+    writeln();
+    end
+  else
+    if pca.attr12.attr_val_obj.attr3.attr_val = 'PWM_GRPPWM' then
+      begin
+      cmd.key := 'GRPPWM';
+      cmd.kval := pwm_value;
+
+      for i:= 1 to 64 do
+        begin
+        min := abs(grppwm[i].value - StrToInt(cmd.kval));
+        if min <= 3 then
+          begin
+           max := abs(grppwm[i+1].value - StrToInt(cmd.kval));
+           if min < max then cmd.kval := IntToStr(grppwm[i].value)
+            else cmd.kval := IntToStr(grppwm[i+1].value);
+           write_pwm_reg_pca('PWM2',cmd);
+           break;
+          end
+        else continue;
+       end;
+    //pca.attr3.attr_chg:=true;
+    //pca.attr3.attr_new_val:=Edit1.Text;
+    write('PWM2(GRPPWM): ',Edit3.Text);
+    writeln();
+     end;
+
+  Edit3.Color:=clMenubar;
+  Shape12.Visible:=false;
+  Edit3.ReadOnly:=true;
+
+  read_pca;
+
+end;
+
+procedure TForm1.Edit4Click(Sender: TObject);
+begin
+  Edit4.ReadOnly:=false;
+  Edit4.Color:=clWhite;
+  Shape13.Visible:=True;
+end;
+
+procedure TForm1.Edit4EditingDone(Sender: TObject);
+var
+  in_buffer: PChar;
+  Size: Byte;
+  perc: Real;
+  min,max: Real;
+  pwm_value: String;
+  cmd: TDict;
+  i: Integer;
+begin
+  Size := 20;
+  GetMem(in_buffer, Size);
+  Edit4.GetTextBuf(in_buffer,Size);
+  perc := pwm_input_check (in_buffer);
+  FreeMem(in_buffer, Size);
+  pwm_value := IntToStr(round((perc*255)/100));
+
+  if pca.attr12.attr_val_obj.attr4.attr_val = 'PWM' then begin
+    cmd.key := 'PWM';
+    cmd.kval := pwm_value;
+
+    write_pwm_reg_pca('PWM1',cmd);
+    //pca.attr3.attr_chg:=true;
+    //pca.attr3.attr_new_val:=Edi): ',Edit1.Text);
+    write('PWM3(PWM): ',Edit4.Text);
+    writeln();
+    end
+  else
+    if pca.attr12.attr_val_obj.attr4.attr_val = 'PWM_GRPPWM' then
+      begin
+      cmd.key := 'GRPPWM';
+      cmd.kval := pwm_value;
+
+      for i:= 1 to 64 do
+        begin
+        min := abs(grppwm[i].value - StrToInt(cmd.kval));
+        if min <= 3 then
+          begin
+           max := abs(grppwm[i+1].value - StrToInt(cmd.kval));
+           if min < max then cmd.kval := IntToStr(grppwm[i].value)
+            else cmd.kval := IntToStr(grppwm[i+1].value);
+           write_pwm_reg_pca('PWM3',cmd);
+           break;
+          end
+        else continue;
+       end;
+    //pca.attr3.attr_chg:=true;
+    //pca.attr3.attr_new_val:=Edit1.Text;
+    write('PWM3(GRPPWM): ',Edit4.Text);
+    writeln();
+     end;
+
+  Edit4.Color:=clMenubar;
+  Shape13.Visible:=false;
+  Edit4.ReadOnly:=true;
+
+  read_pca;
+
 end;
 
 end.

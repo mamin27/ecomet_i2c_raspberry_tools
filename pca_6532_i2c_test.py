@@ -40,13 +40,13 @@ print ("{}".format(reg_view))
 
 print ("LEDOUT => (LDR0->ON, LDR1->GRPPWM, LDR3->PWM)")
 print ("LEDOUT => 1011 0001 => 1->13->13->141");
-ret = pwm.write_register( register = 'LEDOUT', bits = [{'LDR0' : 'ON' }, {'LDR1' : 'PWM_GRPPWM'}, {'LDR2' : 'OFF'}, {'LDR3' : 'PWM'}])
+ret = pwm.write_register( register = 'LEDOUT', bits = [{'LDR0' : 'PWM' }, {'LDR1' : 'PWM_GRPPWM'}, {'LDR2' : 'OFF'}, {'LDR3' : 'PWM'}])
 print("LEDOUT Write correct") if ret ==0 else print ("Write error")
 reg_view = pca9632.read_pca9632()
 print ("{}".format(reg_view))
 
 print ("PWM0 set to 50%")
-ret = pwm.write_register( register = 'PWM0', bits = [{'PWM' : 0x88 }])
+ret = pwm.write_register( register = 'PWM0', bits = [{'PWM' : '101' }])
 print("PWM0 Write correct") if ret ==0 else print ("Write error")
 reg_view = pca9632.read_pca9632()
 print ("{}".format(reg_view))

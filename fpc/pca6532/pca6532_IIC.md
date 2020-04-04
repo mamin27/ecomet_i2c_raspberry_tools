@@ -1,6 +1,6 @@
 # pca9632_IIC module
 
-**Last modification:** 29.03.2020
+**Last modification:** 4.04.2020
 
 **Schematics of Module:**
 *schematics for testing will be added later*
@@ -32,16 +32,18 @@ ecomet_i2c_tools/pca_6532
 *  Click at Enumerated Buttons (as ALLCALL), choice from values for register (MODE1, MODE2, LEDOUT)
 *  Write to Register - Actually modified value visible by red rectangular (example SLEEP button) 
 *  Apply write changes for all actually selected attributes (buttons) - click at **APPLY** button
-*  Click at button (with values) changed to color to white. Then able to change value - !to be done!
+*  Click at button (with values) changed to color to white. Then able to change value (PWMx only works)
+* New row (current FREQ used), read only - **LED FREQ**
 
    **>>Sub Features:**
 
 * Register MODE1, MODE2 enumerate ON, OFF status
 * Register LEDOUT, enumerate ON, OFF, PWM, PWM_GRPPWM status
+* Register PWMx, (both modes PWM, PWM_GRPPWM working)
 
 **Limitations**
  
-* Register PWMx, SUBADDRx,GRPPWM, GRPFREQ only in read mode
+* Register SUBADDRx,GRPPWM, GRPFREQ only in read mode
 
 ![console](pca6532_console.png  "Console")
 
