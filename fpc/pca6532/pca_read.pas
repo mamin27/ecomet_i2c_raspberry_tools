@@ -23,6 +23,9 @@ const
   LDR2 = 2;
   LDR3 = 3;
 
+  TYPE0 = 0;
+  TYPE1 = 1;
+
 procedure set_freq (ldr, status: Integer);
 begin
   case status of
@@ -69,16 +72,16 @@ begin
   write(':',pca.attr3.attr_val);
   writeln();}
 
-  Form1.ComboBoxEx1.ItemIndex:=EnumToInt(pca.attr1.attr_val_obj.attr1.attr_val);       //ALLCALL 0-N/A, 0-ON, 1-OFF
-  Form1.ComboBoxEx2.ItemIndex:=EnumToInt(pca.attr1.attr_val_obj.attr2.attr_val);       //SUB3 2-N/A, 0-ON, 1-OFF
-  Form1.ComboBoxEx3.ItemIndex:=EnumToInt(pca.attr1.attr_val_obj.attr3.attr_val);       //SUB2 2-N/A, 0-ON, 1-OFF
-  Form1.ComboBoxEx4.ItemIndex:=EnumToInt(pca.attr1.attr_val_obj.attr4.attr_val);       //SUB1 2-N/A, 0-ON, 1-OFF
-  Form1.ComboBoxEx5.ItemIndex:=EnumToInt(pca.attr1.attr_val_obj.attr5.attr_val);       //SLEEP 2-N/A, 0-ON, 1-OFF
+  Form1.ComboBoxEx1.ItemIndex:=EnumToInt(TYPE0,pca.attr1.attr_val_obj.attr1.attr_val);       //ALLCALL 0-ON, 1-OFF
+  Form1.ComboBoxEx2.ItemIndex:=EnumToInt(TYPE0,pca.attr1.attr_val_obj.attr2.attr_val);       //SUB3 0-ON, 1-OFF
+  Form1.ComboBoxEx3.ItemIndex:=EnumToInt(TYPE0,pca.attr1.attr_val_obj.attr3.attr_val);       //SUB2 0-ON, 1-OFF
+  Form1.ComboBoxEx4.ItemIndex:=EnumToInt(TYPE0,pca.attr1.attr_val_obj.attr4.attr_val);       //SUB1 0-ON, 1-OFF
+  Form1.ComboBoxEx5.ItemIndex:=EnumToInt(TYPE0,pca.attr1.attr_val_obj.attr5.attr_val);       //SLEEP 0-ON, 1-OFF
 
-  Form1.ComboBoxEx6.ItemIndex:=EnumToInt(pca.attr2.attr_val_obj.attr1.attr_val);       //OUTDRV 2-N/A, 0-ON, 1-OFF
-  Form1.ComboBoxEx7.ItemIndex:=EnumToInt(pca.attr2.attr_val_obj.attr2.attr_val);       //OCH 2-N/A, 0-ON, 1-OFF
-  Form1.ComboBoxEx8.ItemIndex:=EnumToInt(pca.attr2.attr_val_obj.attr3.attr_val);       //INVRT 2-N/A, 0-ON, 1-OFF
-  Form1.ComboBoxEx9.ItemIndex:=EnumToInt(pca.attr2.attr_val_obj.attr4.attr_val);       //DMBLNK 2-N/A, 0-ON, 1-OFF
+  Form1.ComboBoxEx6.ItemIndex:=EnumToInt(TYPE0,pca.attr2.attr_val_obj.attr1.attr_val);       //OUTDRV 0-ON, 1-OFF
+  Form1.ComboBoxEx7.ItemIndex:=EnumToInt(TYPE0,pca.attr2.attr_val_obj.attr2.attr_val);       //OCH 0-ON, 1-OFF
+  Form1.ComboBoxEx8.ItemIndex:=EnumToInt(TYPE0,pca.attr2.attr_val_obj.attr3.attr_val);       //INVRT 0-ON, 1-OFF
+  Form1.ComboBoxEx9.ItemIndex:=EnumToInt(TYPE1,pca.attr2.attr_val_obj.attr4.attr_val);       //DMBLNK 0-DIMMING, 1-BLINKING
 
   Form1.Edit1.Text:= pca.attr3.attr_val;  //PWM0
   Form1.Edit1.Alignment:=taRightJustify;
@@ -100,15 +103,23 @@ begin
   Form1.Edit9.Text:= pca.attr11.attr_val;  //SUBADR3
   Form1.Edit9.Alignment:=taRightJustify;
 
-  Form1.ComboBoxEx10.ItemIndex:=EnumToIntLdr(pca.attr12.attr_val_obj.attr1.attr_val);       //LDR0 2-N/A, 0-ON, 1-OFF, 2-PWM, 3-GRPPWM
-  Form1.ComboBoxEx11.ItemIndex:=EnumToIntLdr(pca.attr12.attr_val_obj.attr2.attr_val);       //LDR1 2-N/A, 0-ON, 1-OFF, 2-PWM, 3-GRPPWM
-  Form1.ComboBoxEx12.ItemIndex:=EnumToIntLdr(pca.attr12.attr_val_obj.attr3.attr_val);       //LDR2 2-N/A, 0-ON, 1-OFF, 2-PWM, 3-GRPPWM
-  Form1.ComboBoxEx13.ItemIndex:=EnumToIntLdr(pca.attr12.attr_val_obj.attr4.attr_val);       //LDR3 2-N/A, 0-ON, 1-OFF, 2-PWM, 3-GRPPWM
+  Form1.ComboBoxEx10.ItemIndex:=EnumToIntLdr(pca.attr12.attr_val_obj.attr1.attr_val);       //LDR0 0-ON, 1-OFF, 2-PWM, 3-GRPPWM
+  Form1.ComboBoxEx11.ItemIndex:=EnumToIntLdr(pca.attr12.attr_val_obj.attr2.attr_val);       //LDR1 0-ON, 1-OFF, 2-PWM, 3-GRPPWM
+  Form1.ComboBoxEx12.ItemIndex:=EnumToIntLdr(pca.attr12.attr_val_obj.attr3.attr_val);       //LDR2 0-ON, 1-OFF, 2-PWM, 3-GRPPWM
+  Form1.ComboBoxEx13.ItemIndex:=EnumToIntLdr(pca.attr12.attr_val_obj.attr4.attr_val);       //LDR3 0-ON, 1-OFF, 2-PWM, 3-GRPPWM
 
-  set_freq (LDR0, Form1.ComboBoxEx10.ItemIndex);
-  set_freq (LDR1, Form1.ComboBoxEx11.ItemIndex);
-  set_freq (LDR2, Form1.ComboBoxEx12.ItemIndex);
-  set_freq (LDR3, Form1.ComboBoxEx13.ItemIndex);
+  if (Form1.ComboBoxEx10.ItemIndex = 3) and (pca.attr2.attr_val_obj.attr4.attr_val = 'DIMMING') then  set_freq (LDR0, 3)       // dimming
+  else if (Form1.ComboBoxEx10.ItemIndex = 3) and (pca.attr2.attr_val_obj.attr4.attr_val = 'BLINKING') then set_freq (LDR0, 2)  // blinking
+        else  set_freq (LDR0, Form1.ComboBoxEx10.ItemIndex);
+  if (Form1.ComboBoxEx11.ItemIndex = 3) and (pca.attr2.attr_val_obj.attr4.attr_val = 'DIMMING') then  set_freq (LDR1, 3)       // dimming
+  else if (Form1.ComboBoxEx11.ItemIndex = 3) and (pca.attr2.attr_val_obj.attr4.attr_val = 'BLINKING') then set_freq (LDR1, 2)  // blinking
+        else  set_freq (LDR1, Form1.ComboBoxEx11.ItemIndex);
+  if (Form1.ComboBoxEx12.ItemIndex = 3) and (pca.attr2.attr_val_obj.attr4.attr_val = 'DIMMING') then  set_freq (LDR2, 3)       // dimming
+  else if (Form1.ComboBoxEx12.ItemIndex = 3) and (pca.attr2.attr_val_obj.attr4.attr_val = 'BLINKING') then set_freq (LDR2, 2)  // blinking
+        else  set_freq (LDR2, Form1.ComboBoxEx12.ItemIndex);
+  if (Form1.ComboBoxEx13.ItemIndex = 3) and (pca.attr2.attr_val_obj.attr4.attr_val = 'DIMMING') then  set_freq (LDR3, 3)       // dimming
+  else if (Form1.ComboBoxEx13.ItemIndex = 3) and (pca.attr2.attr_val_obj.attr4.attr_val = 'BLINKING') then set_freq (LDR3, 2)  // blinking
+        else  set_freq (LDR3, Form1.ComboBoxEx13.ItemIndex);
 
   Form1.Edit10.Text:= pca.attr13.attr_val;  //ALLCALLADR
   Form1.Edit10.Alignment:=taRightJustify;

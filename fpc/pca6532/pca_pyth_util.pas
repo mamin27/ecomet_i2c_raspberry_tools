@@ -258,6 +258,7 @@ begin
   pca_str := StringReplace(pca_str,'::',':',[rfReplaceAll, rfIgnoreCase]);
   pca_str := StringReplace(pca_str,'::',':',[rfReplaceAll, rfIgnoreCase]);
 
+//  writeln('String: ' + pca_str);
   keys := StringSplit(pca_str,':');
 
   ObI_pca_attr[idx_pca_attr].code_type:=keys[1];

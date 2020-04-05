@@ -49,16 +49,21 @@ ALLCALL_N          = 0x1E
 # MODE2 Bits allow:
 
 DMBLNK             = 0x10
+DMBLNK_DIMMING     = 0x10
 INVRT              = 0x08   # set output parameter
 OCH                = 0x04 
 OUTDRV             = 0x02   # set output parameter
 
 # MODE2 Bits disable:
 
-DMBLNK_N           = 0x0F
+DMBLNK_BLINKING    = 0x0F
 INVRT_N            = 0x17
 OCH_N              = 0x1B
 OUTDRV_N           = 0x1D
+
+# DBMLNK Status:
+DIMMING			   = 0x00  # 0 - DIMMING
+BLINING            = 0x01  # 1 - BLINKING
 
 # LEDOUT Bits:
 

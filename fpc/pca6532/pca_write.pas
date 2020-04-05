@@ -18,6 +18,7 @@ procedure write_reg_pca (register: String; bits: Array of String);
 procedure write_led_reg_pca (register: String; bits: Array of TDict);
 procedure write_pwm_reg_pca (register: String; bits: TDict);
 function pre_write(cond1:boolean; cond2,attr:String): String;
+function pre_write_dmblnk(cond1:boolean; cond2,attr:String): String;
 function pre_wr_led(cond1:boolean; cond2,attr:String): TDict;
 procedure write_mode1_reg ();
 procedure write_mode2_reg ();
@@ -43,6 +44,8 @@ until  bits[i] = '';
 
 content := Copy(content,0,Length(content)-1);
 content := content + ']';
+
+writeln('Content: ' + content);
 
 
 Py_S := TStringList.Create;
@@ -93,6 +96,16 @@ begin
     if cond2 = 'ON'
       then Result := attr
       else Result := attr + '_N';
+  end
+  else Result := '';
+end;
+
+function pre_write_dmblnk(cond1:boolean; cond2,attr:String): String;
+begin
+  if cond1 = true then begin
+    if cond2 = 'DIMMING'
+      then Result := 'DMBLNK_DIMMING'
+      else Result := 'DMBLNK_BLINKING';
   end
   else Result := '';
 end;
@@ -224,7 +237,7 @@ begin
      pca.attr2.attr_val_obj.attr3.attr_chg := false;
      Form1.Shape8.Visible:=false;
   end;
-  cmd := pre_write(pca.attr2.attr_val_obj.attr4.attr_chg, pca.attr2.attr_val_obj.attr4.attr_new_val, pca.attr2.attr_val_obj.attr4.attr_name);
+  cmd := pre_write_dmblnk(pca.attr2.attr_val_obj.attr4.attr_chg, pca.attr2.attr_val_obj.attr4.attr_new_val, pca.attr2.attr_val_obj.attr4.attr_name);
   if cmd <> '' then begin
      mode2_idx := mode2_idx + 1;
      mode2_cmd[mode2_idx] := cmd;

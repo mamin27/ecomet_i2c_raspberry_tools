@@ -9,6 +9,10 @@ uses
   ComboEx, ComCtrls, ExtCtrls, Spin, Types, StrUtils, Math,
   pca_pyth_util, PythonEngine;
 
+const
+  TYPE0 = 0;
+  TYPE1 = 1;
+
 type
 
   { TForm1 }
@@ -135,10 +139,11 @@ var
   Ob_pca_c: array[1..50] of pca6532Ob_c;
 
   procedure ComboBox_init (Item1, Item2: TComboExItem; ComboBoxEx: TComboBoxEx);
+  procedure ComboBox_dmblnk_init (Item1, Item2: TComboExItem; ComboBoxEx: TComboBoxEx);
   procedure ComboBoxLdr_init (Item1, Item2, Item3, Item4: TComboExItem; ComboBoxEx: TComboBoxEx);
   function pwm_input_check (pwm_input: PChar): Real;
-  function EnumToInt (S: String) : Integer;
-  function IntToEnum (S: Integer) : String;
+  function EnumToInt (Tp: Integer;S: String) : Integer;
+  function IntToEnum (Tp: Integer;S: Integer) : String;
   function EnumToIntLdr (S: String) : Integer;
   function IntToEnumLdr (S: Integer) : String;
 
@@ -167,6 +172,22 @@ begin
   Item2.Index:=1;
 end;
 
+procedure ComboBox_dmblnk_init (Item1, Item2: TComboExItem; ComboBoxEx: TComboBoxEx);
+begin
+  {
+  Item0 := ComboBoxEx.ItemsEx.Add;
+  Item0.Caption:= '';
+  Item0.Index:=2; }
+  Item1 := ComboBoxEx.ItemsEx.Add;
+  Item1.Caption:= '';
+  Item1.ImageIndex:=4;
+  Item1.Index:=0;
+  Item2 := ComboBoxEx.ItemsEx.Add;
+  Item2.Caption:= '';
+  Item2.ImageIndex:=5;
+  Item2.Index:=1;
+end;
+
 procedure ComboBoxLdr_init (Item1, Item2, Item3, Item4: TComboExItem; ComboBoxEx: TComboBoxEx);
 begin
   Item1 := ComboBoxEx.ItemsEx.Add;
@@ -187,20 +208,36 @@ begin
   Item4.Index:=3;
 end;
 
-function EnumToInt (S: String) : Integer;
+function EnumToInt (Tp: Integer; S: String) : Integer;
 begin
-  if S = 'ON'
-    then Result := 0;
-  if S = 'OFF'
-    then Result := 1;
+  if Tp = 0 then begin  // ON/OFF Type 0
+    if S = 'ON'
+      then Result := 0;
+    if S = 'OFF'
+      then Result := 1;
+  end;
+  if Tp = 1 then begin  // DIMMING/BLINKING Type 1
+    if S = 'DIMMING'
+      then Result := 0;
+    if S = 'BLINKING'
+      then Result := 1;
+  end;
 end;
 
-function IntToEnum (S: Integer) : String;
+function IntToEnum (Tp: Integer; S: Integer) : String;
 begin
-  if S = 0
-    then Result := 'ON';
-  if S = 1
-    then Result := 'OFF';
+  if Tp = 0 then begin
+    if S = 0
+      then Result := 'ON';
+    if S = 1
+      then Result := 'OFF';
+  end;
+  if Tp = 1 then begin
+    if S = 0
+      then Result := 'DIMMING';
+    if S = 1
+      then Result := 'BLINKING';
+  end;
 end;
 
 function EnumToIntLdr (S: String) : Integer;
@@ -318,7 +355,7 @@ procedure TForm1.ComboBoxEx1Change(Sender: TObject);
 var
   S: String;
 begin
-  S:=IntToEnum(ComboBoxEx1.ItemIndex);
+  S:=IntToEnum(TYPE0,ComboBoxEx1.ItemIndex);
   write('ALLCALL: ',S);
   writeln();
   pca.attr1.attr_val_obj.attr1.attr_chg:=true;
@@ -330,7 +367,7 @@ procedure TForm1.ComboBoxEx2Change(Sender: TObject);
 var
   S: String;
 begin
-  S:=IntToEnum(ComboBoxEx2.ItemIndex);
+  S:=IntToEnum(TYPE0,ComboBoxEx2.ItemIndex);
   write('SUB3: ',S);
   writeln();
   pca.attr1.attr_val_obj.attr2.attr_chg:=true;
@@ -342,7 +379,7 @@ procedure TForm1.ComboBoxEx3Change(Sender: TObject);
 var
   S: String;
 begin
-  S:=IntToEnum(ComboBoxEx3.ItemIndex);
+  S:=IntToEnum(TYPE0,ComboBoxEx3.ItemIndex);
   write('SUB2: ',S);
   writeln();
   pca.attr1.attr_val_obj.attr3.attr_chg:=true;
@@ -354,7 +391,7 @@ procedure TForm1.ComboBoxEx4Change(Sender: TObject);
 var
   S: String;
 begin
-  S:=IntToEnum(ComboBoxEx4.ItemIndex);
+  S:=IntToEnum(TYPE0,ComboBoxEx4.ItemIndex);
   write('SUB1: ',S);
   writeln();
   pca.attr1.attr_val_obj.attr4.attr_chg:=true;
@@ -366,7 +403,7 @@ procedure TForm1.ComboBoxEx5Change(Sender: TObject);
 var
   S: String;
 begin
-  S:=IntToEnum(ComboBoxEx5.ItemIndex);
+  S:=IntToEnum(TYPE0,ComboBoxEx5.ItemIndex);
   write('SLEEP: ',S);
   writeln();
   pca.attr1.attr_val_obj.attr5.attr_chg:=true;
@@ -378,7 +415,7 @@ procedure TForm1.ComboBoxEx6Change(Sender: TObject);
 var
   S: String;
 begin
-  S:=IntToEnum(ComboBoxEx6.ItemIndex);
+  S:=IntToEnum(TYPE0,ComboBoxEx6.ItemIndex);
   write('OUTDRV: ',S);
   writeln();
   pca.attr2.attr_val_obj.attr1.attr_chg:=true;
@@ -390,7 +427,7 @@ procedure TForm1.ComboBoxEx7Change(Sender: TObject);
 var
   S: String;
 begin
-  S:=IntToEnum(ComboBoxEx7.ItemIndex);
+  S:=IntToEnum(TYPE0,ComboBoxEx7.ItemIndex);
   write('OCH: ',S);
   writeln();
   pca.attr2.attr_val_obj.attr2.attr_chg:=true;
@@ -402,7 +439,7 @@ procedure TForm1.ComboBoxEx8Change(Sender: TObject);
 var
   S: String;
 begin
-  S:=IntToEnum(ComboBoxEx8.ItemIndex);
+  S:=IntToEnum(TYPE0,ComboBoxEx8.ItemIndex);
   write('INVRT: ',S);
   writeln();
   pca.attr2.attr_val_obj.attr3.attr_chg:=true;
@@ -414,7 +451,7 @@ procedure TForm1.ComboBoxEx9Change(Sender: TObject);
 var
   S: String;
 begin
-  S:=IntToEnum(ComboBoxEx9.ItemIndex);
+  S:=IntToEnum(TYPE1,ComboBoxEx9.ItemIndex);
   write('DMBLNK: ',S);
   writeln();
   pca.attr2.attr_val_obj.attr4.attr_chg:=true;
@@ -504,7 +541,7 @@ begin
   ComboBox_init (ItemEx061,ItemEx062,ComboBoxEx6);  // OUTDRV ON/OFF
   ComboBox_init (ItemEx071,ItemEx072,ComboBoxEx7);  // OCH ON/OFF
   ComboBox_init (ItemEx081,ItemEx082,ComboBoxEx8);  // INVRT ON/OFF
-  ComboBox_init (ItemEx091,ItemEx092,ComboBoxEx9);  // DMBLNK ON/OFF
+  ComboBox_dmblnk_init (ItemEx091,ItemEx092,ComboBoxEx9);  // DMBLNK DIMMING = 0 /BLINKING = 1
 
   ComboBoxLdr_init (ItemEx101,ItemEx102,ItemEx103,ItemEx104,ComboBoxEx10); // LDR0 ON/OFF/PWM/GRPPWM
   ComboBoxLdr_init (ItemEx111,ItemEx112,ItemEx113,ItemEx114,ComboBoxEx11); // LDR1 ON/OFF/PWM/GRPPWM
@@ -551,7 +588,8 @@ begin
   FreeMem(in_buffer, Size);
   pwm_value := IntToStr(round((perc*255)/100));
 
-  if pca.attr12.attr_val_obj.attr1.attr_val = 'PWM' then begin
+  if (pca.attr12.attr_val_obj.attr1.attr_val = 'PWM') or
+    ((pca.attr12.attr_val_obj.attr1.attr_val = 'PWM_GRPPWM') and (pca.attr2.attr_val_obj.attr4.attr_val = 'BLINKING')) then begin
     cmd.key := 'PWM';
     cmd.kval := pwm_value;
 
@@ -618,7 +656,8 @@ begin
   FreeMem(in_buffer, Size);
   pwm_value := IntToStr(round((perc*255)/100));
 
-  if pca.attr12.attr_val_obj.attr2.attr_val = 'PWM' then begin
+  if (pca.attr12.attr_val_obj.attr2.attr_val = 'PWM') or
+    ((pca.attr12.attr_val_obj.attr2.attr_val = 'PWM_GRPPWM') and (pca.attr2.attr_val_obj.attr4.attr_val = 'BLINKING')) then begin
     cmd.key := 'PWM';
     cmd.kval := pwm_value;
 
@@ -685,7 +724,8 @@ begin
   FreeMem(in_buffer, Size);
   pwm_value := IntToStr(round((perc*255)/100));
 
-  if pca.attr12.attr_val_obj.attr3.attr_val = 'PWM' then begin
+  if (pca.attr12.attr_val_obj.attr3.attr_val = 'PWM') or
+    ((pca.attr12.attr_val_obj.attr3.attr_val = 'PWM_GRPPWM') and (pca.attr2.attr_val_obj.attr4.attr_val = 'BLINKING')) then begin
     cmd.key := 'PWM';
     cmd.kval := pwm_value;
 
@@ -752,7 +792,8 @@ begin
   FreeMem(in_buffer, Size);
   pwm_value := IntToStr(round((perc*255)/100));
 
-  if pca.attr12.attr_val_obj.attr4.attr_val = 'PWM' then begin
+  if (pca.attr12.attr_val_obj.attr4.attr_val = 'PWM') or
+    ((pca.attr12.attr_val_obj.attr4.attr_val = 'PWM_GRPPWM') and (pca.attr2.attr_val_obj.attr4.attr_val = 'BLINKING')) then begin
     cmd.key := 'PWM';
     cmd.kval := pwm_value;
 

@@ -28,13 +28,13 @@ mode1_bit_off_list = { 'SLEEP_N' : pca9632_constant.SLEEP_N,
                        'ALLCALL_N' : pca9632_constant.ALLCALL_N
                 }
                 
-mode2_bit_on_list = { 'DMBLNK' : pca9632_constant.DMBLNK,
+mode2_bit_on_list = { 'DMBLNK_DIMMING' : pca9632_constant.DMBLNK_DIMMING,
                       'INVRT' : pca9632_constant.INVRT,
                       'OCH' : pca9632_constant.OCH,
                       'OUTDRV' : pca9632_constant.OUTDRV
                 }
 
-mode2_bit_off_list = { 'DMBLNK_N' : pca9632_constant.DMBLNK_N,
+mode2_bit_off_list = { 'DMBLNK_BLINKING' : pca9632_constant.DMBLNK_BLINKING,
                        'INVRT_N' : pca9632_constant.INVRT_N,
                        'OCH_N' : pca9632_constant.OCH_N,
                        'OUTDRV_N' : pca9632_constant.OUTDRV_N
@@ -84,7 +84,7 @@ def read_pca9632() :
    reg_mode2['OUTDRV'] = 'ON' if PCA9632().read_register( register = 'MODE2' ) & mode2_bit_list['OUTDRV'] > 0 else 'OFF'
    reg_mode2['OCH'] = 'ON' if PCA9632().read_register( register = 'MODE2' ) & mode2_bit_list['OCH'] > 0 else 'OFF'
    reg_mode2['INVRT'] = 'ON' if PCA9632().read_register( register = 'MODE2' ) & mode2_bit_list['INVRT'] > 0 else 'OFF'
-   reg_mode2['DMBLNK'] = 'ON' if PCA9632().read_register( register = 'MODE2' ) & mode2_bit_list['DMBLNK'] > 0 else 'OFF'
+   reg_mode2['DMBLNK'] = 'DIMMING' if PCA9632().read_register( register = 'MODE2' ) & mode2_bit_list['DMBLNK'] > 0 else 'BLINKING'
    
    register['MODE2'] = reg_mode2
    
@@ -103,7 +103,7 @@ def read_pca9632() :
    ldr2 = (PCA9632().read_register( register = 'LEDOUT' ) & 0x30) >> 4
    ldr3 = (PCA9632().read_register( register = 'LEDOUT' ) & 0xc0) >> 6
    
-   if ldr0 == ledout_mode ['PWM'] : 
+   if (ldr0 == ledout_mode ['PWM'] or (ldr0 == ledout_mode ['PWM_GRPPWM'] and reg_mode2['DMBLNK'] == 'BLINKING')) : 
      register['PWM0'] = round(PCA9632().read_register( register = 'PWM0' ) / 256 * 100,1)
    elif ldr0 == ledout_mode ['PWM_GRPPWM'] :
      register['PWM0'] = round((PCA9632().read_register( register = 'PWM0' ) & 0xFC) / 256 * 100,1) 
@@ -111,7 +111,7 @@ def read_pca9632() :
      register['PWM0'] = 100
    else:
      register['PWM0'] = 0
-   if ldr1 == ledout_mode ['PWM'] : 
+   if (ldr1 == ledout_mode ['PWM'] or (ldr1 == ledout_mode ['PWM_GRPPWM'] and reg_mode2['DMBLNK'] == 'BLINKING')) : 
      register['PWM1'] = round(PCA9632().read_register( register = 'PWM1' ) / 256 * 100,1)
    elif ldr1 == ledout_mode ['PWM_GRPPWM'] :
      register['PWM1'] = round((PCA9632().read_register( register = 'PWM1' ) & 0xFC) / 256 * 100,1) 
@@ -119,7 +119,7 @@ def read_pca9632() :
      register['PWM1'] = 100
    else:
      register['PWM1'] = 0
-   if ldr2 == ledout_mode ['PWM'] : 
+   if (ldr2 == ledout_mode ['PWM'] or (ldr2 == ledout_mode ['PWM_GRPPWM'] and reg_mode2['DMBLNK'] == 'BLINKING')) : 
      register['PWM2'] = round(PCA9632().read_register( register = 'PWM2' ) / 256 * 100,1)
    elif ldr2 == ledout_mode ['PWM_GRPPWM'] :
      register['PWM2'] = round((PCA9632().read_register( register = 'PWM2' ) & 0xFC) / 256 * 100,1) 
@@ -127,7 +127,7 @@ def read_pca9632() :
      register['PWM2'] = 100
    else:
      register['PWM2'] = 0
-   if ldr3 == ledout_mode ['PWM'] : 
+   if (ldr3 == ledout_mode ['PWM'] or (ldr3 == ledout_mode ['PWM_GRPPWM'] and reg_mode2['DMBLNK'] == 'BLINKING')) : 
      register['PWM3'] = round(PCA9632().read_register( register = 'PWM3' ) / 256 * 100,1)
    elif ldr3 == ledout_mode ['PWM_GRPPWM'] :
      register['PWM3'] = round((PCA9632().read_register( register = 'PWM3' ) & 0xFC) / 256 * 100,1) 
