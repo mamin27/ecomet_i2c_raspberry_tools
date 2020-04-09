@@ -9,7 +9,7 @@ The Code for I2C Chip maintenance from **Raspberry PI 3+** and above. This code 
 **Current CHIP maintained:**
 * EEPROM Chip
   24c01,24c02,24c04,24c08,24c16,24c32,24c64,24c128,24c256,24c512,24c1024
-* NXP Semiconductor (https://www.nxp.com/)
+* [NXP Semiconductor](https://www.nxp.com/)
   PCA6532
 
 
