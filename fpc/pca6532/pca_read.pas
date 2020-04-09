@@ -6,16 +6,16 @@ interface
 
 uses
   Classes, SysUtils, StrUtils,
-  pca_pyth_util;
+  pca_pyth_util, pca_display;
 
 procedure set_freq (ldr, status: Integer);
 procedure set_freq_value (ldr: Integer; val: String);
+procedure read_output_pca (pca: pca6532Ob; grpfreq: FREQ);
 procedure read_pca ();
-procedure read_output_pca (pca: pca6532Ob);
 
 Implementation
 
-uses pca_display;
+//uses pca_display;
 
 const
   LDR0 = 0;
@@ -62,15 +62,8 @@ Form1.PythonEngine1.ExecStrings(Py_S);
 Py_S.Free;
 end;
 
-procedure read_output_pca (pca: pca6532Ob);
+procedure read_output_pca (pca: pca6532Ob; grpfreq: FREQ);
 begin
-
-  //pca := StrToObj(data);
-
-  {
-  write('ATTR3: ',pca.attr3.attr_name);
-  write(':',pca.attr3.attr_val);
-  writeln();}
 
   Form1.ComboBoxEx1.ItemIndex:=EnumToInt(TYPE0,pca.attr1.attr_val_obj.attr1.attr_val);       //ALLCALL 0-ON, 1-OFF
   Form1.ComboBoxEx2.ItemIndex:=EnumToInt(TYPE0,pca.attr1.attr_val_obj.attr2.attr_val);       //SUB3 0-ON, 1-OFF
@@ -93,8 +86,11 @@ begin
   Form1.Edit4.Alignment:=taRightJustify;
   Form1.Edit5.Text:= pca.attr7.attr_val;  //GRPPWM
   Form1.Edit5.Alignment:=taRightJustify;
-  Form1.Edit6.Text:= pca.attr8.attr_val;  //GRPFREQ
+
+  Form1.Edit6.Text:= FloatToStr(grpfreq[StrToInt(pca.attr8.attr_val)].freq);  //GRPFREQ
+  Form1.Edit15.Text:= grpfreq[StrToInt(pca.attr8.attr_val)].time;
   Form1.Edit6.Alignment:=taRightJustify;
+  Form1.Edit15.Alignment:=taRightJustify;
 
   Form1.Edit7.Text:= pca.attr9.attr_val;  //SUBADR1
   Form1.Edit7.Alignment:=taRightJustify;
@@ -125,12 +121,6 @@ begin
   Form1.Edit10.Alignment:=taRightJustify;
 
   sleep(1000);
-//  Form1.ImageList2.GetBitmap(1,Form1.Image1.Picture.Bitmap);
-
-//  Image1.Stretch:= true;
-//  Image1.Proportional:= true;
-//  ImageList2.GetBitmap(1,Image1.Picture.Bitmap);  }
-//  ImageList2.GetBitmap(0,Image1.Picture.Bitmap);
 
 end;
 

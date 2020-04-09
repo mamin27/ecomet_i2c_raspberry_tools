@@ -153,6 +153,11 @@ if bits.key = 'GRPPWM' then
                         'pwm = pca9632.PCA9632()|' +
                         'ret = pwm.write_register(' + content + ')|' +
                         'print (":WRITE_REG_GRPPWM_0:") if ret == 0 else print (":WRITE_REG_GRPPWM_1:")|';
+if bits.key = 'GRPFREQ' then
+ Py_S.DelimitedText := 'from  i2c_pkg.pca9632_pkg import pca9632|' +
+                        'pwm = pca9632.PCA9632()|' +
+                        'ret = pwm.write_register(' + content + ')|' +
+                        'print (":WRITE_REG_GRPFREQ_0:") if ret == 0 else print (":WRITE_REG_GRPFREQ_1:")|';
 
 Form1.PythonEngine1.ExecStrings(Py_S);
 Py_S.Free;

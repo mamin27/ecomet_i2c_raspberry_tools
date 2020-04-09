@@ -2,10 +2,10 @@ object Form1: TForm1
   Left = 240
   Height = 366
   Top = 184
-  Width = 821
+  Width = 838
   Caption = 'Form1'
   ClientHeight = 366
-  ClientWidth = 821
+  ClientWidth = 838
   OnCreate = FormCreate
   UseDockManager = True
   LCLVersion = '2.0.0.4'
@@ -206,7 +206,7 @@ object Form1: TForm1
     Height = 20
     Top = 136
     Width = 65
-    Caption = 'GRPWM'
+    Caption = 'GRPPWM'
     Font.Color = clBlack
     Font.Height = -12
     Font.Name = 'DejaVu Sans Mono'
@@ -237,18 +237,6 @@ object Form1: TForm1
     ParentFont = False
     TabOrder = 18
   end
-  object StaticText20: TStaticText
-    Left = 704
-    Height = 20
-    Top = 136
-    Width = 96
-    Caption = 'GRPFREQ [Hz]'
-    Font.Color = clBlack
-    Font.Height = -12
-    Font.Name = 'DejaVu Sans Mono'
-    ParentFont = False
-    TabOrder = 19
-  end
   object StaticText21: TStaticText
     Left = 224
     Height = 20
@@ -259,7 +247,7 @@ object Form1: TForm1
     Font.Height = -12
     Font.Name = 'DejaVu Sans Mono'
     ParentFont = False
-    TabOrder = 20
+    TabOrder = 19
   end
   object StaticText22: TStaticText
     Left = 344
@@ -271,7 +259,7 @@ object Form1: TForm1
     Font.Height = -12
     Font.Name = 'DejaVu Sans Mono'
     ParentFont = False
-    TabOrder = 21
+    TabOrder = 20
   end
   object StaticText23: TStaticText
     Left = 16
@@ -283,7 +271,7 @@ object Form1: TForm1
     Font.Height = -12
     Font.Name = 'DejaVu Sans Mono'
     ParentFont = False
-    TabOrder = 22
+    TabOrder = 21
   end
   object StaticText24: TStaticText
     Left = 104
@@ -295,7 +283,7 @@ object Form1: TForm1
     Font.Height = -12
     Font.Name = 'DejaVu Sans Mono'
     ParentFont = False
-    TabOrder = 23
+    TabOrder = 22
   end
   object StaticText25: TStaticText
     Left = 232
@@ -307,7 +295,7 @@ object Form1: TForm1
     Font.Height = -12
     Font.Name = 'DejaVu Sans Mono'
     ParentFont = False
-    TabOrder = 24
+    TabOrder = 23
   end
   object StaticText26: TStaticText
     Left = 344
@@ -319,7 +307,7 @@ object Form1: TForm1
     Font.Height = -12
     Font.Name = 'DejaVu Sans Mono'
     ParentFont = False
-    TabOrder = 25
+    TabOrder = 24
   end
   object StaticText27: TStaticText
     Left = 464
@@ -331,7 +319,7 @@ object Form1: TForm1
     Font.Height = -12
     Font.Name = 'DejaVu Sans Mono'
     ParentFont = False
-    TabOrder = 26
+    TabOrder = 25
   end
   object StaticText28: TStaticText
     Left = 480
@@ -343,7 +331,7 @@ object Form1: TForm1
     Font.Height = -12
     Font.Name = 'DejaVu Sans Mono'
     ParentFont = False
-    TabOrder = 27
+    TabOrder = 26
   end
   object ComboBoxEx1: TComboBoxEx
     Left = 104
@@ -354,7 +342,7 @@ object Form1: TForm1
     ItemHeight = 0
     ItemsEx = <>
     OnChange = ComboBoxEx1Change
-    TabOrder = 28
+    TabOrder = 27
   end
   object ComboBoxEx2: TComboBoxEx
     Left = 224
@@ -365,7 +353,7 @@ object Form1: TForm1
     ItemHeight = 0
     ItemsEx = <>
     OnChange = ComboBoxEx2Change
-    TabOrder = 29
+    TabOrder = 28
   end
   object ComboBoxEx3: TComboBoxEx
     Left = 344
@@ -376,7 +364,7 @@ object Form1: TForm1
     ItemHeight = 0
     ItemsEx = <>
     OnChange = ComboBoxEx3Change
-    TabOrder = 30
+    TabOrder = 29
   end
   object ComboBoxEx4: TComboBoxEx
     Left = 464
@@ -387,7 +375,7 @@ object Form1: TForm1
     ItemHeight = 0
     ItemsEx = <>
     OnChange = ComboBoxEx4Change
-    TabOrder = 31
+    TabOrder = 30
   end
   object ComboBoxEx5: TComboBoxEx
     Left = 584
@@ -398,7 +386,7 @@ object Form1: TForm1
     ItemHeight = 0
     ItemsEx = <>
     OnChange = ComboBoxEx5Change
-    TabOrder = 32
+    TabOrder = 31
   end
   object ComboBoxEx6: TComboBoxEx
     Left = 104
@@ -409,7 +397,7 @@ object Form1: TForm1
     ItemHeight = 0
     ItemsEx = <>
     OnChange = ComboBoxEx6Change
-    TabOrder = 33
+    TabOrder = 32
   end
   object ComboBoxEx7: TComboBoxEx
     Left = 224
@@ -420,7 +408,7 @@ object Form1: TForm1
     ItemHeight = 0
     ItemsEx = <>
     OnChange = ComboBoxEx7Change
-    TabOrder = 34
+    TabOrder = 33
   end
   object ComboBoxEx8: TComboBoxEx
     Left = 344
@@ -431,7 +419,7 @@ object Form1: TForm1
     ItemHeight = 0
     ItemsEx = <>
     OnChange = ComboBoxEx8Change
-    TabOrder = 35
+    TabOrder = 34
   end
   object ComboBoxEx9: TComboBoxEx
     Left = 464
@@ -442,7 +430,7 @@ object Form1: TForm1
     ItemHeight = 0
     ItemsEx = <>
     OnChange = ComboBoxEx9Change
-    TabOrder = 36
+    TabOrder = 35
   end
   object ComboBoxEx10: TComboBoxEx
     Left = 104
@@ -453,7 +441,7 @@ object Form1: TForm1
     ItemHeight = 0
     ItemsEx = <>
     OnChange = ComboBoxEx10Change
-    TabOrder = 37
+    TabOrder = 36
   end
   object ComboBoxEx11: TComboBoxEx
     Left = 224
@@ -464,7 +452,7 @@ object Form1: TForm1
     ItemHeight = 0
     ItemsEx = <>
     OnChange = ComboBoxEx11Change
-    TabOrder = 38
+    TabOrder = 37
   end
   object ComboBoxEx12: TComboBoxEx
     Left = 344
@@ -475,7 +463,7 @@ object Form1: TForm1
     ItemHeight = 0
     ItemsEx = <>
     OnChange = ComboBoxEx12Change
-    TabOrder = 39
+    TabOrder = 38
   end
   object ComboBoxEx13: TComboBoxEx
     Left = 464
@@ -486,7 +474,7 @@ object Form1: TForm1
     ItemHeight = 0
     ItemsEx = <>
     OnChange = ComboBoxEx13Change
-    TabOrder = 40
+    TabOrder = 39
   end
   object Edit1: TEdit
     Left = 104
@@ -497,7 +485,7 @@ object Form1: TForm1
     OnClick = Edit1Click
     OnEditingDone = Edit1EditingDone
     ReadOnly = True
-    TabOrder = 41
+    TabOrder = 40
   end
   object Edit2: TEdit
     Left = 224
@@ -508,7 +496,7 @@ object Form1: TForm1
     OnClick = Edit2Click
     OnEditingDone = Edit2EditingDone
     ReadOnly = True
-    TabOrder = 42
+    TabOrder = 41
   end
   object Edit3: TEdit
     Left = 344
@@ -519,7 +507,7 @@ object Form1: TForm1
     OnClick = Edit3Click
     OnEditingDone = Edit3EditingDone
     ReadOnly = True
-    TabOrder = 43
+    TabOrder = 42
   end
   object Edit4: TEdit
     Left = 464
@@ -530,7 +518,7 @@ object Form1: TForm1
     OnClick = Edit4Click
     OnEditingDone = Edit4EditingDone
     ReadOnly = True
-    TabOrder = 44
+    TabOrder = 43
   end
   object Edit5: TEdit
     Left = 584
@@ -539,16 +527,7 @@ object Form1: TForm1
     Width = 100
     Color = clActiveBorder
     ReadOnly = True
-    TabOrder = 45
-  end
-  object Edit6: TEdit
-    Left = 704
-    Height = 25
-    Top = 160
-    Width = 100
-    Color = clActiveBorder
-    ReadOnly = True
-    TabOrder = 46
+    TabOrder = 44
   end
   object Edit7: TEdit
     Left = 104
@@ -557,7 +536,7 @@ object Form1: TForm1
     Width = 100
     Color = clActiveBorder
     ReadOnly = True
-    TabOrder = 47
+    TabOrder = 45
   end
   object Edit8: TEdit
     Left = 224
@@ -566,7 +545,7 @@ object Form1: TForm1
     Width = 100
     Color = clActiveBorder
     ReadOnly = True
-    TabOrder = 48
+    TabOrder = 46
   end
   object Edit9: TEdit
     Left = 344
@@ -575,7 +554,7 @@ object Form1: TForm1
     Width = 100
     Color = clActiveBorder
     ReadOnly = True
-    TabOrder = 49
+    TabOrder = 47
   end
   object Edit10: TEdit
     Left = 464
@@ -584,18 +563,18 @@ object Form1: TForm1
     Width = 100
     Color = clActiveBorder
     ReadOnly = True
-    TabOrder = 50
+    TabOrder = 48
   end
   object TrackBar1: TTrackBar
     Left = 584
     Height = 39
     Top = 202
-    Width = 216
+    Width = 226
     Max = 255
     OnChange = TrackBar1Change
     Position = 0
     ParentColor = False
-    TabOrder = 51
+    TabOrder = 49
   end
   object Shape1: TShape
     Left = 100
@@ -616,7 +595,7 @@ object Form1: TForm1
     Font.Height = -12
     Font.Name = 'DejaVu Sans Mono'
     ParentFont = False
-    TabOrder = 52
+    TabOrder = 50
   end
   object Edit11: TEdit
     Left = 104
@@ -625,7 +604,7 @@ object Form1: TForm1
     Width = 100
     Color = clActiveBorder
     ReadOnly = True
-    TabOrder = 53
+    TabOrder = 51
   end
   object Edit12: TEdit
     Left = 224
@@ -634,7 +613,7 @@ object Form1: TForm1
     Width = 100
     Color = clActiveBorder
     ReadOnly = True
-    TabOrder = 54
+    TabOrder = 52
   end
   object Edit13: TEdit
     Left = 344
@@ -643,7 +622,7 @@ object Form1: TForm1
     Width = 100
     Color = clActiveBorder
     ReadOnly = True
-    TabOrder = 55
+    TabOrder = 53
   end
   object Edit14: TEdit
     Left = 464
@@ -652,7 +631,7 @@ object Form1: TForm1
     Width = 100
     Color = clActiveBorder
     ReadOnly = True
-    TabOrder = 56
+    TabOrder = 54
   end
   object Shape2: TShape
     Left = 220
@@ -771,15 +750,6 @@ object Form1: TForm1
     Pen.Width = 5
     Visible = False
   end
-  object Shape15: TShape
-    Left = 700
-    Height = 35
-    Top = 154
-    Width = 108
-    Pen.Color = clRed
-    Pen.Width = 5
-    Visible = False
-  end
   object Shape16: TShape
     Left = 100
     Height = 35
@@ -855,11 +825,56 @@ object Form1: TForm1
   object BitBtn1: TBitBtn
     Left = 584
     Height = 46
-    Top = 268
-    Width = 216
+    Top = 269
+    Width = 226
     Caption = 'Apply'
     OnClick = BitBtn1Click
-    TabOrder = 57
+    TabOrder = 55
+  end
+  object GroupBox1: TGroupBox
+    Left = 694
+    Height = 114
+    Top = 84
+    Width = 120
+    Caption = 'GRPFREQ [Hz]'
+    ClientHeight = 97
+    ClientWidth = 116
+    Color = clScrollBar
+    Font.Color = clBlack
+    Font.Height = -12
+    Font.Name = 'DejaVu Sans Mono'
+    ParentColor = False
+    ParentFont = False
+    TabOrder = 56
+    object Edit6: TEdit
+      Left = 8
+      Height = 23
+      Top = 60
+      Width = 100
+      Color = clActiveBorder
+      OnClick = Edit6Click
+      OnEditingDone = Edit6EditingDone
+      ReadOnly = True
+      TabOrder = 0
+    end
+    object Shape15: TShape
+      Left = 4
+      Height = 35
+      Top = 54
+      Width = 108
+      Pen.Color = clRed
+      Pen.Width = 5
+      Visible = False
+    end
+    object Edit15: TEdit
+      Left = 8
+      Height = 23
+      Top = 8
+      Width = 100
+      Color = clActiveBorder
+      ReadOnly = True
+      TabOrder = 1
+    end
   end
   object ImageList1: TImageList
     Tag = 1
@@ -867,8 +882,8 @@ object Form1: TForm1
     Height = 23
     ImageType = itMask
     Width = 70
-    left = 744
-    top = 40
+    left = 696
+    top = 16
     Bitmap = {
       4C6906000000460000001700000000000000000000000000000000000000418A
       003F408800FF408800FF408800FF408800FF408800FF408800FF408800FF4088
@@ -2088,7 +2103,7 @@ object Form1: TForm1
     UseLastKnownVersion = False
     IO = PythonInputOutput1
     PyFlags = [pfUseClassExceptionsFlag]
-    left = 720
+    left = 656
     top = 88
   end
   object PythonInputOutput1: TPythonInputOutput
@@ -2096,7 +2111,7 @@ object Form1: TForm1
     OnSendData = PythonInputOutput1SendData
     UnicodeIO = False
     RawOutput = False
-    left = 672
+    left = 592
     top = 88
   end
 end

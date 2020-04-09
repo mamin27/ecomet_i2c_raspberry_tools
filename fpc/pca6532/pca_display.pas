@@ -33,6 +33,7 @@ type
     ComboBoxEx8: TComboBoxEx;
     ComboBoxEx9: TComboBoxEx;
     Edit1: TEdit;
+    Edit15: TEdit;
     Edit2: TEdit;
     Edit3: TEdit;
     Edit4: TEdit;
@@ -46,12 +47,14 @@ type
     Edit12: TEdit;
     Edit13: TEdit;
     Edit14: TEdit;
+    GroupBox1: TGroupBox;
     ImageList1: TImageList;
     PythonEngine1: TPythonEngine;
     PythonInputOutput1: TPythonInputOutput;
     Shape1,Shape2,Shape3,Shape4,Shape5: TShape;
     Shape6,Shape7,Shape8,Shape9: TShape;
     Shape10,Shape11,Shape12,Shape13: TShape;
+    Shape14,Shape15,Shape16,Shape17,Shape18,Shape19: TShape;
     Shape20,Shape21,Shape22,Shape23: TShape;
     StaticText1: TStaticText;
     StaticText10: TStaticText;
@@ -65,7 +68,6 @@ type
     StaticText18: TStaticText;
     StaticText19: TStaticText;
     StaticText2: TStaticText;
-    StaticText20: TStaticText;
     StaticText21: TStaticText;
     StaticText22: TStaticText;
     StaticText23: TStaticText;
@@ -74,6 +76,7 @@ type
     StaticText26: TStaticText;
     StaticText27: TStaticText;
     StaticText28: TStaticText;
+    StaticText29: TStaticText;
     StaticText3: TStaticText;
     StaticText4: TStaticText;
     StaticText5: TStaticText;
@@ -100,17 +103,34 @@ type
     procedure Edit2EditingDone(Sender: TObject);
     procedure Edit3EditingDone(Sender: TObject);
     procedure Edit4EditingDone(Sender: TObject);
+    procedure Edit6EditingDone(Sender: TObject);
     procedure PythonInputOutput1SendData(Sender: TObject; const Data: AnsiString);
     procedure Edit1Click(Sender: TObject);
     procedure Edit2Click(Sender: TObject);
     procedure Edit3Click(Sender: TObject);
     procedure Edit4Click(Sender: TObject);
+    procedure Edit6Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure TrackBar1Change(Sender: TObject);
   private
   public
    procedure DoPy_InitEngine;
   end;
+
+type
+  TGWM = record
+    value: Integer;
+    perc: Real;
+  end;
+
+  TFREQ = record
+    freq: Real;
+    time: String[12];
+  end;
+
+GWM = Array [1 .. 65] of TGWM;
+DIMM = Array [1 .. 17] of TGWM;
+FREQ = Array [0 .. 256] of TFREQ;
 
 var
   Form1: TForm1;
@@ -137,6 +157,8 @@ var
   Ob_pca_c_attr: array[1..50] of PyRecordOb_c;
   Ob_pca_attr: array[1..50] of PyRecordOb;
   Ob_pca_c: array[1..50] of pca6532Ob_c;
+  grppwm: GWM;
+  grpfreq: FREQ;
 
   procedure ComboBox_init (Item1, Item2: TComboExItem; ComboBoxEx: TComboBoxEx);
   procedure ComboBox_dmblnk_init (Item1, Item2: TComboExItem; ComboBoxEx: TComboBoxEx);
@@ -149,9 +171,7 @@ var
 
 implementation
 
-uses pca_read, pca_write, pca_grppwm;
-var
-  grppwm: GWM;
+uses pca_grppwm,pca_read, pca_write;
 
 const
   cPyLibraryLinux = 'libpython3.7m.so.1.0';
@@ -322,7 +342,7 @@ begin
 
   case pca.attr1.code_type of
    'READ_PCA':
-     read_output_pca(pca);
+     read_output_pca(pca,grpfreq);
    'WRITE_REG_PCA_0':
       writeln('WRITE_REG_PCA correct');
    'WRITE_REG_PCA_1':
@@ -335,6 +355,10 @@ begin
       writeln('WRITE_REG_GRPPWM correct');
    'WRITE_REG_GRPPWM_1':
       writeln('WRITE_REG_GPRPWM error');
+   'WRITE_REG_GRPFREQ_0':
+      writeln('WRITE_REG_GRPFREQ correct');
+   'WRITE_REG_GRPFREQ_1':
+      writeln('WRITE_REG_GPRFREQ error');
     else
      exit;
     end;
@@ -549,6 +573,7 @@ begin
   ComboBoxLdr_init (ItemEx131,ItemEx132,ItemEx133,ItemEx134,ComboBoxEx13); // LDR3 ON/OFF/PWM/GRPPWM
 
   grppwm := initialize_gwm;
+  grpfreq := initialize_freq;
 
   read_pca;
 
@@ -833,6 +858,58 @@ begin
   Edit4.ReadOnly:=true;
 
   read_pca;
+
+end;
+
+procedure TForm1.Edit6Click(Sender: TObject);
+begin
+  Edit6.ReadOnly:=false;
+  Edit6.Color:=clWhite;
+  Shape15.Visible:=True;
+end;
+
+procedure TForm1.Edit6EditingDone(Sender: TObject);
+var
+  in_buffer: PChar;
+  Size: Byte;
+  perc: Real;
+  high,low: Real;
+  cmd: TDict;
+  value: Real;
+  i: Integer;
+begin
+  Size := 20;
+  GetMem(in_buffer, Size);
+  Edit6.GetTextBuf(in_buffer,Size);
+  value := pwm_input_check (in_buffer);
+  FreeMem(in_buffer, Size);
+
+  cmd.key := 'GRPFREQ';
+
+  if (value >= 0.0938) and (value <= 24) then begin
+    for i:= 0 to 256 do
+    begin
+    high := grpfreq[i].freq - value;
+    low := grpfreq[i+1].freq - value;
+    if (high >= 0) and (low <= 0) then
+      begin
+      cmd.kval := IntToStr(i);
+      write_pwm_reg_pca('GRPFREQ',cmd);
+      break;
+      end
+      else continue;
+    end;
+
+    write('GRPFREQ: ',Edit6.Text);
+    writeln();
+
+    Edit6.Color:=clMenubar;
+    Shape15.Visible:=false;
+    Edit6.ReadOnly:=true;
+    read_pca;
+  end
+  else
+    writeln('GRPFREQ: not in 24 .. 0.0938 Hz');
 
 end;
 

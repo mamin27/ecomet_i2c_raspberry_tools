@@ -136,7 +136,7 @@ def read_pca9632() :
    else:
      register['PWM3'] = 0
    register['GRPPWM'] = round(PCA9632().read_register( register = 'GRPPWM' ) / 255 * 100,1)
-   register['GRPFREQ'] = str(round(1/ (PCA9632().read_register( register = 'GRPFREQ' ) + 1 / 24),1)) + ' Hz' if reg_mode2['DMBLNK'] == 'ON' else '0 Hz' 
+   register['GRPFREQ'] = str(PCA9632().read_register( register = 'GRPFREQ' )) 
                    
    
    if ldr0 == ledout_mode ['OFF'] :
@@ -304,6 +304,14 @@ class PCA9632(object):
                  ret = 1
               else :
                  ret = 0
+          elif register == 'GRPFREQ' :
+            for key, value in bits[0].items() :
+              try:
+                 self._device.write8(reg_list[register],int(value))
+              except :
+                 ret = 1
+              else :
+                 ret = 0 
           elif register == 'LEDOUT' :
            for ibit in bits :
               bit_key = list(ibit)[0]
