@@ -1,4 +1,4 @@
-# pca9632_IIC module
+# pca9632_IIC module (PCA9685)
 
 **Last modification:** 29.03.2020
 
@@ -23,12 +23,12 @@ Install Python3 and next modules for pca9632 [Python3 & modules](../../i2c_pkg/p
 
 ### Run application: ###
 ```console
-ecomet_i2c_tools/pca_6532
+ecomet_i2c_tools/pca_9632
 ```
 
 **Features:**
 
-*  Read status of pca_6532 chip and show on concole
+*  Read status of pca_9632 chip and show on concole
 *  Click at Enumerated Buttons (as ALLCALL), choice from values for register (MODE1, MODE2, LEDOUT)
 *  Write to Register - Actually modified value visible by red rectangular (example SLEEP button) 
 *  Apply write changes for all actually selected attributes (buttons) - click at **APPLY** button
