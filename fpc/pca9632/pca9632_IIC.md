@@ -43,7 +43,7 @@ ecomet_i2c_tools/pca_9632
 * Register LEDOUT, enumerate ON, OFF, PWM, PWM_GRPPWM status
 * Register PWMx, GRPPWN, GRPFREQ (in Hz, in Time)
 
-**Limiteation**
+**Limitation**
 
 * TrackBar not used now
 * Chip Address currently not able to change
