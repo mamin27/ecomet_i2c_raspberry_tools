@@ -16,4 +16,4 @@ The Code for I2C Chip maintenance from **Raspberry PI 3+** and above. This code 
 **List of modules:**
 
 * [EEPROM module](i2c_pkg/eeprom_pkg/documentation/eeprom_IIC.md)
-* [PCA9632 module](fpc/pca6532/pca6532_IIC.md) -> 4-bit Fm+ I2C-bus low power LED driver (could be used for motor control)
+* [PCA9632 module](fpc/pca9632/pca9632_IIC.md) -> 4-bit Fm+ I2C-bus low power LED driver (could be used for motor control)
