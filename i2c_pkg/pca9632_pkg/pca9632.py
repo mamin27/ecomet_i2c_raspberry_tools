@@ -135,7 +135,7 @@ def read_pca9632() :
      register['PWM3'] = 100
    else:
      register['PWM3'] = 0
-   register['GRPPWM'] = round(PCA9632().read_register( register = 'GRPPWM' ) / 255 * 100,1)
+   register['GRPPWM'] = str(PCA9632().read_register( register = 'GRPPWM' ))
    register['GRPFREQ'] = str(PCA9632().read_register( register = 'GRPFREQ' )) 
                    
    
@@ -304,6 +304,14 @@ class PCA9632(object):
                  ret = 1
               else :
                  ret = 0
+          elif register == 'GRPPWM' :
+            for key, value in bits[0].items() :
+              try:
+                 self._device.write8(reg_list[register],int(value))
+              except :
+                 ret = 1
+              else :
+                 ret = 0       
           elif register == 'GRPFREQ' :
             for key, value in bits[0].items() :
               try:
