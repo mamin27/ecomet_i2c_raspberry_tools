@@ -1,4 +1,4 @@
-# ecomet_i2c_tools
+# ecomet_i2c_raspberry_tools
 
 **Last modification:** 6.07.2020
 **Contributor:** Marian Minar
@@ -17,4 +17,4 @@ The Code for I2C Chip maintenance from **Raspberry PI 3+** and above. This code 
 
 * [EEPROM module](i2c_pkg/eeprom_pkg/documentation/eeprom_IIC.md)
 * [PCA9632 module](fpc/pca9632/pca9632_IIC.md) -> 4-bit Fm+ I2C-bus low power LED driver (could be used for motor control)
-* [HDC1080 module](fpc/hdc1080/hdc1080.md) -> High AccuracyDigitalHumiditySensorwith TemperatureSensor
+* [HDC1080 module](fpc/hdc1080/hdc1080.md) -> High Accuracy Digital Humidity Sensor with Temperature Sensor
