@@ -43,6 +43,7 @@ HEAT_ENABLE_CLR    = 0x3000   # rw, heater enable
 RST_ON_CLR         = 0x8000   # w, software reset
 
 # REGISTER mask bits:
+MESR_BIT           = 0x0000
 TEMP_BIT           = 0xFFFC
 HUMDT_BIT          = 0xFFFC
 SER_ID1_BIT        = 0xFFFF

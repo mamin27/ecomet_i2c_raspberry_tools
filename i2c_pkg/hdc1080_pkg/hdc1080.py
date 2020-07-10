@@ -6,6 +6,12 @@ from i2c_pkg.hdc1080_pkg import hdc1080_constant
 #import hdc1080_constant
 #import i2c_command_oop
 
+def power (base, exponent) :
+   if exponent == 0 :
+      return 1
+   else :
+      return base * power (base, exponent -1)
+
 reg_list = { 'TEMP' : hdc1080_constant.TEMP, 'HUMDT' :  hdc1080_constant.HUMDT, 
              'CONF' : hdc1080_constant.CONF, 'SER_ID1' : hdc1080_constant.SER_ID1, 'SER_ID2' : hdc1080_constant.SER_ID2, 'SER_ID3' : hdc1080_constant.SER_ID3,
              'MANFU' : hdc1080_constant.MANFU, 'DEVID' : hdc1080_constant.DEVID,
@@ -37,7 +43,8 @@ conf_bit_off_list = { 'HRES_RES1_CLR' : hdc1080_constant.HRES_RES1_CLR,
                       'RST_ON_CLR' : hdc1080_constant.RST_ON_CLR
                 }
                 
-mask_bit_list = { 'TEMP_BIT' : hdc1080_constant.TEMP_BIT,
+mask_bit_list = { 'MESR_BIT' : hdc1080_constant.MESR_BIT,
+                  'TEMP_BIT' : hdc1080_constant.TEMP_BIT,
                   'HUMDT_BIT' : hdc1080_constant.HUMDT_BIT,
                   'SER_ID1_BIT' : hdc1080_constant.SER_ID1_BIT,
                   'SER_ID2_BIT' : hdc1080_constant.SER_ID2_BIT,
@@ -79,14 +86,9 @@ class HDC1080(object):
           (reg_status,ret) = self.read_register( register = register )
           if register == 'CONF' :
            for ibit in bits :
-             try :
-                bit = conf_bit_on_list[ibit]
-                reg_status = reg_status ^ bit
-                self._logger.debug('write_register, init reg_status: %s', '{0:04X}'.format(reg_status))
-             except :
-                bit = conf_bit_off_list[ibit]
-                reg_status_msb = reg_status_msb & bit
-                reg_status_lsb = 0
+               bit = conf_bit_on_list[ibit]
+               reg_status = reg_status | bit
+           self._logger.debug('write_register, init reg_status: %s', '{0:04X}'.format(reg_status))
            reg_status_msb = (reg_status >> 8) & 0xff
            reg_status_lsb = reg_status & 0xff
            reg_status_msb = reg_status_msb.to_bytes(length=1, byteorder='big')
@@ -99,20 +101,54 @@ class HDC1080(object):
            except :
                ret = ret + 1
                self._logger.debug('writelist error')
-          elif register == 'TEMP' or register == 'HUMDT':
-           for ibit in bits :
-                bit = mask_bit_list[ibit] 
-                reg_status = reg_status & bit
-                try :
-                  self._device.write16(reg_list[register],int(reg_status))
-                except :
-                  ret = ret + 1
+          else :
+              ret = 1
           if ret > 1 :
              self._logger.debug('write_register %s failed (%s)', register, ret)
           else :
              self._logger.debug('write_register %s, byte data: %s', register,byt_reg)
-             #self._logger.debug('write_register %s, data: %s', register, '{0:04X}'.format(reg_status))
+             self._logger.debug('write_register %s, data: %s', register, '{0:04X}'.format(reg_status))
           return ret
+    def write_mert_invoke (self, register) :
+        if register == 'TEMP' or register == 'HUMDT' :
+            try :
+                self._device.writeRaw8(reg_list[register]);
+            except :
+                self._logger.debug('write_invoke %s mask failed', register)
+                return 1
+            finally :
+                self._logger.debug('write_invoke %s mask', register)
+                return 0
+    def both_measurement (self) :
+        byt_reg = ()
+        from time import sleep
+        ret = self.write_mert_invoke( register = 'TEMP' )
+        sleep(0.01)
+        byt_reg = self._device.readRaw32()
+        self._logger.debug('temp byte: %s', hex(byt_reg[1] + (byt_reg[0] << 8)))
+        self._logger.debug('humdt byte: %s', hex(byt_reg[3] + (byt_reg[2] << 8)))
+        temp = int(byt_reg[1] + (byt_reg[0] << 8))
+        temp = temp/power(2,16)
+        temp = temp*165 - 40
+        humdt = int(byt_reg[3] + (byt_reg[2] << 8))
+        humdt = humdt/power(2,16)
+        humdt = humdt*100
+        return  (temp, humdt, ret)
+    def sw_reset (self) :
+        ret = self.write_register( register = 'CONF', bits = ['RST_ON']);
+        from time import sleep
+        sleep(0.1) # wait for done sw reset
+        return ret
+    def battery (self) :
+        (reg_status,ret) = self.read_register( register = 'CONF' )
+        bit = conf_bit_off_list['BTST_CLR']
+        reg_status = reg_status & bit
+        self._logger.debug('Battery: %s','{0:04X}'.format(reg_status))
+        if reg_status > 0 :
+            ret = 1
+        else :
+            ret = 0
+        return ret
     def serial (self) :
        ret = 0
        (byte1,lret) = self.read_register( register = 'SER_ID1' )
@@ -152,28 +188,3 @@ class HDC1080(object):
        else :
            self._logger.debug('DeviceID: %s','{0:04X}'.format(temp))
            return ('{0:04X}'.format(temp),0)
-'''           
-    def sw_reset (self) :
-          #   reg_status = self.read_register( register = 'CONF' )
-          #   bit = conf_bit_on_list['RST_ON']
-          #   reg_status = reg_status ^ bit
-             try :
-               self._device.write16(reg_list['CONF'],int(reg_status))
-             except :
-                ret = 1
-             else :
-                ret = 0
-          return ret          
-    def battery (self) :
-        reg_status = self.read_register( register = 'CONF' )
-        print ("{}".format(reg_status));
-        #bit = conf_bit_off_list['BTST_CLR']
-        #reg_status = reg_status & bit
-        #try :
-        #    bat_stat = self._device.readU16BE(reg_list[register] & bit)
-        #except :
-        #    ret = 10
-        #    return ret
-        #else :
-        #    ret = bat_stat
-        return 1'''
