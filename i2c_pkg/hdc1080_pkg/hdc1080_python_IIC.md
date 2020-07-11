@@ -4,6 +4,10 @@
 
 ### List of python files: ###
 
+**Chip description**
+The HDC1080 is a digital humidity sensor with integrated temperature sensor that provides excellent measurement accuracy at very low power.
+The HDC1080 operates over a wide supply range,and is a low cost,low power alternative to competitive olutions in a wide range of common applications. Thehumidity and temperature sensors are factory calibrated.
+
 **hdc1080_constant.py**
 
 * list of hdc1080 chip registers and their statuses
@@ -96,5 +100,4 @@ ecomet.hdc1080: INFO     Measured Temperate IND:      26.54 ℃
 ecomet.hdc1080: INFO     Measured Humidity IND:      57.76 %
 ```
 
-Note: for more details look into hdc1080_i2c_test.py
-see **hdc1080_constat.py**
+**Note:** for more details look into hdc1080_i2c_test.py
