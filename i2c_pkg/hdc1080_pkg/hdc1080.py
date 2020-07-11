@@ -42,16 +42,6 @@ conf_bit_off_list = { 'HRES_RES1_CLR' : hdc1080_constant.HRES_RES1_CLR,
                       'HEAT_ENABLE_CLR' : hdc1080_constant.HEAT_ENABLE_CLR,
                       'RST_ON_CLR' : hdc1080_constant.RST_ON_CLR
                 }
-                
-mask_bit_list = { 'MESR_BIT' : hdc1080_constant.MESR_BIT,
-                  'TEMP_BIT' : hdc1080_constant.TEMP_BIT,
-                  'HUMDT_BIT' : hdc1080_constant.HUMDT_BIT,
-                  'SER_ID1_BIT' : hdc1080_constant.SER_ID1_BIT,
-                  'SER_ID2_BIT' : hdc1080_constant.SER_ID2_BIT,
-                  'SER_ID3_BIT' : hdc1080_constant.SER_ID3_BIT,
-                  'MAN1_BIT' : hdc1080_constant.MAN1_BIT,
-                  'MAN2_BIT' : hdc1080_constant.MAN2_BIT
-                }
 
 logger = logging.getLogger(__name__) 
 
@@ -121,8 +111,9 @@ class HDC1080(object):
                 return 0
     def both_measurement (self) :
         byt_reg = ()
+        ret = self.write_register( register = 'CONF', bits = ['MODE_BOTH'])
         from time import sleep
-        ret = self.write_mert_invoke( register = 'TEMP' )
+        ret = ret + self.write_mert_invoke( register = 'TEMP' )
         sleep(0.01)
         byt_reg = self._device.readRaw32()
         self._logger.debug('temp byte: %s', hex(byt_reg[1] + (byt_reg[0] << 8)))
@@ -134,8 +125,32 @@ class HDC1080(object):
         humdt = humdt/power(2,16)
         humdt = humdt*100
         return  (temp, humdt, ret)
+    def measure_temp (self) :
+        byt_reg = ()
+        ret = self.write_register( register = 'CONF', bits = ['MODE_ONLY'])
+        from time import sleep
+        ret = ret + self.write_mert_invoke( register = 'TEMP')
+        sleep(0.01)
+        byt_reg = self._device.readRaw16()
+        self._logger.debug('temp byte: %s', hex(byt_reg[1] + (byt_reg[0] << 8)))
+        temp = int(byt_reg[1] + (byt_reg[0] << 8))
+        temp = temp/power(2,16)
+        temp = temp*165 - 40
+        return (temp,ret)
+    def measure_hmdt (self) :
+        byt_reg = ()
+        ret = self.write_register( register = 'CONF', bits = ['MODE_ONLY'])
+        from time import sleep
+        ret = ret + self.write_mert_invoke( register = 'HUMDT')
+        sleep(0.01)
+        byt_reg = self._device.readRaw16()
+        self._logger.debug('temp byte: %s', hex(byt_reg[1] + (byt_reg[0] << 8)))
+        hmdt = int(byt_reg[1] + (byt_reg[0] << 8))
+        hmdt = hmdt/power(2,16)
+        hmdt = hmdt*100
+        return (hmdt,ret)
     def sw_reset (self) :
-        ret = self.write_register( register = 'CONF', bits = ['RST_ON']);
+        ret = self.write_register( register = 'CONF', bits = ['RST_ON'])
         from time import sleep
         sleep(0.1) # wait for done sw reset
         return ret
