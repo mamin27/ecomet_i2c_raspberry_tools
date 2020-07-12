@@ -191,7 +191,7 @@ def software_reset (address=pca9632_constant.PCA9632_SWRESET, i2c=None, **kwargs
     # Setup I2C interface for device 0x00 to talk to all of them.
 
     if i2c is None:
-        import Adafruit_GPIO.I2C as I2C
+        import i2c_pkg.i2c as I2C
         i2c = I2C
     try:
       device = i2c.get_i2c_device(address, **kwargs) # SWRST
@@ -217,7 +217,7 @@ class PCA9632(object):
         '''Initialize the PCA9685.'''
         # Setup I2C interface for the device.
         if i2c is None:
-            import Adafruit_GPIO.I2C as I2C
+            import i2c_pkg.i2c as I2C
             i2c = I2C
         self._device = i2c.get_i2c_device(address, **kwargs)
         #self._device.write8(PWM0,0x7D)

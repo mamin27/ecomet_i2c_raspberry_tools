@@ -52,7 +52,7 @@ class HDC1080(object):
         '''Initialize the HDC1080.'''
         # Setup I2C interface for the device.
         if i2c is None:
-            import Adafruit_GPIO.I2C as I2C
+            import i2c_pkg.i2c as I2C
             i2c = I2C
         self._device = i2c.get_i2c_device(address, **kwargs)
     def read_register(self, register) :
