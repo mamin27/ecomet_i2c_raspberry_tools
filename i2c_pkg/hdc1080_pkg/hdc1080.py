@@ -14,7 +14,7 @@ def power (base, exponent) :
 
 reg_list = { 'TEMP' : hdc1080_constant.TEMP, 'HUMDT' :  hdc1080_constant.HUMDT, 
              'CONF' : hdc1080_constant.CONF, 'SER_ID1' : hdc1080_constant.SER_ID1, 'SER_ID2' : hdc1080_constant.SER_ID2, 'SER_ID3' : hdc1080_constant.SER_ID3,
-             'MANFU' : hdc1080_constant.MANFU, 'DEVID' : hdc1080_constant.DEVID,
+             'MANUF' : hdc1080_constant.MANUF, 'DEVID' : hdc1080_constant.DEVID,
         }
 conf_bit_on_list = { 'HRES_RES1' : hdc1080_constant.HRES_RES1,
                      'HRES_RES2' : hdc1080_constant.HRES_RES2,
@@ -35,15 +35,71 @@ conf_bit_off_list = { 'HRES_RES1_CLR' : hdc1080_constant.HRES_RES1_CLR,
                       'HRES_RES3_CLR' : hdc1080_constant.HRES_RES3_CLR,
                       'TRES_RES1_CLR' : hdc1080_constant.TRES_RES1_CLR,
                       'TRES_RES2_CLR' : hdc1080_constant.TRES_RES2_CLR,
-                      'BTST_CLR' : hdc1080_constant.BTST_CLR,
+                      'BTST_HI_CLR' : hdc1080_constant.BTST_HI_CLR,
+                      'BTST_LO_CLR' : hdc1080_constant.BTST_LO_CLR,
                       'MODE_ONLY_CLR' : hdc1080_constant.MODE_ONLY_CLR,
                       'MODE_BOTH_CLR' : hdc1080_constant.MODE_BOTH_CLR,
                       'HEAT_DISABLE_CLR' : hdc1080_constant.HEAT_DISABLE_CLR,
                       'HEAT_ENABLE_CLR' : hdc1080_constant.HEAT_ENABLE_CLR,
                       'RST_ON_CLR' : hdc1080_constant.RST_ON_CLR
                 }
-
+   
+conf_mask_bit_list = { 'CONF_HRES' : hdc1080_constant.CONF_HRES,
+                       'CONF_TRES' : hdc1080_constant.CONF_TRES,
+                       'CONF_BAT' : hdc1080_constant.CONF_BAT,
+                       'CONF_MODE' : hdc1080_constant.CONF_MODE,
+                       'CONF_HEAT' : hdc1080_constant.CONF_HEAT
+                      }
+                      
 logger = logging.getLogger(__name__) 
+
+def register_list() :
+
+   hdc = HDC1080()
+   hdc._logger = logging.getLogger('ecomet.hdc1080.reglist') 
+   register = {}
+   
+   reg_conf = {}
+   reg_id = {}
+   
+   hres_switch = { 0: '14BIT',
+                   256: '11BIT',
+                   512: '8BIT' }
+   
+   tres_switch = { 0: '14BIT',
+                   1024: '11BIT' }
+                   
+   reg_conf['HRES'] = hres_switch.get((hdc.read_register( register = 'CONF' )[0] & conf_mask_bit_list['CONF_HRES']))
+   reg_conf['TRES'] = tres_switch.get((hdc.read_register( register = 'CONF' )[0] & conf_mask_bit_list['CONF_TRES']))
+   reg_conf['BAT'] = 'LOW' if hdc.read_register( register = 'CONF' )[0] & conf_mask_bit_list['CONF_BAT'] > 0 else 'GOOD'      
+   reg_conf['MODE'] = 'BOTH' if hdc.read_register( register = 'CONF' )[0] & conf_mask_bit_list['CONF_MODE'] > 0 else 'ONLY'      
+   reg_conf['HEAT'] = 'ENABLE' if hdc.read_register( register = 'CONF' )[0] & conf_mask_bit_list['CONF_HEAT'] > 0 else 'DISABLE' 
+        
+   reg_id['SERIAL'] = hdc.serial()[0]
+   reg_id['MANUF'] = hdc.manufacturer()[0]
+   reg_id['DEVID'] = hdc.deviceid()[0]
+   
+   register['CONF'] = reg_conf
+   register['ID'] = reg_id
+   
+   return (register);
+   
+def measure_list() :
+   
+   hdc = HDC1080()
+   hdc._logger = logging.getLogger('ecomet.hdc1080.reglist') 
+   measure = {}
+   ret = 0
+   
+   if hdc.read_register( register = 'CONF' )[0] & conf_mask_bit_list['CONF_MODE'] > 0 : 
+     (measure['TEMP'],measure['HMDT'],ret) = hdc.both_measurement()
+   else :
+     (measure['TEMP'],nret) = hdc.measure_temp()
+     ret = ret + nret
+     (measure['HMDT'],nret) = hdc.measure_hmdt()
+     ret = ret + nret
+   
+   return (measure,ret)
 
 class HDC1080(object):
     '''HDC1080() PWM LED/servo controller.'''
@@ -56,11 +112,11 @@ class HDC1080(object):
             i2c = I2C
         self._device = i2c.get_i2c_device(address, **kwargs)
     def read_register(self, register) :
-        if register == 'TEMP' or register == 'HUMDT' or register == 'CONF' or register == 'SER_ID1' or register == 'SER_ID2' or register == 'SER_ID3' or register == 'MANFU' or register == 'DEVID' :
+        if register == 'TEMP' or register == 'HUMDT' or register == 'CONF' or register == 'SER_ID1' or register == 'SER_ID2' or register == 'SER_ID3' or register == 'MANUF' or register == 'DEVID' :
            ret = 0
            try:
               reg_status_bita = self._device.readList(reg_list[register],2)
-              reg_status_hex = '0x' + '{0:02x}'.format(reg_status_bita[0]) + '{0:02x}'.format(reg_status_bita[1]);
+              reg_status_hex = '0x' + '{0:02x}'.format(reg_status_bita[0]) + '{0:02x}'.format(reg_status_bita[1])
               reg_status = int(reg_status_hex, 0)
            except :
               ret = ret + 1;
@@ -69,16 +125,19 @@ class HDC1080(object):
               return (0x0000,ret)
            else :
               self._logger.debug('read_register, init reg_status: %s', '{0}'.format(reg_status_hex))
-              self._logger.debug('read_register %s, data: %s', register, '{0:b}'.format(reg_status));
+              self._logger.debug('read_register %s, data: %s', register, '{0:b}'.format(reg_status))
               return (reg_status,0)
     def write_register(self, register, bits) :
           ret = 0
           (reg_status,ret) = self.read_register( register = register )
           if register == 'CONF' :
            for ibit in bits :
-               bit = conf_bit_on_list[ibit]
-               reg_status = reg_status | bit
-           self._logger.debug('write_register, init reg_status: %s', '{0:04X}'.format(reg_status))
+               #bit = conf_bit_on_list[ibit]
+               bit_clr = ibit + '_CLR'
+               reg_status = reg_status & conf_bit_off_list[bit_clr]
+               self._logger.debug('write_register, init reg_status: %s, bit_mask_reg %s', '{0:04X}'.format(reg_status), format(bit_clr))
+               reg_status = reg_status | conf_bit_on_list[ibit]
+               self._logger.debug('write_register, init reg_status: %s, bit %s', '{0:04X}'.format(reg_status), '{0:04X}'.format(conf_bit_on_list[ibit]))
            reg_status_msb = (reg_status >> 8) & 0xff
            reg_status_lsb = reg_status & 0xff
            reg_status_msb = reg_status_msb.to_bytes(length=1, byteorder='big')
@@ -104,17 +163,18 @@ class HDC1080(object):
             try :
                 self._device.writeRaw8(reg_list[register]);
             except :
-                self._logger.debug('write_invoke %s mask failed', register)
+                self._logger.info('write_invoke %s mask failed', register)
                 return 1
             finally :
-                self._logger.debug('write_invoke %s mask', register)
+                self._logger.info('write_invoke %s mask', register)
                 return 0
     def both_measurement (self) :
         byt_reg = ()
+        ret = 0
         ret = self.write_register( register = 'CONF', bits = ['MODE_BOTH'])
         from time import sleep
         ret = ret + self.write_mert_invoke( register = 'TEMP' )
-        sleep(0.01)
+        sleep(0.02)
         byt_reg = self._device.readRaw32()
         self._logger.debug('temp byte: %s', hex(byt_reg[1] + (byt_reg[0] << 8)))
         self._logger.debug('humdt byte: %s', hex(byt_reg[3] + (byt_reg[2] << 8)))
@@ -127,6 +187,7 @@ class HDC1080(object):
         return  (temp, humdt, ret)
     def measure_temp (self) :
         byt_reg = ()
+        ret = 0
         ret = self.write_register( register = 'CONF', bits = ['MODE_ONLY'])
         from time import sleep
         ret = ret + self.write_mert_invoke( register = 'TEMP')
@@ -139,6 +200,7 @@ class HDC1080(object):
         return (temp,ret)
     def measure_hmdt (self) :
         byt_reg = ()
+        ret = 0
         ret = self.write_register( register = 'CONF', bits = ['MODE_ONLY'])
         from time import sleep
         ret = ret + self.write_mert_invoke( register = 'HUMDT')
@@ -156,9 +218,7 @@ class HDC1080(object):
         return ret
     def battery (self) :
         (reg_status,ret) = self.read_register( register = 'CONF' )
-        bit = conf_bit_off_list['BTST_CLR']
-        reg_status = reg_status & bit
-        self._logger.debug('Battery: %s','{0:04X}'.format(reg_status))
+        reg_status = reg_status & conf_bit_on_list['BTST_LO']
         if reg_status > 0 :
             ret = 1
         else :
@@ -183,7 +243,7 @@ class HDC1080(object):
            return ('{0:04X}'.format(byte1) + ':' + '{0:04X}'.format(byte2) + ':' + '{0:04X}'.format(byte3),0)
     def manufacturer (self) :
        ret = 0
-       (temp,lret) = self.read_register( register = 'MANFU' )
+       (temp,lret) = self.read_register( register = 'MANUF' )
        if lret > 0 :
           ret = ret + 1
        if ret > 0 : 

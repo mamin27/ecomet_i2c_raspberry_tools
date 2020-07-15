@@ -35,7 +35,7 @@ sens._logger.info('Battery > 2.4V, correct') if ret == 0 else sens._logger.error
 # HRES_RES3 = humidity 8 bit (10)
 # TRES_RES2 = temperature 11 bit
 
-ret = sens.write_register( register = 'CONF', bits = ['MODE_BOTH','HRES_RES3','TRES_RES2'])
+ret = sens.write_register( register = 'CONF', bits = ['MODE_BOTH','HRES_RES1','TRES_RES1'])
 sens._logger.info('Write CONF register correct') if ret == 0 else sens._logger.error('Write error %s'.format(ret))
 
 (val,ret) = sens.serial()
@@ -49,6 +49,8 @@ sens._logger.info('MAN ID: %s',format(val))
 (val,ret) = sens.deviceid()
 sens._logger.info('DEVICE Read correct') if ret == 0 else sens._logger.error('Read error %s'.format(ret))
 sens._logger.info('DEV ID: %s',format(val))
+register = hdc1080.register_list()
+print ('{}'.format(register))
 
 (temp,hmdt, ret) = sens.both_measurement()
 if ret == 0 :
@@ -65,8 +67,12 @@ else :
 # HRES_RES1 = humidity 14 bit (10)
 # TRES_RES1 = temperature 14 bit
 
+ret = sens.sw_reset()
+sens._logger.info('SW Reset correct') if ret == 0 else sens._logger.error('SW Reset error %s'.format(ret))
 ret = sens.write_register( register = 'CONF', bits = ['MODE_ONLY','HRES_RES1','TRES_RES1'])
 sens._logger.info('Write CONF register correct') if ret == 0 else sens._logger.error('Write error %s'.format(ret))
+register = hdc1080.register_list()
+print ('{}'.format(register))
 
 (temp, ret) = sens.measure_temp()
 if ret == 0 :
@@ -79,3 +85,19 @@ if ret == 0 :
     sens._logger.info('Measured Humidity IND: %s %s','{0:10.2f}'.format(hmdt),'%')
 else :
     sens._logger.error('Read error %s'.format(ret))
+
+##########################################################
+ret = sens.sw_reset()
+sens._logger.info('SW Reset correct') if ret == 0 else sens._logger.error('SW Reset error %s'.format(ret))
+
+ret = sens.battery()
+sens._logger.info('Battery > 2.4V, correct') if ret == 0 else sens._logger.error('Battery < 2.4V, error')
+ret = sens.write_register( register = 'CONF', bits = ['TRES_RES2','HRES_RES2','MODE_ONLY','HEAT_DISABLE'])
+register = hdc1080.register_list()
+print ('{}'.format(register))
+(measure,ret) = hdc1080.measure_list()
+
+if ret == 0 :
+    print('{}'.format(measure))
+else :
+    sens._logger.error('Measure Read error %s'.format(ret))
