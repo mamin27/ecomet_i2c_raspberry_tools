@@ -89,15 +89,18 @@ def measure_list() :
    hdc = HDC1080()
    hdc._logger = logging.getLogger('ecomet.hdc1080.reglist') 
    measure = {}
+   mlist = {}
    ret = 0
    
    if hdc.read_register( register = 'CONF' )[0] & conf_mask_bit_list['CONF_MODE'] > 0 : 
-     (measure['TEMP'],measure['HMDT'],ret) = hdc.both_measurement()
+     (mlist['TEMP'],mlist['HMDT'],ret) = hdc.both_measurement()
    else :
-     (measure['TEMP'],nret) = hdc.measure_temp()
+     (mlist['TEMP'],nret) = hdc.measure_temp()
      ret = ret + nret
-     (measure['HMDT'],nret) = hdc.measure_hmdt()
+     (mlist['HMDT'],nret) = hdc.measure_hmdt()
      ret = ret + nret
+     
+   measure['MEASURE'] = mlist
    
    return (measure,ret)
 
@@ -110,6 +113,7 @@ class HDC1080(object):
         if i2c is None:
             import i2c_pkg.i2c as I2C
             i2c = I2C
+        self._logger = logging.getLogger(__name__)    
         self._device = i2c.get_i2c_device(address, **kwargs)
     def read_register(self, register) :
         if register == 'TEMP' or register == 'HUMDT' or register == 'CONF' or register == 'SER_ID1' or register == 'SER_ID2' or register == 'SER_ID3' or register == 'MANUF' or register == 'DEVID' :
@@ -240,7 +244,7 @@ class HDC1080(object):
            return (0,ret)
        else :
            self._logger.debug('Serial: %s:%s:%s','{0:04X}'.format(byte1),'{0:04X}'.format(byte2),'{0:04X}'.format(byte3))
-           return ('{0:04X}'.format(byte1) + ':' + '{0:04X}'.format(byte2) + ':' + '{0:04X}'.format(byte3),0)
+           return ('{0:04X}'.format(byte1) + '-' + '{0:04X}'.format(byte2) + '-' + '{0:04X}'.format(byte3),0)
     def manufacturer (self) :
        ret = 0
        (temp,lret) = self.read_register( register = 'MANUF' )
