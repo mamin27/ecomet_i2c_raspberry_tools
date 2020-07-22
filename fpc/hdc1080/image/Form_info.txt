@@ -1,0 +1,23 @@
+TStaticText: font: DejaVu Sans Mono, Book, 9
+             color: clBlue or clBlack
+             
+TShape: Pen: color: clRed, width: 5, style: psSolid, pecRound
+TGroupBox: Caption: name, Color: clSrollBar
+TBitBtn: Caption: name
+                  Events: OnClick
+TEdit: color: clActiveBorder
+TComboBoxEx: Images: EmageList1, 
+                     Height: 32
+                     Width: 70
+                     ImageType: itMask
+                     Events: OnChange, 
+TPythonEngine: DllName: libpython3.8m.so
+               IO: TPythonInputOutput
+               Rev ver: 3.8
+               PyFlag: pfUserClassExceptionsFlag
+               RedirectIO: True
+               InitScript: empty
+               Autoload: True
+               AutoFinalize: True
+               Events: IO: PythonInputOutput
+TPythonInputOutput: OnSendData: PythonInputOutput1SendData
