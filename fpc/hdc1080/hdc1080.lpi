@@ -6,19 +6,26 @@
       <SessionStorage Value="InProjectDir"/>
       <MainUnit Value="0"/>
       <Title Value="hdc1080"/>
-      <Scaled Value="True"/>
       <ResourceType Value="res"/>
       <UseXPManifest Value="True"/>
       <XPManifest>
         <DpiAware Value="True"/>
+        <TextName Value="Marian Minar.ecomet.htc1080"/>
+        <TextDesc Value="Measure Temperature &amp; Humidity with IoT sensor hdc1080"/>
       </XPManifest>
       <Icon Value="0"/>
     </General>
+    <VersionInfo>
+      <UseVersionInfo Value="True"/>
+      <MajorVersionNr Value="1"/>
+      <StringTable CompanyName="Marian Minar" FileDescription="Measure Temperature &amp; Humidity with IoT sensor hdc1080" InternalName="IoT hdc1080" LegalCopyright="(C) 2020 Marian Minar, eComet" LegalTrademarks="eComet" ProductName="hdc1080"/>
+    </VersionInfo>
     <BuildModes Count="1">
       <Item1 Name="Default" Default="True"/>
     </BuildModes>
     <PublishOptions>
       <Version Value="2"/>
+      <DestinationDirectory Value="/home/pi/ecomet_i2c_raspberry_tools/bin"/>
       <UseFileFilters Value="True"/>
     </PublishOptions>
     <RunParams>
@@ -45,7 +52,7 @@
         <PackageName Value="LCL"/>
       </Item6>
     </RequiredPackages>
-    <Units Count="6">
+    <Units Count="9">
       <Unit0>
         <Filename Value="hdc1080.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -73,6 +80,24 @@
         <Filename Value="hdc1080_write.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit5>
+      <Unit6>
+        <Filename Value="ecomet_regex.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="creator.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="Form_creator"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="help.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="Form_help"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit8>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -86,10 +111,21 @@
     </SearchPaths>
     <Parsing>
       <SyntaxOptions>
-        <SyntaxMode Value="FPC"/>
+        <UseAnsiStrings Value="False"/>
       </SyntaxOptions>
     </Parsing>
+    <CodeGeneration>
+      <RelocatableUnit Value="True"/>
+      <TargetCPU Value="arm"/>
+      <TargetOS Value="linux"/>
+      <Optimizations>
+        <OptimizationLevel Value="2"/>
+      </Optimizations>
+    </CodeGeneration>
     <Linking>
+      <Debugging>
+        <GenerateDebugInfo Value="False"/>
+      </Debugging>
       <Options>
         <Win32>
           <GraphicApplication Value="True"/>

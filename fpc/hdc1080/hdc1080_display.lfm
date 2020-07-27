@@ -1,11 +1,14 @@
 object Form_hdc1080: TForm_hdc1080
-  Left = 944
-  Height = 339
-  Top = 151
-  Width = 352
-  Caption = 'Form_hdc1080'
-  ClientHeight = 339
-  ClientWidth = 352
+  Left = 1326
+  Height = 370
+  Top = 178
+  Width = 348
+  Caption = 'Temperature & Humidity measure'
+  ClientHeight = 343
+  ClientWidth = 348
+  Font.Height = -15
+  Font.Name = 'DejaVu Sans Mono'
+  Menu = MainMenu
   OnCreate = FormCreate
   LCLVersion = '2.0.0.4'
   object GroupBox_settings: TGroupBox
@@ -170,10 +173,13 @@ object Form_hdc1080: TForm_hdc1080
     Top = 200
     Width = 335
     Caption = 'Measure'
-    ClientHeight = 114
+    ClientHeight = 116
     ClientWidth = 331
     Color = clWindowFrame
+    Font.Height = -12
+    Font.Name = 'DejaVu Sans Mono'
     ParentColor = False
+    ParentFont = False
     TabOrder = 1
     object Edit_temp: TEdit
       Left = 24
@@ -521,5 +527,19 @@ object Form_hdc1080: TForm_hdc1080
       598D535353542121213210101005000000000000000000000000000000000000
       0000000000000000000000000000
     }
+  end
+  object MainMenu: TMainMenu
+    BidiMode = bdRightToLeft
+    ParentBidiMode = False
+    ImagesWidth = 10
+    left = 294
+    object Creator: TMenuItem
+      Caption = 'Creator'
+      OnClick = CreatorClick
+    end
+    object Help: TMenuItem
+      Caption = 'Help'
+      OnClick = HelpClick
+    end
   end
 end

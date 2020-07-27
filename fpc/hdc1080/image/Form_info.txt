@@ -21,3 +21,6 @@ TPythonEngine: DllName: libpython3.8m.so
                AutoFinalize: True
                Events: IO: PythonInputOutput
 TPythonInputOutput: OnSendData: PythonInputOutput1SendData
+
+Convert svg -> ico
+convert -density 384 -background transparent comet.svg -define icon:auto-resize comet.ico

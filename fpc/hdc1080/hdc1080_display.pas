@@ -6,8 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Buttons,
-  proc_py,hdc1080_pyth_util,math,
-  PythonEngine;
+  Menus, proc_py, hdc1080_pyth_util, math, PythonEngine;
 
 type
 
@@ -35,6 +34,9 @@ type
     Label_hmdt: TLabel;
     Label_mtemp: TLabel;
     Label_mhmdt: TLabel;
+    MainMenu: TMainMenu;
+    Help: TMenuItem;
+    Creator: TMenuItem;
     PythonEngine_hdc1080: TPythonEngine;
     PythonInputOutput_hdc1080: TPythonInputOutput;
     procedure BitBtn_settingClick(Sender: TObject);
@@ -42,7 +44,9 @@ type
     procedure ComboBox_hmdtChange(Sender: TObject);
     procedure ComboBox_modeChange(Sender: TObject);
     procedure ComboBox_tempChange(Sender: TObject);
+    procedure CreatorClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure HelpClick(Sender: TObject);
     procedure PythonInputOutput_hdc1080_SendData(Sender: TObject;
       const Data: AnsiString);
   private
@@ -67,7 +71,7 @@ implementation
 
 {$R *.lfm}
 
-uses hdc1080_read, hdc1080_write;
+uses hdc1080_read, hdc1080_write, creator, help;
 
 const
   cPyLibraryLinux = 'libpython3.7m.so.1.0';
@@ -111,6 +115,11 @@ begin
 
 end;
 
+procedure TForm_hdc1080.HelpClick(Sender: TObject);
+begin
+  Form_help.Show;
+end;
+
 procedure TForm_hdc1080.ComboBox_tempChange(Sender: TObject);
 var bit: String;
 begin
@@ -118,6 +127,11 @@ begin
   hdc.attr1.attr_val_obj.attr2.attr_new_val := bit;
   hdc.attr1.attr_val_obj.attr2.attr_chg := true;
   Form_hdc1080.BitBtn_setting.ImageIndex := 1;
+end;
+
+procedure TForm_hdc1080.CreatorClick(Sender: TObject);
+begin
+  Form_creator.Show;
 end;
 
 procedure TForm_hdc1080.ComboBox_hmdtChange(Sender: TObject);
