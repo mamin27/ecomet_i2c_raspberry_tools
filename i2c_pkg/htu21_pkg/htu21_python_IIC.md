@@ -1,12 +1,11 @@
-# hdc1080_IIC python3 module
+# htu21_IIC python3 module
 
-**Last modification:** 11.07.2020
+**Last modification:** 31.07.2020
 
 ### List of python files: ###
 
 **Chip description**
-The HDC1080 is a digital humidity sensor with integrated temperature sensor that provides excellent measurement accuracy at very low power.
-The HDC1080 operates over a wide supply range,and is a low cost,low power alternative to competitive olutions in a wide range of common applications. Thehumidity and temperature sensors are factory calibrated.
+The HTU21D is a new digital humidity sensor with temperature output. Every sensor is individually calibrated and tested. Lot identification is printed on the sensor and an electronic identification code is stored on the chip –which can be read out by command.  
 
 **hdc1080_constant.py**
 
