@@ -4,11 +4,9 @@ import time
 import math
 from i2c_pkg.htu21_pkg import htu21_constant
 
-def power (base, exponent) :
-   if exponent == 0 :
-      return 1
-   else :
-      return base * power (base, exponent -1)
+A = 8.1332
+B = 1762.39
+C = 235.66
 
 reg_list = { 'TEMP' : htu21_constant.TEMP, 'HUMDT' :  htu21_constant.HUMDT, 
              'WRITE_USER' : htu21_constant.WRITE_USER, 'READ_USER' : htu21_constant.READ_USER, 'SRESET' : htu21_constant.SRESET,
@@ -83,6 +81,8 @@ def measure_list() :
    (mlist['TEMP'],nret) = htu.measure_temp()
    ret = ret + nret
    (mlist['HMDT'],nret) = htu.measure_hmdt()
+   ret = ret + nret
+   (mlist['DEW_POINT'],nret) = htu.dew_point()
    ret = ret + nret
      
    measure['MEASURE'] = mlist
@@ -181,11 +181,16 @@ class HTU21(object):
             pass
           else :
             break
-        temp_hex = '0x' + '{0:02x}'.format(reg_status_bita[0]) + '{0:02x}'.format(reg_status_bita[1])
-        temp = int(temp_hex, 0)
+        temp_status = reg_status_bita[1] & 0x03 
+        self._logger.debug('temp measure status: %s',temp_status)
+        if temp_status != 0 :
+          ret = ret + 1
+        temp_bin = '0b' + '{0:08b}'.format(reg_status_bita[0]) + '{0:06b}'.format(reg_status_bita[1] >> 2) + '00'
+        self._logger.debug('temp measure binary output: %s',temp_bin)
+        temp = int(temp_bin, 0)
         cksum_hex =  '0x' + '{0:02x}'.format(reg_status_bita[2])
         cksum = int(cksum_hex,0)
-        temp = -46.85 + 175.72 * (temp/power(2,16))
+        temp = -46.85 + 175.72 * (temp/math.pow(2,16))
         self._logger.debug('temp measure output: %s','{0}'.format(temp))
         self._logger.debug('cksum: %s','{0}'.format(cksum))
         return (temp,ret)
@@ -208,11 +213,26 @@ class HTU21(object):
             pass
           else :
             break
-        hmdt_hex = '0x' + '{0:02x}'.format(reg_status_bita[0]) + '{0:02x}'.format(reg_status_bita[1])
-        hmdt = int(hmdt_hex, 0)
+        hmdt_status = reg_status_bita[1] & 0x03
+        self._logger.debug('humdt measure status: %s',hmdt_status)
+        if hmdt_status != 2 :
+          ret = ret + 1
+        hmdt_bin = '0b' + '{0:08b}'.format(reg_status_bita[0]) + '{0:06b}'.format(reg_status_bita[1] >> 2) + '00'
+        self._logger.debug('humdt measure binary output: %s',hmdt_bin)
+        hmdt = int(hmdt_bin, 0)
         cksum_hex =  '0x' + '{0:02x}'.format(reg_status_bita[2])
         cksum = int(cksum_hex,0)
-        hmdt = -6 + 125 * (hmdt/power(2,16))
+        hmdt = -6 + 125 * (hmdt/math.pow(2,16))
         self._logger.debug('humdt measure output: %s','{0}'.format(hmdt))
         self._logger.debug('cksum: %s','{0}'.format(cksum))
         return (hmdt,ret)
+    def dew_point (self) :
+        ret = 0
+        try :
+           temp = self.measure_temp()[0]
+           hmdt = self.measure_hmdt()[0]
+        except :
+           ret = ret + 1
+        pp = math.pow(10,A - (B / (temp + C)))
+        dewp = - (( B / (math.log10(hmdt * (pp/100)) - A )) + C )
+        return (dewp,ret)

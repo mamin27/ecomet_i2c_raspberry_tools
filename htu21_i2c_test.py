@@ -70,3 +70,12 @@ if ret == 0 :
     print('{}'.format(measure))
 else :
     sens._logger.error('Measure Read error %s'.format(ret))
+
+###############################################################
+
+(dew_point,ret) = sens.dew_point()
+
+if ret == 0 :
+    sens._logger.info('Calculated Dew Point IND: %s \u2103','{0:10.2f}'.format(dew_point))
+else :
+    sens._logger.error('Dew_point Read error %s'.format(ret))
