@@ -21,3 +21,16 @@ The Code for I2C Chip maintenance from **Raspberry PI 3+** and above. This code 
 * [PCA9632 module](fpc/pca9632/pca9632_IIC.md) -> 4-bit Fm+ I2C-bus low power LED driver (could be used for motor control)
 * [HDC1080 module](i2c_pkg/hdc1080_pkg/hdc1080_python_IIC.md) -> High Accuracy Digital Humidity Sensor with Temperature Sensor
 * [HTU21D module](i2c_pkg/htu21_pkg/htu21_python_IIC.md) -> Digital Relative Humidity sensor with Temperature output, calculation of Dew Point
+
+**Software for Chips:**
+
+| Chip            | Python 3 driver | FPC GUI  | Contributor Notes          | Planned work                   | Requestor Interests           |
+| --------------- |:---------------:|:--------:|:--------------------------:|:------------------------------:|:-----------------------------:|
+| EEPROM 24cXXX   |      yes        |    no    | currently tested at        | currently no GUI planned       |                               |
+|                 |                 |          | 24c04,24c32,24c64          |                                |                               |
+| PCA9632         |      yes        |    yes   | GUI partly developed       | Finalise GUI                   |                               |
+| HDC1080         |      yes        |    yes   | GUI partly developed       | Fix when chip is not available |                               |
+| HTU21D          |      yes        |    no    |                            | currently no GUI planned       |                               |
+
+**Requestor Interests:**
+If you would like to reqest some new feature or add some new Chip at the development list let me know by adding issue or by email.
