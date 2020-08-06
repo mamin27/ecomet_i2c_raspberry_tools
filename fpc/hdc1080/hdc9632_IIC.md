@@ -1,54 +1,59 @@
-# pca9632_IIC module
+# hdc1080_IIC module
 
-**Last modification:** 10.04.2020
+**Last modification:** 6.08.2020
 
-**Schematics of Module:**
-*schematics for testing will be added later*
-
-![Schematics](Schematics.PNG)
+**Modul board:**
+[ebay](https://www.ebay.com/itm/HDC1080-module-Low-Power-Temperature-with-Sensor-Humidity-Digital-Accuracy-High/143492459090?ssPageName=STRK%3AMEBIDX%3AIT&_trksid=p2057872.m2749.l2649)
+I ordered and tested this modul board
 
 **Reconnection with Raspberry PI 3+:**
 
-![Interface to PI](pca9632_schema.PNG)
+![Interface to PI](Image/hdc1080_schema.PNG)
 * schematics of PI reconnection*
 
 * Configuration for /dev/i2c-1
 * port 2 (SDA), port 3 (SCL)
-* pull-up resistor is used from module board (R2,R3)
+* pull-up resistor for this module was set to 1.5 k&#937;
 
 ### How to install? ###
 
 Install Lazarus-ide at raspberry [FPC & Lazarus Installation](../lazarus.md)
-Install Python3 and next modules for pca9632 [Python3 & modules](../../i2c_pkg/pca9632_pkg/pca_9632_python_IIC.md)
+Install Python3 and next modules for hdc1080 [Python3 & modules](../../i2c_pkg/hdc1080_pkg/hdc1080_python_IIC.md)
 
 ### Run application: ###
 ```console
-ecomet_i2c_tools/pca_9632
+ecomet_i2c_tools/hdc1080
 ```
 
 **Features:**
 
-*  Read status of pca_9632 chip and show on concole
-*  Click at Enumerated Buttons (as ALLCALL), choice from values for register (MODE1, MODE2, LEDOUT)
-*  Write to Register - Actually modified value visible by red rectangular 
-*  Apply write changes for all actually selected attributes (buttons) - click at **APPLY** button
-*  Click at button (with values) changed to color to white. Then able to change value
-* PWMx, GRPPWM DutyCycle recalculated to percentage
-* GRPFREQ transfered to frequency, time
-
-   **>>Sub Features:**
-
-* Register MODE1, MODE2 enumerate ON, OFF status
-* Register MODE2 (DBMLNK) enumerate DIMMING, BLINKING status
-* Register LEDOUT, enumerate ON, OFF, PWM, PWM_GRPPWM status
-* Register PWMx, GRPPWN, GRPFREQ (in Hz, in Time)
-
-**Limitation**
-
-* TrackBar not used now
-* Chip Address currently not able to change
+*  Read config and measure register of hdc1080 chip and show on concole
+*  In Accuracy section is possible to set accuracy of measurment for Temperature and Humidity setting of A/D converter
+*  Heating means (ENABLE/DISABLE) heating chip before measurement
+*  Chip (MODE) means if measurement will be done by reading temperature and humidity in one cycle or separately:
+   *  Mode Both for measurement in on cycle
+   *  Mode Sequence when each measurement is done individualy
+*  ID is only readable parameter:
+   *  First number (ID Serial) Unique serial number of chip
+   *  Second number (Manufacturer ID)
+   *  Device Type ID
+*  Help for quick help
+*  Self test for I2C connection
+*  Pushing ![ON button](./image/ON_30x30.png) will be refreshed measurement and read changes of chip setting
 
 ![console](pca9632_console.png  "Console")
 
+**Application pictures:**
+
+![Works](./image/appl_work.png)
+
+Prepare for measurement
+
+![Chip_missing](./image/appl_chip_missing.png)
+
+Chip I2C Issue
+
+
+
 **Source Code (FPC):**
-* Path: ~/ecomet_i2c_tools/fpc/pca9632
+* Path: ~/ecomet_i2c_tools/fpc/hdc1080
