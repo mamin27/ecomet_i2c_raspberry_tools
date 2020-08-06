@@ -8,9 +8,6 @@ I ordered and tested this modul board
 
 **Reconnection with Raspberry PI 3+:**
 
-![Interface to PI](Image/hdc1080_schema.PNG)
-* schematics of PI reconnection*
-
 * Configuration for /dev/i2c-1
 * port 2 (SDA), port 3 (SCL)
 * pull-up resistor for this module was set to 1.5 k&#937;
@@ -40,8 +37,6 @@ ecomet_i2c_tools/hdc1080
 *  Help for quick help
 *  Self test for I2C connection
 *  Pushing ![ON button](./image/ON_30x30.png) will be refreshed measurement and read changes of chip setting
-
-![console](pca9632_console.png  "Console")
 
 **Application pictures:**
 
