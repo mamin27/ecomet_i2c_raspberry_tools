@@ -115,11 +115,19 @@ class HDC1080(object):
             i2c = I2C
         self._logger = logging.getLogger(__name__)    
         self._device = i2c.get_i2c_device(address, **kwargs)
+    def self_test(self) :
+        try :
+          ret = self.battery()
+        except :
+          ret = 1
+        return ret
     def read_register(self, register) :
         if register == 'TEMP' or register == 'HUMDT' or register == 'CONF' or register == 'SER_ID1' or register == 'SER_ID2' or register == 'SER_ID3' or register == 'MANUF' or register == 'DEVID' :
            ret = 0
            try:
               reg_status_bita = self._device.readList(reg_list[register],2)
+              if not reg_status_bita:
+                return (0x0000,2)
               reg_status_hex = '0x' + '{0:02x}'.format(reg_status_bita[0]) + '{0:02x}'.format(reg_status_bita[1])
               reg_status = int(reg_status_hex, 0)
            except :

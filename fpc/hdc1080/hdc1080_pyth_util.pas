@@ -223,7 +223,6 @@ function StrToObj (hdc_str: String): hdc1080Ob;
 var
   i: Integer;
   keys: TParts;
-  // idx: Integer;
 begin
 
   hdc_str := StringReplace(hdc_str,' ','',[rfReplaceAll, rfIgnoreCase]);

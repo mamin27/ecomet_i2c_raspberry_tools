@@ -65,16 +65,19 @@ var
   Ob_hdc_attr: array[1..50] of PyRecordOb;
   Ob_hdc_c: array[1..50] of hdc1080Ob_c;
   idx_hdc_attr,idx_hdc_c_attr,idx_hdc_c: integer;
+  test: integer;
 
 
 implementation
 
 {$R *.lfm}
 
-uses hdc1080_read, hdc1080_write, creator, help;
+uses hdc1080_read, hdc1080_write, creator, help, missing_chip;
 
 const
   cPyLibraryLinux = 'libpython3.7m.so.1.0';
+  PASSED = 0;
+  FAILED = 1;
 
 procedure TForm_hdc1080.DoPy_InitEngine;
 var
@@ -109,9 +112,18 @@ begin
   idx_hdc_attr :=1;
   idx_hdc_c_attr :=1;
   idx_hdc_c :=1;
+  test := FAILED;
 
-  read_hdc();
-  read_measure();
+  self_test();
+  if (test = 0) then
+     begin
+      Application.ShowMainForm := True;
+      Form_hdc1080.Visible:= True;
+      Application.CreateForm(TForm_creator, Form_creator);
+      Application.CreateForm(TForm_help, Form_help);
+      read_hdc();
+      read_measure();
+     end;
 
 end;
 
@@ -178,13 +190,33 @@ begin
 
   case hdc.attr1.code_type of
    'READ_HDC':
-     read_output_hdc(hdc);
+       read_output_hdc(hdc);
+   'READ_HDC_ERR':
+     writeln('read_hdc_err');
    'READ_MEASURE':
      read_measure_hdc(hdc);
+   'READ_MEASURE_ERR':
+     writeln('read_measure_err');
    'WRITE_REG_CONF':
      writeln('Success write to CONF Register');
+   'TEST_PASSED':
+     begin
+       writeln('Selftest correct');
+       test := PASSED;
+     end;
+   'MISSING_CHIP':
+     begin
+       writeln('Missed chip');
+       test := FAILED;
+       Form_hdc1080.Deactivate;
+       Application.CreateForm(TForm_missing_chip, Form_missing_chip);
+       Form_missing_chip.Visible:= True;
+     end
     else
-     exit;
+     begin
+       //writeln(hdc.attr1.code_type);
+       exit;
+     end;
     end;
 
 end;

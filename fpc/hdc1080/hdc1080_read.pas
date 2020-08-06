@@ -11,6 +11,7 @@ uses
 procedure read_output_hdc (hdc: hdc1080Ob);
 procedure read_hdc ();
 procedure read_measure ();
+procedure self_test ();
 procedure read_measure_hdc  (hdc: hdc1080Ob);
 function EnumToInt (Tp: Integer; S: String) : Integer;
 function EnumToInt_MODE (S: String) : Integer;
@@ -103,7 +104,10 @@ Py_S.Delimiter := '|';
 Py_S.StrictDelimiter := True;
 Py_S.DelimitedText := 'from  i2c_pkg.hdc1080_pkg import hdc1080|' +
                       'register = hdc1080.register_list()|' +
-                      'print (":READ_HDC:{}".format(register))|';
+                      'if register != "" :|' +
+                      '    print (":READ_HDC:{}".format(register))|' +
+                      'else :|' +
+                      '    print(":READ_HDC_ERR:")|';
 
 Form_hdc1080.PythonEngine_hdc1080.ExecStrings(Py_S);
 Py_S.Free;
@@ -118,7 +122,29 @@ Py_S.Delimiter := '|';
 Py_S.StrictDelimiter := True;
 Py_S.DelimitedText := 'from  i2c_pkg.hdc1080_pkg import hdc1080|' +
                       'register = hdc1080.measure_list()|' +
-                      'print (":READ_MEASURE:{}".format(register))|';
+                      'if register != "" :|' +
+                      '    print (":READ_MEASURE:{}".format(register))|' +
+                      'else :|' +
+                      '    print (":READ_MEASURE_ERR:")|';
+
+Form_hdc1080.PythonEngine_hdc1080.ExecStrings(Py_S);
+Py_S.Free;
+end;
+
+procedure self_test ();
+var
+  Py_S: TStringList;
+begin
+Py_S := TStringList.Create;
+Py_S.Delimiter := '|';
+Py_S.StrictDelimiter := True;
+Py_S.DelimitedText := 'from  i2c_pkg.hdc1080_pkg import hdc1080|' +
+                      'sens = hdc1080.HDC1080()|' +
+                      'ret = sens.self_test()|' +
+                      'if ret == 0 :|' +
+                      '    print(":TEST_PASSED:")|' +
+                      'else :|' +
+                      '    print(":MISSING_CHIP:")|';
 
 Form_hdc1080.PythonEngine_hdc1080.ExecStrings(Py_S);
 Py_S.Free;
@@ -142,8 +168,6 @@ begin
   Form_hdc1080.Edit_devid.Text:= hdc.attr2.attr_val_obj.attr3.attr_val;  //DEVICE ID
   Form_hdc1080.Edit_devid.Alignment:=taRightJustify;
 
-  //sleep(1000);
-
 end;
 
 procedure  read_measure_hdc  (hdc: hdc1080Ob);
@@ -158,8 +182,6 @@ begin
   i := StrToFloat(hdc.attr3.attr_val_obj.attr2.attr_val);
   Form_hdc1080.Edit_hmdt.Text:= FloatToStr(RoundTo(i,-2)) + '%';  //HUMIDITY
   Form_hdc1080.Edit_hmdt.Alignment:=taRightJustify;
-
-  //sleep(1000);
 
 end;
 
