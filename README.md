@@ -1,6 +1,6 @@
 # ecomet_i2c_raspberry_tools
 
-**Last modification:** 6.08.2020
+**Last modification:** 13.08.2020
 **Contributor:** Marian Minar
 
 **Scope:**
@@ -28,7 +28,7 @@ The Code for I2C Chip maintenance from **Raspberry PI 3+** and above. This code 
 | --------------- |:---------------:|:--------:|:--------------------------:|:------------------------------:|:-----------------------------:|
 | EEPROM 24cXXX   |      yes        |    no    | currently tested at        | currently no GUI planned       |                               |
 |                 |                 |          | 24c04,24c32,24c64          |                                |                               |
-| PCA9632         |      yes        |    yes   | GUI partly developed       | Finalise GUI                   |                               |
+| PCA9632         |      yes        |    yes   | GUI finished               |                                |                               |
 | HDC1080         |      yes        |    yes   | GUI finished               |                                |                               |
 | HTU21D          |      yes        |    no    |                            | currently no GUI planned       |                               |
 
