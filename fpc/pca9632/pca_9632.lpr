@@ -7,15 +7,17 @@ uses
   cthreads,
   {$ENDIF}{$ENDIF}
   Classes, SysUtils, CustApp, Interfaces,
-  Forms, pca_display, pca_regex, proc_py, pca_pyth_util,
-  pca_read;
+  Forms, pca_display, ecomet_regex, proc_py, pca_pyth_util,
+  pca_read, creator, help, missing_chip;
 
 {$R *.res}
 
 begin
   RequireDerivedFormResource:=True;
+  Application.Title:='PCA9632 I2C Tool';
   Application.Scaled:=True;
   Application.Initialize;
-  Application.CreateForm(TForm1, Form1);
+  Application.ShowMainForm := False;
+  Application.CreateForm(Tpca9632_main, pca9632_main);
   Application.Run;
 end.

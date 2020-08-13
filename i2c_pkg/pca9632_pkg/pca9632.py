@@ -221,6 +221,13 @@ class PCA9632(object):
             i2c = I2C
         self._device = i2c.get_i2c_device(address, **kwargs)
         #self._device.write8(PWM0,0x7D)
+    def self_test(self) :
+        try :
+          self.read_register( register = 'MODE1')
+        except :
+          return 1
+        else :
+          return 0
     def read_register(self, register) :
         return self._device.readU8(reg_list[register])
     def write_register(self, register, bits) :

@@ -6,18 +6,20 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Buttons,
-  ComboEx, ComCtrls, ExtCtrls, Spin, Types, StrUtils, Math,
+  ComboEx, ComCtrls, ExtCtrls, Spin, Menus, Types, StrUtils, Math,
   pca_pyth_util, PythonEngine;
 
 const
   TYPE0 = 0;
   TYPE1 = 1;
+  PASSED = 0;
+  FAILED = 1;
 
 type
 
-  { TForm1 }
+  { Tpca9632_main }
 
-  TForm1 = class(TForm)
+  Tpca9632_main = class(TForm)
     BitBtn1: TBitBtn;
     ComboBoxEx1: TComboBoxEx;
     ComboBoxEx10: TComboBoxEx;
@@ -49,6 +51,9 @@ type
     Edit14: TEdit;
     GroupBox1: TGroupBox;
     ImageList1: TImageList;
+    MainMenu1: TMainMenu;
+    Creator: TMenuItem;
+    Help: TMenuItem;
     PythonEngine1: TPythonEngine;
     PythonInputOutput1: TPythonInputOutput;
     Shape1,Shape2,Shape3,Shape4,Shape5: TShape;
@@ -99,12 +104,14 @@ type
     procedure ComboBoxEx7Change(Sender: TObject);
     procedure ComboBoxEx8Change(Sender: TObject);
     procedure ComboBoxEx9Change(Sender: TObject);
+    procedure CreatorClick(Sender: TObject);
     procedure Edit1EditingDone(Sender: TObject);
     procedure Edit2EditingDone(Sender: TObject);
     procedure Edit3EditingDone(Sender: TObject);
     procedure Edit4EditingDone(Sender: TObject);
     procedure Edit5EditingDone(Sender: TObject);
     procedure Edit6EditingDone(Sender: TObject);
+    procedure HelpClick(Sender: TObject);
     procedure PythonInputOutput1SendData(Sender: TObject; const Data: AnsiString);
     procedure Edit1Click(Sender: TObject);
     procedure Edit2Click(Sender: TObject);
@@ -135,7 +142,7 @@ DIMM = Array [1 .. 17] of TGWM;
 FREQ = Array [0 .. 256] of TFREQ;
 
 var
-  Form1: TForm1;
+  pca9632_main: Tpca9632_main;
   ItemEx010,ItemEx011,ItemEx012: TComboExItem;
   ItemEx020,ItemEx021,ItemEx022: TComboExItem;
   ItemEx030,ItemEx031,ItemEx032: TComboExItem;
@@ -162,6 +169,7 @@ var
   grppwm: GWM;
   grpdim: DIMM;
   grpfreq: FREQ;
+  test: Integer;
 
   procedure ComboBox_init (Item1, Item2: TComboExItem; ComboBoxEx: TComboBoxEx);
   procedure ComboBox_dmblnk_init (Item1, Item2: TComboExItem; ComboBoxEx: TComboBoxEx);
@@ -174,7 +182,7 @@ var
 
 implementation
 
-uses pca_grppwm,pca_read, pca_write;
+uses pca_grppwm,pca_read, pca_write, creator, help, missing_chip;
 
 const
   cPyLibraryLinux = 'libpython3.7m.so.1.0';
@@ -289,7 +297,7 @@ end;
 
 {$R *.lfm}
 
-{ TForm1 }
+{ Tpca9632_main }
 
 function pwm_input_check (pwm_input: PChar): Real;
 var
@@ -330,7 +338,7 @@ begin
   end;
 end;
 
-procedure TForm1.PythonInputOutput1SendData(Sender: TObject;
+procedure Tpca9632_main.PythonInputOutput1SendData(Sender: TObject;
   const Data: AnsiString);
 begin
 
@@ -346,6 +354,8 @@ begin
   case pca.attr1.code_type of
    'READ_PCA':
      read_output_pca(pca, grpdim, grpfreq);
+   'READ_PCA_ERR':
+     writeln('read_pca_err');
    'WRITE_REG_PCA_0':
       writeln('WRITE_REG_PCA correct');
    'WRITE_REG_PCA_1':
@@ -366,13 +376,26 @@ begin
       writeln('WRITE_REG_GRPFREQ correct');
    'WRITE_REG_GRPFREQ_1':
       writeln('WRITE_REG_GPRFREQ error');
+   'TEST_PASSED':
+     begin
+       writeln('Selftest correct');
+       test := PASSED;
+     end;
+   'MISSING_CHIP':
+     begin
+       writeln('Missed chip');
+       test := FAILED;
+       pca9632_main.Deactivate;
+       Application.CreateForm(TForm_missing_chip, Form_missing_chip);
+       Form_missing_chip.Visible:= True;
+     end
     else
      exit;
     end;
 
 end;
 
-procedure TForm1.BitBtn1Click(Sender: TObject);
+procedure Tpca9632_main.BitBtn1Click(Sender: TObject);
 begin
 
   write_mode1_reg;
@@ -382,7 +405,7 @@ begin
   read_pca;
 end;
 
-procedure TForm1.ComboBoxEx1Change(Sender: TObject);
+procedure Tpca9632_main.ComboBoxEx1Change(Sender: TObject);
 var
   S: String;
 begin
@@ -394,7 +417,7 @@ begin
   Shape1.Visible:=True;
 end;
 
-procedure TForm1.ComboBoxEx2Change(Sender: TObject);
+procedure Tpca9632_main.ComboBoxEx2Change(Sender: TObject);
 var
   S: String;
 begin
@@ -406,7 +429,7 @@ begin
   Shape2.Visible:=True;
 end;
 
-procedure TForm1.ComboBoxEx3Change(Sender: TObject);
+procedure Tpca9632_main.ComboBoxEx3Change(Sender: TObject);
 var
   S: String;
 begin
@@ -418,7 +441,7 @@ begin
   Shape3.Visible:=True;
 end;
 
-procedure TForm1.ComboBoxEx4Change(Sender: TObject);
+procedure Tpca9632_main.ComboBoxEx4Change(Sender: TObject);
 var
   S: String;
 begin
@@ -430,7 +453,7 @@ begin
   Shape4.Visible:=True;
 end;
 
-procedure TForm1.ComboBoxEx5Change(Sender: TObject);
+procedure Tpca9632_main.ComboBoxEx5Change(Sender: TObject);
 var
   S: String;
 begin
@@ -442,7 +465,7 @@ begin
   Shape5.Visible:=True;
 end;
 
-procedure TForm1.ComboBoxEx6Change(Sender: TObject);
+procedure Tpca9632_main.ComboBoxEx6Change(Sender: TObject);
 var
   S: String;
 begin
@@ -454,7 +477,7 @@ begin
   Shape6.Visible:=True;
 end;
 
-procedure TForm1.ComboBoxEx7Change(Sender: TObject);
+procedure Tpca9632_main.ComboBoxEx7Change(Sender: TObject);
 var
   S: String;
 begin
@@ -466,7 +489,7 @@ begin
   Shape7.Visible:=True;
 end;
 
-procedure TForm1.ComboBoxEx8Change(Sender: TObject);
+procedure Tpca9632_main.ComboBoxEx8Change(Sender: TObject);
 var
   S: String;
 begin
@@ -478,7 +501,7 @@ begin
   Shape8.Visible:=True;
 end;
 
-procedure TForm1.ComboBoxEx9Change(Sender: TObject);
+procedure Tpca9632_main.ComboBoxEx9Change(Sender: TObject);
 var
   S: String;
 begin
@@ -490,7 +513,12 @@ begin
   Shape9.Visible:=True;
 end;
 
-procedure TForm1.ComboBoxEx10Change(Sender: TObject);
+procedure Tpca9632_main.CreatorClick(Sender: TObject);
+begin
+  Form_creator.Show;
+end;
+
+procedure Tpca9632_main.ComboBoxEx10Change(Sender: TObject);
 var
   S: String;
 begin
@@ -502,7 +530,7 @@ begin
   Shape20.Visible:=True;
 end;
 
-procedure TForm1.ComboBoxEx11Change(Sender: TObject);
+procedure Tpca9632_main.ComboBoxEx11Change(Sender: TObject);
 var
   S: String;
 begin
@@ -514,7 +542,7 @@ begin
   Shape21.Visible:=True;
 end;
 
-procedure TForm1.ComboBoxEx12Change(Sender: TObject);
+procedure Tpca9632_main.ComboBoxEx12Change(Sender: TObject);
 var
   S: String;
 begin
@@ -526,7 +554,7 @@ begin
   Shape22.Visible:=True;
 end;
 
-procedure TForm1.ComboBoxEx13Change(Sender: TObject);
+procedure Tpca9632_main.ComboBoxEx13Change(Sender: TObject);
 var
   S: String;
 begin
@@ -538,7 +566,7 @@ begin
   Shape23.Visible:=True;
 end;
 
-procedure TForm1.DoPy_InitEngine;
+procedure Tpca9632_main.DoPy_InitEngine;
 var
   S: string;
 begin
@@ -549,7 +577,7 @@ begin
   PythonEngine1.LoadDll;
 end;
 
-procedure TForm1.FormCreate(Sender: TObject);
+procedure Tpca9632_main.FormCreate(Sender: TObject);
 begin
 
   DoPy_InitEngine;
@@ -583,7 +611,19 @@ begin
   grpdim := initialize_dimming;
   grpfreq := initialize_freq;
 
-  read_pca;
+  test := FAILED;
+
+  self_test();
+  if (test = 0) then
+     begin
+      Application.ShowMainForm := True;
+      pca9632_main.Visible:= True;
+      Application.CreateForm(TForm_creator, Form_creator);
+      Application.CreateForm(TForm_help, Form_help);
+      read_pca();
+     end;
+
+  //read_pca;
 
   //Image1.Stretch:= true;
   //Image1.Proportional:= true;
@@ -592,19 +632,19 @@ begin
 
 end;
 
-procedure TForm1.TrackBar1Change(Sender: TObject);
+procedure Tpca9632_main.TrackBar1Change(Sender: TObject);
 begin
 
 end;
 
-procedure TForm1.Edit1Click(Sender: TObject);
+procedure Tpca9632_main.Edit1Click(Sender: TObject);
 begin
   Edit1.ReadOnly:=false;
   Edit1.Color:=clWhite;
   Shape10.Visible:=True;
 end;
 
-procedure TForm1.Edit1EditingDone(Sender: TObject);
+procedure Tpca9632_main.Edit1EditingDone(Sender: TObject);
 var
   in_buffer: PChar;
   Size: Byte;
@@ -665,14 +705,14 @@ begin
 
 end;
 
-procedure TForm1.Edit2Click(Sender: TObject);
+procedure Tpca9632_main.Edit2Click(Sender: TObject);
 begin
   Edit2.ReadOnly:=false;
   Edit2.Color:=clWhite;
   Shape11.Visible:=True;
 end;
 
-procedure TForm1.Edit2EditingDone(Sender: TObject);
+procedure Tpca9632_main.Edit2EditingDone(Sender: TObject);
 var
   in_buffer: PChar;
   Size: Byte;
@@ -733,14 +773,14 @@ begin
 
 end;
 
-procedure TForm1.Edit3Click(Sender: TObject);
+procedure Tpca9632_main.Edit3Click(Sender: TObject);
 begin
   Edit3.ReadOnly:=false;
   Edit3.Color:=clWhite;
   Shape12.Visible:=True;
 end;
 
-procedure TForm1.Edit3EditingDone(Sender: TObject);
+procedure Tpca9632_main.Edit3EditingDone(Sender: TObject);
 var
   in_buffer: PChar;
   Size: Byte;
@@ -801,14 +841,14 @@ begin
 
 end;
 
-procedure TForm1.Edit4Click(Sender: TObject);
+procedure Tpca9632_main.Edit4Click(Sender: TObject);
 begin
   Edit4.ReadOnly:=false;
   Edit4.Color:=clWhite;
   Shape13.Visible:=True;
 end;
 
-procedure TForm1.Edit4EditingDone(Sender: TObject);
+procedure Tpca9632_main.Edit4EditingDone(Sender: TObject);
 var
   in_buffer: PChar;
   Size: Byte;
@@ -869,14 +909,14 @@ begin
 
 end;
 
-procedure TForm1.Edit5Click(Sender: TObject);
+procedure Tpca9632_main.Edit5Click(Sender: TObject);
 begin
   Edit5.ReadOnly:=false;
   Edit5.Color:=clWhite;
   Shape14.Visible:=True;
 end;
 
-procedure TForm1.Edit5EditingDone(Sender: TObject);
+procedure Tpca9632_main.Edit5EditingDone(Sender: TObject);
 var
   in_buffer: PChar;
   Size: Byte;
@@ -941,14 +981,14 @@ begin
 
 end;
 
-procedure TForm1.Edit6Click(Sender: TObject);
+procedure Tpca9632_main.Edit6Click(Sender: TObject);
 begin
   Edit6.ReadOnly:=false;
   Edit6.Color:=clWhite;
   Shape15.Visible:=True;
 end;
 
-procedure TForm1.Edit6EditingDone(Sender: TObject);
+procedure Tpca9632_main.Edit6EditingDone(Sender: TObject);
 var
   in_buffer: PChar;
   Size: Byte;
@@ -991,6 +1031,11 @@ begin
   else
     writeln('GRPFREQ: not in 24 .. 0.0938 Hz');
 
+end;
+
+procedure Tpca9632_main.HelpClick(Sender: TObject);
+begin
+  Form_help.Show;
 end;
 
 end.

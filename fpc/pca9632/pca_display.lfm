@@ -1,11 +1,12 @@
-object Form1: TForm1
-  Left = 240
-  Height = 366
-  Top = 184
+object pca9632_main: Tpca9632_main
+  Left = 56
+  Height = 389
+  Top = 197
   Width = 838
-  Caption = 'Form1'
-  ClientHeight = 366
+  Caption = 'PCA9632 Tool'
+  ClientHeight = 362
   ClientWidth = 838
+  Menu = MainMenu1
   OnCreate = FormCreate
   UseDockManager = True
   LCLVersion = '2.0.0.4'
@@ -2115,5 +2116,21 @@ object Form1: TForm1
     RawOutput = False
     left = 592
     top = 88
+  end
+  object MainMenu1: TMainMenu
+    BidiMode = bdRightToLeft
+    ParentBidiMode = False
+    left = 773
+    top = 22
+    object Creator: TMenuItem
+      Caption = 'Creator'
+      ImageIndex = 0
+      OnClick = CreatorClick
+    end
+    object Help: TMenuItem
+      Caption = 'Help'
+      ImageIndex = 1
+      OnClick = HelpClick
+    end
   end
 end

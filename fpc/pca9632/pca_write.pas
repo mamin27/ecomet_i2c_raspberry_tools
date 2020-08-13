@@ -56,7 +56,7 @@ Py_S.DelimitedText := 'from  i2c_pkg.pca9632_pkg import pca9632|' +
                       'ret = pwm.write_register(' + content + ')|' +
                       'print (":WRITE_REG_PCA_0:") if ret == 0 else print (":WRITE_REG_PCA_1:")|';
 
-Form1.PythonEngine1.ExecStrings(Py_S);
+pca9632_main.PythonEngine1.ExecStrings(Py_S);
 Py_S.Free;
 end;
 
@@ -86,7 +86,7 @@ Py_S.DelimitedText := 'from  i2c_pkg.pca9632_pkg import pca9632|' +
                       'ret = pwm.write_register(' + content + ')|' +
                       'print (":WRITE_REG_PCA_0:") if ret == 0 else print (":WRITE_REG_PCA_1:")|';
 
-Form1.PythonEngine1.ExecStrings(Py_S);
+pca9632_main.PythonEngine1.ExecStrings(Py_S);
 Py_S.Free;
 end;
 
@@ -164,7 +164,7 @@ if bits.key = 'GRPFREQ' then
                         'ret = pwm.write_register(' + content + ')|' +
                         'print (":WRITE_REG_GRPFREQ_0:") if ret == 0 else print (":WRITE_REG_GRPFREQ_1:")|';
 
-Form1.PythonEngine1.ExecStrings(Py_S);
+pca9632_main.PythonEngine1.ExecStrings(Py_S);
 Py_S.Free;
 end;
 
@@ -180,7 +180,7 @@ begin
      mode1_idx := mode1_idx + 1;
      mode1_cmd[mode1_idx] := cmd;
      pca.attr1.attr_val_obj.attr1.attr_chg := false;
-     Form1.Shape1.Visible:=false;
+     pca9632_main.Shape1.Visible:=false;
   end;
 
   cmd := pre_write(pca.attr1.attr_val_obj.attr2.attr_chg, pca.attr1.attr_val_obj.attr2.attr_new_val, pca.attr1.attr_val_obj.attr2.attr_name);
@@ -188,28 +188,28 @@ begin
      mode1_idx := mode1_idx + 1;
      mode1_cmd[mode1_idx] := cmd;
      pca.attr1.attr_val_obj.attr2.attr_chg := false;
-     Form1.Shape2.Visible:=false;
+     pca9632_main.Shape2.Visible:=false;
   end;
   cmd := pre_write(pca.attr1.attr_val_obj.attr3.attr_chg, pca.attr1.attr_val_obj.attr3.attr_new_val, pca.attr1.attr_val_obj.attr3.attr_name);
   if cmd <> '' then begin
      mode1_idx := mode1_idx + 1;
      mode1_cmd[mode1_idx] := cmd;
      pca.attr1.attr_val_obj.attr3.attr_chg := false;
-     Form1.Shape3.Visible:=false;
+     pca9632_main.Shape3.Visible:=false;
   end;
   cmd := pre_write(pca.attr1.attr_val_obj.attr4.attr_chg, pca.attr1.attr_val_obj.attr4.attr_new_val, pca.attr1.attr_val_obj.attr4.attr_name);
   if cmd <> '' then begin
      mode1_idx := mode1_idx + 1;
      mode1_cmd[mode1_idx] := cmd;
      pca.attr1.attr_val_obj.attr4.attr_chg := false;
-     Form1.Shape4.Visible:=false;
+     pca9632_main.Shape4.Visible:=false;
   end;
   cmd := pre_write(pca.attr1.attr_val_obj.attr5.attr_chg, pca.attr1.attr_val_obj.attr5.attr_new_val, pca.attr1.attr_val_obj.attr5.attr_name);
   if cmd <> '' then begin
      mode1_idx := mode1_idx + 1;
      mode1_cmd[mode1_idx] := cmd;
      pca.attr1.attr_val_obj.attr5.attr_chg := false;
-     Form1.Shape5.Visible:=false;
+     pca9632_main.Shape5.Visible:=false;
   end;
 
   if mode1_idx <> 0 then begin
@@ -230,7 +230,7 @@ begin
      mode2_idx := mode2_idx + 1;
      mode2_cmd[mode2_idx] := cmd;
      pca.attr2.attr_val_obj.attr1.attr_chg := false;
-     Form1.Shape6.Visible:=false;
+     pca9632_main.Shape6.Visible:=false;
   end;
 
   cmd := pre_write(pca.attr2.attr_val_obj.attr2.attr_chg, pca.attr2.attr_val_obj.attr2.attr_new_val, pca.attr2.attr_val_obj.attr2.attr_name);
@@ -238,21 +238,21 @@ begin
      mode2_idx := mode2_idx + 1;
      mode2_cmd[mode2_idx] := cmd;
      pca.attr2.attr_val_obj.attr2.attr_chg := false;
-     Form1.Shape7.Visible:=false;
+     pca9632_main.Shape7.Visible:=false;
   end;
   cmd := pre_write(pca.attr2.attr_val_obj.attr3.attr_chg, pca.attr2.attr_val_obj.attr3.attr_new_val, pca.attr2.attr_val_obj.attr3.attr_name);
   if cmd <> '' then begin
      mode2_idx := mode2_idx + 1;
      mode2_cmd[mode2_idx] := cmd;
      pca.attr2.attr_val_obj.attr3.attr_chg := false;
-     Form1.Shape8.Visible:=false;
+     pca9632_main.Shape8.Visible:=false;
   end;
   cmd := pre_write_dmblnk(pca.attr2.attr_val_obj.attr4.attr_chg, pca.attr2.attr_val_obj.attr4.attr_new_val, pca.attr2.attr_val_obj.attr4.attr_name);
   if cmd <> '' then begin
      mode2_idx := mode2_idx + 1;
      mode2_cmd[mode2_idx] := cmd;
      pca.attr2.attr_val_obj.attr4.attr_chg := false;
-     Form1.Shape9.Visible:=false;
+     pca9632_main.Shape9.Visible:=false;
   end;
 
   if mode2_idx <> 0 then begin
@@ -274,28 +274,28 @@ begin
      ledout_idx := ledout_idx + 1;
      ledout_cmd[ledout_idx] := cmd;
      pca.attr12.attr_val_obj.attr1.attr_chg := false;
-     Form1.Shape20.Visible:=false;
+     pca9632_main.Shape20.Visible:=false;
   end;
   cmd := pre_wr_led(pca.attr12.attr_val_obj.attr2.attr_chg, pca.attr12.attr_val_obj.attr2.attr_new_val, pca.attr12.attr_val_obj.attr2.attr_name);
   if cmd.key <> '' then begin
      ledout_idx := ledout_idx + 1;
      ledout_cmd[ledout_idx] := cmd;
      pca.attr12.attr_val_obj.attr2.attr_chg := false;
-     Form1.Shape21.Visible:=false;
+     pca9632_main.Shape21.Visible:=false;
   end;
   cmd := pre_wr_led(pca.attr12.attr_val_obj.attr3.attr_chg, pca.attr12.attr_val_obj.attr3.attr_new_val, pca.attr12.attr_val_obj.attr3.attr_name);
   if cmd.key <> '' then begin
      ledout_idx := ledout_idx + 1;
      ledout_cmd[ledout_idx] := cmd;
      pca.attr12.attr_val_obj.attr3.attr_chg := false;
-     Form1.Shape22.Visible:=false;
+     pca9632_main.Shape22.Visible:=false;
   end;
   cmd := pre_wr_led(pca.attr12.attr_val_obj.attr4.attr_chg, pca.attr12.attr_val_obj.attr4.attr_new_val, pca.attr12.attr_val_obj.attr4.attr_name);
   if cmd.key <> '' then begin
      ledout_idx := ledout_idx + 1;
      ledout_cmd[ledout_idx] := cmd;
      pca.attr12.attr_val_obj.attr4.attr_chg := false;
-     Form1.Shape23.Visible:=false;
+     pca9632_main.Shape23.Visible:=false;
   end;
 
   if ledout_idx <> 0 then begin
