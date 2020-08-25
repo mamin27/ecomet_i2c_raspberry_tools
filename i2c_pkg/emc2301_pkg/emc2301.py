@@ -11,7 +11,7 @@ reg_list = { 'CONF' : emc2301_constant.CONF,'FAN_STAT' : emc2301_constant.FAN_ST
              'FAN_CONF1' : emc2301_constant.FAN_CONF1, 'FAN_CONF2' : emc2301_constant.FAN_CONF2, 'GAIN' : emc2301_constant.GAIN,
              'FAN_SPIN_UP' : emc2301_constant.FAN_SPIN_UP, 'FAN_MAX_STEP' : emc2301_constant.FAN_MAX_STEP, 'FAN_MIN_DRIVE' :  emc2301_constant.FAN_MIN_DRIVE,
              'FAN_TACH' : emc2301_constant.FAN_TACH, 'FAN_FAIL_BAND_LB' : emc2301_constant.FAN_FAIL_BAND_LB, 'FAN_FAIL_BAND_HB' :   emc2301_constant.FAN_FAIL_BAND_HB,
-             'TACH_TARGET_LB' : emc2301_constant.TACH_TARGET_LB, 'TACH_TARGET_HB' :  TACH_TARGET_LB, 'TACH_READ_HB' : emc2301_constant.TACH_READ_LB, 'TACH_READ_LB' : emc2301_constant.TACH_READ_LB,
+             'TACH_TARGET_LB' : emc2301_constant.TACH_TARGET_LB, 'TACH_TARGET_HB' :  emc2301_constant.TACH_TARGET_HB, 'TACH_READ_HB' : emc2301_constant.TACH_READ_HB, 'TACH_READ_LB' : emc2301_constant.TACH_READ_LB,
              'SOFTWARE_LOCK' : emc2301_constant.SOFTWARE_LOCK, 'PRODUCT_ID' : emc2301_constant.PRODUCT_ID, 'MANUF_ID' : emc2301_constant.MANUF_ID, 'REVISION_ID' : emc2301_constant.REVISION_ID
         }
 conf_bit_on_list = { 'MASK' :  emc2301_constant.MASK,
@@ -61,10 +61,10 @@ def register_list() :
    
    return (register);
 
-class emc2301(object):
+class EMC2301(object):
     '''emc2301() PWM LED/servo controller.'''
 
-    def __init__(self, address=emc2301_constant.emc2301_ADDRESS, i2c=None, **kwargs) :
+    def __init__(self, address=emc2301_constant.EMC2301_ADDRESS, i2c=None, **kwargs) :
         '''Initialize the emc2301.'''
         # Setup I2C interface for the device.
         if i2c is None:
@@ -72,16 +72,14 @@ class emc2301(object):
             i2c = I2C
         self._logger = logging.getLogger(__name__)    
         self._device = i2c.get_i2c_device(address, **kwargs)
-'''
     def self_test(self) :
         try :
-          ret = self.battery()
+          (np,ret) = self.productid()
         except :
           ret = 1
         return ret
-'''
     def read_register(self, register) :
-        if register == 'CONF' :
+        if register in ['CONF','PRODUCT_ID','MANUF_ID','REVISION_ID'] :
            ret = 0
            try:
               reg_status_bita = self._device.readList(reg_list[register],1)
@@ -122,6 +120,39 @@ class emc2301(object):
           else :
              self._logger.debug('write_register %s, byte data: %s', register,reg_status)
           return ret
+    def productid (self) :
+       ret = 0
+       (temp,lret) = self.read_register( register = 'PRODUCT_ID' )
+       if lret > 0 :
+          ret = ret + 1
+       if ret > 0 : 
+           self._logger.error('Read error %s'.format(ret))
+           return (0,ret)
+       else :
+           self._logger.debug('PRODUCT_ID: %s','{0:02X}'.format(temp))
+           return ('{0:02X}'.format(temp),0)
+    def manufid (self) :
+       ret = 0
+       (temp,lret) = self.read_register( register = 'MANUF_ID' )
+       if lret > 0 :
+          ret = ret + 1
+       if ret > 0 : 
+           self._logger.error('Read error %s'.format(ret))
+           return (0,ret)
+       else :
+           self._logger.debug('MANUF_ID: %s','{0:02X}'.format(temp))
+           return ('{0:02X}'.format(temp),0)
+    def revisionid (self) :
+       ret = 0
+       (temp,lret) = self.read_register( register = 'REVISION_ID' )
+       if lret > 0 :
+          ret = ret + 1
+       if ret > 0 : 
+           self._logger.error('Read error %s'.format(ret))
+           return (0,ret)
+       else :
+           self._logger.debug('REVISION_ID: %s','{0:02X}'.format(temp))
+           return ('{0:02X}'.format(temp),0)
 '''
     def write_mert_invoke (self, register) :
         if register == 'TEMP' or register == 'HUMDT' :

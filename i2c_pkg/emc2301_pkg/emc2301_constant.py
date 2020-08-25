@@ -1,20 +1,20 @@
 # Address:
 
-EMC2301_ADDRESS    = 0x5E      # 8 bit version
+EMC2301_ADDRESS    = 0x2F   # 8 bit version
 
 # Register
 
 CONF               = 0x20   # Configuration
 FAN_STAT           = 0x24   # Fan Status
 FAN_STALL          = 0x25   # Fan Stall Status
-FAN SPIN           = 0x26   # Fan Spin Status
+FAN_SPIN           = 0x26   # Fan Spin Status
 DRIVE_FALL         = 0x27   # Drive Fall Status
 FAN_INTERRUPT      = 0x29   # Controls the masking of interrupts on all fan related channels
 PWM_POLARITY       = 0x2A   # Configures Polarity of the PWM driver
 PWM_OUTPUT         = 0x2B   # Configures Output type of the PWM driver
-PWM BASE           = 0x2D   # Selects the base frequency for the PWM output
+PWM_BASE           = 0x2D   # Selects the base frequency for the PWM output
 FAN_SETTING        = 0x30   # Displays Driver inputs or Direct control of fan
-PWM DIVIDE         = 0x31   # Store the divide ratio to set the frequency
+PWM_DIVIDE         = 0x31   # Store the divide ratio to set the frequency
 FAN_CONF1          = 0x32   # FAN configuration #1
 FAN_CONF2          = 0x33   # FAN configuration #2
 GAIN               = 0x35   # Holds the gain terms
