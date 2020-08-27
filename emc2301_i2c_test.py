@@ -7,7 +7,7 @@ import logging
 
 sens = emc2301.EMC2301()
 
-logging.basicConfig(level=logging.DEBUG,  # change level looging to (INFO, DEBUG, ERROR)
+logging.basicConfig(level=logging.INFO,  # change level looging to (INFO, DEBUG, ERROR)
                     format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
                     datefmt='%m-%d %H:%M',
                     filename='emc2301.log',
@@ -37,3 +37,6 @@ sens._logger.info('MANUF ID: %s',format(val))
 (val,ret) = sens.revisionid()
 sens._logger.info('REVISION Read correct') if ret == 0 else sens._logger.error('Read error %s'.format(ret))
 sens._logger.info('REVISION ID: %s',format(val))
+
+register = emc2301.conf_register_list()
+print ('{}'.format(register))

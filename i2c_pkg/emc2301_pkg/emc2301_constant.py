@@ -183,12 +183,12 @@ WD_EN_CLR          = 0xDF   # Enables the WatchDog timer
 DR_EXT_CLK_CLR     = 0xFD   # Enables the internal tachometer clock or external clock
 USE_EXT_CLK_CLR    = 0xFE
 
-# CONF Mask bites
-CONF_HRES          = 0x0300
-CONF_TRES          = 0x0400
-CONF_BAT           = 0x0800
-CONF_MODE          = 0x1000
-CONF_HEAT          = 0x2000
+# FAN_STAT(0x24) 8 Bits clear :        
+
+WATCH_CLR           = 0x7F   # Watchdog Timer expire?
+DRIVE_FAIL_CLR      = 0xFB   # Speed can't meet the max of PWM duty cycle
+FAN_SPIN_CLR        = 0xFD   # Can't spin up FAN driver
+FAN_STALL_CLR       = 0xFE   # Fan driver stalled?
 
 # CONF MASK (0x20) 8 Bits:        
 
@@ -197,3 +197,10 @@ DIS_TO_M           = 0x40   # Disables the SMBus timeout function
 WD_EN_M            = 0x20   # Enables the WatchDog timer
 DR_EXT_CLK_M       = 0x02   # Enables the internal tachometer clock or external clock
 USE_EXT_CLK_M      = 0x01   # Enables to use a clock present on the CLK pin
+
+# FAN_STAT MASK (0x24) 8 Bits clear :        
+
+WATCH_M            = 0x80   # Watchdog Timer expire?
+DRIVE_FAIL_M       = 0x04   # Speed can't meet the max of PWM duty cycle
+FAN_SPIN_M         = 0x02   # Can't spin up FAN driver
+FAN_STALL_M        = 0x01   # Fan driver stalled?

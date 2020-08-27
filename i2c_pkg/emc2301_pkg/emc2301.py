@@ -4,10 +4,10 @@ import time
 import math
 from i2c_pkg.emc2301_pkg import emc2301_constant
 
-reg_list = { 'CONF' : emc2301_constant.CONF,'FAN_STAT' : emc2301_constant.FAN_STAT, 'FAN_STALL' :  emc2301_constant.FAN_STALL, 'FAN SPIN' : emc2301_constant.FAN_SPIN,
+reg_list = { 'CONF' : emc2301_constant.CONF,'FAN_STAT' : emc2301_constant.FAN_STAT, 'FAN_STALL' :  emc2301_constant.FAN_STALL, 'FAN_SPIN' : emc2301_constant.FAN_SPIN,
              'DRIVE_FALL' : emc2301_constant.DRIVE_FALL, 'FAN_INTERRUPT' : emc2301_constant.FAN_INTERRUPT, 
-             'PWM_POLARITY' : emc2301_constant.PWM_POLARITY, 'PWM_OUTPUT' :  emc2301_constant.PWM_OUTPUT, 'PWM BASE' : emc2301_constant.PWM_BASE, 
-             'FAN_SETTING' : emc2301_constant.FAN_SETTING, 'PWM DIVIDE' : emc2301_constant.PWM_DIVIDE, 
+             'PWM_POLARITY' : emc2301_constant.PWM_POLARITY, 'PWM_OUTPUT' :  emc2301_constant.PWM_OUTPUT, 'PWM_BASE' : emc2301_constant.PWM_BASE, 
+             'FAN_SETTING' : emc2301_constant.FAN_SETTING, 'PWM_DIVIDE' : emc2301_constant.PWM_DIVIDE, 
              'FAN_CONF1' : emc2301_constant.FAN_CONF1, 'FAN_CONF2' : emc2301_constant.FAN_CONF2, 'GAIN' : emc2301_constant.GAIN,
              'FAN_SPIN_UP' : emc2301_constant.FAN_SPIN_UP, 'FAN_MAX_STEP' : emc2301_constant.FAN_MAX_STEP, 'FAN_MIN_DRIVE' :  emc2301_constant.FAN_MIN_DRIVE,
              'FAN_TACH' : emc2301_constant.FAN_TACH, 'FAN_FAIL_BAND_LB' : emc2301_constant.FAN_FAIL_BAND_LB, 'FAN_FAIL_BAND_HB' :   emc2301_constant.FAN_FAIL_BAND_HB,
@@ -35,29 +35,152 @@ conf_mask_bit_list = { 'MASK_M' : emc2301_constant.MASK_M,
                        'USE_EXT_CLK_M' : emc2301_constant.USE_EXT_CLK_M
                       }
                       
+fan_stat_bit_off_list = { 'WATCH_CLR' :  emc2301_constant.WATCH_CLR,
+                      'DRIVE_FAIL_CLR' : emc2301_constant.DRIVE_FAIL_CLR,
+                      'FAN_SPIN_CLR' :  emc2301_constant.FAN_SPIN_CLR,
+                      'FAN_STALL_CLR' :  emc2301_constant.FAN_STALL_CLR
+                }
+   
+fan_stat_mask_bit_list = { 'WATCH_M' : emc2301_constant.WATCH_M,
+                       'DRIVE_FAIL_M' : emc2301_constant.DRIVE_FAIL_M,
+                       'FAN_SPIN_M' :  emc2301_constant.FAN_SPIN_M,
+                       'FAN_STALL_M' :  emc2301_constant.FAN_STALL_M
+                      }
+                      
+fan_stat_bit_off_list = { 'WATCH_CLR' :  emc2301_constant.WATCH_CLR,
+                      'DRIVE_FAIL_CLR' : emc2301_constant.DRIVE_FAIL_CLR,
+                      'FAN_SPIN_CLR' :  emc2301_constant.FAN_SPIN_CLR,
+                      'FAN_STALL_CLR' :  emc2301_constant.FAN_STALL_CLR
+                }
+   
+fan_stat_mask_bit_list = { 'WATCH_M' : emc2301_constant.WATCH_M,
+                       'DRIVE_FAIL_M' : emc2301_constant.DRIVE_FAIL_M,
+                       'FAN_SPIN_M' :  emc2301_constant.FAN_SPIN_M,
+                       'FAN_STALL_M' :  emc2301_constant.FAN_STALL_M
+                      }
+                      
 logger = logging.getLogger(__name__) 
 
-def register_list() :
+def conf_register_list() :
 
-   emc = emc2301()
+   emc = EMC2301()
    emc._logger = logging.getLogger('ecomet.emc2301.reglist') 
    register = {}
-   
    reg_conf = {}
-                   
+   reg_spin_up = {}
+   reg_fan_stat = {}
+   reg_pwm = {}
+   reg_tach = {}
+   reg_id = {}
+   
+   list_4096 = [32,64,128,256,512,1024,2048,4096]
+   list_128 = [1,2,4,8,16,32,64,128]
+   list_32 = [1,2,4,8,16,32]
+   list_16 = [0,0,0,1,2,4,8,16]
+                      
    reg_conf['MASK'] = 'UNMASKED' if emc.read_register( register = 'CONF' )[0] & conf_mask_bit_list['MASK_M'] > 0 else 'MASKED'
    reg_conf['DIS_TO'] = 'ENABLED' if emc.read_register( register = 'CONF' )[0] & conf_mask_bit_list['MASK_M'] > 0 else 'DISABLED'
    reg_conf['WD_EN'] = 'DISABLED' if emc.read_register( register = 'CONF' )[0] & conf_mask_bit_list['MASK_M'] > 0 else 'OPERATE'
    reg_conf['DR_EXT_CLK'] = 'CLK_INPUT' if emc.read_register( register = 'CONF' )[0] & conf_mask_bit_list['MASK_M'] > 0 else 'CLK_OUTPUT'
-   reg_conf['USE_EXT_CLK'] = 'INTERNAL' if emc.read_register( register = 'CONF' )[0] & conf_mask_bit_list['MASK_M'] > 0 else 'EXTERNAL' 
+   reg_conf['USE_EXT_CLK'] = 'INTERNAL' if emc.read_register( register = 'CONF' )[0] & conf_mask_bit_list['MASK_M'] > 0 else 'EXTERNAL'
+#   reg_conf['EN_ALGO'] =
+#   reg_conf['RANGE'] =
+#   reg_conf['EDGES'] =
+#   reg_conf['UPDATE'] = 
+#   reg_conf['EN_RRC'] = 
+#   reg_conf['GLITCH_EN'] = 
+#   reg_conf['DER_OPT'] =
+#   reg_conf['ERR_RNG'] =
+#   reg_conf['GAIND'] =
+#   reg_conf['GAINI'] =
+#   reg_conf['GAINP'] = 
    
-   '''     
-   reg_id['SERIAL'] = emc.serial()[0]
-   reg_id['MANUF'] = emc.manufacturer()[0]
-   reg_id['DEVID'] = emc.deviceid()[0]
-   '''
+#   reg_spin_up['DRIVE_FAIL_CNT'] =
+#   reg_spin_up['NOKICK'] =
+#   reg_spin_up['SPIN_LVL'] =
+#   reg_spin_up['SPINUP_TIME'] =
+   tbin = emc.read_register( register = 'FAN_MAX_STEP' )[0]
+   res = 0
+   for idx in range (0,6) :
+     res = res + (tbin % 2)  * list_32[idx]
+     tbin = tbin >> 1
+   reg_spin_up['FAN_MAX_STEP'] = res
+   tbin = emc.read_register( register = 'FAN_MIN_DRIVE' )[0]
+   res = 0
+   for idx in range (0,8) :
+     res = res + (tbin % 2)  * list_128[idx]
+     tbin = tbin >> 1
+   reg_spin_up['FAN_MIN_DRIVE'] = (res/255)*100
+   
+   reg_fan_stat['WATCH'] = 'EXPIRED' if emc.read_register( register = 'FAN_STAT' )[0] & fan_stat_mask_bit_list['WATCH_M'] > 0 else 'NOT_SET'
+   reg_fan_stat['DRIVE_FAIL'] = 'CANOT_MEET' if emc.read_register( register = 'FAN_STAT' )[0] & fan_stat_mask_bit_list['DRIVE_FAIL_M'] > 0 else 'MEET'
+   reg_fan_stat['FAN_SPIN'] = 'CANOT_SPIN' if emc.read_register( register = 'FAN_STAT' )[0] & fan_stat_mask_bit_list['FAN_SPIN_M'] > 0 else 'SPIN'
+   reg_fan_stat['FAN_STALL'] = 'STALL' if emc.read_register( register = 'FAN_STAT' )[0] & fan_stat_mask_bit_list['FAN_STALL_M'] > 0 else 'NOT_STALL'
+   tbin = emc.read_register( register = 'FAN_SETTING' )[0]
+   res = 0
+   for idx in range (0,8) :
+     res = res + (tbin % 2) * list_128[idx]  
+     tbin = tbin >> 1
+   reg_fan_stat['FAN_SETTING'] = (res/255)*100
+   
+   
+#   reg_pwm['PWM_POLARITY'] = 
+#   reg_pwm['PWM_OUTPUT'] = 
+#   reg_pwm['PWM_BASE'] =
+   tbin = emc.read_register( register = 'PWM_DIVIDE' )[0]
+   res = 0
+   for idx in range (0,8) :
+     res = res + (tbin % 2)  * list_128[idx]
+     tbin = tbin >> 1
+   reg_pwm['PWM_DIVIDE'] = res
+
+   tbin = emc.read_register( register = 'FAN_TACH' )[0]
+   res = 0
+   for idx in range (0,8) :
+     res = res + (tbin % 2) * list_4096[idx]
+     tbin_hb = tbin >> 1
+   reg_tach['FAN_TACH'] = res 
+   tbin_lb = emc.read_register( register = 'FAN_FAIL_BAND_LB' )[0]
+   tbin_hb = emc.read_register( register = 'FAN_FAIL_BAND_HB' )[0]
+   res = 0
+   for idx in range (0,8) :
+     res = res + (tbin_hb % 2) * list_4096[idx]
+     tbin_hb = tbin_hb >> 1
+   for idx in range (0,8) :
+     res = res + (tbin_lb % 2) * list_16[idx]
+     tbin_lb = tbin_lb >> 1
+   reg_tach['FAN_FAIL_BAND'] = res
+   tbin_lb = emc.read_register( register = 'TACH_TARGET_LB' )[0]
+   tbin_hb = emc.read_register( register = 'TACH_TARGET_HB' )[0]
+   res = 0
+   for idx in range (0,8) :
+     res = res + (tbin_hb % 2) * list_4096[idx]
+     tbin_hb = tbin_hb >> 1
+   for idx in range (0,8) :
+     res = res + (tbin_lb % 2) * list_16[idx]
+     tbin_lb = tbin_lb >> 1
+   reg_tach['TACH_TARGET'] = res
+   tbin_lb = emc.read_register( register = 'TACH_READ_LB' )[0]
+   tbin_hb = emc.read_register( register = 'TACH_READ_HB' )[0]
+   res = 0
+   for idx in range (0,8) :
+     res = res + (tbin_hb % 2) * list_4096[idx]
+     tbin_hb = tbin_hb >> 1
+   for idx in range (0,8) :
+     res = res + (tbin_lb % 2) * list_16[idx]
+     tbin_lb = tbin_lb >> 1
+   reg_tach['TACH_READ'] = res
+       
+   reg_id['PRODUCT_ID'] = emc.productid()[0]
+   reg_id['MANUF_ID'] = emc.manufid()[0]
+   reg_id['REVISION_ID'] = emc.revisionid()[0]
    
    register['CONF'] = reg_conf
+   register['FAN_STAT'] = reg_fan_stat
+   register['SPIN'] = reg_spin_up
+   register['PWM'] = reg_pwm
+   register['TACH'] = reg_tach
+   register['ID'] = reg_id
    
    return (register);
 
@@ -79,7 +202,9 @@ class EMC2301(object):
           ret = 1
         return ret
     def read_register(self, register) :
-        if register in ['CONF','PRODUCT_ID','MANUF_ID','REVISION_ID'] :
+        if register in ['CONF','FAN_STAT','PWM_DIVIDE','FAN_SETTING','FAN_MAX_STEP','FAN_MIN_DRIVE',
+                        'FAN_TACH','FAN_FAIL_BAND_LB','FAN_FAIL_BAND_HB','TACH_TARGET_LB','TACH_TARGET_HB','TACH_READ_LB','TACH_READ_HB',
+                        'PRODUCT_ID','MANUF_ID','REVISION_ID'] :
            ret = 0
            try:
               reg_status_bita = self._device.readList(reg_list[register],1)
