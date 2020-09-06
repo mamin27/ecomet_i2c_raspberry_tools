@@ -28,8 +28,8 @@ The Code for I2C Chip maintenance from **Raspberry PI 3+** and above. This code 
 
 | Chip            | Python 3 driver | FPC GUI  | Contributor Notes          | Planned work                   | Requestor Interests           |
 | --------------- |:---------------:|:--------:|:--------------------------:|:------------------------------:|:-----------------------------:|
-| EEPROM 24cXXX   |      yes        |    no    | currently tested at        | currently no GUI planned       |                               |
-|                 |                 |          | 24c04,24c32,24c64          |                                |                               |
+| EEPROM 24cXXX   |      yes        |    no    | currently tested at        | planned testing at 24c01,      |                               |
+|                 |                 |          | 24c04,24c32,24c64          | 24c08, 24c16                   |                               |
 | PCA9632         |      yes        |    yes   | GUI finished               |                                |                               |
 | HDC1080         |      yes        |    yes   | GUI finished               |                                |                               |
 | HTU21D          |      yes        |    no    |                            | currently no GUI planned       |                               |
