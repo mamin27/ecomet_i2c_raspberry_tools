@@ -90,7 +90,7 @@ UPDATE             = 0x07 # Ramp rate to the driver response
                           # 101 - 800ms
                           # 110 - 1200ms
                           # 111 - 1600ms
-EDGE			   = 0x18 # Number of Poles of the Fan
+EDGES			   = 0x18 # Number of Poles of the Fan
                           # 00 - 1 pole, effective tach multiplier 0.5
                           # 01 - 2 poles (def), -- 1
                           # 10 - 3 poles, -- 1.5
@@ -100,7 +100,7 @@ RANGE              = 0x60 # Range of TACH
                           # 01 - min 1000 RPM (def), tach multiplier 2
                           # 10 - min 2000 RPM, tach multiplier 4
                           # 11 - min 4000 RPM, tach multiplier 8
-EN_AGLO            = 0x80 # Enables Fan Speed Control Algorithm
+EN_ALGO            = 0x80 # Enables Fan Speed Control Algorithm
 
 # FAN_CONF2 (0x33) 8 Bits:
 
@@ -175,127 +175,126 @@ TACH_READ_LB_MASK  = 0xF8   # def (0xF8)
 
 LOCK               = 0x01   # locked register
 
-# CONF (0x20) 8 Bits clear :        
+# CONF Mask (0x20) 8 Bits clear :        
 
-MASK_CLR           = 0x7F   # Blocks the ALERT# pin
-DIS_TO_CLR         = 0xBF   # Disables the SMBus timeout function
-WD_EN_CLR          = 0xDF   # Enables the WatchDog timer
-DR_EXT_CLK_CLR     = 0xFD   # Enables the internal tachometer clock or external clock
-USE_EXT_CLK_CLR    = 0xFE
+MASK_M           = 0x7F   # Blocks the ALERT# pin
+DIS_TO_M         = 0xBF   # Disables the SMBus timeout function
+WD_EN_M          = 0xDF   # Enables the WatchDog timer
+DR_EXT_CLK_M     = 0xFD   # Enables the internal tachometer clock or external clock
+USE_EXT_CLK_M    = 0xFE
 
-# FAN_STAT(0x24) 8 Bits clear :        
+# FAN_STAT Mask (0x24) 8 Bits clear :        
 
-WATCH_CLR           = 0x7F  # Watchdog Timer expire?
-DRIVE_FAIL_CLR      = 0xFB  # Speed can't meet the max of PWM duty cycle
-FAN_SPIN_CLR        = 0xFD  # Can't spin up FAN driver
-FAN_STALL_CLR       = 0xFE  # Fan driver stalled?
+WATCH_M           = 0x7F  # Watchdog Timer expire?
+DRIVE_FAIL_M      = 0xFB  # Speed can't meet the max of PWM duty cycle
+FAN_SPIN_M        = 0xFD  # Can't spin up FAN driver
+FAN_STALL_M       = 0xFE  # Fan driver stalled?
 
-# FAN DRIVE STATUS (0x27) 8 Bits:
+# FAN DRIVE Mask (0x27) 8 Bits:
 
-DRIVE_FAIL_I_CLR    = 0xFE
+DRIVE_FAIL_I_M    = 0xFE
 
-# FAN INTERRUPT ENABLE (0x29) 8 Bits:
+# FAN INTERRUPT ENABLE Mask (0x29) 8 Bits:
 
-FAN_INT_EN_CLR      = 0xFE  # Allows the Fan to assert the ALERT# pin
+FAN_INT_EN_M      = 0xFE  # Allows the Fan to assert the ALERT# pin
 
-# PWM_POLARITY (0x2A) 8 Bits:
+# PWM_POLARITY Mask (0x2A) 8 Bits:
 
-POLARITY_CLR        = 0xFE  # Determine the polarity of PWM
+POLARITY_M        = 0xFE  # Determine the polarity of PWM
 
-# PWM_OUTPUT (0x2B) 8 Bits:
+# PWM_OUTPUT Mask (0x2B) 8 Bits:
 
-PWM_OT_CLR          = 0xFE #  Determine of output type of PWM driver
+PWM_OT_M          = 0xFE #  Determine of output type of PWM driver
 
-# PWM_BASE (0x2D) 8 Bits:
+# PWM_BASE Mask (0x2D) 8 Bits:
 
-BASE_CLR            = 0xFC #  Base frequency
+BASE_M            = 0xFC #  Base frequency
 
-# FAN_CONF1 (0x32) 8 Bits clear :
+# FAN_CONF1 Mask (0x32) 8 Bits clear :
 
-EN_ALGO_CLR         = 0x7F  # Enables Fan Speed Control Algorithm
-RANGE_CLR           = 0x9F  # Range of TACH
-EDGES_CLR           = 0xE7  # Number of Poles of the Fan
-UPDATE_CLR          = 0xF8  # Ramp rate to the driver response
+EN_ALGO_M         = 0x7F  # Enables Fan Speed Control Algorithm
+RANGE_M           = 0x9F  # Range of TACH
+EDGES_M           = 0xE7  # Number of Poles of the Fan
+UPDATE_M          = 0xF8  # Ramp rate to the driver response
 
-# FAN_CONF2 (0x33) 8 Bits clear :
+# FAN_CONF2 Mask (0x33) 8 Bits clear :
 
-ERR_RNG_CLR         = 0xF9  # Control Advanced Control (Error window)
-DER_OPT_CLR         = 0xE7  # Control Advanced Control
-GLITCH_EN_CLR       = 0xDF  # Disable low pass Glitch filtelter (remove high frequency noise)
-EN_RRC_CLR          = 0xBF  # Enable Ramp Rate Control
+ERR_RNG_M         = 0xF9  # Control Advanced Control (Error window)
+DER_OPT_M         = 0xE7  # Control Advanced Control
+GLITCH_EN_M       = 0xDF  # Disable low pass Glitch filtelter (remove high frequency noise)
+EN_RRC_M          = 0xBF  # Enable Ramp Rate Control
 
-# GAIN (0x35) 8 Bits clear:
+# GAIN Mask (0x35) 8 Bits clear:
 
-GAINP_CLR          = 0xFC # Control proportional Gain
-GAINI_CLR          = 0xF3 # Control integral Gain 
-GAIND_CLR          = 0xCF # Control derivate Gain
+GAINP_M          = 0xFC # Control proportional Gain
+GAINI_M          = 0xF3 # Control integral Gain 
+GAIND_M          = 0xCF # Control derivate Gain
 
-# FAN_SPIN_UP (0x36) 8 Bits clear:
+# FAN_SPIN_UP Mask (0x36) 8 Bits clear:
 
-SPINUP_TIME_CLR     = 0xFC  # Determines max spin up time
-SPIN_LVL_CLR        = 0xE3  # Determines final drive level used by Spin Up Routines
-NOKICK_CLR          = 0xDF  # Determines if the Spin UP Routines will drive fan  to 100% duty cycle for 1/4 of the programed spin
-DRIVE_FAIL_CNT_CLR  = 0x3F  # Determines how many updates cycles are used for Drive fail detection function
+SPINUP_TIME_M     = 0xFC  # Determines max spin up time
+SPIN_LVL_M        = 0xE3  # Determines final drive level used by Spin Up Routines
+NOKICK_M          = 0xDF  # Determines if the Spin UP Routines will drive fan  to 100% duty cycle for 1/4 of the programed spin
+DRIVE_FAIL_CNT_M  = 0x3F  # Determines how many updates cycles are used for Drive fail detection function
 
-# CONF MASK (0x20) 8 Bits:        
+# CONF Clear (0x20) 8 Bits:        
 
-MASK_M             = 0x80   # Blocks the ALERT# pin
-DIS_TO_M           = 0x40   # Disables the SMBus timeout function
-WD_EN_M            = 0x20   # Enables the WatchDog timer
-DR_EXT_CLK_M       = 0x02   # Enables the internal tachometer clock or external clock
-USE_EXT_CLK_M      = 0x01   # Enables to use a clock present on the CLK pin
+MASK_CLR             = 0x80   # Blocks the ALERT# pin
+DIS_TO_CLR           = 0x40   # Disables the SMBus timeout function
+WD_EN_CLR            = 0x20   # Enables the WatchDog timer
+DR_EXT_CLK_CLR       = 0x02   # Enables the internal tachometer clock or external clock
+USE_EXT_CLK_CLR      = 0x01   # Enables to use a clock present on the CLK pin
 
-# FAN_STAT MASK (0x24) 8 Bits:        
+# FAN_STAT Clear (0x24) 8 Bits:        
 
-WATCH_M            = 0x80   # Watchdog Timer expire?
-DRIVE_FAIL_M       = 0x04   # Speed can't meet the max of PWM duty cycle
-FAN_SPIN_M         = 0x02   # Can't spin up FAN driver
-FAN_STALL_M        = 0x01   # Fan driver stalled?
+WATCH_CLR            = 0x80   # Watchdog Timer expire?
+DRIVE_FAIL_CLR       = 0x04   # Speed can't meet the max of PWM duty cycle
+FAN_SPIN_CLR         = 0x02   # Can't spin up FAN driver
+FAN_STALL_CLR        = 0x01   # Fan driver stalled?
 
-# FAN DRIVE STATUS MASK (0x27) 8 Bits:
+# FAN DRIVE STATUS Clear (0x27) 8 Bits:
 
-DRIVE_FAIL_I_M     = 0x01
+DRIVE_FAIL_I_CLR     = 0x01
 
-# FAN INTERRUPT ENABLE MASK (0x29) 8 Bits:
+# FAN INTERRUPT ENABLE Clear (0x29) 8 Bits:
 
-FAN_INT_EN_M       = 0x01  # Allows the Fan to assert the ALERT# pin
+FAN_INT_EN_CLR       = 0x01  # Allows the Fan to assert the ALERT# pin
 
-# PWM_POLARITY (0x2A) 8 Bits:
+# PWM_POLARITY Clear (0x2A) 8 Bits:
 
-POLARITY_M         = 0x01  # Determine the polarity of PWM
+POLARITY_CLR         = 0x01  # Determine the polarity of PWM
 
-# PWM_OUTPUT (0x2B) 8 Bits:
+# PWM_OUTPUT Clear (0x2B) 8 Bits:
 
-PWM_OT_M           = 0x01 #  Determine of output type of PWM driver
+PWM_OT_CLR           = 0x01 #  Determine of output type of PWM driver
 
-# PWM_BASE (0x2D) 8 Bits:
+# PWM_BASE Clear (0x2D) 8 Bits:
 
-BASE_M             = 0x03 #  Base frequency
+BASE_CLR             = 0x03 #  Base frequency
 
-# FAN_CONF1 MASK (0x32) 8 Bits:
+# FAN_CONF1 Clear (0x32) 8 Bits:
 
-EN_ALGO_M         = 0x80  # Enables Fan Speed Control Algorithm
-RANGE_M           = 0x60  # Range of TACH
-EDGES_M           = 0x18  # Number of Poles of the Fan
-UPDATE_M          = 0x07  # Ramp rate to the driver response
+EN_ALGO_CLR         = 0x80  # Enables Fan Speed Control Algorithm
+RANGE_CLR           = 0x60  # Range of TACH
+EDGES_CLR           = 0x18  # Number of Poles of the Fan
+UPDATE_CLR          = 0x07  # Ramp rate to the driver response
 
-# FAN_CONF2 MASK(0x33) 8 Bits:
+# FAN_CONF2 Clear (0x33) 8 Bits:
 
-ERR_RNG_M         = 0x06  # Control Advanced Control (Error window)
-DER_OPT_M         = 0x18  # Control Advanced Control
-GLITCH_EN_M       = 0x20  # Disable low pass Glitch filtelter (remove high frequency noise)
-EN_RRC_M          = 0x40  # Enable Ramp Rate Control
+ERR_RNG_CLR         = 0x06  # Control Advanced Control (Error window)
+DER_OPT_CLR         = 0x18  # Control Advanced Control
+GLITCH_EN_CLR       = 0x20  # Disable low pass Glitch filtelter (remove high frequency noise)
+EN_RRC_M_CLR        = 0x40  # Enable Ramp Rate Control
 
-# GAIN MASK (0x35) 8 Bits:
+# GAIN Clear (0x35) 8 Bits:
 
-GAINP_M            = 0x03 # Control proportional Gain
-GAINI_M            = 0x0C # Control integral Gain 
-GAIND_M            = 0x30 # Control derivate Gain
+GAINP_CLR            = 0x03 # Control proportional Gain
+GAINI_CLR            = 0x0C # Control integral Gain 
+GAIND_CLR            = 0x30 # Control derivate Gain
 
-# FAN_SPIN_UP MASK (0x36) 8 Bits:
+# FAN_SPIN_UP Clear (0x36) 8 Bits:
 
-SPINUP_TIME_M     = 0x03  # Determines max spin up time
-SPIN_LVL_M        = 0x1C  # Determines final drive level used by Spin Up Routines
-NOKICK_M          = 0x20  # Determines if the Spin UP Routines will drive fan  to 100% duty cycle for 1/4 of the programed spin
-DRIVE_FAIL_CNT_M  = 0xC0  # Determines how many updates cycles are used for Drive fail detection function
-
+SPINUP_TIME_CLR     = 0x03  # Determines max spin up time
+SPIN_LVL_CLR        = 0x1C  # Determines final drive level used by Spin Up Routines
+NOKICK_CLR          = 0x20  # Determines if the Spin UP Routines will drive fan  to 100% duty cycle for 1/4 of the programed spin
+DRIVE_FAIL_CNT_CLR  = 0xC0  # Determines how many updates cycles are used for Drive fail detection function

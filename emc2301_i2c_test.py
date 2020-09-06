@@ -40,3 +40,36 @@ sens._logger.info('REVISION ID: %s',format(val))
 
 register = emc2301.conf_register_list()
 print ('{}'.format(register))
+
+print ('---------------------------------')
+sens.write_register(register = 'FAN_CONF1', bits = ['EN_ALGO_CLR'])
+sens.write_register(register = 'FAN_SETTING', bits = [60])
+from time import sleep
+sleep(5)
+register = emc2301.conf_register_list()
+print ('{}'.format(register))
+from time import sleep
+sleep(5)
+sens.write_register(register = 'FAN_SETTING', bits = [100])
+from time import sleep
+sleep(5)
+register = emc2301.conf_register_list()
+print ('{}'.format(register))
+sens.write_register(register = 'FAN_SETTING', bits = [200])
+sleep(5)
+register = emc2301.conf_register_list()
+print ('{}'.format(register))
+sens.write_register(register = 'FAN_SETTING', bits = [255])
+sleep(5)
+register = emc2301.conf_register_list()
+print ('{}'.format(register))
+sens.write_register(register = 'FAN_SETTING', bits = [0])
+sleep(5)
+register = emc2301.conf_register_list()
+print ('{}'.format(register))
+
+#sens.write_register(register = 'FAN_CONF1', bits = ['EN_ALGO'])
+print ('---------------------------------')
+
+#register = emc2301.conf_register_list()
+#print ('{}'.format(register))
