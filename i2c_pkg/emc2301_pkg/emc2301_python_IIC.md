@@ -30,6 +30,33 @@ The EMC2301 is an SMBus compliant fan controller with a  PWM  fan  driver.  The 
 
 ### How to call python sub? ###
 
+see details in: emc2301_i2c_test.py
+
+**example:**
+```
+3.7.3 (default, Dec 20 2019, 18:57:59) 
+[GCC 8.3.0]
+ecomet.emc2301: INFO     Start logging ...
+:TEST_PASSED:
+ecomet.emc2301: INFO     PRODUCT Read correct
+ecomet.emc2301: INFO     PRODUCT ID: 37
+ecomet.emc2301: INFO     MANUFACTURER Read correct
+ecomet.emc2301: INFO     MANUF ID: 5D
+ecomet.emc2301: INFO     REVISION Read correct
+ecomet.emc2301: INFO     REVISION ID: 80
+{'CONF': {'MASK': 'MASKED', 'DIS_TO': 'ENABLED', 'WD_EN': 'OPERATE', 'DR_EXT_CLK': 'CLK_OUTPUT', 'USE_EXT_CLK': 'EXTERNAL', 'EN_ALGO': 'DISABLED', 'RANGE': '1000>2', 'EDGES': '5>2POLE>1', 'UPDATE': '400ms', 'EN_RRC': 'ENABLED', 'GLITCH_EN': 'ENABLED', 'DER_OPT': 'BESIC_DERIVATE', 'ERR_RNG': '0RPM', 'GAIND': '4x', 'GAINI': '4x', 'GAINP': '4x'}, 'FAN_STAT': {'WATCH': 'EXPIRED', 'DRIVE_FAIL': 'MEET', 'DRIVE_FAIL_I': 'REACH', 'FAN_SPIN': 'SPIN', 'FAN_STALL': 'NOT_STALL', 'FAN_INT': 'NO_ALERT', 'FAN_SETTING': 100.0}, 'SPIN': {'DRIVE_FAIL_CNT': 'DISABLE', 'NOKICK': 'SPIN', 'SPIN_LVL': '60%', 'SPINUP_TIME': '500ms', 'FAN_MAX_STEP': 16, 'FAN_MIN_DRIVE': 40.0}, 'PWM': {'PWM_POLARITY': 'NORMAL', 'PWM_OUTPUT': 'OPEN-DRAIN', 'PWM_BASE': '26.00kHz', 'PWM_DIVIDE': 1}, 'TACH': {'TACH_COUNT': 8160, 'FAN_FAIL_BAND': 0, 'TACH_TARGET': 8191, 'TACH_READ': 2578}, 'ID': {'PRODUCT_ID': '37', 'MANUF_ID': '5D', 'REVISION_ID': '80'}}
+---------------------------------
+Speed: 0
+1679
+1629
+1468
+1238
+974
+673
+480
+...
+```
+
 **fan_type.py**
 
 *library - parameters for RPM calculation (curently Noctua NF-8A Fan
@@ -39,6 +66,7 @@ The EMC2301 is an SMBus compliant fan controller with a  PWM  fan  driver.  The 
 *fan_tach - frequenci for tachometer monitoring (32.768kHz is internal frequency)
 
 ![x](2poles_dc.png  "2 Poles DC Moto")
+[1] https://images.app.goo.gl/A3zXdf1ZjpCWGGw17
 
 see **emc2301_i2c_test.py** script
 
