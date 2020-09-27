@@ -1,6 +1,6 @@
 # ecomet_i2c_raspberry_tools
 
-**Last modification:** 17.08.2020
+**Last modification:** 27.09.2020
 **Contributor:** Marian Minar
 
 **Scope:**
@@ -14,7 +14,7 @@ The Code for I2C Chip maintenance from **Raspberry PI 3+** and above. This code 
 * [Texas Instruments](https://www.ti.com/)
   HDC1080
 * [Measurement Specialties](https://www.te.com/) HTU21D
-* [Microchip](https://ww1.microchip.com/downloads/en/DeviceDoc/2301.pdf) EMC2301 **(new, development started)**
+* [Microchip](https://ww1.microchip.com/downloads/en/DeviceDoc/2301.pdf) EMC2301 **(new, first test with FAN)**
 
 **List of modules:**
 
@@ -22,7 +22,7 @@ The Code for I2C Chip maintenance from **Raspberry PI 3+** and above. This code 
 * [PCA9632 module](fpc/pca9632/pca9632_IIC.md) -> 4-bit Fm+ I2C-bus low power LED driver (could be used for motor control)
 * [HDC1080 module](fpc/hdc1080/hdc1080_IIC.md) -> High Accuracy Digital Humidity Sensor with Temperature Sensor
 * [HTU21D module](i2c_pkg/htu21_pkg/htu21_python_IIC.md) -> Digital Relative Humidity sensor with Temperature output, calculation of Dew Point
-* [EMC2301 module] -> Fan controller with a PWM fan driver
+* [EMC2301 module](i2c_pkg/emc2301_pkg/emc2301_python_IIC.md) -> Fan controller with a PWM fan driver
 
 **Software for Chips:**
 
@@ -33,7 +33,7 @@ The Code for I2C Chip maintenance from **Raspberry PI 3+** and above. This code 
 | PCA9632         |      yes        |    yes   | GUI finished               |                                |                               |
 | HDC1080         |      yes        |    yes   | GUI finished               |                                |                               |
 | HTU21D          |      yes        |    no    |                            | currently no GUI planned       |                               |
-| EMC2301         |      draft      |    no    | New, in development        | planned python driver and GUI  |                               |
+| EMC2301         |      yes        |    no    | first tests with NF-A8     | building test board            |                               |
 
 **Requestor Interests:**
 If you would like to reqest some new feature or add some new Chip at the development list let me know by adding issue or by email.
