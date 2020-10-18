@@ -26,14 +26,14 @@ The Code for I2C Chip maintenance from **Raspberry PI 3+** and above. This code 
 
 **Software for Chips:**
 
-| Chip            | Python 3 driver | FPC GUI  | Contributor Notes          | Planned work                   | Requestor Interests           |
-| --------------- |:---------------:|:--------:|:--------------------------:|:------------------------------:|:-----------------------------:|
-| EEPROM 24cXXX   |      yes        |    no    | currently tested at        | planned testing at 24c01,      |                               |
-|                 |                 |          | 24c04,24c32,24c64          | 24c08, 24c16                   |                               |
-| PCA9632         |      yes        |    yes   | GUI finished               |                                |                               |
-| HDC1080         |      yes        |    yes   | GUI finished               |                                |                               |
-| HTU21D          |      yes        |    no    |                            | currently no GUI planned       |                               |
-| EMC2301         |      yes        |    no    | first tests with NF-A8     | building test board            |                               |
+| Chip            | Python 3 driver | FPC GUI  | Contributor Notes            | Planned work                   | Requestor Interests           |
+| --------------- |:---------------:|:--------:|:----------------------------:|:------------------------------:|:-----------------------------:|
+| EEPROM 24cXXX   |      yes        |    no    | currently tested at          | planned testing at 24c01,      |                               |
+|                 |                 |          | 24c04,24c32,24c64            | 24c08, 24c16                   |                               |
+| PCA9632         |      yes        |    yes   | GUI finished                 |                                |                               |
+| HDC1080         |      yes        |    yes   | GUI finished                 | testing board developed soon   |                               |
+| HTU21D          |      yes        |    no    |                              | currently no GUI planned       |                               |
+| EMC2301         |      yes        |    no    | [!NEW!](i2c_pkg/emc2301_pkg/emc2301_python_IIC.md) kick-up fan measuremnt | testing board developed soon   |                               |
 
 **Requestor Interests:**
 If you would like to reqest some new feature or add some new Chip at the development list let me know by adding issue or by email.
