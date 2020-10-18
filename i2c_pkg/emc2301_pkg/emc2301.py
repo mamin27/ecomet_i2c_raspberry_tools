@@ -370,9 +370,9 @@ class EMC2301(object):
              reg_status_hex = '0x' + '{0:02x}'.format(reg_status_bita[1]) + '{0:02x}'.format(reg_status_bita[0])
              self._logger.debug('2 bytes read_register, init reg_status: %s', '{0}'.format(reg_status_hex))
              return (reg_status_bita[1],reg_status_bita[0],ret)
-    def write_register(self, register, bits, bit = None) :
+    def write_register(self, register, bits = None, bit = None, value = None) :
           ret = 0
-          if register in ['CONF','FAN_CONF1','FAN_CONF2'] :
+          if register in ['CONF','FAN_CONF1','FAN_CONF2','FAN_SPIN_UP'] :
             (reg_status,ret) = self.read_register( register = register )
             for ibit in bits :
                if '_CLR' not in ibit :
@@ -396,17 +396,30 @@ class EMC2301(object):
                   reg_status = reg_status & conf2_bit_list[bit_mask]
                   if '_CLR' not in ibit :
                      reg_status = reg_status | conf2_bit_list[ibit]
-                  self._logger.debug('write_register, init reg_status: %s, bit %s', '{0:02X}'.format(reg_status), format(ibit))                          
+                  self._logger.debug('write_register, init reg_status: %s, bit %s', '{0:02X}'.format(reg_status), format(ibit))
+               if register in ['FAN_SPIN_UP'] :
+                  reg_status = reg_status & spin_bit_list[bit_mask]
+                  if '_CLR' not in ibit :
+                     reg_status = reg_status | spin_bit_list[ibit]
+                  self._logger.debug('write_register, init reg_status: %s, bit %s', '{0:02X}'.format(reg_status), format(ibit))
             reg_status = reg_status & 0xff
             try :
                self._device.write8(reg_list[register],reg_status)
             except :
                ret = ret + 1
                self._logger.debug('writelist error')
-          elif register in ['FAN_SETTING'] :
-            (reg_status,ret) = self.read_register( register = register )
-            reg_status = bits[0]
-            self._logger.debug('write_register, init reg_status: %s', '{0:02X}'.format(reg_status)) 
+          elif register in ['FAN_SETTING','FAN_MAX_STEP'] :
+            #(reg_status,ret) = self.read_register( register = register )
+            if register in ['FAN_SETTING'] :
+              reg_status = value
+              self._logger.debug('write_register, init reg_status: %s', '{0:02X}'.format(reg_status))
+            if register in ['FAN_MAX_STEP'] :
+              if value <= 63 :
+                reg_status = value
+                self._logger.debug('write_register, init reg_status: %s', '{0:02X}'.format(reg_status))
+              else :
+                ret = ret + 1
+                reg_status = 16 #default value
             try :
                self._device.write8(reg_list[register],reg_status)
             except :
@@ -483,6 +496,25 @@ class EMC2301(object):
        else :
          out = int(1/fan_list['POLES'] * ((fan_list['EDGE'] - 1)/(res * 1/fan_list['MULTIPLIER'])) * fan_list['FAN_TACH'] * 60)
        return (out,ret)
+    def fan_kick_up (self,offset,interval,sum_sample,new_value) :
+       sample = [0] * (sum_sample)
+       from time import sleep
+       sleep(offset)
+       self._logger.info('kick up fan to {}'.format(new_value))
+       self.write_register(register = 'FAN_SETTING', value = new_value)
+       for index in range (0,sum_sample) :
+         res = 0
+         sleep(interval)
+         (tbin_lb,tbin_hb,ret) = self.read_register( register = 'TACH_READ' )
+         for idx in range (0,8) :
+           res = res + (tbin_hb % 2) * list_4096[idx]
+           tbin_hb = tbin_hb >> 1
+         for idx in range (0,8) :
+           res = res + (tbin_lb % 2) * list_16[idx]
+           tbin_lb = tbin_lb >> 1
+         if res != 0 :
+           sample[index] = int(1/fan_list['POLES'] * ((fan_list['EDGE'] - 1)/(res * 1/fan_list['MULTIPLIER'])) * fan_list['FAN_TACH'] * 60)
+       return (sample)
     def productid (self) :
        ret = 0
        (temp,lret) = self.read_register( register = 'PRODUCT_ID' )

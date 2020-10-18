@@ -48,7 +48,7 @@ print ('{}'.format(register))
 
 while True :
    print ('---------------------------------')
-   sens.write_register(register = 'FAN_SETTING', bits = [0])
+   sens.write_register(register = 'FAN_SETTING', value = 0)
    sens.write_register(register = 'FAN_CONF1', bits = ['EN_ALGO_CLR'])
    sens.write_register(register = 'FAN_CONF1', bits = ['RANGE'], bit = fan_list['RANGE'] )
    #sens.write_register(register = 'FAN_SETTING', bits = [20])
@@ -59,14 +59,14 @@ while True :
      register = sens.speed()[0]
      print ('{}'.format(register))
      sleep(1)
-   sens.write_register(register = 'FAN_SETTING', bits = [50])
+   sens.write_register(register = 'FAN_SETTING', value = 50)
    from time import sleep
    print ('Speed: 50')
    for i in range (20) :
      register = sens.speed()[0]
      print ('{}'.format(register))
      sleep(1)
-   sens.write_register(register = 'FAN_SETTING', bits = [100])
+   sens.write_register(register = 'FAN_SETTING', value = 100)
    from time import sleep
    print ('Speed: 100')
    for i in range (20) :
@@ -75,7 +75,7 @@ while True :
      sleep(1)
    register = emc2301.conf_register_list()
    #print ('{}'.format(register))
-   sens.write_register(register = 'FAN_SETTING', bits = [160])
+   sens.write_register(register = 'FAN_SETTING', value = 160)
    print('Speed: 160')
    for i in range (13) :
      register = sens.speed()[0]
@@ -83,7 +83,7 @@ while True :
      sleep(1)
    register = emc2301.conf_register_list()
    #print ('{}'.format(register))
-   sens.write_register(register = 'FAN_SETTING', bits = [200])
+   sens.write_register(register = 'FAN_SETTING', value = 200)
    print('Speed: 200')
    for i in range (20) :
      register = sens.speed()[0]
@@ -91,7 +91,7 @@ while True :
      sleep(1)
    register = emc2301.conf_register_list()
    #print ('{}'.format(register))
-   sens.write_register(register = 'FAN_SETTING', bits = [255])
+   sens.write_register(register = 'FAN_SETTING', value = 255)
    print ('Speed: 255')
    for i in range (20) :
      sleep(1)
