@@ -18,6 +18,12 @@ The EMC2301 is an SMBus compliant fan controller with a  PWM  fan  driver.  The 
 * EMC2301.read_register - read status of one register
 * EMC2301.write_register - write new value to chip register
 * EMC2301.speed - check fan speed calculated in RPM
+* EMC2301.fan_kick_up - measure RPM samples after kick new speed value
+  * call: fan_kick_up(offset,interval,sum_sample,new_value)
+  * offset - time offset in sec before kick
+  * interval - measure time between two samples in sec
+  * sum_sample - number of samples
+  * new_value - new RPM value
 * EMC2301.productid - chip product id
 * EMC2301.manufid - chip manufacture id
 * EMC2301.revisionid - chip revisionid
@@ -79,3 +85,22 @@ emc2301_i2c_speed_graph.py > fan.log
 *produce file usable for excel:
 
 ![xy](nf-a8.png  "Graph of RPM accuracy")
+
+### Measure kicking up new RPM value to fan ###
+
+This represent dynamic parameters for fan management.
+
+For changing spin_up time parameters we use these variables:
+* FAN_SPIN_UP -> NOKICK (1)
+* FAN_MAX_STEP (1-63) - slow - quick change of slope to reaching new value level
+
+For testing use script emc2301_i2c_kick_up.py
+sens.write_register(register = 'FAN_MAX_STEP', value = <#value>) will change slope for reaching new value
+
+Here you see measured changed at the fan:
+RPM was changed from 0->170->100->255 RPM and was measured 3000->3000->4000 samples after the kicking new RPM value
+![x](step_1_32.PNG "FAN_MAX_STEP 1-32")
+![x](step_32_63.PNG "FAN_MAX_STE 32-63")
+
+
+
