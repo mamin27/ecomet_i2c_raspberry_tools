@@ -7,7 +7,7 @@
       <Unit0>
         <Filename Value="hdc1080.lpr"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="9"/>
+        <EditorIndex Value="8"/>
         <CursorPos X="55" Y="19"/>
         <UsageCount Value="59"/>
         <Loaded Value="True"/>
@@ -23,11 +23,12 @@
         <CursorPos X="29" Y="193"/>
         <UsageCount Value="59"/>
         <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
       </Unit1>
       <Unit2>
         <Filename Value="hdc1080_pyth_util.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="8"/>
+        <EditorIndex Value="7"/>
         <TopLine Value="16"/>
         <CursorPos X="97" Y="40"/>
         <UsageCount Value="57"/>
@@ -35,11 +36,9 @@
       </Unit2>
       <Unit3>
         <Filename Value="proc_py.pas"/>
-        <IsPartOfProject Value="True"/>
-        <EditorIndex Value="7"/>
+        <EditorIndex Value="-1"/>
         <CursorPos X="13"/>
         <UsageCount Value="57"/>
-        <Loaded Value="True"/>
       </Unit3>
       <Unit4>
         <Filename Value="hdc1080_read.pas"/>

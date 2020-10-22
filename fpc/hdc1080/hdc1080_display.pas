@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Buttons,
-  Menus, proc_py, hdc1080_pyth_util, math, PythonEngine;
+  Menus, hdc1080_pyth_util, PythonEngine;
 
 type
 

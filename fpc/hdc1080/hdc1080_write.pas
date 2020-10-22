@@ -5,7 +5,7 @@ unit hdc1080_write;
 interface
 
 uses
-  Classes, SysUtils, StrUtils,
+  Classes, SysUtils,
   hdc1080_pyth_util;
 
 type

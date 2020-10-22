@@ -5,7 +5,7 @@ unit hdc1080_read;
 interface
 
 uses
-  Classes, SysUtils, StrUtils,
+  Classes, SysUtils,
   hdc1080_pyth_util, hdc1080_display, math;
 
 procedure read_output_hdc (hdc: hdc1080Ob);
@@ -151,9 +151,6 @@ Py_S.Free;
 end;
 
 procedure read_output_hdc (hdc: hdc1080Ob);
-var
-  i: Integer;
-  x: Integer;
 begin
 
   Form_hdc1080.ComboBox_hmdt.ItemIndex := EnumToInt(TYPE1,hdc.attr1.attr_val_obj.attr1.attr_val);     //HMDT 0-8BIT, 1-11BIT, 2-14BIT

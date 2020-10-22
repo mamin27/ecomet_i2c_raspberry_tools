@@ -7,7 +7,7 @@ uses
   cthreads,
   {$ENDIF}{$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, hdc1080_display, proc_py, ecomet_regex, creator, help, missing_chip;
+  Forms, hdc1080_display, ecomet_regex, creator, help, missing_chip;
 
 {$R *.res}
 

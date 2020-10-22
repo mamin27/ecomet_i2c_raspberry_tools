@@ -8,7 +8,7 @@ uses
   {$IFDEF UNIX}{$IFDEF UseCThreads}
   cthreads,
   {$ENDIF}{$ENDIF}
-  Classes, SysUtils, CustApp , ecomet_regex
+  Classes, SysUtils, ecomet_regex
   { you can add units after this };
 
 
@@ -221,7 +221,6 @@ end;
 
 function StrToObj (hdc_str: String): hdc1080Ob;
 var
-  i: Integer;
   keys: TParts;
 begin
 
