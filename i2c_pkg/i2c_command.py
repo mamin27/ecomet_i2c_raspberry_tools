@@ -59,7 +59,7 @@ def eeprom_write_byte(addr, byte, smb, slaveaddr, writestrobe, chip) :
         hslaveaddr = hslaveaddr | addr//256
         try:
             rGPIO.output(writestrobe, rGPIO.LOW)
-            mb.write_i2c_block_data(hslaveaddr, addr%256, data)
+            smb.write_i2c_block_data(hslaveaddr, addr%256, data)
             rGPIO.output(writestrobe, rGPIO.HIGH)
         finally:
             time.sleep(0.015) # data sheet says 10 msec mac
