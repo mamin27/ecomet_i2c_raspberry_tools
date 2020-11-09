@@ -25,7 +25,7 @@ used modules:
 RPi.GPIO,smbu2,colorama,yaml,re,randrange,os
 
 ```console
-sudo pip3 install RPi.GPIO smbus2 colorama PyYAML
+pip3 install RPi.GPIO smbus2 colorama PyYAML
 Looking in indexes: https://pypi.org/simple,
 Requirement already satisfied: RPi.GPIO in /usr/lib/python3/dist-packages (0.7.0)
 Requirement already satisfied: smbus2 in /usr/local/lib/python3.7/dist-packages (0.3.0)
@@ -54,7 +54,7 @@ eeprom_mgr.py <option>
  <-t>|<--test> test mode:
    test mode will write random number into chip, read contentant and compare
  <--wipe> wipe:
-    wipping data at chip
+    wipping data at chip (0xff), when used -t data are randomed
  <-r> read:
    read content of chip and write into file <-f>
  <-w> write:
@@ -72,7 +72,7 @@ Chip Name | Size  | Address Bits | Address Size | Tested?
 24c01 | 1-Kbit (128x8) | A6  - A0 | 007F
 24c02 | 2-Kbit (256x8) | A7  - A0 | 00FF
 24c04 | 4-Kbit (512x8) | A8  - A0 | 01FF | tested
-24c08 | 8-Kbit (1024x8) | A9  - A0 | 03FF
+24c08 | 8-Kbit (1024x8) | A9  - A0 | 03FF | tested
 24c16 | 16-Kbit (2048x8) | A10 - A0 | 07FF
 24c32 | 32-Kbit (4096x8) | A11 - A0 | 0FFF | tested
 24c64 | 64-Kbit (8192x8) | A12 - A0 | 1FFF | tested
@@ -84,24 +84,24 @@ Chip Name | Size  | Address Bits | Address Size | Tested?
 #### Examples: ####
 Test if eeprom chip is correct. This check write random numbers and compare them with read content. Test will pass full size of EEPROM
 ```console
-sudo python3 eeprom_mng.py -p 24c32 --test
+python3 eeprom_mng.py -p 24c32 --test
 ```
-Wipe content of EEPROM with '0xFF' data
+Wipe (write) content of EEPROM with '0xFF' data
 ```console
-sudo python3 eeprom_mng.py -p 24c32 --wipe
+python3 eeprom_mng.py -p 24c32 --wipe
  ```
 Read data into default file in directory data (eeprom_chip.hex)
 ```console
-sudo python3 eeprom_mng.py -p 24c32 --read
+python3 eeprom_mng.py -p 24c32 --read
 ```
 Read data into file set with --file attribute
 ```console
-sudo python3 eeprom_mng.py -p 24c32 --read --file=eeprom_my.hex
+python3 eeprom_mng.py -p 24c32 --read --file=eeprom_my.hex
 ```
  
 Write data into EEPROM from default file data/eeprom_chip.hex
 ```console
-sudo python3 eeprom_mng.py -p 24c32 --write
+python3 eeprom_mng.py -p 24c32 --write
 ```
 
 #### Format of hex file: ####
