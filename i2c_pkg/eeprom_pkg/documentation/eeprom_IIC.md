@@ -1,6 +1,6 @@
 # EPROM Data Storage Module IIC I2C Interface Data Memory Module #
 
-**Last update:**  Sunday, 29. December 2019
+**Last update:**  Sunday, 10. November 2020
 **Author:** Marian Minar
 
 **Schematics of Module:**
