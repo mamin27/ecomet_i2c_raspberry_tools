@@ -52,7 +52,7 @@ def help() :
     print (' ')
     print (' <-p>,<--chip> chip name:')
     print ('   list of these chips are usable')
-    print ('   24C02,24C04,24C08,24C16,24C32,24C64,24C128,24C256,24C512,24C1024')
+    print ('   24C01,24C02,24C04,24C08,24C16,24C32,24C64,24C128,24C256,24C512,24C1024')
     print (' <-t>|<--test> test mode:')
     print ('   test mode will write random number into chip, read contentant and compare')
     print (' <-e>|<--wipe> wipe:')
