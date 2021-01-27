@@ -1,6 +1,6 @@
 # EPROM Data Storage Module IIC I2C Interface Data Memory Module #
 
-**Last update:**  Sunday, 10. November 2020
+**Last update:**  27. January 2021
 **Author:** Marian Minar
 
 **Schematics of Module:**
@@ -49,7 +49,7 @@ eeprom_mgr.py <option>
      -f file name, used with read and write commands
    
  <-p>,<--chip> chip name:
-   list of these chips are usable 24C02,24C04,24C08,24C16,24C32,24C64,24C128,24C256,24C512,24C1024
+   list of these chips are usable 24C01,24C02,24C04,24C08,24C16,24C32,24C64,24C128,24C256,24C512,24C1024
    
  <-t>|<--test> test mode:
    test mode will write random number into chip, read contentant and compare
@@ -69,11 +69,11 @@ eeprom_mgr.py <option>
 #### Usable Chips ####
 Chip Name | Size  | Address Bits | Address Size | Tested?
 ----------------: | ------ | ------------------- | ------------------ | -------------
-24c01 | 1-Kbit (128x8) | A6  - A0 | 007F
+24c01 | 1-Kbit (128x8) | A6  - A0 | 007F | tested
 24c02 | 2-Kbit (256x8) | A7  - A0 | 00FF
 24c04 | 4-Kbit (512x8) | A8  - A0 | 01FF | tested
 24c08 | 8-Kbit (1024x8) | A9  - A0 | 03FF | tested
-24c16 | 16-Kbit (2048x8) | A10 - A0 | 07FF
+24c16 | 16-Kbit (2048x8) | A10 - A0 | 07FF | tested
 24c32 | 32-Kbit (4096x8) | A11 - A0 | 0FFF | tested
 24c64 | 64-Kbit (8192x8) | A12 - A0 | 1FFF | tested
 24c128 | 128-Kbit (16384x8) | A13 - A0 | 3FFF
