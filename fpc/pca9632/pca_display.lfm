@@ -1,7 +1,7 @@
 object pca9632_main: Tpca9632_main
-  Left = 56
+  Left = 622
   Height = 389
-  Top = 197
+  Top = 136
   Width = 838
   Caption = 'PCA9632 Tool'
   ClientHeight = 362

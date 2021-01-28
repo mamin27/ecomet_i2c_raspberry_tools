@@ -870,7 +870,7 @@ begin
     cmd.key := 'PWM';
     cmd.kval := pwm_value;
 
-    write_pwm_reg_pca('PWM1',cmd);
+    write_pwm_reg_pca('PWM3',cmd);
     //pca.attr3.attr_chg:=true;
     //pca.attr3.attr_new_val:=Edi): ',Edit1.Text);
     write('PWM3(PWM): ',Edit4.Text);

@@ -8,7 +8,7 @@ uses
   {$IFDEF UNIX}{$IFDEF UseCThreads}
   cthreads,
   {$ENDIF}{$ENDIF}
-  Classes, SysUtils, CustApp, pca_regex
+  Classes, SysUtils, CustApp, ecomet_regex
   { you can add units after this };
 
 

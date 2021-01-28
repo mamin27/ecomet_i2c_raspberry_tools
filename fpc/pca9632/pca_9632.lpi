@@ -60,37 +60,37 @@
         <IsPartOfProject Value="True"/>
       </Unit2>
       <Unit3>
-        <Filename Value="pca_regex.pas"/>
+        <Filename Value="proc_py.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit3>
       <Unit4>
-        <Filename Value="proc_py.pas"/>
+        <Filename Value="pca_read.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit4>
       <Unit5>
-        <Filename Value="pca_read.pas"/>
-        <IsPartOfProject Value="True"/>
-      </Unit5>
-      <Unit6>
         <Filename Value="creator.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="Form_creator"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-      </Unit6>
-      <Unit7>
+      </Unit5>
+      <Unit6>
         <Filename Value="help.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="Form_help"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-      </Unit7>
-      <Unit8>
+      </Unit6>
+      <Unit7>
         <Filename Value="missing_chip.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="Form_missing_chip"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="ecomet_regex.pas"/>
+        <IsPartOfProject Value="True"/>
       </Unit8>
     </Units>
   </ProjectOptions>

@@ -32,7 +32,7 @@ uses pca_display;
 procedure write_reg_pca (register: String; bits: Array of String);
 var
   Py_S: TStringList;
-  content: String[100];
+  content: String[200];
   i: Integer;
 begin
 content := 'register = ' + #39 + register + #39 + ', bits = [';
@@ -63,7 +63,7 @@ end;
 procedure write_led_reg_pca (register: String; bits: Array of TDict);
 var
   Py_S: TStringList;
-  content: String[100];
+  content: String[200];
   i: Integer;
 begin
 content := 'register = ' + #39 + register + #39 + ', bits = [';
@@ -130,7 +130,7 @@ end;
 procedure write_pwm_reg_pca (register: String; bits: TDict);
 var
   Py_S: TStringList;
-  content: String[100];
+  content: String[200];
 begin
 content := 'register = ' + #39 + register + #39 + ', bits = [';
 content := content + '{' + #39 + bits.key + #39 + ' : ' +  #39 + bits.kval +  #39 +'}' + ',';
@@ -268,7 +268,7 @@ var
   cmd: TDict;
 begin
 
-   ledout_idx:=0;
+  ledout_idx:=0;
   cmd := pre_wr_led(pca.attr12.attr_val_obj.attr1.attr_chg, pca.attr12.attr_val_obj.attr1.attr_new_val, pca.attr12.attr_val_obj.attr1.attr_name);
   if cmd.key <> '' then begin
      ledout_idx := ledout_idx + 1;
