@@ -1,0 +1,618 @@
+object Form_emc2301: TForm_emc2301
+  Left = 492
+  Height = 487
+  Top = 51
+  Width = 826
+  Caption = 'Form_emc2301'
+  ClientHeight = 460
+  ClientWidth = 826
+  Menu = MainMenu_emc2301
+  OnCreate = FormCreate
+  LCLVersion = '2.0.0.4'
+  object Button1: TButton
+    Left = 688
+    Height = 25
+    Top = 24
+    Width = 75
+    Caption = 'Button1'
+    TabOrder = 0
+  end
+  object GroupBox_CONF: TGroupBox
+    Left = 16
+    Height = 400
+    Top = 16
+    Width = 250
+    Caption = 'Conf_Reg:'
+    ClientHeight = 381
+    ClientWidth = 246
+    TabOrder = 1
+    object CB_CONF_MASK: TComboBox
+      Left = 8
+      Height = 27
+      Top = 24
+      Width = 100
+      ItemHeight = 0
+      ItemIndex = 0
+      Items.Strings = (
+        'MASKED'
+        'UNMASKED'
+      )
+      ItemWidth = 1
+      TabOrder = 0
+      Text = 'MASKED'
+    end
+    object L_CONF_MASK: TLabel
+      Left = 12
+      Height = 17
+      Top = 3
+      Width = 38
+      Caption = 'Mask:'
+      ParentColor = False
+    end
+    object CB_CONF_DIS_TO: TComboBox
+      Left = 130
+      Height = 27
+      Top = 24
+      Width = 100
+      ItemHeight = 0
+      ItemIndex = 0
+      Items.Strings = (
+        'ENABLED'
+        'DISABLED'
+      )
+      ItemWidth = 1
+      TabOrder = 1
+      Text = 'ENABLED'
+    end
+    object CB_CONF_WD_EN: TComboBox
+      Left = 8
+      Height = 27
+      Top = 80
+      Width = 100
+      ItemHeight = 0
+      Items.Strings = (
+        'DISABLED'
+        'OPERATE'
+      )
+      ItemWidth = 1
+      TabOrder = 2
+      Text = 'OPERATE'
+    end
+    object CB_CONF_DR_EXT_CLK: TComboBox
+      Left = 130
+      Height = 25
+      Top = 80
+      Width = 100
+      Font.Height = -11
+      Font.Name = 'Sans'
+      ItemHeight = 0
+      Items.Strings = (
+        'CLK_INPUT'
+        'CLK_OUTPUT'
+      )
+      ItemWidth = 1
+      ParentFont = False
+      TabOrder = 3
+      Text = 'CLK_OUTPUT'
+    end
+    object CB_CONF_USE_EXT_CLK: TComboBox
+      Left = 8
+      Height = 27
+      Top = 136
+      Width = 100
+      ItemHeight = 0
+      Items.Strings = (
+        'INTERNAL'
+        'EXTERNAL'
+      )
+      ItemWidth = 1
+      TabOrder = 4
+      Text = 'EXTERNAL'
+    end
+    object CB_CONF_EN_ALGO: TComboBox
+      Left = 130
+      Height = 27
+      Top = 136
+      Width = 100
+      ItemHeight = 0
+      Items.Strings = (
+        'ENABLED'
+        'DISABLED'
+      )
+      ItemWidth = 1
+      TabOrder = 5
+      Text = 'ENABLED'
+    end
+    object CB_CONF_RANGE: TComboBox
+      Left = 8
+      Height = 27
+      Top = 188
+      Width = 100
+      ItemHeight = 0
+      Items.Strings = (
+        '500>1'
+        '1000>2'
+        '2000>4'
+        '4000>8'
+      )
+      ItemWidth = 1
+      TabOrder = 6
+      Text = '1000>2'
+    end
+    object CB_CONF_EDGES: TComboBox
+      Left = 130
+      Height = 25
+      Top = 188
+      Width = 100
+      Font.Height = -11
+      Font.Name = 'Sans'
+      ItemHeight = 0
+      Items.Strings = (
+        '3>1POLE>0.5'
+        '5>2POLE>1'
+        '7>3POLE>1.5'
+        '9>4POLE>2'
+      )
+      ItemWidth = 1
+      ParentFont = False
+      TabOrder = 7
+      Text = '5>2POLE>1'
+    end
+    object CB_CONF_UPDATE: TComboBox
+      Left = 8
+      Height = 27
+      Top = 238
+      Width = 100
+      ItemHeight = 0
+      Items.Strings = (
+        '100ms'
+        '200ms'
+        '300ms'
+        '400ms'
+        '500ms'
+        '800ms'
+        '1200ms'
+        '1600ms'
+      )
+      ItemWidth = 1
+      TabOrder = 8
+      Text = '400ms'
+    end
+    object CB_CONF_EN_RRC: TComboBox
+      Left = 130
+      Height = 27
+      Top = 238
+      Width = 100
+      ItemHeight = 0
+      ItemIndex = 0
+      Items.Strings = (
+        'ENABLED'
+        'DISABLED'
+      )
+      ItemWidth = 1
+      OnChange = CB_CONF_EN_RRCChange
+      TabOrder = 9
+      Text = 'ENABLED'
+    end
+    object CB_CONF_GLITCH_EN: TComboBox
+      Left = 8
+      Height = 27
+      Top = 288
+      Width = 100
+      ItemHeight = 0
+      Items.Strings = (
+        'ENABLED'
+        'DISABLED'
+      )
+      ItemWidth = 1
+      TabOrder = 10
+      Text = 'ENAB'
+    end
+    object L_CONF_DIS_TO: TLabel
+      Left = 130
+      Height = 17
+      Top = 3
+      Width = 46
+      Caption = 'Dis_To:'
+      ParentColor = False
+      OnClick = L_CONF_DIS_TOClick
+    end
+    object L_CONF_WD_EN: TLabel
+      Left = 12
+      Height = 17
+      Top = 56
+      Width = 48
+      Caption = 'Wd_En:'
+      ParentColor = False
+    end
+    object L_CONF_DR_EXT_CLK: TLabel
+      Left = 130
+      Height = 17
+      Top = 56
+      Width = 75
+      Caption = 'Dr_Ext_Clk:'
+      ParentColor = False
+    end
+    object L_CONF_USE_EXT_CLK: TLabel
+      Left = 12
+      Height = 17
+      Top = 112
+      Width = 85
+      Caption = 'Use_Ext_Clk:'
+      ParentColor = False
+    end
+    object L_CONF_EN_ALGO: TLabel
+      Left = 130
+      Height = 17
+      Top = 112
+      Width = 56
+      Caption = 'En_Algo:'
+      ParentColor = False
+    end
+    object L_CONF_RANGE: TLabel
+      Left = 12
+      Height = 17
+      Top = 168
+      Width = 45
+      Caption = 'Range:'
+      ParentColor = False
+    end
+    object L_CONF_EDGES: TLabel
+      Left = 130
+      Height = 17
+      Top = 168
+      Width = 43
+      Caption = 'Edges:'
+      ParentColor = False
+    end
+    object L_CONF_UPDATE: TLabel
+      Left = 12
+      Height = 17
+      Top = 218
+      Width = 51
+      Caption = 'Update:'
+      ParentColor = False
+    end
+    object L_CONF_EN_RRC: TLabel
+      Left = 130
+      Height = 17
+      Top = 218
+      Width = 53
+      Caption = 'En_RRC:'
+      ParentColor = False
+    end
+    object L_CONF_GLITCH_EN: TLabel
+      Left = 12
+      Height = 17
+      Top = 270
+      Width = 65
+      Caption = 'Glitch_En:'
+      ParentColor = False
+    end
+    object CB_CONF_DER_OPT: TComboBox
+      Left = 130
+      Height = 25
+      Top = 288
+      Width = 100
+      Font.Height = -11
+      Font.Name = 'Sans'
+      ItemHeight = 0
+      Items.Strings = (
+        'NO_DERIVATE'
+        'BESIC_DERIVATE'
+        'STEP_DERIVATE'
+        'BOTH_DERIVATE'
+      )
+      ItemWidth = 1
+      ParentFont = False
+      TabOrder = 11
+      Text = 'ENAB'
+    end
+    object CB_CONF_ERR_RNG: TComboBox
+      Left = 8
+      Height = 27
+      Top = 340
+      Width = 100
+      ItemHeight = 0
+      Items.Strings = (
+        '0RPM'
+        '50RPM'
+        '100RPM'
+        '200RPM'
+      )
+      ItemWidth = 1
+      TabOrder = 12
+      Text = 'ENAB'
+    end
+    object L_CONF_DER_OPT: TLabel
+      Left = 130
+      Height = 17
+      Top = 270
+      Width = 59
+      Caption = 'Der_OPT:'
+      ParentColor = False
+    end
+    object L_CONF_ERR_RNG: TLabel
+      Left = 12
+      Height = 17
+      Top = 320
+      Width = 66
+      Caption = 'ERR_RNG:'
+      ParentColor = False
+    end
+  end
+  object GroupBox_GAIN: TGroupBox
+    Left = 290
+    Height = 136
+    Top = 16
+    Width = 250
+    Caption = 'Gain:'
+    ClientHeight = 117
+    ClientWidth = 246
+    TabOrder = 2
+    object CB_CONF_GAIND: TComboBox
+      Left = 8
+      Height = 27
+      Top = 24
+      Width = 100
+      ItemHeight = 0
+      Items.Strings = (
+        '1x'
+        '2x'
+        '4x'
+        '8x'
+      )
+      ItemWidth = 1
+      TabOrder = 0
+      Text = 'MASKED'
+    end
+    object L_CONF_GAIND: TLabel
+      Left = 12
+      Height = 17
+      Top = 3
+      Width = 47
+      Caption = 'GAIND:'
+      ParentColor = False
+    end
+    object CB_CONF_GAINI: TComboBox
+      Left = 130
+      Height = 27
+      Top = 24
+      Width = 100
+      ItemHeight = 0
+      Items.Strings = (
+        '1x'
+        '2x'
+        '4x'
+        '8x'
+      )
+      ItemWidth = 1
+      TabOrder = 1
+      Text = 'ENABLED'
+    end
+    object CB_CONF_GAINP: TComboBox
+      Left = 8
+      Height = 27
+      Top = 80
+      Width = 100
+      ItemHeight = 0
+      Items.Strings = (
+        '1x'
+        '2x'
+        '4x'
+        '8x'
+      )
+      ItemWidth = 1
+      TabOrder = 2
+      Text = 'OPERATE'
+    end
+    object L_CONF_GAINI: TLabel
+      Left = 130
+      Height = 17
+      Top = 3
+      Width = 41
+      Caption = 'GAINI:'
+      ParentColor = False
+      OnClick = L_CONF_DIS_TOClick
+    end
+    object L_CONF_GAINP: TLabel
+      Left = 12
+      Height = 17
+      Top = 56
+      Width = 45
+      Caption = 'GAINP:'
+      ParentColor = False
+    end
+  end
+  object GroupBox_SPINUP: TGroupBox
+    Left = 290
+    Height = 136
+    Top = 160
+    Width = 250
+    Caption = 'Spin Up:'
+    ClientHeight = 117
+    ClientWidth = 246
+    TabOrder = 3
+    object CB_CONF_GAIND1: TComboBox
+      Left = 8
+      Height = 27
+      Top = 24
+      Width = 100
+      ItemHeight = 0
+      ItemIndex = 0
+      Items.Strings = (
+        'MASKED'
+        'UNMASKED'
+      )
+      ItemWidth = 1
+      TabOrder = 0
+      Text = 'MASKED'
+    end
+    object L_CONF_GAIND1: TLabel
+      Left = 12
+      Height = 17
+      Top = 3
+      Width = 47
+      Caption = 'GAIND:'
+      ParentColor = False
+    end
+    object CB_CONF_GAINI1: TComboBox
+      Left = 130
+      Height = 27
+      Top = 24
+      Width = 100
+      ItemHeight = 0
+      ItemIndex = 0
+      Items.Strings = (
+        'ENABLED'
+        'DISABLED'
+      )
+      ItemWidth = 1
+      TabOrder = 1
+      Text = 'ENABLED'
+    end
+    object CB_CONF_GAINP1: TComboBox
+      Left = 8
+      Height = 27
+      Top = 80
+      Width = 100
+      ItemHeight = 0
+      ItemIndex = 1
+      Items.Strings = (
+        'DISABLED'
+        'OPERATE'
+      )
+      ItemWidth = 1
+      TabOrder = 2
+      Text = 'OPERATE'
+    end
+    object L_CONF_GAINI1: TLabel
+      Left = 130
+      Height = 17
+      Top = 3
+      Width = 41
+      Caption = 'GAINI:'
+      ParentColor = False
+      OnClick = L_CONF_DIS_TOClick
+    end
+    object L_CONF_GAINP1: TLabel
+      Left = 12
+      Height = 17
+      Top = 56
+      Width = 45
+      Caption = 'GAINP:'
+      ParentColor = False
+    end
+  end
+  object GroupBox_FANSTAT: TGroupBox
+    Left = 290
+    Height = 144
+    Top = 300
+    Width = 250
+    Caption = 'Fan Stat:'
+    ClientHeight = 125
+    ClientWidth = 246
+    TabOrder = 4
+    object CB_CONF_GAIND2: TComboBox
+      Left = 8
+      Height = 27
+      Top = 24
+      Width = 100
+      ItemHeight = 0
+      ItemIndex = 0
+      Items.Strings = (
+        'MASKED'
+        'UNMASKED'
+      )
+      ItemWidth = 1
+      TabOrder = 0
+      Text = 'MASKED'
+    end
+    object L_CONF_GAIND2: TLabel
+      Left = 12
+      Height = 17
+      Top = 3
+      Width = 47
+      Caption = 'GAIND:'
+      ParentColor = False
+    end
+    object CB_CONF_GAINI2: TComboBox
+      Left = 130
+      Height = 27
+      Top = 24
+      Width = 100
+      ItemHeight = 0
+      ItemIndex = 0
+      Items.Strings = (
+        'ENABLED'
+        'DISABLED'
+      )
+      ItemWidth = 1
+      TabOrder = 1
+      Text = 'ENABLED'
+    end
+    object CB_CONF_GAINP2: TComboBox
+      Left = 8
+      Height = 27
+      Top = 80
+      Width = 100
+      ItemHeight = 0
+      ItemIndex = 1
+      Items.Strings = (
+        'DISABLED'
+        'OPERATE'
+      )
+      ItemWidth = 1
+      TabOrder = 2
+      Text = 'OPERATE'
+    end
+    object L_CONF_GAINI2: TLabel
+      Left = 130
+      Height = 17
+      Top = 3
+      Width = 41
+      Caption = 'GAINI:'
+      ParentColor = False
+      OnClick = L_CONF_DIS_TOClick
+    end
+    object L_CONF_GAINP2: TLabel
+      Left = 12
+      Height = 17
+      Top = 56
+      Width = 45
+      Caption = 'GAINP:'
+      ParentColor = False
+    end
+  end
+  object PythonEngine_emc2301: TPythonEngine
+    AutoLoad = False
+    IO = PythonInputOutput_emc2301
+    PyFlags = [pfUseClassExceptionsFlag]
+    left = 640
+    top = 176
+  end
+  object PythonInputOutput_emc2301: TPythonInputOutput
+    MaxLineLength = 1000
+    OnSendData = PythonInputOutput_emc2301SendData
+    UnicodeIO = False
+    RawOutput = False
+    left = 640
+    top = 248
+  end
+  object MainMenu_emc2301: TMainMenu
+    BidiMode = bdRightToLeft
+    ParentBidiMode = False
+    left = 496
+    top = 232
+    object Help: TMenuItem
+      Caption = 'Help'
+    end
+    object Creator: TMenuItem
+      Caption = 'Creator'
+    end
+    object Graph: TMenuItem
+      Caption = 'Graph'
+      OnClick = GraphClick
+    end
+  end
+end

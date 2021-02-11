@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <Version Value="11"/>
+    <BuildModes Active="Default"/>
+    <Units Count="12">
+      <Unit0>
+        <Filename Value="emc2301.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="5"/>
+        <CursorPos X="56" Y="10"/>
+        <UsageCount Value="62"/>
+        <Loaded Value="True"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="emc2301_display.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="Form_emc2301"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <TopLine Value="153"/>
+        <CursorPos X="6" Y="171"/>
+        <UsageCount Value="62"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="emc2301_pyth_util.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="6"/>
+        <TopLine Value="297"/>
+        <CursorPos X="30" Y="497"/>
+        <UsageCount Value="62"/>
+        <Loaded Value="True"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="emc2301_read.pas"/>
+        <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="4"/>
+        <TopLine Value="237"/>
+        <CursorPos X="29" Y="267"/>
+        <UsageCount Value="62"/>
+        <Loaded Value="True"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="rpm_source.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="2"/>
+        <CursorPos X="48"/>
+        <UsageCount Value="53"/>
+        <Loaded Value="True"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="emc2301_graph.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="Form_graph"/>
+        <ResourceBaseClass Value="Form"/>
+        <EditorIndex Value="7"/>
+        <CursorPos X="21" Y="6"/>
+        <UsageCount Value="32"/>
+        <Loaded Value="True"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="fpc/emc2301/emc2301_display.pas"/>
+        <ComponentName Value="Form_emc2301"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="122"/>
+        <CursorPos X="31" Y="130"/>
+        <UsageCount Value="29"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="fpc/emc2301/emc2301_pyth_util.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="78"/>
+        <CursorPos X="61" Y="115"/>
+        <UsageCount Value="7"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="emc2301_display.lfm"/>
+        <EditorIndex Value="3"/>
+        <UsageCount Value="31"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="LFM"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="/usr/lib/lazarus/2.0.0/components/tachart/tacustomseries.pas"/>
+        <UnitName Value="TACustomSeries"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="892"/>
+        <CursorPos X="111" Y="914"/>
+        <UsageCount Value="7"/>
+      </Unit9>
+      <Unit10>
+        <Filename Value="rpm.txt"/>
+        <EditorIndex Value="1"/>
+        <CursorPos X="105" Y="18"/>
+        <UsageCount Value="26"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="None"/>
+      </Unit10>
+      <Unit11>
+        <Filename Value="graph.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit11>
+    </Units>
+    <JumpHistory Count="30" HistoryIndex="29">
+      <Position1>
+        <Filename Value="emc2301_display.pas"/>
+        <Caret Line="157" Column="60" TopLine="125"/>
+      </Position1>
+      <Position2>
+        <Filename Value="emc2301_display.pas"/>
+        <Caret Line="158" Column="60" TopLine="126"/>
+      </Position2>
+      <Position3>
+        <Filename Value="emc2301_display.pas"/>
+        <Caret Line="185" Column="60" TopLine="153"/>
+      </Position3>
+      <Position4>
+        <Filename Value="emc2301_display.pas"/>
+        <Caret Line="184" Column="60" TopLine="152"/>
+      </Position4>
+      <Position5>
+        <Filename Value="emc2301_display.pas"/>
+        <Caret Line="183" Column="60" TopLine="151"/>
+      </Position5>
+      <Position6>
+        <Filename Value="emc2301_display.pas"/>
+        <Caret Line="182" Column="60" TopLine="150"/>
+      </Position6>
+      <Position7>
+        <Filename Value="emc2301_display.pas"/>
+        <Caret Line="181" Column="60" TopLine="149"/>
+      </Position7>
+      <Position8>
+        <Filename Value="emc2301_display.pas"/>
+        <Caret Line="180" Column="60" TopLine="148"/>
+      </Position8>
+      <Position9>
+        <Filename Value="emc2301_display.pas"/>
+        <Caret Line="179" Column="60" TopLine="147"/>
+      </Position9>
+      <Position10>
+        <Filename Value="emc2301_display.pas"/>
+        <Caret Line="178" Column="60" TopLine="146"/>
+      </Position10>
+      <Position11>
+        <Filename Value="emc2301_display.pas"/>
+        <Caret Line="177" Column="60" TopLine="145"/>
+      </Position11>
+      <Position12>
+        <Filename Value="emc2301_display.pas"/>
+        <Caret Line="176" Column="60" TopLine="144"/>
+      </Position12>
+      <Position13>
+        <Filename Value="emc2301_display.pas"/>
+        <Caret Line="175" Column="60" TopLine="143"/>
+      </Position13>
+      <Position14>
+        <Filename Value="emc2301_display.pas"/>
+        <Caret Line="174" Column="60" TopLine="142"/>
+      </Position14>
+      <Position15>
+        <Filename Value="emc2301_display.pas"/>
+        <Caret Line="173" Column="60" TopLine="141"/>
+      </Position15>
+      <Position16>
+        <Filename Value="emc2301_display.pas"/>
+        <Caret Line="172" Column="60" TopLine="140"/>
+      </Position16>
+      <Position17>
+        <Filename Value="emc2301_display.pas"/>
+        <Caret Line="171" Column="60" TopLine="139"/>
+      </Position17>
+      <Position18>
+        <Filename Value="emc2301_display.pas"/>
+        <Caret Line="170" Column="60" TopLine="138"/>
+      </Position18>
+      <Position19>
+        <Filename Value="emc2301_display.pas"/>
+        <Caret Line="169" Column="60" TopLine="137"/>
+      </Position19>
+      <Position20>
+        <Filename Value="emc2301_display.pas"/>
+        <Caret Line="168" Column="60" TopLine="136"/>
+      </Position20>
+      <Position21>
+        <Filename Value="emc2301_display.pas"/>
+        <Caret Line="167" Column="60" TopLine="135"/>
+      </Position21>
+      <Position22>
+        <Filename Value="emc2301_display.pas"/>
+        <Caret Line="166" Column="60" TopLine="134"/>
+      </Position22>
+      <Position23>
+        <Filename Value="emc2301_display.pas"/>
+        <Caret Line="165" Column="60" TopLine="133"/>
+      </Position23>
+      <Position24>
+        <Filename Value="emc2301_display.pas"/>
+        <Caret Line="172" Column="60" TopLine="140"/>
+      </Position24>
+      <Position25>
+        <Filename Value="emc2301_pyth_util.pas"/>
+        <Caret Line="231" Column="34" TopLine="212"/>
+      </Position25>
+      <Position26>
+        <Filename Value="emc2301_pyth_util.pas"/>
+        <Caret Line="88" Column="35" TopLine="69"/>
+      </Position26>
+      <Position27>
+        <Filename Value="emc2301_pyth_util.pas"/>
+        <Caret Line="236" Column="35" TopLine="217"/>
+      </Position27>
+      <Position28>
+        <Filename Value="emc2301_display.pas"/>
+        <Caret Line="180" Column="23" TopLine="143"/>
+      </Position28>
+      <Position29>
+        <Filename Value="emc2301_display.pas"/>
+        <Caret Line="172" Column="14" TopLine="153"/>
+      </Position29>
+      <Position30>
+        <Filename Value="emc2301_display.pas"/>
+        <Caret Line="195" Column="95" TopLine="169"/>
+      </Position30>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes Count="0" ActiveMode=""/>
+    </RunParams>
+  </ProjectSession>
+  <Debugging>
+    <Watches Count="5">
+      <Item1>
+        <Expression Value="n"/>
+      </Item1>
+      <Item2>
+        <Expression Value="Data"/>
+      </Item2>
+      <Item3>
+        <Expression Value="s"/>
+      </Item3>
+      <Item4>
+        <Expression Value="j"/>
+      </Item4>
+      <Item5>
+        <Expression Value="emc"/>
+      </Item5>
+    </Watches>
+  </Debugging>
+</CONFIG>
