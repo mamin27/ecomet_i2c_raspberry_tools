@@ -1,18 +1,18 @@
 object Form_emc2301: TForm_emc2301
-  Left = 492
-  Height = 487
-  Top = 51
-  Width = 826
+  Left = 541
+  Height = 597
+  Top = 52
+  Width = 802
   Caption = 'Form_emc2301'
-  ClientHeight = 460
-  ClientWidth = 826
+  ClientHeight = 570
+  ClientWidth = 802
   Menu = MainMenu_emc2301
   OnCreate = FormCreate
   LCLVersion = '2.0.0.4'
   object Button1: TButton
-    Left = 688
+    Left = 540
     Height = 25
-    Top = 24
+    Top = 320
     Width = 75
     Caption = 'Button1'
     TabOrder = 0
@@ -70,6 +70,7 @@ object Form_emc2301: TForm_emc2301
       Top = 80
       Width = 100
       ItemHeight = 0
+      ItemIndex = 1
       Items.Strings = (
         'DISABLED'
         'OPERATE'
@@ -86,6 +87,7 @@ object Form_emc2301: TForm_emc2301
       Font.Height = -11
       Font.Name = 'Sans'
       ItemHeight = 0
+      ItemIndex = 1
       Items.Strings = (
         'CLK_INPUT'
         'CLK_OUTPUT'
@@ -101,6 +103,7 @@ object Form_emc2301: TForm_emc2301
       Top = 136
       Width = 100
       ItemHeight = 0
+      ItemIndex = 1
       Items.Strings = (
         'INTERNAL'
         'EXTERNAL'
@@ -115,6 +118,7 @@ object Form_emc2301: TForm_emc2301
       Top = 136
       Width = 100
       ItemHeight = 0
+      ItemIndex = 0
       Items.Strings = (
         'ENABLED'
         'DISABLED'
@@ -129,6 +133,7 @@ object Form_emc2301: TForm_emc2301
       Top = 188
       Width = 100
       ItemHeight = 0
+      ItemIndex = 1
       Items.Strings = (
         '500>1'
         '1000>2'
@@ -147,6 +152,7 @@ object Form_emc2301: TForm_emc2301
       Font.Height = -11
       Font.Name = 'Sans'
       ItemHeight = 0
+      ItemIndex = 1
       Items.Strings = (
         '3>1POLE>0.5'
         '5>2POLE>1'
@@ -164,6 +170,7 @@ object Form_emc2301: TForm_emc2301
       Top = 238
       Width = 100
       ItemHeight = 0
+      ItemIndex = 3
       Items.Strings = (
         '100ms'
         '200ms'
@@ -342,15 +349,15 @@ object Form_emc2301: TForm_emc2301
     end
   end
   object GroupBox_GAIN: TGroupBox
-    Left = 290
+    Left = 16
     Height = 136
-    Top = 16
+    Top = 420
     Width = 250
     Caption = 'Gain:'
     ClientHeight = 117
     ClientWidth = 246
     TabOrder = 2
-    object CB_CONF_GAIND: TComboBox
+    object CB_GN_GAIND: TComboBox
       Left = 8
       Height = 27
       Top = 24
@@ -366,7 +373,7 @@ object Form_emc2301: TForm_emc2301
       TabOrder = 0
       Text = 'MASKED'
     end
-    object L_CONF_GAIND: TLabel
+    object L_GN_GAIND: TLabel
       Left = 12
       Height = 17
       Top = 3
@@ -374,7 +381,7 @@ object Form_emc2301: TForm_emc2301
       Caption = 'GAIND:'
       ParentColor = False
     end
-    object CB_CONF_GAINI: TComboBox
+    object CB_GN_GAINI: TComboBox
       Left = 130
       Height = 27
       Top = 24
@@ -390,7 +397,7 @@ object Form_emc2301: TForm_emc2301
       TabOrder = 1
       Text = 'ENABLED'
     end
-    object CB_CONF_GAINP: TComboBox
+    object CB_GN_GAINP: TComboBox
       Left = 8
       Height = 27
       Top = 80
@@ -406,7 +413,7 @@ object Form_emc2301: TForm_emc2301
       TabOrder = 2
       Text = 'OPERATE'
     end
-    object L_CONF_GAINI: TLabel
+    object L_GN_GAINI: TLabel
       Left = 130
       Height = 17
       Top = 3
@@ -415,7 +422,7 @@ object Form_emc2301: TForm_emc2301
       ParentColor = False
       OnClick = L_CONF_DIS_TOClick
     end
-    object L_CONF_GAINP: TLabel
+    object L_GN_GAINP: TLabel
       Left = 12
       Height = 17
       Top = 56
@@ -425,185 +432,582 @@ object Form_emc2301: TForm_emc2301
     end
   end
   object GroupBox_SPINUP: TGroupBox
-    Left = 290
-    Height = 136
-    Top = 160
-    Width = 250
+    Left = 280
+    Height = 186
+    Top = 16
+    Width = 248
     Caption = 'Spin Up:'
-    ClientHeight = 117
-    ClientWidth = 246
+    ClientHeight = 167
+    ClientWidth = 244
     TabOrder = 3
-    object CB_CONF_GAIND1: TComboBox
+    object CB_SPIN_DRIVE_FAIL_CNT: TComboBox
       Left = 8
       Height = 27
       Top = 24
       Width = 100
       ItemHeight = 0
-      ItemIndex = 0
       Items.Strings = (
-        'MASKED'
-        'UNMASKED'
+        'DISABLE'
+        '16UP_PER'
+        '32UP_PER'
+        '64UP_PER'
       )
       ItemWidth = 1
       TabOrder = 0
-      Text = 'MASKED'
     end
-    object L_CONF_GAIND1: TLabel
+    object L_SPIN_DRIVE_FAIL_CNT: TLabel
       Left = 12
       Height = 17
       Top = 3
-      Width = 47
-      Caption = 'GAIND:'
+      Width = 97
+      Caption = 'Drive_Fail_Cnt:'
       ParentColor = False
     end
-    object CB_CONF_GAINI1: TComboBox
+    object CB_SPIN_NOKICK: TComboBox
       Left = 130
       Height = 27
       Top = 24
       Width = 100
       ItemHeight = 0
-      ItemIndex = 0
       Items.Strings = (
-        'ENABLED'
-        'DISABLED'
+        'NOKICK'
+        'SPIN'
       )
       ItemWidth = 1
       TabOrder = 1
-      Text = 'ENABLED'
     end
-    object CB_CONF_GAINP1: TComboBox
+    object CB_SPIN_LVL: TComboBox
       Left = 8
       Height = 27
       Top = 80
       Width = 100
       ItemHeight = 0
-      ItemIndex = 1
       Items.Strings = (
-        'DISABLED'
-        'OPERATE'
+        '30%'
+        '35%'
+        '40%'
+        '45%'
+        '50%'
+        '55%'
+        '60%'
+        '65%'
       )
       ItemWidth = 1
+      OnChange = CB_SPIN_LVLChange
       TabOrder = 2
-      Text = 'OPERATE'
     end
-    object L_CONF_GAINI1: TLabel
+    object L_SPIN_NOKICK: TLabel
       Left = 130
       Height = 17
       Top = 3
-      Width = 41
-      Caption = 'GAINI:'
+      Width = 49
+      Caption = 'Nokick:'
       ParentColor = False
       OnClick = L_CONF_DIS_TOClick
     end
-    object L_CONF_GAINP1: TLabel
+    object L_SPIN_LVL: TLabel
       Left = 12
       Height = 17
       Top = 56
-      Width = 45
-      Caption = 'GAINP:'
+      Width = 58
+      AutoSize = False
+      Caption = 'Spin_Lvl:'
+      Font.Height = 13
+      Font.Name = 'Sans'
       ParentColor = False
+      ParentFont = False
+      OptimalFill = True
+    end
+    object CB_SPIN_TIME: TComboBox
+      Left = 130
+      Height = 27
+      Top = 80
+      Width = 100
+      ItemHeight = 0
+      Items.Strings = (
+        '250ms'
+        '500ms'
+        '1s'
+        '2s'
+      )
+      ItemWidth = 1
+      TabOrder = 3
+    end
+    object L_SPIN_TIME: TLabel
+      Left = 130
+      Height = 17
+      Top = 56
+      Width = 90
+      AutoSize = False
+      Caption = 'SpinUp_Time:'
+      Font.Height = 13
+      Font.Name = 'Sans'
+      ParentColor = False
+      ParentFont = False
+      OptimalFill = True
+    end
+    object L_SPIN_FAN_MAX_STEP: TLabel
+      Left = 8
+      Height = 17
+      Top = 112
+      Width = 90
+      AutoSize = False
+      Caption = 'Fan_Max_Step:'
+      Font.Height = 12
+      Font.Name = 'Sans'
+      ParentColor = False
+      ParentFont = False
+      OptimalFill = True
+    end
+    object L_SPIN_FAN_MIN_DRIVE: TLabel
+      Left = 130
+      Height = 17
+      Top = 112
+      Width = 90
+      AutoSize = False
+      Caption = 'Fan_Min_Drive:'
+      Font.Height = 12
+      Font.Name = 'Sans'
+      ParentColor = False
+      ParentFont = False
+      OptimalFill = True
+    end
+    object ET_SPIN_FAN_MAX_STEP: TEdit
+      Left = 8
+      Height = 25
+      Top = 134
+      Width = 100
+      TabOrder = 4
+      Text = 'ET_SPIN_FAN_MAX_STEP'
+    end
+    object ET_SPIN_FAN_MIN_DRIVE: TEdit
+      Left = 130
+      Height = 25
+      Top = 134
+      Width = 100
+      TabOrder = 5
+      Text = 'ET_SPIN_FAN_MIN_DRIVE'
     end
   end
   object GroupBox_FANSTAT: TGroupBox
-    Left = 290
-    Height = 144
-    Top = 300
+    Left = 280
+    Height = 238
+    Top = 215
     Width = 250
     Caption = 'Fan Stat:'
-    ClientHeight = 125
+    ClientHeight = 219
     ClientWidth = 246
     TabOrder = 4
-    object CB_CONF_GAIND2: TComboBox
+    object CB_STAT_WATCH: TComboBox
       Left = 8
       Height = 27
       Top = 24
       Width = 100
       ItemHeight = 0
-      ItemIndex = 0
       Items.Strings = (
-        'MASKED'
-        'UNMASKED'
+        'EXPIRED'
+        'NOT_SET'
       )
       ItemWidth = 1
       TabOrder = 0
-      Text = 'MASKED'
     end
-    object L_CONF_GAIND2: TLabel
+    object L_STAT_WATCH: TLabel
       Left = 12
       Height = 17
       Top = 3
-      Width = 47
-      Caption = 'GAIND:'
+      Width = 44
+      Caption = 'Watch:'
       ParentColor = False
     end
-    object CB_CONF_GAINI2: TComboBox
+    object CB_STAT_DRIVE_FAIL: TComboBox
       Left = 130
+      Height = 25
+      Top = 24
+      Width = 100
+      Font.Height = -11
+      Font.Name = 'Sans'
+      ItemHeight = 0
+      Items.Strings = (
+        'CANOT_MEET'
+        'MEET'
+      )
+      ItemWidth = 1
+      ParentFont = False
+      TabOrder = 1
+    end
+    object CB_STAT_DRIVE_FAIL_I: TComboBox
+      Left = 8
+      Height = 25
+      Top = 80
+      Width = 100
+      Font.Height = -11
+      Font.Name = 'Sans'
+      ItemHeight = 0
+      Items.Strings = (
+        'CANOT_REACH'
+        'REACH'
+      )
+      ItemWidth = 1
+      ParentFont = False
+      TabOrder = 2
+    end
+    object L_STAT_DRIVE_FAIL: TLabel
+      Left = 130
+      Height = 17
+      Top = 3
+      Width = 68
+      Caption = 'Drive_Fail:'
+      ParentColor = False
+      OnClick = L_CONF_DIS_TOClick
+    end
+    object L_STAT_DRIVE_FAIL_I: TLabel
+      Left = 12
+      Height = 17
+      Top = 56
+      Width = 79
+      Caption = 'Drive_Fail_I:'
+      ParentColor = False
+    end
+    object L_STAT_FAN_SPIN: TLabel
+      Left = 130
+      Height = 17
+      Top = 56
+      Width = 61
+      Caption = 'Fan_Spin:'
+      ParentColor = False
+      OnClick = L_CONF_DIS_TOClick
+    end
+    object L_STAT_FAN_STALL: TLabel
+      Left = 12
+      Height = 17
+      Top = 112
+      Width = 62
+      Caption = 'Fan_Stall:'
+      ParentColor = False
+      OnClick = L_CONF_DIS_TOClick
+    end
+    object L_STAT_FAN_INT: TLabel
+      Left = 130
+      Height = 17
+      Top = 112
+      Width = 50
+      Caption = 'Fan_Int:'
+      ParentColor = False
+      OnClick = L_CONF_DIS_TOClick
+    end
+    object L_STAT_FAN_SETTING: TLabel
+      Left = 12
+      Height = 17
+      Top = 166
+      Width = 79
+      Caption = 'Fan_Setting:'
+      ParentColor = False
+    end
+    object CB_STAT_FAN_SPIN: TComboBox
+      Left = 130
+      Height = 25
+      Top = 80
+      Width = 100
+      Font.Height = -11
+      Font.Name = 'Sans'
+      ItemHeight = 0
+      Items.Strings = (
+        'CANOT_SPIN'
+        'SPIN'
+      )
+      ItemWidth = 1
+      ParentFont = False
+      TabOrder = 3
+    end
+    object CB_STAT_FAN_STALL: TComboBox
+      Left = 8
+      Height = 25
+      Top = 134
+      Width = 100
+      Font.Height = -11
+      Font.Name = 'Sans'
+      ItemHeight = 0
+      Items.Strings = (
+        'STALL'
+        'NOT_STALL'
+      )
+      ItemWidth = 1
+      ParentFont = False
+      TabOrder = 4
+    end
+    object CB_STAT_FAN_INT: TComboBox
+      Left = 130
+      Height = 25
+      Top = 134
+      Width = 100
+      Font.Height = -11
+      Font.Name = 'Sans'
+      ItemHeight = 0
+      Items.Strings = (
+        'ALERT'
+        'NO_ALERT'
+      )
+      ItemWidth = 1
+      ParentFont = False
+      TabOrder = 5
+    end
+    object ET_STAT_FAN_SETTING: TEdit
+      Left = 8
+      Height = 25
+      Top = 184
+      Width = 100
+      TabOrder = 6
+    end
+  end
+  object GroupBox_PWM: TGroupBox
+    Left = 540
+    Height = 138
+    Top = 16
+    Width = 248
+    Caption = 'PWM:'
+    ClientHeight = 119
+    ClientWidth = 244
+    TabOrder = 5
+    object CB_PWM_POLARITY: TComboBox
+      Left = 8
       Height = 27
       Top = 24
       Width = 100
       ItemHeight = 0
-      ItemIndex = 0
       Items.Strings = (
-        'ENABLED'
-        'DISABLED'
+        'INVERTED'
+        'NORMAL'
       )
       ItemWidth = 1
-      TabOrder = 1
-      Text = 'ENABLED'
+      TabOrder = 0
     end
-    object CB_CONF_GAINP2: TComboBox
+    object L_PWM_POLARITY: TLabel
+      Left = 12
+      Height = 17
+      Top = 3
+      Width = 53
+      Caption = 'Polarity:'
+      ParentColor = False
+    end
+    object CB_PWM_OUTPUT: TComboBox
+      Left = 130
+      Height = 25
+      Top = 24
+      Width = 100
+      Font.Height = -11
+      Font.Name = 'Sans'
+      ItemHeight = 0
+      Items.Strings = (
+        'PUSH-PULL'
+        'OPEN-DRAIN'
+      )
+      ItemWidth = 1
+      ParentFont = False
+      TabOrder = 1
+    end
+    object CB_PWM_BASE: TComboBox
       Left = 8
-      Height = 27
+      Height = 25
       Top = 80
       Width = 100
+      Font.Height = -11
+      Font.Name = 'Sans'
       ItemHeight = 0
-      ItemIndex = 1
       Items.Strings = (
-        'DISABLED'
-        'OPERATE'
+        '26.00kHz'
+        '19.531kHz'
+        '4.882Hz'
+        '2.441Hz'
       )
       ItemWidth = 1
+      OnChange = CB_SPIN_LVLChange
+      ParentFont = False
       TabOrder = 2
-      Text = 'OPERATE'
     end
-    object L_CONF_GAINI2: TLabel
+    object L_PWM_OUTPUT: TLabel
       Left = 130
       Height = 17
       Top = 3
-      Width = 41
-      Caption = 'GAINI:'
+      Width = 48
+      Caption = 'Output:'
       ParentColor = False
       OnClick = L_CONF_DIS_TOClick
     end
-    object L_CONF_GAINP2: TLabel
+    object L_PWM_BASE: TLabel
       Left = 12
       Height = 17
       Top = 56
-      Width = 45
-      Caption = 'GAINP:'
+      Width = 58
+      AutoSize = False
+      Caption = 'Base:'
+      Font.Height = 14
+      Font.Name = 'Sans'
       ParentColor = False
+      ParentFont = False
+      OptimalFill = True
+    end
+    object L_PWM_DIVIDE: TLabel
+      Left = 130
+      Height = 17
+      Top = 56
+      Width = 90
+      AutoSize = False
+      Caption = 'Divide:'
+      Font.Height = 14
+      Font.Name = 'Sans'
+      ParentColor = False
+      ParentFont = False
+      OptimalFill = True
+    end
+    object ET_PWM_DIVIDE: TEdit
+      Left = 130
+      Height = 25
+      Top = 80
+      Width = 100
+      TabOrder = 3
+    end
+  end
+  object GroupBox_TACH: TGroupBox
+    Left = 540
+    Height = 138
+    Top = 160
+    Width = 248
+    Caption = 'Tachometer:'
+    ClientHeight = 119
+    ClientWidth = 244
+    TabOrder = 6
+    object L_TACH_COUNT: TLabel
+      Left = 12
+      Height = 17
+      Top = 3
+      Width = 90
+      AutoSize = False
+      Caption = 'Count:'
+      Font.Height = 14
+      Font.Name = 'Sans'
+      ParentColor = False
+      ParentFont = False
+      OptimalFill = True
+    end
+    object L_TACH_FAN_FAIL_BAND: TLabel
+      Left = 130
+      Height = 17
+      Top = 3
+      Width = 90
+      AutoSize = False
+      Caption = 'Fan_Fail_Band:'
+      Font.Height = 12
+      Font.Name = 'Sans'
+      ParentColor = False
+      ParentFont = False
+      OptimalFill = True
+    end
+    object ET_TACH_COUNT: TEdit
+      Left = 8
+      Height = 25
+      Top = 24
+      Width = 100
+      TabOrder = 0
+    end
+    object ET_TACH_FAN_FAIL_BAND: TEdit
+      Left = 130
+      Height = 25
+      Top = 24
+      Width = 100
+      TabOrder = 1
+    end
+    object L_TACH_TARGET: TLabel
+      Left = 12
+      Height = 17
+      Top = 56
+      Width = 90
+      AutoSize = False
+      Caption = 'Target:'
+      Font.Height = 14
+      Font.Name = 'Sans'
+      ParentColor = False
+      ParentFont = False
+      OptimalFill = True
+    end
+    object L_TACH_READ: TLabel
+      Left = 130
+      Height = 17
+      Top = 56
+      Width = 90
+      AutoSize = False
+      Caption = 'Read:'
+      Font.Height = 14
+      Font.Name = 'Sans'
+      ParentColor = False
+      ParentFont = False
+      OptimalFill = True
+    end
+    object ET_TACH_TARGET: TEdit
+      Left = 8
+      Height = 25
+      Top = 80
+      Width = 100
+      TabOrder = 2
+    end
+    object ET_TACH_READ: TEdit
+      Left = 130
+      Height = 25
+      Top = 80
+      Width = 100
+      TabOrder = 3
+    end
+  end
+  object GroupBox_ID: TGroupBox
+    Left = 280
+    Height = 96
+    Top = 460
+    Width = 250
+    Caption = 'ID:'
+    ClientHeight = 77
+    ClientWidth = 246
+    TabOrder = 7
+    object ET_ID_PRODUCT: TEdit
+      Left = 8
+      Height = 25
+      Top = 24
+      Width = 40
+      TabOrder = 0
+    end
+    object ET_ID_MANUF: TEdit
+      Left = 70
+      Height = 25
+      Top = 24
+      Width = 40
+      TabOrder = 1
+    end
+    object ET_ID_REVISION: TEdit
+      Left = 134
+      Height = 25
+      Top = 24
+      Width = 40
+      TabOrder = 2
     end
   end
   object PythonEngine_emc2301: TPythonEngine
     AutoLoad = False
     IO = PythonInputOutput_emc2301
     PyFlags = [pfUseClassExceptionsFlag]
-    left = 640
-    top = 176
+    left = 192
+    top = 384
   end
   object PythonInputOutput_emc2301: TPythonInputOutput
     MaxLineLength = 1000
     OnSendData = PythonInputOutput_emc2301SendData
     UnicodeIO = False
     RawOutput = False
-    left = 640
-    top = 248
+    left = 152
+    top = 384
   end
   object MainMenu_emc2301: TMainMenu
     BidiMode = bdRightToLeft
     ParentBidiMode = False
-    left = 496
-    top = 232
+    left = 232
+    top = 384
     object Help: TMenuItem
       Caption = 'Help'
     end

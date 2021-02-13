@@ -16,18 +16,25 @@ uses
   TForm_emc2301 = class(TForm)
     Button1: TButton;
     CB_CONF_DER_OPT: TComboBox;
-    CB_CONF_GAIND1: TComboBox;
-    CB_CONF_GAIND2: TComboBox;
-    CB_CONF_GAINI: TComboBox;
+    CB_SPIN_DRIVE_FAIL_CNT: TComboBox;
+    CB_PWM_POLARITY: TComboBox;
+    CB_PWM_BASE: TComboBox;
+    CB_PWM_OUTPUT: TComboBox;
+    CB_STAT_FAN_STALL: TComboBox;
+    CB_STAT_FAN_SPIN: TComboBox;
+    CB_STAT_FAN_INT: TComboBox;
+    CB_STAT_WATCH: TComboBox;
+    CB_GN_GAINI: TComboBox;
     CB_CONF_ERR_RNG: TComboBox;
-    CB_CONF_GAINI1: TComboBox;
-    CB_CONF_GAINI2: TComboBox;
-    CB_CONF_GAINP1: TComboBox;
-    CB_CONF_GAINP2: TComboBox;
+    CB_SPIN_TIME: TComboBox;
+    CB_SPIN_NOKICK: TComboBox;
+    CB_STAT_DRIVE_FAIL: TComboBox;
+    CB_SPIN_LVL: TComboBox;
+    CB_STAT_DRIVE_FAIL_I: TComboBox;
     CB_CONF_MASK: TComboBox;
     CB_CONF_DIS_TO: TComboBox;
     CB_CONF_GLITCH_EN: TComboBox;
-    CB_CONF_GAIND: TComboBox;
+    CB_GN_GAIND: TComboBox;
     CB_CONF_WD_EN: TComboBox;
     CB_CONF_DR_EXT_CLK: TComboBox;
     CB_CONF_USE_EXT_CLK: TComboBox;
@@ -36,24 +43,51 @@ uses
     CB_CONF_EDGES: TComboBox;
     CB_CONF_UPDATE: TComboBox;
     CB_CONF_EN_RRC: TComboBox;
-    CB_CONF_GAINP: TComboBox;
+    CB_GN_GAINP: TComboBox;
+    ET_SPIN_FAN_MAX_STEP: TEdit;
+    ET_TACH_COUNT: TEdit;
+    ET_PWM_DIVIDE: TEdit;
+    ET_ID_PRODUCT: TEdit;
+    ET_ID_MANUF: TEdit;
+    ET_TACH_TARGET: TEdit;
+    ET_TACH_FAN_FAIL_BAND: TEdit;
+    ET_TACH_READ: TEdit;
+    ET_STAT_FAN_SETTING: TEdit;
+    ET_SPIN_FAN_MIN_DRIVE: TEdit;
+    ET_ID_REVISION: TEdit;
     GroupBox_CONF: TGroupBox;
     GroupBox_GAIN: TGroupBox;
+    GroupBox_TACH: TGroupBox;
     GroupBox_SPINUP: TGroupBox;
     GroupBox_FANSTAT: TGroupBox;
+    GroupBox_PWM: TGroupBox;
+    GroupBox_ID: TGroupBox;
     L_CONF_DER_OPT: TLabel;
-    L_CONF_GAIND1: TLabel;
-    L_CONF_GAIND2: TLabel;
-    L_CONF_GAINI: TLabel;
+    L_SPIN_DRIVE_FAIL_CNT: TLabel;
+    L_PWM_POLARITY: TLabel;
+    L_TACH_COUNT: TLabel;
+    L_TACH_TARGET: TLabel;
+    L_TACH_FAN_FAIL_BAND: TLabel;
+    L_TACH_READ: TLabel;
+    L_PWM_BASE: TLabel;
+    L_PWM_OUTPUT: TLabel;
+    L_PWM_DIVIDE: TLabel;
+    L_STAT_FAN_SPIN: TLabel;
+    L_STAT_FAN_STALL: TLabel;
+    L_STAT_FAN_INT: TLabel;
+    L_STAT_FAN_SETTING: TLabel;
+    L_STAT_WATCH: TLabel;
+    L_GN_GAINI: TLabel;
     L_CONF_ERR_RNG: TLabel;
-    L_CONF_GAINI1: TLabel;
-    L_CONF_GAINI2: TLabel;
-    L_CONF_GAINP1: TLabel;
-    L_CONF_GAINP2: TLabel;
+    L_SPIN_TIME: TLabel;
+    L_SPIN_NOKICK: TLabel;
+    L_STAT_DRIVE_FAIL: TLabel;
+    L_SPIN_LVL: TLabel;
+    L_STAT_DRIVE_FAIL_I: TLabel;
     L_CONF_MASK: TLabel;
     L_CONF_DIS_TO: TLabel;
     L_CONF_GLITCH_EN: TLabel;
-    L_CONF_GAIND: TLabel;
+    L_GN_GAIND: TLabel;
     L_CONF_WD_EN: TLabel;
     L_CONF_DR_EXT_CLK: TLabel;
     L_CONF_USE_EXT_CLK: TLabel;
@@ -62,7 +96,9 @@ uses
     L_CONF_EDGES: TLabel;
     L_CONF_UPDATE: TLabel;
     L_CONF_EN_RRC: TLabel;
-    L_CONF_GAINP: TLabel;
+    L_GN_GAINP: TLabel;
+    L_SPIN_FAN_MAX_STEP: TLabel;
+    L_SPIN_FAN_MIN_DRIVE: TLabel;
     MainMenu_emc2301: TMainMenu;
     Creator: TMenuItem;
     Help: TMenuItem;
@@ -70,6 +106,7 @@ uses
     PythonEngine_emc2301: TPythonEngine;
     PythonInputOutput_emc2301: TPythonInputOutput;
     procedure CB_CONF_EN_RRCChange(Sender: TObject);
+    procedure CB_SPIN_LVLChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure GraphClick(Sender: TObject);
     procedure L_CONF_DIS_TOClick(Sender: TObject);
@@ -152,6 +189,11 @@ begin
 end;
 
 procedure TForm_emc2301.CB_CONF_EN_RRCChange(Sender: TObject);
+begin
+
+end;
+
+procedure TForm_emc2301.CB_SPIN_LVLChange(Sender: TObject);
 begin
 
 end;

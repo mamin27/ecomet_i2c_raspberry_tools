@@ -200,8 +200,8 @@ def conf_register_list() :
                
    emc_base =  {    0: '26.00kHz',
 	                 1: '19.531kHz',
-	     	         2: '4,882Hz',
-				     3: '2,441Hz'
+	     	         2: '4.882Hz',
+				     3: '2.441Hz'
                }
                       
    reg_conf['MASK'] = 'UNMASKED' if emc.read_register( register = 'CONF' )[0] & conf_bit_list['MASK'] > 0 else 'MASKED'
@@ -496,8 +496,13 @@ class EMC2301(object):
        else :
          out = int(1/fan_list['POLES'] * ((fan_list['EDGE'] - 1)/(res * 1/fan_list['MULTIPLIER'])) * fan_list['FAN_TACH'] * 60)
        return (out,ret)
-    def fan_kick_up (self,offset,interval,sum_sample,new_value) :
+    def fan_kick_up (self,offset,interval,sum_sample,new_value,time_offset = None) :
        sample = [0] * (sum_sample)
+       time = [0] * (sum_sample)
+       if time_offset == None :
+         time_init = 0
+       else :
+         time_init = time_offset
        from time import sleep
        sleep(offset)
        self._logger.info('kick up fan to {}'.format(new_value))
@@ -505,6 +510,7 @@ class EMC2301(object):
        for index in range (0,sum_sample) :
          res = 0
          sleep(interval)
+         time_init = time_init + interval
          (tbin_lb,tbin_hb,ret) = self.read_register( register = 'TACH_READ' )
          for idx in range (0,8) :
            res = res + (tbin_hb % 2) * list_4096[idx]
@@ -513,8 +519,9 @@ class EMC2301(object):
            res = res + (tbin_lb % 2) * list_16[idx]
            tbin_lb = tbin_lb >> 1
          if res != 0 :
+           time[index] = round(time_init,3)
            sample[index] = int(1/fan_list['POLES'] * ((fan_list['EDGE'] - 1)/(res * 1/fan_list['MULTIPLIER'])) * fan_list['FAN_TACH'] * 60)
-       return (sample)
+       return (sample,time)
     def productid (self) :
        ret = 0
        (temp,lret) = self.read_register( register = 'PRODUCT_ID' )

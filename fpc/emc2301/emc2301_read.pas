@@ -35,6 +35,19 @@ const
   TYPE_DER_OPT = 8;
   TYPE_ERR_RNG = 9;
   TYPE_GAIN = 10;
+  TYPE_SPIN_FAIL = 11;
+  TYPE_SPIN_NOKICK = 12;
+  TYPE_SPIN_LVL = 13;
+  TYPE_SPIN_TIME = 14;
+  TYPE_STAT_WATCH = 15;
+  TYPE_STAT_FAIL = 16;
+  TYPE_STAT_FAILI = 17;
+  TYPE_STAT_SPIN = 18;
+  TYPE_STAT_STALL = 19;
+  TYPE_STAT_INT = 20;
+  TYPE_PWM_POLARITY = 21;
+  TYPE_PWM_OUTPUT = 22;
+  TYPE_PWM_BASE = 23;
 
 function EnumToInt (Tp: Integer; S: String) : Integer;
 begin
@@ -134,6 +147,108 @@ begin
     if S = '4x'
       then Result := 2;
     if S = '8x'
+      then Result := 3;
+  end;
+  if Tp = 11 then begin  // SPIN_FAIL
+    if S = 'DISABLE'
+      then Result := 0;
+    if S = '16UP_PER'
+      then Result := 1;
+    if S = '32UP_PER'
+      then Result := 2;
+    if S = '64UP_PER'
+      then Result := 3;
+  end;
+  if Tp = 12 then begin  // SPIN_NOKICK
+    if S = 'NOKICK'
+      then Result := 0;
+    if S = 'SPIN'
+      then Result := 1;
+  end;
+  if Tp = 13 then begin  // SPIN_LVL
+    if S = '30%'
+      then Result := 0;
+    if S = '35%'
+      then Result := 1;
+    if S = '40%'
+      then Result := 2;
+    if S = '45%'
+      then Result := 3;
+    if S = '50%'
+      then Result := 4;
+    if S = '55%'
+      then Result := 5;
+    if S = '60%'
+      then Result := 6;
+    if S = '65%'
+      then Result := 7;
+  end;
+  if Tp = 14 then begin  // SPIN_TIME
+    if S = '250ms'
+      then Result := 0;
+    if S = '500ms'
+      then Result := 1;
+    if S = '1s'
+      then Result := 2;
+    if S = '2s'
+      then Result := 3;
+  end;
+  if Tp = 15 then begin  // STAT_WATCH
+    if S = 'EXPIRED'
+      then Result := 0;
+    if S = 'NOT_SET'
+      then Result := 1;
+  end;
+  if Tp = 16 then begin  // STAT_FAIL
+    if S = 'CANOT_MEET'
+      then Result := 0;
+    if S = 'MEET'
+      then Result := 1;
+  end;
+  if Tp = 17 then begin  // STAT_FAILI
+    if S = 'CANOT_REACH'
+      then Result := 0;
+    if S = 'REACH'
+      then Result := 1;
+  end;
+  if Tp = 18 then begin  // STAT_SPIN
+    if S = 'CANOT_SPIN'
+      then Result := 0;
+    if S = 'SPIN'
+      then Result := 1;
+  end;
+  if Tp = 19 then begin  // STAT_STALL
+    if S = 'STALL'
+      then Result := 0;
+    if S = 'NOT_STALL'
+      then Result := 1;
+  end;
+  if Tp = 20 then begin  // STAT_INT
+    if S = 'ALERT'
+      then Result := 0;
+    if S = 'NO_ALERT'
+      then Result := 1;
+  end;
+  if Tp = 21 then begin  // PWM_POLARITY
+    if S = 'INVERTED'
+      then Result := 0;
+    if S = 'NORMAL'
+      then Result := 1;
+  end;
+  if Tp = 22 then begin  // PWM_OUTPUT
+    if S = 'PUSH-PULL'
+      then Result := 0;
+    if S = 'OPEN-DRAIN'
+      then Result := 1;
+  end;
+  if Tp = 23 then begin  // PWM_BASE
+    if S = '26.00kHz'
+      then Result := 0;
+    if S = '19.531kHz'
+      then Result := 1;
+    if S = '4.882Hz'
+      then Result := 2;
+    if S = '2.441Hz'
       then Result := 3;
   end;
 end;
@@ -262,9 +377,39 @@ begin
   Form_emc2301.CB_CONF_GLITCH_EN.ItemIndex := EnumToInt(TYPE_ENABLE,emc.attr1.attr_val_obj.attr11.attr_val);     //GLITCH_EN 0-ENABLED, 1-DISABLED
   Form_emc2301.CB_CONF_DER_OPT.ItemIndex := EnumToInt(TYPE_DER_OPT,emc.attr1.attr_val_obj.attr12.attr_val);     //DER_OPT
   Form_emc2301.CB_CONF_ERR_RNG.ItemIndex := EnumToInt(TYPE_ERR_RNG,emc.attr1.attr_val_obj.attr13.attr_val);     //ERR_RNG
-  Form_emc2301.CB_CONF_GAIND.ItemIndex := EnumToInt(TYPE_GAIN,emc.attr1.attr_val_obj.attr14.attr_val);     //GAIND
-  Form_emc2301.CB_CONF_GAINI.ItemIndex := EnumToInt(TYPE_GAIN,emc.attr1.attr_val_obj.attr15.attr_val);     //GAINI
-  Form_emc2301.CB_CONF_GAINP.ItemIndex := EnumToInt(TYPE_GAIN,emc.attr1.attr_val_obj.attr16.attr_val);     //GAINP
+  Form_emc2301.CB_GN_GAIND.ItemIndex := EnumToInt(TYPE_GAIN,emc.attr1.attr_val_obj.attr14.attr_val);     //GAIND
+  Form_emc2301.CB_GN_GAINI.ItemIndex := EnumToInt(TYPE_GAIN,emc.attr1.attr_val_obj.attr15.attr_val);     //GAINI
+  Form_emc2301.CB_GN_GAINP.ItemIndex := EnumToInt(TYPE_GAIN,emc.attr1.attr_val_obj.attr16.attr_val);     //GAINP
+
+  Form_emc2301.CB_STAT_WATCH.ItemIndex := EnumToInt(TYPE_STAT_WATCH,emc.attr2.attr_val_obj.attr1.attr_val);     //WATCH
+  Form_emc2301.CB_STAT_DRIVE_FAIL.ItemIndex := EnumToInt(TYPE_STAT_FAIL,emc.attr2.attr_val_obj.attr2.attr_val);     //DRIVE_FAIL
+  Form_emc2301.CB_STAT_DRIVE_FAIL_I.ItemIndex := EnumToInt(TYPE_STAT_FAILI,emc.attr2.attr_val_obj.attr3.attr_val);     //DRIVE_FAIL_I
+  Form_emc2301.CB_STAT_FAN_SPIN.ItemIndex := EnumToInt(TYPE_STAT_SPIN,emc.attr2.attr_val_obj.attr4.attr_val);     //FAN_SPIN
+  Form_emc2301.CB_STAT_FAN_STALL.ItemIndex := EnumToInt(TYPE_STAT_STALL,emc.attr2.attr_val_obj.attr5.attr_val);     //FAN_STALL
+  Form_emc2301.CB_STAT_FAN_INT.ItemIndex := EnumToInt(TYPE_STAT_INT,emc.attr2.attr_val_obj.attr6.attr_val);     //FAN_INT
+  Form_emc2301.ET_STAT_FAN_SETTING.Text := emc.attr2.attr_val_obj.attr7.attr_val;     //FAN_SETTING
+
+  Form_emc2301.CB_SPIN_DRIVE_FAIL_CNT.ItemIndex := EnumToInt(TYPE_SPIN_FAIL,emc.attr3.attr_val_obj.attr1.attr_val);     //DRIVE_FAIL_CNT
+  Form_emc2301.CB_SPIN_NOKICK.ItemIndex := EnumToInt(TYPE_SPIN_NOKICK,emc.attr3.attr_val_obj.attr2.attr_val);     //NOKICK
+  Form_emc2301.CB_SPIN_LVL.ItemIndex := EnumToInt(TYPE_SPIN_LVL,emc.attr3.attr_val_obj.attr3.attr_val);     //SPIN_LVL
+  Form_emc2301.CB_SPIN_TIME.ItemIndex := EnumToInt(TYPE_SPIN_TIME,emc.attr3.attr_val_obj.attr4.attr_val);     //SPINUP_TIME
+  Form_emc2301.ET_SPIN_FAN_MAX_STEP.Text := emc.attr3.attr_val_obj.attr5.attr_val;     //SPIN_FAN_MAX_STEP
+  Form_emc2301.ET_SPIN_FAN_MIN_DRIVE.Text := emc.attr3.attr_val_obj.attr6.attr_val;     //SPIN_FAN_MIN_DRIVE
+
+  Form_emc2301.CB_PWM_POLARITY.ItemIndex := EnumToInt(TYPE_PWM_POLARITY,emc.attr4.attr_val_obj.attr1.attr_val);     //PWM_POLARITY
+  Form_emc2301.CB_PWM_OUTPUT.ItemIndex := EnumToInt(TYPE_PWM_OUTPUT,emc.attr4.attr_val_obj.attr2.attr_val);     //PWM_OUTPUT
+  Form_emc2301.CB_PWM_BASE.ItemIndex := EnumToInt(TYPE_PWM_BASE,emc.attr4.attr_val_obj.attr3.attr_val);     //PWM_BASE
+  Form_emc2301.ET_PWM_DIVIDE.Text := emc.attr4.attr_val_obj.attr4.attr_val;     //PWM_DIVIDE
+
+  Form_emc2301.ET_TACH_COUNT.Text := emc.attr5.attr_val_obj.attr1.attr_val;     //TACH_COUNT
+  Form_emc2301.ET_TACH_FAN_FAIL_BAND.Text := emc.attr5.attr_val_obj.attr2.attr_val;     //TACH_FAN_FAIL_BAND
+  Form_emc2301.ET_TACH_TARGET.Text := emc.attr5.attr_val_obj.attr3.attr_val;     //TACH_TARGET
+  Form_emc2301.ET_TACH_READ.Text := emc.attr5.attr_val_obj.attr4.attr_val;     //TACH_READ
+
+  Form_emc2301.ET_ID_PRODUCT.Text := emc.attr6.attr_val_obj.attr1.attr_val;     //PRODUCT_ID
+  Form_emc2301.ET_ID_MANUF.Text := emc.attr6.attr_val_obj.attr2.attr_val;     //MANUF_ID
+  Form_emc2301.ET_ID_REVISION.Text := emc.attr6.attr_val_obj.attr3.attr_val;     //REVISION_ID
+
   Form_emc2301.CB_CONF_MASK.Style := csOwnerDrawVariable;
   Form_emc2301.CB_CONF_DIS_TO.Style := csOwnerDrawVariable;
   Form_emc2301.CB_CONF_WD_EN.Style := csOwnerDrawVariable;
@@ -278,9 +423,9 @@ begin
   Form_emc2301.CB_CONF_GLITCH_EN.Style := csOwnerDrawVariable;
   Form_emc2301.CB_CONF_DER_OPT.Style := csOwnerDrawVariable;
   Form_emc2301.CB_CONF_ERR_RNG.Style := csOwnerDrawVariable;
-  Form_emc2301.CB_CONF_GAIND.Style := csOwnerDrawVariable;
-  Form_emc2301.CB_CONF_GAINI.Style := csOwnerDrawVariable;
-  Form_emc2301.CB_CONF_GAINP.Style := csOwnerDrawVariable;
+  Form_emc2301.CB_GN_GAIND.Style := csOwnerDrawVariable;
+  Form_emc2301.CB_GN_GAINI.Style := csOwnerDrawVariable;
+  Form_emc2301.CB_GN_GAINP.Style := csOwnerDrawVariable;
 
 //  Form_emc2301.Edit_serial.Text:= emc.attr2.attr_val_obj.attr1.attr_val;  //SERIAL
 //  Form_emc2301.Edit_serial.Alignment:=taRightJustify;
