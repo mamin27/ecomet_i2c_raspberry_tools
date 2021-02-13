@@ -233,7 +233,7 @@ var
   keys: TParts;
 begin
 
-  Setlength(emc_str,1000);
+//  Setlength(emc_str,1000);
 
   emc_str := StringReplace(emc_str,' ','',[rfReplaceAll, rfIgnoreCase]);
   emc_str := StringReplace(emc_str,'''',':',[rfReplaceAll, rfIgnoreCase]);
@@ -464,31 +464,26 @@ begin
     Ob_emc_attr[idx_emc_attr].attr_val_obj:=Ob_emc_c[idx_emc_c];
 
    end
-   else if (keys[2] = 'MEASURE')
+   else if (keys[2] = 'SPEED')
    then
    begin
 
-    idx_emc_attr := idx_emc_attr +1;
-    idx_emc_c := idx_emc_c +1;
-    idx_emc_c_attr := idx_emc_c_attr +1;
+    idx_emc_attr := idx_emc_attr + 1;
+    idx_emc_c := idx_emc_c + 1;
+    idx_emc_c_attr := idx_emc_c_attr + 1;
 
-    ObI_emc_attr[1].code_type:=keys[1];
-    ObI_emc_attr[1].attr_name:=keys[2];                                //'MEASURE'
+    ObI_emc_attr[1].code_type:=keys[1];                      //READ_speed
+    ObI_emc_attr[1].attr_name:=keys[2];                      //'SPEED'
     emc.attr1:=ObI_emc_attr[1];
 
-    Ob_emc_attr[idx_emc_attr].attr_name:=keys[2];                      //'MEASURE'
-    Ob_emc_attr[idx_emc_attr].attr_val_selector:=true;
-    emc.attr3:=Ob_emc_attr[idx_emc_attr];
-    Ob_emc_c_attr[idx_emc_c_attr].attr_name:=keys[3];                   //'TEMP'
+    ObI_emc_attr[idx_emc_attr].attr_val_selector:=true;
+    emc.attr7:=Ob_emc_attr[idx_emc_attr];
+    Ob_emc_c_attr[idx_emc_c_attr].attr_name:=keys[3];                   //'RPM'
     Ob_emc_c_attr[idx_emc_c_attr].attr_val:=keys[4];
     Ob_emc_c[idx_emc_c].attr1:=Ob_emc_c_attr[idx_emc_c_attr];
     idx_emc_c_attr := idx_emc_c_attr +1;
-    Ob_emc_c_attr[idx_emc_c_attr]:= PyRecordOb_c.Init;
-    Ob_emc_c_attr[idx_emc_c_attr].attr_name:=keys[5];                   //'HUMIDITY'
-    Ob_emc_c_attr[idx_emc_c_attr].attr_val:=keys[6];
-    Ob_emc_c[idx_emc_c].attr2:=Ob_emc_c_attr[idx_emc_c_attr];
-    idx_emc_c_attr := idx_emc_c_attr +1;
     Ob_emc_attr[idx_emc_attr].attr_val_obj:=Ob_emc_c[idx_emc_c];
+
    end
    else  begin
     idx_emc_attr := idx_emc_attr +1;
@@ -500,7 +495,7 @@ begin
      emc.attr1:=ObI_emc_attr[1];
 
      Ob_emc_attr[idx_emc_attr].attr_val_selector:=false;
-     emc.attr4:=Ob_emc_attr[idx_emc_attr];
+     emc.attr8:=Ob_emc_attr[idx_emc_attr];
      Ob_emc_c_attr[idx_emc_c_attr].attr_name:='na';
      Ob_emc_attr[idx_emc_attr].attr_val_obj:=Ob_emc_c[idx_emc_c];
    end;

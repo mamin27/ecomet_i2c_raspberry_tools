@@ -5,11 +5,13 @@ unit emc2301_read;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Buttons,
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Buttons, Math,
   emc2301_pyth_util, emc2301_display;
 
 procedure read_output_emc (emc: emc2301Ob);
+procedure read_speed_emc (emc: emc2301Ob);
 procedure read_emc ();
+procedure read_speed ();
 procedure read_measure ();
 procedure self_test ();
 {procedure read_measure_emc  (emc: emc2301Ob); }
@@ -48,6 +50,7 @@ const
   TYPE_PWM_POLARITY = 21;
   TYPE_PWM_OUTPUT = 22;
   TYPE_PWM_BASE = 23;
+  TYPE_MON_SAMPLE = 24;
 
 function EnumToInt (Tp: Integer; S: String) : Integer;
 begin
@@ -85,21 +88,21 @@ begin
     if S = '500>1'
       then Result := 0;
     if S = '1000>2'
-      then Result := 32;
+      then Result := 1;
     if S = '2000>4'
-      then Result := 64;
+      then Result := 2;
     if S = '4000>8'
-      then Result := 96;
+      then Result := 3;
   end;
   if Tp = 6 then begin  // EDGE
     if S = '3>1POLE>0.5'
       then Result := 0;
     if S = '5>2POLE>1'
-      then Result := 8;
+      then Result := 1;
     if S = '7>3POLE>1.5'
-      then Result := 16;
+      then Result := 2;
     if S = '9>4POLE>2'
-      then Result := 24;
+      then Result := 3;
   end;
   if Tp = 7 then begin  // UPDATE
     if S = '100ms'
@@ -119,25 +122,25 @@ begin
     if S = '1600ms'
       then Result := 7;
   end;
-  if Tp = 8 then begin  // DER_OPT
+  if Tp = TYPE_DER_OPT then begin  // DER_OPT
     if S = 'NO_DERIVATE'
       then Result := 0;
     if S = 'BASIC_DERIVATE'
-      then Result := 8;
+      then Result := 1;
     if S = 'STEP_DERIVATE'
-      then Result := 16;
+      then Result := 2;
     if S = 'BOTH_DERIVATE'
-      then Result := 24;
+      then Result := 3;
   end;
   if Tp = 9 then begin  // ERR_RNG
     if S = '0RPM'
       then Result := 0;
     if S = '50RPM'
-      then Result := 2;
+      then Result := 1;
     if S = '100RPM'
-      then Result := 4;
+      then Result := 2;
     if S = '200RPM'
-      then Result := 6;
+      then Result := 3;
   end;
   if Tp = 10 then begin  // ERR_RNG
     if S = '1x'
@@ -251,6 +254,18 @@ begin
     if S = '2.441Hz'
       then Result := 3;
   end;
+  if Tp = TYPE_MON_SAMPLE then begin  // MON_SAMPLE
+    if S = 'off'
+      then Result := 0;
+    if S = '1s'
+      then Result := 1;
+    if S = '3s'
+      then Result := 3;
+    if S = '10s'
+      then Result := 10;
+    if S = '20s'
+      then Result := 20;
+  end;
 end;
 
 function IntToEnum (Tp: Integer; S: Integer) : String;
@@ -316,6 +331,27 @@ Py_S.DelimitedText := 'from  i2c_pkg.emc2301_pkg import emc2301|' +
                       '    print (":READ_emc:{}".format(register))|' +
                       'else :|' +
                       '    print(":READ_emc_ERR:")|';
+
+Form_emc2301.PythonEngine_emc2301.ExecStrings(Py_S);
+Py_S.Free;
+end;
+
+procedure read_speed ();
+var
+  Py_S: TStringList;
+begin
+Py_S := TStringList.Create;
+Py_S.Delimiter := '|';
+Py_S.StrictDelimiter := True;
+Py_S.DelimitedText := 'from  i2c_pkg.emc2301_pkg import emc2301|' +
+                      'from time import sleep|' +
+                      'import statistics|' +
+                      'sens = emc2301.EMC2301()|' +
+                      'measure = []|' +
+                      'for i in range (10) :|' +
+                      '  measure.append(sens.speed()[0])|' +
+                      '  sleep(0.01)|' +
+                      'print (":READ_speed:SPEED::RPM::{}".format(int(statistics.mean(measure))))|';
 
 Form_emc2301.PythonEngine_emc2301.ExecStrings(Py_S);
 Py_S.Free;
@@ -387,7 +423,7 @@ begin
   Form_emc2301.CB_STAT_FAN_SPIN.ItemIndex := EnumToInt(TYPE_STAT_SPIN,emc.attr2.attr_val_obj.attr4.attr_val);     //FAN_SPIN
   Form_emc2301.CB_STAT_FAN_STALL.ItemIndex := EnumToInt(TYPE_STAT_STALL,emc.attr2.attr_val_obj.attr5.attr_val);     //FAN_STALL
   Form_emc2301.CB_STAT_FAN_INT.ItemIndex := EnumToInt(TYPE_STAT_INT,emc.attr2.attr_val_obj.attr6.attr_val);     //FAN_INT
-  Form_emc2301.ET_STAT_FAN_SETTING.Text := emc.attr2.attr_val_obj.attr7.attr_val;     //FAN_SETTING
+  Form_emc2301.ET_STAT_FAN_SETTING.Text := FloatToStr(RoundTo(StrToFloat(emc.attr2.attr_val_obj.attr7.attr_val),-1));     //FAN_SETTING
 
   Form_emc2301.CB_SPIN_DRIVE_FAIL_CNT.ItemIndex := EnumToInt(TYPE_SPIN_FAIL,emc.attr3.attr_val_obj.attr1.attr_val);     //DRIVE_FAIL_CNT
   Form_emc2301.CB_SPIN_NOKICK.ItemIndex := EnumToInt(TYPE_SPIN_NOKICK,emc.attr3.attr_val_obj.attr2.attr_val);     //NOKICK
@@ -404,7 +440,7 @@ begin
   Form_emc2301.ET_TACH_COUNT.Text := emc.attr5.attr_val_obj.attr1.attr_val;     //TACH_COUNT
   Form_emc2301.ET_TACH_FAN_FAIL_BAND.Text := emc.attr5.attr_val_obj.attr2.attr_val;     //TACH_FAN_FAIL_BAND
   Form_emc2301.ET_TACH_TARGET.Text := emc.attr5.attr_val_obj.attr3.attr_val;     //TACH_TARGET
-  Form_emc2301.ET_TACH_READ.Text := emc.attr5.attr_val_obj.attr4.attr_val;     //TACH_READ
+// Form_emc2301.ET_TACH_READ.Text := read_speed
 
   Form_emc2301.ET_ID_PRODUCT.Text := emc.attr6.attr_val_obj.attr1.attr_val;     //PRODUCT_ID
   Form_emc2301.ET_ID_MANUF.Text := emc.attr6.attr_val_obj.attr2.attr_val;     //MANUF_ID
@@ -435,6 +471,13 @@ begin
 //  Form_emc2301.Edit_devid.Alignment:=taRightJustify;
 
 end;
+procedure read_speed_emc (emc: emc2301Ob);
+begin
+  Form_emc2301.ET_TACH_READ.Text := emc.attr7.attr_val_obj.attr1.attr_val;     //RPM
+//  writeln(emc.attr7.attr_val_obj.attr1.attr_val);
+  Form_emc2301.BitBtn_MON.ImageIndex:= 0;
+end;
+
 {
 procedure  read_measure_emc  (emc: emc2301Ob);
 var

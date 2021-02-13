@@ -169,7 +169,7 @@ def conf_register_list() :
                }
                
    emc_der_opt =  {  0:  'NO_DERIVATE',
-	                 8:  'BESIC_DERIVATE',
+	                 8:  'BASIC_DERIVATE',
 	     	        16: 'STEP_DERIVATE',
 				    24: 'BOTH_DERIVATE'
                }

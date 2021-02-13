@@ -7,15 +7,16 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Buttons,
   TAGraph, TASeries, TASources,
-  Menus, emc2301_pyth_util, rpm_source, PythonEngine;
+  Menus, ExtCtrls, emc2301_pyth_util, rpm_source, PythonEngine;
 
   { TForm_emc2301 }
 
  type
 
   TForm_emc2301 = class(TForm)
-    Button1: TButton;
+    BitBtn_MON: TBitBtn;
     CB_CONF_DER_OPT: TComboBox;
+    CB_MON_SAMPLE: TComboBox;
     CB_SPIN_DRIVE_FAIL_CNT: TComboBox;
     CB_PWM_POLARITY: TComboBox;
     CB_PWM_BASE: TComboBox;
@@ -62,10 +63,13 @@ uses
     GroupBox_FANSTAT: TGroupBox;
     GroupBox_PWM: TGroupBox;
     GroupBox_ID: TGroupBox;
+    GroupBox_Monitor: TGroupBox;
+    ImageList: TImageList;
     L_CONF_DER_OPT: TLabel;
     L_SPIN_DRIVE_FAIL_CNT: TLabel;
     L_PWM_POLARITY: TLabel;
     L_TACH_COUNT: TLabel;
+    L_MON_SAMPLE: TLabel;
     L_TACH_TARGET: TLabel;
     L_TACH_FAN_FAIL_BAND: TLabel;
     L_TACH_READ: TLabel;
@@ -105,13 +109,17 @@ uses
     Graph: TMenuItem;
     PythonEngine_emc2301: TPythonEngine;
     PythonInputOutput_emc2301: TPythonInputOutput;
+    Timer1: TTimer;
+    procedure BitBtn_MONClick(Sender: TObject);
     procedure CB_CONF_EN_RRCChange(Sender: TObject);
+    procedure CB_MON_SAMPLEChange(Sender: TObject);
     procedure CB_SPIN_LVLChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure GraphClick(Sender: TObject);
     procedure L_CONF_DIS_TOClick(Sender: TObject);
     procedure PythonInputOutput_emc2301SendData(Sender: TObject;
       const Data: AnsiString);
+    procedure Timer1Timer(Sender: TObject);
   private
     procedure DoPy_InitEngine;
   public
@@ -148,6 +156,7 @@ const
   N = 10000;
   MIN = 0;
   MAX = 10001;
+  TYPE_MON_SAMPLE = 24;
 
 procedure TForm_emc2301.DoPy_InitEngine;
 var
@@ -185,12 +194,36 @@ begin
 
   self_test();
   read_emc();
+  Form_emc2301.Timer1.Enabled := False;
+  Form_emc2301.BitBtn_MON.ImageIndex:= 0;
 
 end;
 
 procedure TForm_emc2301.CB_CONF_EN_RRCChange(Sender: TObject);
 begin
 
+end;
+
+procedure TForm_emc2301.CB_MON_SAMPLEChange(Sender: TObject);
+var
+  idx:Integer;
+begin
+
+  idx := EnumToInt(TYPE_MON_SAMPLE,Form_emc2301.CB_MON_SAMPLE.Items[Form_emc2301.CB_MON_SAMPLE.ItemIndex]);
+  if idx = 0
+   then Form_emc2301.Timer1.Enabled := False
+   else begin
+     Form_emc2301.Timer1.Interval := idx * 1000;
+     Form_emc2301.Timer1.Enabled := True
+   end;
+end;
+
+procedure TForm_emc2301.BitBtn_MONClick(Sender: TObject);
+begin
+  Form_emc2301.BitBtn_MON.ImageIndex:= 1;
+  sleep(500);
+  read_emc();
+  read_speed();
 end;
 
 procedure TForm_emc2301.CB_SPIN_LVLChange(Sender: TObject);
@@ -218,6 +251,8 @@ begin
      read_output_emc(emc);
    'READ_emc_ERR':
      writeln('read_emc_err');
+   'READ_speed':
+     read_speed_emc(emc);
 {   'READ_MEASURE':
      read_measure_emc(emc);
    'READ_MEASURE_ERR':
@@ -252,6 +287,13 @@ begin
        exit;
      end;
     end;
+end;
+
+procedure TForm_emc2301.Timer1Timer(Sender: TObject);
+begin
+
+  read_emc();
+  read_speed();
 end;
 
 end.
