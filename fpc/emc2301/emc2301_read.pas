@@ -12,12 +12,8 @@ procedure read_output_emc (emc: emc2301Ob);
 procedure read_speed_emc (emc: emc2301Ob);
 procedure read_emc ();
 procedure read_speed ();
-procedure read_measure ();
 procedure self_test ();
-{procedure read_measure_emc  (emc: emc2301Ob); }
 function EnumToInt (Tp: Integer; S: String) : Integer;
-function EnumToInt_MODE (S: String) : Integer;
-function EnumToInt_HEAT (S: String) : Integer;
 function IntToEnum (Tp: Integer; S: Integer) : String;
 function IntToEnum_MODE (S: Integer) : String;
 function IntToEnum_HEAT (S: Integer) : String;
@@ -54,37 +50,37 @@ const
 
 function EnumToInt (Tp: Integer; S: String) : Integer;
 begin
-  if Tp = 0 then begin  // MASK
+  if Tp = TYPE_MASK then begin  // MASK
     if S = 'MASKED'
       then Result := 0;
     if S = 'UNMASKED'
       then Result := 1;
   end;
-  if Tp = 1 then begin  // ENABLE
+  if Tp = TYPE_ENABLE then begin  // ENABLE
     if S = 'ENABLED'
       then Result := 0;
     if S = 'DISABLED'
       then Result := 1;
   end;
-  if Tp = 2 then begin  // OPER
+  if Tp = TYPE_OPER then begin  // OPER
     if S = 'DISABLED'
       then Result := 0;
     if S = 'OPERATE'
       then Result := 1;
   end;
-  if Tp = 3 then begin  // DR_CLK
+  if Tp = TYPE_DR_CLK then begin  // DR_CLK
     if S = 'CLK_INPUT'
       then Result := 0;
     if S = 'CLK_OUTPUT'
       then Result := 1;
   end;
-  if Tp = 4 then begin  // USE_CLK
+  if Tp = TYPE_USE_CLK then begin  // USE_CLK
     if S = 'INTERNAL'
       then Result := 0;
     if S = 'EXTERNAL'
       then Result := 1;
   end;
-  if Tp = 5 then begin  // RANGE
+  if Tp = TYPE_RANGE then begin  // RANGE
     if S = '500>1'
       then Result := 0;
     if S = '1000>2'
@@ -94,7 +90,7 @@ begin
     if S = '4000>8'
       then Result := 3;
   end;
-  if Tp = 6 then begin  // EDGE
+  if Tp = TYPE_EDGE then begin  // EDGE
     if S = '3>1POLE>0.5'
       then Result := 0;
     if S = '5>2POLE>1'
@@ -104,7 +100,7 @@ begin
     if S = '9>4POLE>2'
       then Result := 3;
   end;
-  if Tp = 7 then begin  // UPDATE
+  if Tp = TYPE_UPDATE then begin  // UPDATE
     if S = '100ms'
       then Result := 0;
     if S = '200ms'
@@ -132,7 +128,7 @@ begin
     if S = 'BOTH_DERIVATE'
       then Result := 3;
   end;
-  if Tp = 9 then begin  // ERR_RNG
+  if Tp = TYPE_ERR_RNG then begin  // ERR_RNG
     if S = '0RPM'
       then Result := 0;
     if S = '50RPM'
@@ -142,7 +138,7 @@ begin
     if S = '200RPM'
       then Result := 3;
   end;
-  if Tp = 10 then begin  // ERR_RNG
+  if Tp = TYPE_GAIN then begin  // GAIN
     if S = '1x'
       then Result := 0;
     if S = '2x'
@@ -152,7 +148,7 @@ begin
     if S = '8x'
       then Result := 3;
   end;
-  if Tp = 11 then begin  // SPIN_FAIL
+  if Tp = TYPE_SPIN_FAIL then begin  // SPIN_FAIL
     if S = 'DISABLE'
       then Result := 0;
     if S = '16UP_PER'
@@ -162,13 +158,13 @@ begin
     if S = '64UP_PER'
       then Result := 3;
   end;
-  if Tp = 12 then begin  // SPIN_NOKICK
+  if Tp = TYPE_SPIN_NOKICK then begin  // SPIN_NOKICK
     if S = 'NOKICK'
       then Result := 0;
     if S = 'SPIN'
       then Result := 1;
   end;
-  if Tp = 13 then begin  // SPIN_LVL
+  if Tp = TYPE_SPIN_LVL then begin  // SPIN_LVL
     if S = '30%'
       then Result := 0;
     if S = '35%'
@@ -186,7 +182,7 @@ begin
     if S = '65%'
       then Result := 7;
   end;
-  if Tp = 14 then begin  // SPIN_TIME
+  if Tp = TYPE_SPIN_TIME then begin  // SPIN_TIME
     if S = '250ms'
       then Result := 0;
     if S = '500ms'
@@ -196,55 +192,55 @@ begin
     if S = '2s'
       then Result := 3;
   end;
-  if Tp = 15 then begin  // STAT_WATCH
+  if Tp = TYPE_STAT_WATCH then begin  // STAT_WATCH
     if S = 'EXPIRED'
       then Result := 0;
     if S = 'NOT_SET'
       then Result := 1;
   end;
-  if Tp = 16 then begin  // STAT_FAIL
+  if Tp = TYPE_STAT_FAIL then begin  // STAT_FAIL
     if S = 'CANOT_MEET'
       then Result := 0;
     if S = 'MEET'
       then Result := 1;
   end;
-  if Tp = 17 then begin  // STAT_FAILI
+  if Tp = TYPE_STAT_FAILI then begin  // STAT_FAILI
     if S = 'CANOT_REACH'
       then Result := 0;
     if S = 'REACH'
       then Result := 1;
   end;
-  if Tp = 18 then begin  // STAT_SPIN
+  if Tp = TYPE_STAT_SPIN then begin  // STAT_SPIN
     if S = 'CANOT_SPIN'
       then Result := 0;
     if S = 'SPIN'
       then Result := 1;
   end;
-  if Tp = 19 then begin  // STAT_STALL
+  if Tp = TYPE_STAT_STALL then begin  // STAT_STALL
     if S = 'STALL'
       then Result := 0;
     if S = 'NOT_STALL'
       then Result := 1;
   end;
-  if Tp = 20 then begin  // STAT_INT
+  if Tp = TYPE_STAT_INT then begin  // STAT_INT
     if S = 'ALERT'
       then Result := 0;
     if S = 'NO_ALERT'
       then Result := 1;
   end;
-  if Tp = 21 then begin  // PWM_POLARITY
+  if Tp = TYPE_PWM_POLARITY then begin  // PWM_POLARITY
     if S = 'INVERTED'
       then Result := 0;
     if S = 'NORMAL'
       then Result := 1;
   end;
-  if Tp = 22 then begin  // PWM_OUTPUT
+  if Tp = TYPE_PWM_OUTPUT then begin  // PWM_OUTPUT
     if S = 'PUSH-PULL'
       then Result := 0;
     if S = 'OPEN-DRAIN'
       then Result := 1;
   end;
-  if Tp = 23 then begin  // PWM_BASE
+  if Tp = TYPE_PWM_BASE then begin  // PWM_BASE
     if S = '26.00kHz'
       then Result := 0;
     if S = '19.531kHz'
@@ -270,28 +266,24 @@ end;
 
 function IntToEnum (Tp: Integer; S: Integer) : String;
 begin
-  if Tp = 1 then begin  // TEMP
+  if Tp = TYPE_MASK then begin  // MASK
     if S = 0
-      then Result := 'TRES_RES2';
+      then Result := 'MASKED';
     if S = 1
-      then Result := 'TRES_RES1';
+      then Result := 'UNMASKED';
   end;
-  if Tp = 0 then begin  // HMDT
+  if Tp = TYPE_ENABLE then begin  // ENABLE
     if S = 0
-      then Result := 'HRES_RES3';
+      then Result := 'ENABLED';
     if S = 1
-      then Result := 'HRES_RES2';
-    if S = 2
-      then Result := 'HRES_RES1';
+      then Result := 'DISABLED';
   end;
-end;
-
-function EnumToInt_MODE (S: String) : Integer;
-begin
-    if S = 'BOTH'
-      then Result := 0;
-    if S = 'ONLY'
-      then Result := 1;
+  if Tp = TYPE_OPER then begin  // OPER
+    if S = 0
+      then Result := 'DISABLED';
+    if S = 1
+      then Result := 'OPERATE';
+  end;
 end;
 
 function IntToEnum_MODE (S: Integer) : String;
@@ -300,14 +292,6 @@ begin
       then Result := 'MODE_BOTH';
     if S = 1
       then Result := 'MODE_ONLY';
-end;
-
-function EnumToInt_HEAT (S: String) : Integer;
-begin
-    if S = 'DISABLE'
-      then Result := 0;
-    if S = 'ENABLE'
-      then Result := 1;
 end;
 
 function IntToEnum_HEAT (S: Integer) : String;
@@ -352,25 +336,6 @@ Py_S.DelimitedText := 'from  i2c_pkg.emc2301_pkg import emc2301|' +
                       '  measure.append(sens.speed()[0])|' +
                       '  sleep(0.01)|' +
                       'print (":READ_speed:SPEED::RPM::{}".format(int(statistics.mean(measure))))|';
-
-Form_emc2301.PythonEngine_emc2301.ExecStrings(Py_S);
-Py_S.Free;
-end;
-
-procedure read_measure ();
-var
-  Py_S: TStringList;
-begin
-Py_S := TStringList.Create;
-Py_S.Delimiter := '|';
-Py_S.StrictDelimiter := True;
-Py_S.DelimitedText := 'from  i2c_pkg.emc2301_pkg import emc2301|' +
-                      'from i2c_pkg.emc2301_pkg import fan_type|' +
-                      'register = emc2301.conf_register_list()|' +
-                      'if register != "" :|' +
-                      '    print (":READ_MEASURE:{}".format(register))|' +
-                      'else :|' +
-                      '    print (":READ_MEASURE_ERR:")|';
 
 Form_emc2301.PythonEngine_emc2301.ExecStrings(Py_S);
 Py_S.Free;
@@ -440,7 +405,6 @@ begin
   Form_emc2301.ET_TACH_COUNT.Text := emc.attr5.attr_val_obj.attr1.attr_val;     //TACH_COUNT
   Form_emc2301.ET_TACH_FAN_FAIL_BAND.Text := emc.attr5.attr_val_obj.attr2.attr_val;     //TACH_FAN_FAIL_BAND
   Form_emc2301.ET_TACH_TARGET.Text := emc.attr5.attr_val_obj.attr3.attr_val;     //TACH_TARGET
-// Form_emc2301.ET_TACH_READ.Text := read_speed
 
   Form_emc2301.ET_ID_PRODUCT.Text := emc.attr6.attr_val_obj.attr1.attr_val;     //PRODUCT_ID
   Form_emc2301.ET_ID_MANUF.Text := emc.attr6.attr_val_obj.attr2.attr_val;     //MANUF_ID
@@ -478,21 +442,5 @@ begin
   Form_emc2301.BitBtn_MON.ImageIndex:= 0;
 end;
 
-{
-procedure  read_measure_emc  (emc: emc2301Ob);
-var
-  i: Real;
-  const s: string = #$E2#$84#$83; // degree Celsius
-
-begin
-  i := StrToFloat(emc.attr3.attr_val_obj.attr1.attr_val);
-  Form_emc2301.Edit_temp.Text:= FloatToStr(RoundTo(i,-2)) + s;  //TEMPERATURE
-  Form_emc2301.Edit_temp.Alignment:=taRightJustify;
-  i := StrToFloat(emc.attr3.attr_val_obj.attr2.attr_val);
-  Form_emc2301.Edit_hmdt.Text:= FloatToStr(RoundTo(i,-2)) + '%';  //HUMIDITY
-  Form_emc2301.Edit_hmdt.Alignment:=taRightJustify;
-
-end;
-}
 end.
 

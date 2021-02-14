@@ -111,7 +111,19 @@ uses
     PythonInputOutput_emc2301: TPythonInputOutput;
     Timer1: TTimer;
     procedure BitBtn_MONClick(Sender: TObject);
+    procedure CB_CONF_DER_OPTChange(Sender: TObject);
+    procedure CB_CONF_DIS_TOChange(Sender: TObject);
+    procedure CB_CONF_DR_EXT_CLKChange(Sender: TObject);
+    procedure CB_CONF_EDGESChange(Sender: TObject);
+    procedure CB_CONF_EN_ALGOChange(Sender: TObject);
     procedure CB_CONF_EN_RRCChange(Sender: TObject);
+    procedure CB_CONF_ERR_RNGChange(Sender: TObject);
+    procedure CB_CONF_GLITCH_ENChange(Sender: TObject);
+    procedure CB_CONF_MASKChange(Sender: TObject);
+    procedure CB_CONF_RANGEChange(Sender: TObject);
+    procedure CB_CONF_UPDATEChange(Sender: TObject);
+    procedure CB_CONF_USE_EXT_CLKChange(Sender: TObject);
+    procedure CB_CONF_WD_ENChange(Sender: TObject);
     procedure CB_MON_SAMPLEChange(Sender: TObject);
     procedure CB_SPIN_LVLChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -144,7 +156,7 @@ implementation
 
 {$R *.lfm}
 
-uses emc2301_read, emc2301_graph;
+uses emc2301_read, emc2301_write, emc2301_graph;
 
 { TForm_emc2301 }
 
@@ -157,6 +169,20 @@ const
   MIN = 0;
   MAX = 10001;
   TYPE_MON_SAMPLE = 24;
+
+  TYPE_CONF_MASK = 0;
+  TYPE_CONF_DIS_TO = 1;
+  TYPE_CONF_WD_EN = 2;
+  TYPE_CONF_DR_EXT_CLK = 3;
+  TYPE_CONF_USE_EXT_CLK = 4;
+  TYPE_FAN_CONF1_EN_ALGO =5;
+  TYPE_FAN_CONF1_RANGE = 6;
+  TYPE_FAN_CONF1_EDGES = 7;
+  TYPE_FAN_CONF1_UPDATE = 8;
+  TYPE_FAN_CONF2_EN_RRC = 9;
+  TYPE_FAN_CONF2_GLITCH_EN = 10;
+  TYPE_FAN_CONF2_DER_OPT = 11;
+  TYPE_FAN_CONF2_ERR_RNG = 12;
 
 procedure TForm_emc2301.DoPy_InitEngine;
 var
@@ -199,10 +225,67 @@ begin
 
 end;
 
+procedure TForm_emc2301.CB_CONF_MASKChange(Sender: TObject);
+begin
+   write_reg_emc('CONF',EnumToChip(TYPE_CONF_MASK,Form_emc2301.CB_CONF_MASK.Items[Form_emc2301.CB_CONF_MASK.ItemIndex]));
+end;
+
+procedure TForm_emc2301.CB_CONF_DIS_TOChange(Sender: TObject);
+begin
+   write_reg_emc('CONF',EnumToChip(TYPE_CONF_DIS_TO,Form_emc2301.CB_CONF_DIS_TO.Items[Form_emc2301.CB_CONF_DIS_TO.ItemIndex]));
+end;
+
+procedure TForm_emc2301.CB_CONF_WD_ENChange(Sender: TObject);
+begin
+   write_reg_emc('CONF',EnumToChip(TYPE_CONF_WD_EN,Form_emc2301.CB_CONF_WD_EN.Items[Form_emc2301.CB_CONF_WD_EN.ItemIndex]));
+end;
+
+procedure TForm_emc2301.CB_CONF_DR_EXT_CLKChange(Sender: TObject);
+begin
+   write_reg_emc('CONF',EnumToChip(TYPE_CONF_DR_EXT_CLK,Form_emc2301.CB_CONF_DR_EXT_CLK.Items[Form_emc2301.CB_CONF_DR_EXT_CLK.ItemIndex]));
+end;
+
+procedure TForm_emc2301.CB_CONF_USE_EXT_CLKChange(Sender: TObject);
+begin
+   write_reg_emc('CONF',EnumToChip(TYPE_CONF_USE_EXT_CLK,Form_emc2301.CB_CONF_USE_EXT_CLK.Items[Form_emc2301.CB_CONF_USE_EXT_CLK.ItemIndex]));
+end;
+
+procedure TForm_emc2301.CB_CONF_RANGEChange(Sender: TObject);
+begin
+   write_reg_emc('FAN_CONF1',EnumToChip(TYPE_FAN_CONF1_RANGE,Form_emc2301.CB_CONF_RANGE.Items[Form_emc2301.CB_CONF_RANGE.ItemIndex]));
+end;
+
+procedure TForm_emc2301.CB_CONF_EDGESChange(Sender: TObject);
+begin
+   write_reg_emc('FAN_CONF1',EnumToChip(TYPE_FAN_CONF1_EDGES,Form_emc2301.CB_CONF_EDGES.Items[Form_emc2301.CB_CONF_EDGES.ItemIndex]));
+end;
+
+procedure TForm_emc2301.CB_CONF_UPDATEChange(Sender: TObject);
+begin
+   write_reg_emc('FAN_CONF1',EnumToChip(TYPE_FAN_CONF1_UPDATE,Form_emc2301.CB_CONF_UPDATE.Items[Form_emc2301.CB_CONF_UPDATE.ItemIndex]));
+end;
+
 procedure TForm_emc2301.CB_CONF_EN_RRCChange(Sender: TObject);
 begin
-
+   write_reg_emc('FAN_CONF2',EnumToChip(TYPE_FAN_CONF2_EN_RRC,Form_emc2301.CB_CONF_EN_RRC.Items[Form_emc2301.CB_CONF_EN_RRC.ItemIndex]));
 end;
+
+procedure TForm_emc2301.CB_CONF_GLITCH_ENChange(Sender: TObject);
+begin
+   write_reg_emc('FAN_CONF2',EnumToChip(TYPE_FAN_CONF2_GLITCH_EN,Form_emc2301.CB_CONF_GLITCH_EN.Items[Form_emc2301.CB_CONF_GLITCH_EN.ItemIndex]));
+end;
+
+procedure TForm_emc2301.CB_CONF_DER_OPTChange(Sender: TObject);
+begin
+   write_reg_emc('FAN_CONF2',EnumToChip(TYPE_FAN_CONF2_DER_OPT,Form_emc2301.CB_CONF_DER_OPT.Items[Form_emc2301.CB_CONF_DER_OPT.ItemIndex]));
+end;
+
+procedure TForm_emc2301.CB_CONF_ERR_RNGChange(Sender: TObject);
+begin
+   write_reg_emc('FAN_CONF2',EnumToChip(TYPE_FAN_CONF2_ERR_RNG,Form_emc2301.CB_CONF_ERR_RNG.Items[Form_emc2301.CB_CONF_ERR_RNG.ItemIndex]));
+end;
+
+
 
 procedure TForm_emc2301.CB_MON_SAMPLEChange(Sender: TObject);
 var
@@ -224,6 +307,11 @@ begin
   sleep(500);
   read_emc();
   read_speed();
+end;
+
+procedure TForm_emc2301.CB_CONF_EN_ALGOChange(Sender: TObject);
+begin
+
 end;
 
 procedure TForm_emc2301.CB_SPIN_LVLChange(Sender: TObject);
@@ -253,12 +341,8 @@ begin
      writeln('read_emc_err');
    'READ_speed':
      read_speed_emc(emc);
-{   'READ_MEASURE':
-     read_measure_emc(emc);
-   'READ_MEASURE_ERR':
-     writeln('read_measure_err');
-   'WRITE_REG_CONF':
-     writeln('Success write to CONF Register'); }
+   'WRITE_REG':
+     writeln('Success write to Register: ',emc.attr1.attr_name);
 {   'GRAPH':
      begin
       LoadRPMData(RPM_FILE, RPMData);

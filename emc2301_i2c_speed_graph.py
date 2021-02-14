@@ -5,7 +5,7 @@ from i2c_pkg.emc2301_pkg import fan_type
 import logging
 import statistics
 
-fan_list = { 'RANGE' : fan_type.RANGE , 'EDGES' : fan_type.EDGES }
+fan_list = emc2301.fan_list
 sens = emc2301.EMC2301()
 
 logging.basicConfig(level=logging.INFO,  # change level looging to (INFO, DEBUG, ERROR)
@@ -37,7 +37,7 @@ sens.write_register(register = 'FAN_CONF2', bits = ['EN_RRC'])
 
 sens.write_register(register = 'FAN_SETTING', value = 0)
 sens.write_register(register = 'FAN_CONF1', bits = ['EN_ALGO_CLR'])
-sens.write_register(register = 'FAN_CONF1', bits = ['RANGE'], bit = fan_list['RANGE'] )
+sens.write_register(register = 'FAN_CONF1', bits = ['RANGE'], bit = fan_list['RANGE_1000_2'] )
 from time import sleep
 
 speed = 16

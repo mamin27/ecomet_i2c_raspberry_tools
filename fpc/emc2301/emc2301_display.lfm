@@ -30,6 +30,7 @@ object Form_emc2301: TForm_emc2301
         'UNMASKED'
       )
       ItemWidth = 1
+      OnChange = CB_CONF_MASKChange
       TabOrder = 0
       Text = 'MASKED'
     end
@@ -53,6 +54,7 @@ object Form_emc2301: TForm_emc2301
         'DISABLED'
       )
       ItemWidth = 1
+      OnChange = CB_CONF_DIS_TOChange
       TabOrder = 1
       Text = 'ENABLED'
     end
@@ -68,6 +70,7 @@ object Form_emc2301: TForm_emc2301
         'OPERATE'
       )
       ItemWidth = 1
+      OnChange = CB_CONF_WD_ENChange
       TabOrder = 2
       Text = 'OPERATE'
     end
@@ -85,6 +88,7 @@ object Form_emc2301: TForm_emc2301
         'CLK_OUTPUT'
       )
       ItemWidth = 1
+      OnChange = CB_CONF_DR_EXT_CLKChange
       ParentFont = False
       TabOrder = 3
       Text = 'CLK_OUTPUT'
@@ -101,6 +105,7 @@ object Form_emc2301: TForm_emc2301
         'EXTERNAL'
       )
       ItemWidth = 1
+      OnChange = CB_CONF_USE_EXT_CLKChange
       TabOrder = 4
       Text = 'EXTERNAL'
     end
@@ -116,6 +121,7 @@ object Form_emc2301: TForm_emc2301
         'DISABLED'
       )
       ItemWidth = 1
+      OnChange = CB_CONF_EN_ALGOChange
       TabOrder = 5
       Text = 'ENABLED'
     end
@@ -133,6 +139,7 @@ object Form_emc2301: TForm_emc2301
         '4000>8'
       )
       ItemWidth = 1
+      OnChange = CB_CONF_RANGEChange
       TabOrder = 6
       Text = '1000>2'
     end
@@ -152,6 +159,7 @@ object Form_emc2301: TForm_emc2301
         '9>4POLE>2'
       )
       ItemWidth = 1
+      OnChange = CB_CONF_EDGESChange
       ParentFont = False
       TabOrder = 7
       Text = '5>2POLE>1'
@@ -174,6 +182,7 @@ object Form_emc2301: TForm_emc2301
         '1600ms'
       )
       ItemWidth = 1
+      OnChange = CB_CONF_UPDATEChange
       TabOrder = 8
       Text = '400ms'
     end
@@ -204,6 +213,7 @@ object Form_emc2301: TForm_emc2301
         'DISABLED'
       )
       ItemWidth = 1
+      OnChange = CB_CONF_GLITCH_ENChange
       TabOrder = 10
       Text = 'ENAB'
     end
@@ -303,6 +313,7 @@ object Form_emc2301: TForm_emc2301
         'BOTH_DERIVATE'
       )
       ItemWidth = 1
+      OnChange = CB_CONF_DER_OPTChange
       ParentFont = False
       TabOrder = 11
       Text = 'ENAB'
@@ -320,6 +331,7 @@ object Form_emc2301: TForm_emc2301
         '200RPM'
       )
       ItemWidth = 1
+      OnChange = CB_CONF_ERR_RNGChange
       TabOrder = 12
       Text = 'ENAB'
     end

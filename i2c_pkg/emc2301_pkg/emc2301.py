@@ -5,7 +5,15 @@ import math
 from i2c_pkg.emc2301_pkg import emc2301_constant
 from i2c_pkg.emc2301_pkg import fan_type
 
-fan_list = { 'POLES' : fan_type.POLES, 'EDGE' : fan_type.EDGE , 'MULTIPLIER' : fan_type.MULTIPLIER, 'FAN_TACH' : fan_type.FAN_TACH }
+fan_list = { 'POLES' : fan_type.POLES, 'EDGE' : fan_type.EDGE , 'MULTIPLIER' : fan_type.MULTIPLIER, 'FAN_TACH' : fan_type.FAN_TACH,
+             'RANGE_500_1' : fan_type.RANGE_500_1, 'RANGE_1000_2' : fan_type.RANGE_1000_2, 'RANGE_2000_4' : fan_type.RANGE_2000_4, 'RANGE_4000_8' : fan_type.RANGE_4000_8,
+             'EDGES_3_1POLE_05' : fan_type.EDGES_3_1POLE_05, 'EDGES_5_2POLE_1' : fan_type.EDGES_5_2POLE_1, 'EDGES_7_3POLE_15' : fan_type.EDGES_7_3POLE_15, 'EDGES_9_4POLE_2' : fan_type.EDGES_9_4POLE_2,
+			 'UPDATE_100' : fan_type.UPDATE_100, 'UPDATE_200' : fan_type.UPDATE_200, 'UPDATE_300' : fan_type.UPDATE_300, 'UPDATE_400' : fan_type.UPDATE_400, 'UPDATE_500' : fan_type.UPDATE_500,
+             'UPDATE_800' : fan_type.UPDATE_800, 'UPDATE_1200' : fan_type.UPDATE_1200, 'UPDATE_1600' : fan_type.UPDATE_1600,
+             'DER_OPT_NO_DERIVATE' : fan_type.DER_OPT_NO_DERIVATE, 'DER_OPT_BESIC_DERIVATE' : fan_type.DER_OPT_BESIC_DERIVATE, 'DER_OPT_STEP_DERIVATE' : fan_type.DER_OPT_STEP_DERIVATE, 'DER_OPT_BOTH_DERIVATE' : fan_type.DER_OPT_BOTH_DERIVATE,
+             'ERR_RNG_0RPM' : fan_type.ERR_RNG_0RPM, 'ERR_RNG_50RPM' : fan_type.ERR_RNG_50RPM, 'ERR_RNG_100RPM' : fan_type.ERR_RNG_100RPM, 'ERR_RNG_200RPM' : fan_type.ERR_RNG_200RPM,
+              
+           }
 
 reg_list = { 'CONF' : emc2301_constant.CONF,'FAN_STAT' : emc2301_constant.FAN_STAT, 'FAN_STALL' :  emc2301_constant.FAN_STALL, 'FAN_SPIN' : emc2301_constant.FAN_SPIN,
              'DRIVE_FALL' : emc2301_constant.DRIVE_FALL, 'FAN_INTERRUPT' : emc2301_constant.FAN_INTERRUPT, 

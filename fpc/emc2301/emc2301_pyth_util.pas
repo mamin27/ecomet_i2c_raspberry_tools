@@ -61,7 +61,7 @@ type
    PyRecordIOb = class(TObject)
    public
     code_type : String[15];
-    attr_name : String[12];
+    attr_name : String[60];
     attr_val: String[12];
     attr_new_val: String[12];
     attr_val_selector: boolean;
