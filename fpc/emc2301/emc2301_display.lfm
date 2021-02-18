@@ -24,7 +24,6 @@ object Form_emc2301: TForm_emc2301
       Top = 24
       Width = 100
       ItemHeight = 0
-      ItemIndex = 0
       Items.Strings = (
         'MASKED'
         'UNMASKED'
@@ -115,7 +114,6 @@ object Form_emc2301: TForm_emc2301
       Top = 136
       Width = 100
       ItemHeight = 0
-      ItemIndex = 0
       Items.Strings = (
         'ENABLED'
         'DISABLED'
@@ -308,7 +306,7 @@ object Form_emc2301: TForm_emc2301
       ItemHeight = 0
       Items.Strings = (
         'NO_DERIVATE'
-        'BESIC_DERIVATE'
+        'BASIC_DERIVATE'
         'STEP_DERIVATE'
         'BOTH_DERIVATE'
       )
@@ -374,6 +372,7 @@ object Form_emc2301: TForm_emc2301
         '8x'
       )
       ItemWidth = 1
+      OnChange = CB_GN_GAINDChange
       TabOrder = 0
       Text = 'MASKED'
     end
@@ -398,6 +397,7 @@ object Form_emc2301: TForm_emc2301
         '8x'
       )
       ItemWidth = 1
+      OnChange = CB_GN_GAINIChange
       TabOrder = 1
       Text = 'ENABLED'
     end
@@ -414,6 +414,7 @@ object Form_emc2301: TForm_emc2301
         '8x'
       )
       ItemWidth = 1
+      OnChange = CB_GN_GAINPChange
       TabOrder = 2
       Text = 'OPERATE'
     end
@@ -457,6 +458,7 @@ object Form_emc2301: TForm_emc2301
         '64UP_PER'
       )
       ItemWidth = 1
+      OnChange = CB_SPIN_DRIVE_FAIL_CNTChange
       TabOrder = 0
     end
     object L_SPIN_DRIVE_FAIL_CNT: TLabel
@@ -478,6 +480,7 @@ object Form_emc2301: TForm_emc2301
         'SPIN'
       )
       ItemWidth = 1
+      OnChange = CB_SPIN_NOKICKChange
       TabOrder = 1
     end
     object CB_SPIN_LVL: TComboBox
@@ -535,6 +538,7 @@ object Form_emc2301: TForm_emc2301
         '2s'
       )
       ItemWidth = 1
+      OnChange = CB_SPIN_TIMEChange
       TabOrder = 3
     end
     object L_SPIN_TIME: TLabel

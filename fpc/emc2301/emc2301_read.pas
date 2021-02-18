@@ -27,26 +27,27 @@ const
   TYPE_OPER = 2;
   TYPE_DR_CLK = 3;
   TYPE_USE_CLK = 4;
-  TYPE_RANGE = 5;
-  TYPE_EDGE = 6;
-  TYPE_UPDATE = 7;
-  TYPE_DER_OPT = 8;
-  TYPE_ERR_RNG = 9;
-  TYPE_GAIN = 10;
-  TYPE_SPIN_FAIL = 11;
-  TYPE_SPIN_NOKICK = 12;
-  TYPE_SPIN_LVL = 13;
-  TYPE_SPIN_TIME = 14;
-  TYPE_STAT_WATCH = 15;
-  TYPE_STAT_FAIL = 16;
-  TYPE_STAT_FAILI = 17;
-  TYPE_STAT_SPIN = 18;
-  TYPE_STAT_STALL = 19;
-  TYPE_STAT_INT = 20;
-  TYPE_PWM_POLARITY = 21;
-  TYPE_PWM_OUTPUT = 22;
-  TYPE_PWM_BASE = 23;
-  TYPE_MON_SAMPLE = 24;
+  TYPE_EN_ALGO = 5;
+  TYPE_RANGE = 6;
+  TYPE_EDGE = 7;
+  TYPE_UPDATE = 8;
+  TYPE_DER_OPT = 9;
+  TYPE_ERR_RNG = 10;
+  TYPE_GAIN = 11;
+  TYPE_SPIN_FAIL = 12;
+  TYPE_SPIN_NOKICK = 13;
+  TYPE_SPIN_LVL = 14;
+  TYPE_SPIN_TIME = 15;
+  TYPE_STAT_WATCH = 16;
+  TYPE_STAT_FAIL = 17;
+  TYPE_STAT_FAILI = 18;
+  TYPE_STAT_SPIN = 19;
+  TYPE_STAT_STALL = 20;
+  TYPE_STAT_INT = 21;
+  TYPE_PWM_POLARITY = 22;
+  TYPE_PWM_OUTPUT = 23;
+  TYPE_PWM_BASE = 24;
+  TYPE_MON_SAMPLE = 25;
 
 function EnumToInt (Tp: Integer; S: String) : Integer;
 begin
@@ -78,6 +79,12 @@ begin
     if S = 'INTERNAL'
       then Result := 0;
     if S = 'EXTERNAL'
+      then Result := 1;
+  end;
+  if Tp = TYPE_EN_ALGO then begin  // EN_ALGO
+    if S = 'DISABLED'
+      then Result := 0;
+    if S = 'ENABLED'
       then Result := 1;
   end;
   if Tp = TYPE_RANGE then begin  // RANGE
@@ -370,7 +377,7 @@ begin
   Form_emc2301.CB_CONF_WD_EN.ItemIndex := EnumToInt(TYPE_OPER,emc.attr1.attr_val_obj.attr3.attr_val);     //WD_EN 0-DISABLED, 1-OPERATE
   Form_emc2301.CB_CONF_DR_EXT_CLK.ItemIndex := EnumToInt(TYPE_DR_CLK,emc.attr1.attr_val_obj.attr4.attr_val);     //DR_EXT_CLK 0-CLK_INPUT, 1-CLK_OUTPUT
   Form_emc2301.CB_CONF_USE_EXT_CLK.ItemIndex := EnumToInt(TYPE_USE_CLK,emc.attr1.attr_val_obj.attr5.attr_val);     //USE_EXT_CLK 0-INTERNAL, 1-EXTERNAL
-  Form_emc2301.CB_CONF_EN_ALGO.ItemIndex := EnumToInt(TYPE_ENABLE,emc.attr1.attr_val_obj.attr6.attr_val);     //EN_ALGE 0-MASKED, 1-UNMASKED
+  Form_emc2301.CB_CONF_EN_ALGO.ItemIndex := EnumToInt(TYPE_ENABLE,emc.attr1.attr_val_obj.attr6.attr_val);     //EN_ALGE 0-DISABLED, 1-ENABLED
   Form_emc2301.CB_CONF_RANGE.ItemIndex := EnumToInt(TYPE_RANGE,emc.attr1.attr_val_obj.attr7.attr_val);     //RANGE
   Form_emc2301.CB_CONF_EDGES.ItemIndex := EnumToInt(TYPE_EDGE,emc.attr1.attr_val_obj.attr8.attr_val);     //EDGE
   Form_emc2301.CB_CONF_UPDATE.ItemIndex := EnumToInt(TYPE_UPDATE,emc.attr1.attr_val_obj.attr9.attr_val);     //UPDATE

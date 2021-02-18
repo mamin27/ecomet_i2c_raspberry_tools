@@ -9,7 +9,7 @@
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="8"/>
         <CursorPos X="56" Y="10"/>
-        <UsageCount Value="96"/>
+        <UsageCount Value="107"/>
         <Loaded Value="True"/>
       </Unit0>
       <Unit1>
@@ -18,9 +18,9 @@
         <ComponentName Value="Form_emc2301"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <TopLine Value="257"/>
-        <CursorPos X="127" Y="280"/>
-        <UsageCount Value="96"/>
+        <TopLine Value="172"/>
+        <CursorPos X="3" Y="199"/>
+        <UsageCount Value="107"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit1>
@@ -28,17 +28,19 @@
         <Filename Value="emc2301_pyth_util.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="9"/>
-        <CursorPos X="26" Y="64"/>
-        <UsageCount Value="96"/>
+        <TopLine Value="233"/>
+        <CursorPos X="6" Y="240"/>
+        <UsageCount Value="107"/>
         <Loaded Value="True"/>
       </Unit2>
       <Unit3>
         <Filename Value="emc2301_read.pas"/>
         <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="6"/>
-        <TopLine Value="387"/>
-        <CursorPos X="83" Y="398"/>
-        <UsageCount Value="96"/>
+        <TopLine Value="362"/>
+        <CursorPos X="142" Y="380"/>
+        <UsageCount Value="107"/>
         <Loaded Value="True"/>
       </Unit3>
       <Unit4>
@@ -46,7 +48,7 @@
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="4"/>
         <CursorPos X="48"/>
-        <UsageCount Value="87"/>
+        <UsageCount Value="98"/>
         <Loaded Value="True"/>
       </Unit4>
       <Unit5>
@@ -56,7 +58,7 @@
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="10"/>
         <CursorPos X="21" Y="6"/>
-        <UsageCount Value="66"/>
+        <UsageCount Value="77"/>
         <Loaded Value="True"/>
       </Unit5>
       <Unit6>
@@ -67,19 +69,19 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="122"/>
         <CursorPos X="31" Y="130"/>
-        <UsageCount Value="28"/>
+        <UsageCount Value="27"/>
       </Unit6>
       <Unit7>
         <Filename Value="fpc/emc2301/emc2301_pyth_util.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="78"/>
         <CursorPos X="61" Y="115"/>
-        <UsageCount Value="6"/>
+        <UsageCount Value="5"/>
       </Unit7>
       <Unit8>
         <Filename Value="emc2301_display.lfm"/>
         <EditorIndex Value="5"/>
-        <UsageCount Value="48"/>
+        <UsageCount Value="54"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit8>
@@ -89,13 +91,13 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="892"/>
         <CursorPos X="111" Y="914"/>
-        <UsageCount Value="6"/>
+        <UsageCount Value="5"/>
       </Unit9>
       <Unit10>
         <Filename Value="rpm.txt"/>
         <EditorIndex Value="3"/>
         <CursorPos X="105" Y="18"/>
-        <UsageCount Value="43"/>
+        <UsageCount Value="49"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="None"/>
       </Unit10>
@@ -105,23 +107,22 @@
         <WindowIndex Value="-1"/>
         <TopLine Value="-1"/>
         <CursorPos X="-1" Y="-1"/>
-        <UsageCount Value="19"/>
+        <UsageCount Value="18"/>
       </Unit11>
       <Unit12>
         <Filename Value="../Python-for-Lazarus/python4lazarus/PythonEngine.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="5532"/>
         <CursorPos X="98" Y="5550"/>
-        <UsageCount Value="15"/>
+        <UsageCount Value="14"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit12>
       <Unit13>
         <Filename Value="emc2301_write.pas"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="7"/>
-        <TopLine Value="169"/>
-        <CursorPos X="30" Y="193"/>
-        <UsageCount Value="16"/>
+        <TopLine Value="112"/>
+        <CursorPos X="36" Y="141"/>
+        <UsageCount Value="22"/>
         <Loaded Value="True"/>
       </Unit13>
       <Unit14>
@@ -129,7 +130,7 @@
         <EditorIndex Value="2"/>
         <TopLine Value="924"/>
         <CursorPos Y="943"/>
-        <UsageCount Value="16"/>
+        <UsageCount Value="22"/>
         <Loaded Value="True"/>
       </Unit14>
       <Unit15>
@@ -138,130 +139,130 @@
         <EditorIndex Value="1"/>
         <TopLine Value="626"/>
         <CursorPos Y="645"/>
-        <UsageCount Value="16"/>
+        <UsageCount Value="22"/>
         <Loaded Value="True"/>
       </Unit15>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="emc2301_write.pas"/>
-        <Caret Line="121" Column="3" TopLine="102"/>
+        <Filename Value="emc2301_display.pas"/>
+        <Caret Line="389" Column="22" TopLine="370"/>
       </Position1>
       <Position2>
         <Filename Value="emc2301_write.pas"/>
-        <Caret Line="174" Column="23" TopLine="137"/>
+        <Caret Line="174" Column="56" TopLine="161"/>
       </Position2>
       <Position3>
         <Filename Value="emc2301_write.pas"/>
-        <Caret Line="198" Column="3" TopLine="174"/>
+        <Caret Column="16"/>
       </Position3>
       <Position4>
         <Filename Value="emc2301_write.pas"/>
-        <Caret Line="24" Column="67" TopLine="9"/>
+        <Caret Line="94" Column="68" TopLine="58"/>
       </Position4>
       <Position5>
         <Filename Value="emc2301_write.pas"/>
-        <Caret Line="206" Column="3" TopLine="175"/>
+        <Caret Line="257" Column="17" TopLine="73"/>
       </Position5>
       <Position6>
         <Filename Value="emc2301_write.pas"/>
-        <Caret Line="24" Column="66" TopLine="10"/>
+        <Caret Line="63" TopLine="48"/>
       </Position6>
       <Position7>
-        <Filename Value="emc2301_display.pas"/>
-        <Caret Line="185" Column="31" TopLine="166"/>
+        <Filename Value="emc2301_write.pas"/>
+        <Caret Line="64" TopLine="48"/>
       </Position7>
       <Position8>
         <Filename Value="emc2301_write.pas"/>
-        <Caret Line="68" Column="19" TopLine="50"/>
+        <Caret Line="65" TopLine="48"/>
       </Position8>
       <Position9>
-        <Filename Value="emc2301_display.pas"/>
-        <Caret Line="264" Column="110" TopLine="245"/>
+        <Filename Value="emc2301_write.pas"/>
+        <Caret Line="67" TopLine="48"/>
       </Position9>
       <Position10>
         <Filename Value="emc2301_write.pas"/>
-        <Caret Line="66" TopLine="50"/>
+        <Caret Line="68" TopLine="48"/>
       </Position10>
       <Position11>
         <Filename Value="emc2301_write.pas"/>
-        <Caret Line="68" TopLine="50"/>
+        <Caret Line="70" TopLine="48"/>
       </Position11>
       <Position12>
         <Filename Value="emc2301_write.pas"/>
-        <Caret Line="69" Column="63" TopLine="50"/>
+        <Caret Line="72" TopLine="48"/>
       </Position12>
       <Position13>
         <Filename Value="emc2301_write.pas"/>
-        <Caret Line="66" TopLine="50"/>
+        <Caret Line="73" TopLine="48"/>
       </Position13>
       <Position14>
         <Filename Value="emc2301_write.pas"/>
-        <Caret Line="68" TopLine="50"/>
+        <Caret Line="74" TopLine="48"/>
       </Position14>
       <Position15>
         <Filename Value="emc2301_write.pas"/>
-        <Caret Line="69" TopLine="50"/>
+        <Caret Line="75" TopLine="48"/>
       </Position15>
       <Position16>
         <Filename Value="emc2301_write.pas"/>
-        <Caret Line="51" Column="24" TopLine="48"/>
+        <Caret Line="77" TopLine="48"/>
       </Position16>
       <Position17>
         <Filename Value="emc2301_write.pas"/>
-        <Caret Line="73" Column="25" TopLine="55"/>
+        <Caret Line="78" TopLine="48"/>
       </Position17>
       <Position18>
         <Filename Value="emc2301_write.pas"/>
-        <Caret Line="67" TopLine="55"/>
+        <Caret Line="80" TopLine="49"/>
       </Position18>
       <Position19>
         <Filename Value="emc2301_write.pas"/>
-        <Caret Line="69" TopLine="55"/>
+        <Caret Line="81" TopLine="50"/>
       </Position19>
       <Position20>
         <Filename Value="emc2301_write.pas"/>
-        <Caret Line="70" TopLine="55"/>
+        <Caret Line="84" TopLine="53"/>
       </Position20>
       <Position21>
         <Filename Value="emc2301_write.pas"/>
-        <Caret Line="72" TopLine="55"/>
+        <Caret Line="85" TopLine="55"/>
       </Position21>
       <Position22>
         <Filename Value="emc2301_write.pas"/>
-        <Caret Line="73" TopLine="55"/>
+        <Caret Line="86" TopLine="56"/>
       </Position22>
       <Position23>
         <Filename Value="emc2301_write.pas"/>
-        <Caret Line="78" TopLine="55"/>
+        <Caret Line="88" TopLine="58"/>
       </Position23>
       <Position24>
         <Filename Value="emc2301_write.pas"/>
-        <Caret Line="79" TopLine="55"/>
+        <Caret Line="89" TopLine="59"/>
       </Position24>
       <Position25>
         <Filename Value="emc2301_write.pas"/>
-        <Caret Line="80" TopLine="55"/>
+        <Caret Line="90" TopLine="60"/>
       </Position25>
       <Position26>
         <Filename Value="emc2301_write.pas"/>
-        <Caret Line="87" TopLine="57"/>
+        <Caret Line="98" TopLine="80"/>
       </Position26>
       <Position27>
         <Filename Value="emc2301_write.pas"/>
-        <Caret Line="90" TopLine="60"/>
+        <Caret Line="101" TopLine="80"/>
       </Position27>
       <Position28>
-        <Filename Value="emc2301_write.pas"/>
-        <Caret Line="67" TopLine="57"/>
+        <Filename Value="emc2301_read.pas"/>
+        <Caret Line="84" Column="46" TopLine="59"/>
       </Position28>
       <Position29>
-        <Filename Value="emc2301_write.pas"/>
-        <Caret Line="73" Column="35" TopLine="60"/>
+        <Filename Value="emc2301_display.pas"/>
+        <Caret Line="203" Column="22" TopLine="185"/>
       </Position29>
       <Position30>
-        <Filename Value="emc2301_write.pas"/>
-        <Caret Line="90" TopLine="60"/>
+        <Filename Value="emc2301_read.pas"/>
+        <Caret Line="30" Column="15" TopLine="13"/>
       </Position30>
     </JumpHistory>
     <RunParams>
@@ -272,37 +273,44 @@
     </RunParams>
   </ProjectSession>
   <Debugging>
-    <BreakPoints Count="2">
+    <BreakPoints Count="3">
       <Item1>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="emc2301_display.pas"/>
-        <Line Value="345"/>
+        <Line Value="392"/>
       </Item1>
       <Item2>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
-        <Source Value="emc2301_write.pas"/>
-        <Line Value="88"/>
+        <Source Value="emc2301_pyth_util.pas"/>
+        <Line Value="502"/>
       </Item2>
+      <Item3>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="emc2301_write.pas"/>
+        <Line Value="63"/>
+      </Item3>
     </BreakPoints>
-    <Watches Count="12">
+    <Watches Count="13">
       <Item1>
         <Expression Value="emc"/>
       </Item1>
       <Item2>
-        <Expression Value="emc.attr1"/>
+        <Expression Value="emc.attr8"/>
       </Item2>
       <Item3>
-        <Expression Value="emc.attr5"/>
+        <Expression Value="emc.attr8.attr_val_obj"/>
       </Item3>
       <Item4>
         <Expression Value="keys"/>
       </Item4>
       <Item5>
-        <Expression Value="emc.attr1.attr_val_obj.attr1.attr_val"/>
+        <Expression Value="emc.attr8.attr_val_obj.attr3"/>
       </Item5>
       <Item6>
         <Expression Value="emc.attr1.code_type"/>
@@ -325,6 +333,9 @@
       <Item12>
         <Expression Value="Py_S"/>
       </Item12>
+      <Item13>
+        <Expression Value="idx_emc_c_attr"/>
+      </Item13>
     </Watches>
   </Debugging>
 </CONFIG>

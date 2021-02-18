@@ -17,7 +17,7 @@ type
   PyRecordOb_c = class(TObject)
   public
     attr_name : String[12];
-    attr_val: String[15];
+    attr_val: String[100];
     attr_new_val: String[12];
     attr_chg: boolean;
     constructor Init;
@@ -62,7 +62,7 @@ type
    public
     code_type : String[15];
     attr_name : String[60];
-    attr_val: String[12];
+    attr_val: String[15];
     attr_new_val: String[12];
     attr_val_selector: boolean;
     attr_val_obj: emc2301Ob_c;
@@ -81,6 +81,8 @@ type
     attr6: PyRecordOb;
     attr7: PyRecordOb;
     attr8: PyRecordOb;
+    attr9: PyRecordOb;
+    attr10: PyRecordOb;
     constructor Init;
     destructor Destroy; override;
    end;
@@ -153,6 +155,8 @@ begin
     attr6 := nil;
     attr7 := nil;
     attr8 := nil;
+    attr9 := nil;
+    attr10 := nil;
 end;
 
 destructor emc2301Ob.Destroy;
@@ -165,6 +169,8 @@ begin
     attr6 := nil;
     attr7 := nil;
     attr8 := nil;
+    attr9 := nil;
+    attr10 := nil;
     inherited Destroy;
 end;
 
@@ -232,8 +238,6 @@ function StrToObj (emc_str: String): emc2301Ob;
 var
   keys: TParts;
 begin
-
-//  Setlength(emc_str,1000);
 
   emc_str := StringReplace(emc_str,' ','',[rfReplaceAll, rfIgnoreCase]);
   emc_str := StringReplace(emc_str,'''',':',[rfReplaceAll, rfIgnoreCase]);
@@ -485,17 +489,46 @@ begin
     Ob_emc_attr[idx_emc_attr].attr_val_obj:=Ob_emc_c[idx_emc_c];
 
    end
+   else if (keys[2] = 'WRITE')
+   then
+   begin
+
+    idx_emc_attr := idx_emc_attr + 1;
+    idx_emc_c := idx_emc_c + 1;
+    idx_emc_c_attr := 1;
+
+    ObI_emc_attr[1].code_type:=keys[1];                      //WRITE_REG
+    ObI_emc_attr[1].attr_name:=keys[2];                      //'WRITE'
+    emc.attr1:=ObI_emc_attr[1];
+
+    ObI_emc_attr[idx_emc_attr].attr_val_selector:=true;
+    emc.attr8:=Ob_emc_attr[idx_emc_attr];
+    Ob_emc_c_attr[idx_emc_c_attr].attr_name:='REGISTER';                   //REGISTER
+    Ob_emc_c_attr[idx_emc_c_attr].attr_val:=keys[3];
+    Ob_emc_c[idx_emc_c].attr1:=Ob_emc_c_attr[idx_emc_c_attr];
+    idx_emc_c_attr := idx_emc_c_attr +1;
+    Ob_emc_c_attr[idx_emc_c_attr].attr_name:='CONTENT';                    //CONTENT
+    Ob_emc_c_attr[idx_emc_c_attr].attr_val:=keys[4];
+    Ob_emc_c[idx_emc_c].attr2:=Ob_emc_c_attr[idx_emc_c_attr];
+    idx_emc_c_attr := idx_emc_c_attr +1;
+    Ob_emc_c_attr[idx_emc_c_attr].attr_name:='RET';                         //RET
+    Ob_emc_c_attr[idx_emc_c_attr].attr_val:=keys[5];
+    Ob_emc_c[idx_emc_c].attr3:=Ob_emc_c_attr[idx_emc_c_attr];
+    idx_emc_c_attr := idx_emc_c_attr +1;
+    Ob_emc_attr[idx_emc_attr].attr_val_obj:=Ob_emc_c[idx_emc_c];
+
+   end
    else  begin
     idx_emc_attr := idx_emc_attr +1;
     idx_emc_c := idx_emc_c +1;
     idx_emc_c_attr := idx_emc_c_attr +1;
 
-     ObI_emc_attr[1].code_type:=keys[1];
-     ObI_emc_attr[1].attr_name:=keys[2];                      //WRITE
+     ObI_emc_attr[1].code_type:=keys[1];                      //TEST_PASSED or MISSING_CHIP
+     ObI_emc_attr[1].attr_name:=keys[2];                      //
      emc.attr1:=ObI_emc_attr[1];
 
      Ob_emc_attr[idx_emc_attr].attr_val_selector:=false;
-     emc.attr8:=Ob_emc_attr[idx_emc_attr];
+     emc.attr9:=Ob_emc_attr[idx_emc_attr];
      Ob_emc_c_attr[idx_emc_c_attr].attr_name:='na';
      Ob_emc_attr[idx_emc_attr].attr_val_obj:=Ob_emc_c[idx_emc_c];
    end;

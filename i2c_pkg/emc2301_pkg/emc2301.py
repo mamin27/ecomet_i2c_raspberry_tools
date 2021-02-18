@@ -10,9 +10,12 @@ fan_list = { 'POLES' : fan_type.POLES, 'EDGE' : fan_type.EDGE , 'MULTIPLIER' : f
              'EDGES_3_1POLE_05' : fan_type.EDGES_3_1POLE_05, 'EDGES_5_2POLE_1' : fan_type.EDGES_5_2POLE_1, 'EDGES_7_3POLE_15' : fan_type.EDGES_7_3POLE_15, 'EDGES_9_4POLE_2' : fan_type.EDGES_9_4POLE_2,
 			 'UPDATE_100' : fan_type.UPDATE_100, 'UPDATE_200' : fan_type.UPDATE_200, 'UPDATE_300' : fan_type.UPDATE_300, 'UPDATE_400' : fan_type.UPDATE_400, 'UPDATE_500' : fan_type.UPDATE_500,
              'UPDATE_800' : fan_type.UPDATE_800, 'UPDATE_1200' : fan_type.UPDATE_1200, 'UPDATE_1600' : fan_type.UPDATE_1600,
-             'DER_OPT_NO_DERIVATE' : fan_type.DER_OPT_NO_DERIVATE, 'DER_OPT_BESIC_DERIVATE' : fan_type.DER_OPT_BESIC_DERIVATE, 'DER_OPT_STEP_DERIVATE' : fan_type.DER_OPT_STEP_DERIVATE, 'DER_OPT_BOTH_DERIVATE' : fan_type.DER_OPT_BOTH_DERIVATE,
+             'DER_OPT_NO_DERIVATE' : fan_type.DER_OPT_NO_DERIVATE, 'DER_OPT_BASIC_DERIVATE' : fan_type.DER_OPT_BASIC_DERIVATE, 'DER_OPT_STEP_DERIVATE' : fan_type.DER_OPT_STEP_DERIVATE, 'DER_OPT_BOTH_DERIVATE' : fan_type.DER_OPT_BOTH_DERIVATE,
              'ERR_RNG_0RPM' : fan_type.ERR_RNG_0RPM, 'ERR_RNG_50RPM' : fan_type.ERR_RNG_50RPM, 'ERR_RNG_100RPM' : fan_type.ERR_RNG_100RPM, 'ERR_RNG_200RPM' : fan_type.ERR_RNG_200RPM,
-              
+             'GAIN_GAIND_1x' : fan_type.GAIN_GAIND_1x, 'GAIN_GAIND_2x' : fan_type.GAIN_GAIND_2x, 'GAIN_GAIND_4x' : fan_type.GAIN_GAIND_4x, 'GAIN_GAIND_8x' : fan_type.GAIN_GAIND_8x,
+             'GAIN_GAINI_1x' : fan_type.GAIN_GAINI_1x, 'GAIN_GAINI_2x' : fan_type.GAIN_GAINI_2x, 'GAIN_GAINI_4x' : fan_type.GAIN_GAINI_4x, 'GAIN_GAINI_8x' : fan_type.GAIN_GAINI_8x,
+             'GAIN_GAINP_1x' : fan_type.GAIN_GAINP_1x, 'GAIN_GAINP_2x' : fan_type.GAIN_GAINP_2x, 'GAIN_GAINP_4x' : fan_type.GAIN_GAINP_4x, 'GAIN_GAINP_8x' : fan_type.GAIN_GAINP_8x,
+             
            }
 
 reg_list = { 'CONF' : emc2301_constant.CONF,'FAN_STAT' : emc2301_constant.FAN_STAT, 'FAN_STALL' :  emc2301_constant.FAN_STALL, 'FAN_SPIN' : emc2301_constant.FAN_SPIN,
@@ -67,16 +70,18 @@ conf2_bit_list = { 'ERR_RNG' : emc2301_constant.ERR_RNG,
                         'DER_OPT' : emc2301_constant.DER_OPT,
                         'GLITCH_EN' : emc2301_constant.GLITCH_EN,
                         'EN_RRC' : emc2301_constant.EN_RRC,
-                        'GAINP' : emc2301_constant.GAINP,
-                        'GAINI' : emc2301_constant.GAINI,
-                        'GAIND' : emc2301_constant.GAIND,
                         'ERR_RNG_M' : emc2301_constant.ERR_RNG_M,
                         'DER_OPT_M' : emc2301_constant.DER_OPT_M,
                         'GLITCH_EN_M' : emc2301_constant.GLITCH_EN_M,
-                        'EN_RRC_M' : emc2301_constant.EN_RRC_M,
-                        'GAINP_M' : emc2301_constant.GAINP_M,
+                        'EN_RRC_M' : emc2301_constant.EN_RRC_M
+					  }
+					  
+gain_bit_list = { 'GAIND' : emc2301_constant.GAIND,
+                        'GAINI' : emc2301_constant.GAINI,
+                        'GAINP' : emc2301_constant.GAINP,
+                        'GAIND_M' : emc2301_constant.GAIND_M,
                         'GAINI_M' : emc2301_constant.GAINI_M,
-                        'GAIND_M' : emc2301_constant.GAIND_M
+                        'GAINP_M' : emc2301_constant.GAINP_M,
 					  }
 
 spin_bit_list =          { 'SPINUP_TIME' : emc2301_constant.SPINUP_TIME,
@@ -212,7 +217,7 @@ def conf_register_list() :
 				     3: '2.441Hz'
                }
                       
-   reg_conf['MASK'] = 'UNMASKED' if emc.read_register( register = 'CONF' )[0] & conf_bit_list['MASK'] > 0 else 'MASKED'
+   reg_conf['MASK'] = 'MASKED' if emc.read_register( register = 'CONF' )[0] & conf_bit_list['MASK'] > 0 else 'UNMASKED'
    reg_conf['DIS_TO'] = 'ENABLED' if emc.read_register( register = 'CONF' )[0] & conf_bit_list['DIS_TO'] > 0 else 'DISABLED'
    reg_conf['WD_EN'] = 'DISABLED' if emc.read_register( register = 'CONF' )[0] & conf_bit_list['WD_EN'] > 0 else 'OPERATE'
    reg_conf['DR_EXT_CLK'] = 'CLK_INPUT' if emc.read_register( register = 'CONF' )[0] & conf_bit_list['DR_EXT_CLK'] > 0 else 'CLK_OUTPUT'
@@ -225,9 +230,9 @@ def conf_register_list() :
    reg_conf['GLITCH_EN'] = 'ENABLED' if emc.read_register( register = 'FAN_CONF2' )[0] & conf2_bit_list['GLITCH_EN'] > 0 else 'DISABLED'
    reg_conf['DER_OPT'] = emc_der_opt.get((emc.read_register( register = 'FAN_CONF2' )[0] & conf2_bit_list['DER_OPT']))
    reg_conf['ERR_RNG'] = emc_err_rng.get((emc.read_register( register = 'FAN_CONF2' )[0] & conf2_bit_list['ERR_RNG']))
-   reg_conf['GAIND'] = emc_gaind.get((emc.read_register( register = 'GAIN' )[0] & conf2_bit_list['GAIND']))
-   reg_conf['GAINI'] = emc_gaini.get((emc.read_register( register = 'GAIN' )[0] & conf2_bit_list['GAINI']))
-   reg_conf['GAINP'] = emc_gainp.get((emc.read_register( register = 'GAIN' )[0] & conf2_bit_list['GAINP']))
+   reg_conf['GAIND'] = emc_gaind.get((emc.read_register( register = 'GAIN' )[0] & gain_bit_list['GAIND']))
+   reg_conf['GAINI'] = emc_gaini.get((emc.read_register( register = 'GAIN' )[0] & gain_bit_list['GAINI']))
+   reg_conf['GAINP'] = emc_gainp.get((emc.read_register( register = 'GAIN' )[0] & gain_bit_list['GAINP']))
    
    reg_spin_up['DRIVE_FAIL_CNT'] = emc_drv_fail_cnt.get((emc.read_register( register = 'FAN_SPIN_UP' )[0] & spin_bit_list['DRIVE_FAIL_CNT']))
    reg_spin_up['NOKICK'] = 'NO_SPIN' if emc.read_register( register = 'FAN_SPIN_UP' )[0] & spin_bit_list['NOKICK'] > 0 else 'SPIN'
@@ -380,7 +385,7 @@ class EMC2301(object):
              return (reg_status_bita[1],reg_status_bita[0],ret)
     def write_register(self, register, bits = None, bit = None, value = None) :
           ret = 0
-          if register in ['CONF','FAN_CONF1','FAN_CONF2','FAN_SPIN_UP'] :
+          if register in ['CONF','FAN_CONF1','FAN_CONF2','FAN_SPIN_UP','GAIN'] :
             (reg_status,ret) = self.read_register( register = register )
             for ibit in bits :
                if '_CLR' not in ibit :
@@ -395,15 +400,32 @@ class EMC2301(object):
                if register in ['FAN_CONF1'] :
                   if ibit in ['RANGE'] :
                     reg_status = reg_status & conf1_bit_list[bit_mask] | (bit << 5)
+                  elif ibit in ['EDGES'] :
+                    reg_status = reg_status & conf1_bit_list[bit_mask] | (bit << 3)
+                  elif ibit in ['UPDATE'] :
+                    reg_status = reg_status & conf1_bit_list[bit_mask] | (bit << 0)
                   else :	  
                     reg_status = reg_status & conf1_bit_list[bit_mask]
                     if '_CLR' not in ibit :
                        reg_status = reg_status | conf1_bit_list[ibit]
                   self._logger.debug('write_register, init reg_status: %s, bit %s', '{0:02X}'.format(reg_status), format(ibit))
                if register in ['FAN_CONF2'] :
-                  reg_status = reg_status & conf2_bit_list[bit_mask]
-                  if '_CLR' not in ibit :
-                     reg_status = reg_status | conf2_bit_list[ibit]
+                  if ibit in ['DER_OPT'] :
+                    reg_status = reg_status & conf2_bit_list[bit_mask] | (bit << 3)
+                  elif ibit in ['ERR_RNG'] :	
+                    reg_status = reg_status & conf2_bit_list[bit_mask] | (bit << 1)
+                  else :
+                    reg_status = reg_status & conf2_bit_list[bit_mask]
+                    if '_CLR' not in ibit :
+                       reg_status = reg_status | conf2_bit_list[ibit]
+                  self._logger.debug('write_register, init reg_status: %s, bit %s', '{0:02X}'.format(reg_status), format(ibit))
+               if register in ['GAIN'] :
+                  if ibit in ['GAINP'] :
+                    reg_status = reg_status & gain_bit_list[bit_mask] | (bit << 0)
+                  elif ibit in ['GAINI'] :
+                    reg_status = reg_status & gain_bit_list[bit_mask] | (bit << 2)
+                  elif ibit in ['GAIND'] :
+                    reg_status = reg_status & gain_bit_list[bit_mask] | (bit << 4) 	
                   self._logger.debug('write_register, init reg_status: %s, bit %s', '{0:02X}'.format(reg_status), format(ibit))
                if register in ['FAN_SPIN_UP'] :
                   reg_status = reg_status & spin_bit_list[bit_mask]

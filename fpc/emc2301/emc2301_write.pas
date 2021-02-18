@@ -15,11 +15,11 @@ type
   end;
 
   TChip = record
-    bits: String;
-    bit: String;
+    rbyte: String;
+    rbit: String;
   end;
 
-procedure write_reg_emc (register: String; bits: Array of TChip);
+procedure write_reg_emc (register: String; subr: Array of TChip);
 procedure write_conf_reg ();
 function EnumToChip (Tp: Integer; S: String) : TChip;
 
@@ -42,12 +42,20 @@ const
   TYPE_FAN_CONF2_GLITCH_EN = 10;
   TYPE_FAN_CONF2_DER_OPT = 11;
   TYPE_FAN_CONF2_ERR_RNG = 12;
+  TYPE_GAIN_GAIND = 13;
+  TYPE_GAIN_GAINI = 14;
+  TYPE_GAIN_GAINP = 15;
+  TYPE_SPIN_DRIVE_FAIL = 16;
+  TYPE_SPIN_NOKICK = 17;
+  TYPE_SPIN_LVL = 18;
+  TYPE_SPIN_TIME = 19;
 
-procedure write_reg_emc (register: String; bits: Array of TChip);
+procedure write_reg_emc (register: String; subr: Array of TChip);
 var
   Py_S: TStringList;
   content: String[100];
   register_str: String[100];
+  content_str: String[100];
   fan_list: String;
   i: Integer;
 //sens.write_register(register = 'FAN_CONF1', bits = ['RANGE'], bit = fan_list['RANGE'] )
@@ -56,10 +64,10 @@ content := 'register = ' + #39 + Trim(register) + #39 + ', bits = [';
 register_str := register + '[';
 i := 0;
 repeat
-   content := content + #39 + Trim(bits[i].bits) + #39 + ',';
-   register_str := register_str + Trim(bits[i].bits) + ',';
+   content := content + #39 + Trim(subr[i].rbyte) + #39 + ',';
+   register_str := register_str + Trim(subr[i].rbyte) + ',';
    i := i + 1;
-until  bits[i].bits = '';
+until  subr[i].rbyte = '';
 
 content := Copy(content,0,Length(content)-1);
 content := content + ']';
@@ -67,11 +75,15 @@ register_str := Copy(register_str,0,Length(register_str)-1);
 register_str := register_str + ']';
 
 fan_list := '';
-if (bits[0].bit <> '') then
+if (subr[0].rbit <> '') then
   begin
-    content := content + ', bit = fan_list[' + #39 + Trim(bits[0].bit) + #39 + ']';
+    content := content + ', bit = fan_list[' + #39 + Trim(subr[0].rbit) + #39 + ']';
     fan_list := 'fan_list = emc2301.fan_list|';
   end;
+
+//writeln(content);
+content_str := StringReplace(content,'''','',[rfReplaceAll, rfIgnoreCase]);
+content_str := StringReplace(content_str,',','-',[rfReplaceAll, rfIgnoreCase]);
 
 Py_S := TStringList.Create;
 Py_S.Delimiter := '|';
@@ -79,10 +91,11 @@ Py_S.StrictDelimiter := True;
 Py_S.DelimitedText := 'from  i2c_pkg.emc2301_pkg import emc2301|' +
                       'sens = emc2301.EMC2301()|' +
                       fan_list +
+                      'content = ' + #34 + content_str + #34 + '|' +
                       'register = ' + #39 + register_str + #39 + '|' +
                       'ret = sens.write_register(' + content + ')|' +
 
-                      'print (":WRITE_REG:{}".format(register))|';
+                      'print (":WRITE_REG:WRITE:{}:{}:{}".format(register,content,ret))|';
                //       'print (":WRITE_REG_CONF:{}".format(register)) if ret == 0 else print (":WRITE_REG_CONF_ERR:")|';
 
 Form_emc2301.PythonEngine_emc2301.ExecStrings(Py_S);
@@ -93,115 +106,148 @@ function EnumToChip (Tp: Integer; S: String) : TChip;
 begin
   if Tp = TYPE_CONF_MASK then begin  // CONF_MASK
     if S = 'MASKED'
-      then Result.bits := 'MASK';
+      then Result.rbyte := 'MASK';
     if S = 'UNMASKED'
-      then Result.bits := 'MASK_CLR';
+      then Result.rbyte := 'MASK_CLR';
   end;
   if Tp = TYPE_CONF_DIS_TO then begin  // CONF_DIS_TO
     if S = 'ENABLED'
-      then Result.bits := 'DIS_TO';
+      then Result.rbyte := 'DIS_TO';
     if S = 'DISABLED'
-      then Result.bits := 'DIS_TO_CLR';
+      then Result.rbyte := 'DIS_TO_CLR';
   end;
   if Tp = TYPE_CONF_WD_EN then begin  // CONF_WD_EN
     if S = 'DISABLED'
-      then Result.bits := 'WD_EN';
+      then Result.rbyte := 'WD_EN';
     if S = 'OPERATE'
-      then Result.bits := 'WD_EN_CLR';
+      then Result.rbyte := 'WD_EN_CLR';
   end;
   if Tp = TYPE_CONF_DR_EXT_CLK  then begin  // CONF_DR_EXT_CLK
     if S = 'CLK_INPUT'
-      then Result.bits := 'DR_EXT_CLK';
+      then Result.rbyte := 'DR_EXT_CLK';
     if S = 'CLK_OUTPUT'
-      then Result.bits := 'DR_EXT_CLK_CLR';
+      then Result.rbyte := 'DR_EXT_CLK_CLR';
   end;
   if Tp = TYPE_CONF_USE_EXT_CLK then begin  // CONF_USE_EXT_CLK
     if S = 'INTERNAL'
-      then Result.bits := 'USE_EXT_CLK';
+      then Result.rbyte := 'USE_EXT_CLK';
     if S = 'EXTERNAL'
-      then Result.bits := 'USE_EXT_CLK_CLR';
+      then Result.rbyte := 'USE_EXT_CLK_CLR';
   end;
   if Tp = TYPE_FAN_CONF1_EN_ALGO then begin  // FAN_CONF1_EN_ALGO
     if S = 'DISABLED'
-      then Result.bits := 'EN_ALGO';
-    if S = 'OPERATE'
-      then Result.bits := 'EN_ALGO_CLR';
+      then Result.rbyte := 'EN_ALGO_CLR';
+    if S = 'ENABLED'
+      then Result.rbyte := 'EN_ALGO';
   end;
-//  bits = ['RANGE'], bit = fan_list['RANGE']
+//  byte = ['RANGE'], bit = fan_list['RANGE']
   if Tp = TYPE_FAN_CONF1_RANGE then begin  // FAN_CONF1_RANGE
     if S = '500>1'
-      then Result.bit := 'RANGE_500_1';
+      then Result.rbit := 'RANGE_500_1';
     if S = '1000>2'
-      then Result.bit := 'RANGE_1000_2';
+      then Result.rbit := 'RANGE_1000_2';
     if S = '2000>4'
-      then Result.bit := 'RANGE_2000_4';
+      then Result.rbit := 'RANGE_2000_4';
     if S = '4000>8'
-      then Result.bit := 'RANGE_4000_8';
-    Result.bits := 'RANGE'
+      then Result.rbit := 'RANGE_4000_8';
+    Result.rbyte := 'RANGE'
   end;
   if Tp = TYPE_FAN_CONF1_EDGES then begin  // FAN_CONF1_EDGES
     if S = '3>1POLE>0.5'
-      then Result.bit := 'EDGES_3_1POLE_05';
+      then Result.rbit := 'EDGES_3_1POLE_05';
     if S = '5>2POLE>1'
-      then Result.bit := 'EDGES_5_2POLE_1';
+      then Result.rbit := 'EDGES_5_2POLE_1';
     if S = '7>3POLE>1.5'
-      then Result.bit := 'EDGES_7_3POLE_15';
+      then Result.rbit := 'EDGES_7_3POLE_15';
     if S = '9>4POLE>2'
-      then Result.bit := 'EDGES_9_4POLE_2';
-    Result.bits := 'EDGES'
+      then Result.rbit := 'EDGES_9_4POLE_2';
+    Result.rbyte := 'EDGES'
   end;
   if Tp = TYPE_FAN_CONF1_UPDATE then begin  // FAN_CONF1_UPDATE
     if S = '100ms'
-      then Result.bit := 'UPDATE_100';
+      then Result.rbit := 'UPDATE_100';
     if S = '200ms'
-      then Result.bit := 'UPDATE_200';
+      then Result.rbit := 'UPDATE_200';
     if S = '300ms'
-      then Result.bit := 'UPDATE_300';
+      then Result.rbit := 'UPDATE_300';
     if S = '400ms'
-      then Result.bit := 'UPDATE_400';
+      then Result.rbit := 'UPDATE_400';
     if S = '500ms'
-      then Result.bit := 'UPDATE_500';
+      then Result.rbit := 'UPDATE_500';
     if S = '800ms'
-      then Result.bit := 'UPDATE_800';
+      then Result.rbit := 'UPDATE_800';
     if S = '1200ms'
-      then Result.bit := 'UPDATE_1200';
+      then Result.rbit := 'UPDATE_1200';
     if S = '1600ms'
-      then Result.bit := 'UPDATE_1600';
-    Result.bits := 'UPDATE'
+      then Result.rbit := 'UPDATE_1600';
+    Result.rbyte := 'UPDATE'
   end;
   if Tp = TYPE_FAN_CONF2_EN_RRC then begin  // FAN_CONF2_EN_RRC
     if S = 'ENABLED'
-      then Result.bits := 'EN_RRC';
+      then Result.rbyte := 'EN_RRC';
     if S = 'DISABLED'
-      then Result.bits := 'EN_RRC_CLR';
+      then Result.rbyte := 'EN_RRC_CLR';
   end;
   if Tp = TYPE_FAN_CONF2_GLITCH_EN then begin  // FAN_CONF2_GLITCH_EN
     if S = 'ENABLED'
-      then Result.bits := 'GLITCH_EN';
+      then Result.rbyte := 'GLITCH_EN';
     if S = 'DISABLED'
-      then Result.bits := 'GLITCH_EN_CLR';
+      then Result.rbyte := 'GLITCH_EN_CLR';
   end;
   if Tp = TYPE_FAN_CONF2_DER_OPT then begin  // FAN_CONF2_DER_OPT
     if S = 'NO_DERIVATE'
-      then Result.bits := 'DER_OPT_NO_DERIVATE';
-    if S = 'BESIC_DERIVATE'
-      then Result.bits := 'DER_OPT_BESIC_DERIVATE';
+      then Result.rbit := 'DER_OPT_NO_DERIVATE';
+    if S = 'BASIC_DERIVATE'
+      then Result.rbit := 'DER_OPT_BASIC_DERIVATE';
     if S = 'STEP_DERIVATE'
-      then Result.bits := 'DER_OPT_STEP_DERIVATE';
+      then Result.rbit := 'DER_OPT_STEP_DERIVATE';
     if S = 'BOTH_DERIVATE'
-      then Result.bits := 'DER_OPT_BOTH_DERIVATE';
-    Result.bits := 'DER_OPT';
+      then Result.rbit := 'DER_OPT_BOTH_DERIVATE';
+    Result.rbyte := 'DER_OPT';
   end;
   if Tp = TYPE_FAN_CONF2_ERR_RNG then begin  // FAN_CONF2_ERR_RNG
     if S = '0RPM'
-      then Result.bits := 'ERR_RNG_0RPM';
+      then Result.rbit := 'ERR_RNG_0RPM';
     if S = '50RPM'
-      then Result.bits := 'ERR_RNG_50RPM';
+      then Result.rbit := 'ERR_RNG_50RPM';
     if S = '100RPM'
-      then Result.bits := 'ERR_RNG_100RPM';
+      then Result.rbit := 'ERR_RNG_100RPM';
     if S = '200RPM'
-      then Result.bits := 'ERR_RNG_200RPM';
-    Result.bits := 'ERR_RNG';
+      then Result.rbit := 'ERR_RNG_200RPM';
+    Result.rbyte := 'ERR_RNG';
+  end;
+  if Tp = TYPE_GAIN_GAIND then begin  // GAIND
+    if S = '1x'
+      then Result.rbit := 'GAIN_GAIND_1x';
+    if S = '2x'
+      then Result.rbit := 'GAIN_GAIND_2x';
+    if S = '4x'
+      then Result.rbit := 'GAIN_GAIND_4x';
+    if S = '8x'
+      then Result.rbit := 'GAIN_GAIND_8x';
+    Result.rbyte := 'GAIND';
+  end;
+  if Tp = TYPE_GAIN_GAINI then begin  // GAINI
+    if S = '1x'
+      then Result.rbit := 'GAIN_GAINI_1x';
+    if S = '2x'
+      then Result.rbit := 'GAIN_GAINI_2x';
+    if S = '4x'
+      then Result.rbit := 'GAIN_GAINI_4x';
+    if S = '8x'
+      then Result.rbit := 'GAIN_GAINI_8x';
+    Result.rbyte := 'GAINI';
+  end;
+  if Tp = TYPE_GAIN_GAINP then begin  // GAINP
+    if S = '1x'
+      then Result.rbit := 'GAIN_GAINP_1x';
+    if S = '2x'
+      then Result.rbit := 'GAIN_GAINP_2x';
+    if S = '4x'
+      then Result.rbit := 'GAIN_GAINP_4x';
+    if S = '8x'
+      then Result.rbit := 'GAIN_GAINP_8x';
+    Result.rbyte := 'GAINP';
   end;
 end;
 

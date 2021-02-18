@@ -124,8 +124,14 @@ uses
     procedure CB_CONF_UPDATEChange(Sender: TObject);
     procedure CB_CONF_USE_EXT_CLKChange(Sender: TObject);
     procedure CB_CONF_WD_ENChange(Sender: TObject);
+    procedure CB_GN_GAINDChange(Sender: TObject);
+    procedure CB_GN_GAINIChange(Sender: TObject);
+    procedure CB_GN_GAINPChange(Sender: TObject);
     procedure CB_MON_SAMPLEChange(Sender: TObject);
+    procedure CB_SPIN_DRIVE_FAIL_CNTChange(Sender: TObject);
     procedure CB_SPIN_LVLChange(Sender: TObject);
+    procedure CB_SPIN_NOKICKChange(Sender: TObject);
+    procedure CB_SPIN_TIMEChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure GraphClick(Sender: TObject);
     procedure L_CONF_DIS_TOClick(Sender: TObject);
@@ -168,8 +174,8 @@ const
   N = 10000;
   MIN = 0;
   MAX = 10001;
-  TYPE_MON_SAMPLE = 24;
 
+// WRITE Constant
   TYPE_CONF_MASK = 0;
   TYPE_CONF_DIS_TO = 1;
   TYPE_CONF_WD_EN = 2;
@@ -183,6 +189,16 @@ const
   TYPE_FAN_CONF2_GLITCH_EN = 10;
   TYPE_FAN_CONF2_DER_OPT = 11;
   TYPE_FAN_CONF2_ERR_RNG = 12;
+  TYPE_GAIN_GAIND = 13;
+  TYPE_GAIN_GAINI = 14;
+  TYPE_GAIN_GAINP = 15;
+  TYPE_SPIN_DRIVE_FAIL = 16;
+  TYPE_SPIN_NOKICK = 17;
+  TYPE_SPIN_LVL = 18;
+  TYPE_SPIN_TIME = 19;
+
+// READ Constant
+  TYPE_MON_SAMPLE = 25;
 
 procedure TForm_emc2301.DoPy_InitEngine;
 var
@@ -250,6 +266,11 @@ begin
    write_reg_emc('CONF',EnumToChip(TYPE_CONF_USE_EXT_CLK,Form_emc2301.CB_CONF_USE_EXT_CLK.Items[Form_emc2301.CB_CONF_USE_EXT_CLK.ItemIndex]));
 end;
 
+procedure TForm_emc2301.CB_CONF_EN_ALGOChange(Sender: TObject);
+begin
+  write_reg_emc('FAN_CONF1',EnumToChip(TYPE_FAN_CONF1_EN_ALGO,Form_emc2301.CB_CONF_EN_ALGO.Items[Form_emc2301.CB_CONF_EN_ALGO.ItemIndex]));
+end;
+
 procedure TForm_emc2301.CB_CONF_RANGEChange(Sender: TObject);
 begin
    write_reg_emc('FAN_CONF1',EnumToChip(TYPE_FAN_CONF1_RANGE,Form_emc2301.CB_CONF_RANGE.Items[Form_emc2301.CB_CONF_RANGE.ItemIndex]));
@@ -285,7 +306,20 @@ begin
    write_reg_emc('FAN_CONF2',EnumToChip(TYPE_FAN_CONF2_ERR_RNG,Form_emc2301.CB_CONF_ERR_RNG.Items[Form_emc2301.CB_CONF_ERR_RNG.ItemIndex]));
 end;
 
+procedure TForm_emc2301.CB_GN_GAINDChange(Sender: TObject);
+begin
+   write_reg_emc('GAIN',EnumToChip(TYPE_GAIN_GAIND,Form_emc2301.CB_GN_GAIND.Items[Form_emc2301.CB_GN_GAIND.ItemIndex]));
+end;
 
+procedure TForm_emc2301.CB_GN_GAINIChange(Sender: TObject);
+begin
+   write_reg_emc('GAIN',EnumToChip(TYPE_GAIN_GAINI,Form_emc2301.CB_GN_GAINI.Items[Form_emc2301.CB_GN_GAINI.ItemIndex]));
+end;
+
+procedure TForm_emc2301.CB_GN_GAINPChange(Sender: TObject);
+begin
+   write_reg_emc('GAIN',EnumToChip(TYPE_GAIN_GAINP,Form_emc2301.CB_GN_GAINP.Items[Form_emc2301.CB_GN_GAINP.ItemIndex]));
+end;
 
 procedure TForm_emc2301.CB_MON_SAMPLEChange(Sender: TObject);
 var
@@ -301,6 +335,11 @@ begin
    end;
 end;
 
+procedure TForm_emc2301.CB_SPIN_DRIVE_FAIL_CNTChange(Sender: TObject);
+begin
+
+end;
+
 procedure TForm_emc2301.BitBtn_MONClick(Sender: TObject);
 begin
   Form_emc2301.BitBtn_MON.ImageIndex:= 1;
@@ -309,12 +348,19 @@ begin
   read_speed();
 end;
 
-procedure TForm_emc2301.CB_CONF_EN_ALGOChange(Sender: TObject);
+
+
+procedure TForm_emc2301.CB_SPIN_LVLChange(Sender: TObject);
 begin
 
 end;
 
-procedure TForm_emc2301.CB_SPIN_LVLChange(Sender: TObject);
+procedure TForm_emc2301.CB_SPIN_NOKICKChange(Sender: TObject);
+begin
+
+end;
+
+procedure TForm_emc2301.CB_SPIN_TIMEChange(Sender: TObject);
 begin
 
 end;
@@ -342,7 +388,11 @@ begin
    'READ_speed':
      read_speed_emc(emc);
    'WRITE_REG':
-     writeln('Success write to Register: ',emc.attr1.attr_name);
+     begin
+       writeln('Success write to Register: ', emc.attr8.attr_val_obj.attr1.attr_val);
+       writeln('  Content: ', emc.attr8.attr_val_obj.attr2.attr_val);
+       writeln('  Ret: ', emc.attr8.attr_val_obj.attr3.attr_val);
+     end;
 {   'GRAPH':
      begin
       LoadRPMData(RPM_FILE, RPMData);
