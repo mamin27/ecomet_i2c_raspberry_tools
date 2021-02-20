@@ -45,10 +45,10 @@ const
   TYPE_GAIN_GAIND = 13;
   TYPE_GAIN_GAINI = 14;
   TYPE_GAIN_GAINP = 15;
-  TYPE_SPIN_DRIVE_FAIL = 16;
-  TYPE_SPIN_NOKICK = 17;
-  TYPE_SPIN_LVL = 18;
-  TYPE_SPIN_TIME = 19;
+  TYPE_FAN_SPIN_UP_TIME =  16;
+  TYPE_FAN_SPIN_UP_LVL = 17;
+  TYPE_FAN_SPIN_UP_NOKICK = 18;
+  TYPE_FAN_SPIN_UP_DRIVE_FAIL = 19;
 
 procedure write_reg_emc (register: String; subr: Array of TChip);
 var
@@ -81,7 +81,7 @@ if (subr[0].rbit <> '') then
     fan_list := 'fan_list = emc2301.fan_list|';
   end;
 
-//writeln(content);
+writeln(content);
 content_str := StringReplace(content,'''','',[rfReplaceAll, rfIgnoreCase]);
 content_str := StringReplace(content_str,',','-',[rfReplaceAll, rfIgnoreCase]);
 
@@ -248,6 +248,54 @@ begin
     if S = '8x'
       then Result.rbit := 'GAIN_GAINP_8x';
     Result.rbyte := 'GAINP';
+  end;
+  if Tp = TYPE_FAN_SPIN_UP_TIME then begin  // SPIN_TIME
+    if S = '250ms'
+      then Result.rbit := 'FAN_SPIN_UP_TIME1';
+    if S = '500ms'
+      then Result.rbit := 'FAN_SPIN_UP_TIME2';
+    if S = '1s'
+      then Result.rbit := 'FAN_SPIN_UP_TIME3';
+    if S = '2s'
+      then Result.rbit := 'FAN_SPIN_UP_TIME4';
+    Result.rbyte := 'FAN_SPIN_UP_TIME';
+  end;
+  if Tp = TYPE_FAN_SPIN_UP_LVL then begin  // SPIN_LVL
+    if S = '30%'
+      then Result.rbit := 'FAN_SPIN_UP_LVL1';
+    if S = '35%'
+      then Result.rbit := 'FAN_SPIN_UP_LVL2';
+    if S = '40%'
+      then Result.rbit := 'FAN_SPIN_UP_LVL3';
+    if S = '45%'
+      then Result.rbit := 'FAN_SPIN_UP_LVL4';
+    if S = '50%'
+      then Result.rbit := 'FAN_SPIN_UP_LVL5';
+    if S = '55%'
+      then Result.rbit := 'FAN_SPIN_UP_LVL6';
+    if S = '60%'
+      then Result.rbit := 'FAN_SPIN_UP_LVL7';
+    if S = '65%'
+      then Result.rbit := 'FAN_SPIN_UP_LVL8';
+    Result.rbyte := 'FAN_SPIN_UP_LVL';
+  end;
+  if Tp = TYPE_FAN_SPIN_UP_NOKICK then begin  // SPIN_NOKICK
+    if S = 'SPIN'
+      then Result.rbit := 'FAN_SPIN_UP_SPIN';
+    if S = 'NO_SPIN'
+      then Result.rbit := 'FAN_SPIN_UP_NO_SPIN';
+    Result.rbyte := 'FAN_SPIN_UP_NOKICK';
+  end;
+  if Tp = TYPE_FAN_SPIN_UP_DRIVE_FAIL then begin  // DRIVE_FAIL
+    if S = 'DISABLE'
+      then Result.rbit := 'FAN_SPIN_UP_DF1';
+    if S = '16UP_PER'
+      then Result.rbit := 'FAN_SPIN_UP_DF2';
+    if S = '32UP_PER'
+      then Result.rbit := 'FAN_SPIN_UP_DF3';
+    if S = '64UP_PER'
+      then Result.rbit := 'FAN_SPIN_UP_DF4';
+    Result.rbyte := 'FAN_SPIN_UP_DRIVE_FAIL_CNT';
   end;
 end;
 

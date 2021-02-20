@@ -37,7 +37,8 @@ sens.write_register(register = 'FAN_CONF2', bits = ['EN_RRC'])
 
 sens.write_register(register = 'FAN_SETTING', value = 0)
 sens.write_register(register = 'FAN_CONF1', bits = ['EN_ALGO_CLR'])
-sens.write_register(register = 'FAN_CONF1', bits = ['RANGE'], bit = fan_list['RANGE_1000_2'] )
+ret = sens.write_register(register = 'FAN_CONF1', bits = ['RANGE'], bit = fan_list['RANGE_1000_2'] )
+print ('RET: {}'.format(ret))
 from time import sleep
 
 speed = 16

@@ -166,9 +166,9 @@ begin
       then Result := 3;
   end;
   if Tp = TYPE_SPIN_NOKICK then begin  // SPIN_NOKICK
-    if S = 'NOKICK'
-      then Result := 0;
     if S = 'SPIN'
+      then Result := 0;
+    if S = 'NO_SPIN'
       then Result := 1;
   end;
   if Tp = TYPE_SPIN_LVL then begin  // SPIN_LVL

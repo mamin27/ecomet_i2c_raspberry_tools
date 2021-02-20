@@ -134,7 +134,6 @@ uses
     procedure CB_SPIN_TIMEChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure GraphClick(Sender: TObject);
-    procedure L_CONF_DIS_TOClick(Sender: TObject);
     procedure PythonInputOutput_emc2301SendData(Sender: TObject;
       const Data: AnsiString);
     procedure Timer1Timer(Sender: TObject);
@@ -192,10 +191,10 @@ const
   TYPE_GAIN_GAIND = 13;
   TYPE_GAIN_GAINI = 14;
   TYPE_GAIN_GAINP = 15;
-  TYPE_SPIN_DRIVE_FAIL = 16;
-  TYPE_SPIN_NOKICK = 17;
-  TYPE_SPIN_LVL = 18;
-  TYPE_SPIN_TIME = 19;
+  TYPE_FAN_SPIN_UP_TIME =  16;
+  TYPE_FAN_SPIN_UP_LVL = 17;
+  TYPE_FAN_SPIN_UP_NOKICK = 18;
+  TYPE_FAN_SPIN_UP_DRIVE_FAIL = 19;
 
 // READ Constant
   TYPE_MON_SAMPLE = 25;
@@ -321,6 +320,26 @@ begin
    write_reg_emc('GAIN',EnumToChip(TYPE_GAIN_GAINP,Form_emc2301.CB_GN_GAINP.Items[Form_emc2301.CB_GN_GAINP.ItemIndex]));
 end;
 
+procedure TForm_emc2301.CB_SPIN_TIMEChange(Sender: TObject);
+begin
+   write_reg_emc('FAN_SPIN_UP',EnumToChip(TYPE_FAN_SPIN_UP_TIME,Form_emc2301.CB_SPIN_TIME.Items[Form_emc2301.CB_SPIN_TIME.ItemIndex]));
+end;
+
+procedure TForm_emc2301.CB_SPIN_LVLChange(Sender: TObject);
+begin
+   write_reg_emc('FAN_SPIN_UP',EnumToChip(TYPE_FAN_SPIN_UP_LVL,Form_emc2301.CB_SPIN_LVL.Items[Form_emc2301.CB_SPIN_LVL.ItemIndex]));
+end;
+
+procedure TForm_emc2301.CB_SPIN_NOKICKChange(Sender: TObject);
+begin
+   write_reg_emc('FAN_SPIN_UP',EnumToChip(TYPE_FAN_SPIN_UP_NOKICK,Form_emc2301.CB_SPIN_NOKICK.Items[Form_emc2301.CB_SPIN_NOKICK.ItemIndex]));
+end;
+
+procedure TForm_emc2301.CB_SPIN_DRIVE_FAIL_CNTChange(Sender: TObject);
+begin
+   write_reg_emc('FAN_SPIN_UP',EnumToChip(TYPE_FAN_SPIN_UP_DRIVE_FAIL,Form_emc2301.CB_SPIN_DRIVE_FAIL_CNT.Items[Form_emc2301.CB_SPIN_DRIVE_FAIL_CNT.ItemIndex]));
+end;
+
 procedure TForm_emc2301.CB_MON_SAMPLEChange(Sender: TObject);
 var
   idx:Integer;
@@ -335,11 +354,6 @@ begin
    end;
 end;
 
-procedure TForm_emc2301.CB_SPIN_DRIVE_FAIL_CNTChange(Sender: TObject);
-begin
-
-end;
-
 procedure TForm_emc2301.BitBtn_MONClick(Sender: TObject);
 begin
   Form_emc2301.BitBtn_MON.ImageIndex:= 1;
@@ -348,31 +362,9 @@ begin
   read_speed();
 end;
 
-
-
-procedure TForm_emc2301.CB_SPIN_LVLChange(Sender: TObject);
-begin
-
-end;
-
-procedure TForm_emc2301.CB_SPIN_NOKICKChange(Sender: TObject);
-begin
-
-end;
-
-procedure TForm_emc2301.CB_SPIN_TIMEChange(Sender: TObject);
-begin
-
-end;
-
 procedure TForm_emc2301.GraphClick(Sender: TObject);
 begin
   Form_graph.Show;
-end;
-
-procedure TForm_emc2301.L_CONF_DIS_TOClick(Sender: TObject);
-begin
-
 end;
 
 procedure TForm_emc2301.PythonInputOutput_emc2301SendData(Sender: TObject;

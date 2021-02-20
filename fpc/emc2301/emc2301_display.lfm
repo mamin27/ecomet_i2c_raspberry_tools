@@ -24,6 +24,7 @@ object Form_emc2301: TForm_emc2301
       Top = 24
       Width = 100
       ItemHeight = 0
+      ItemIndex = 0
       Items.Strings = (
         'MASKED'
         'UNMASKED'
@@ -114,6 +115,7 @@ object Form_emc2301: TForm_emc2301
       Top = 136
       Width = 100
       ItemHeight = 0
+      ItemIndex = 0
       Items.Strings = (
         'ENABLED'
         'DISABLED'
@@ -222,7 +224,6 @@ object Form_emc2301: TForm_emc2301
       Width = 46
       Caption = 'Dis_To:'
       ParentColor = False
-      OnClick = L_CONF_DIS_TOClick
     end
     object L_CONF_WD_EN: TLabel
       Left = 12
@@ -425,7 +426,6 @@ object Form_emc2301: TForm_emc2301
       Width = 41
       Caption = 'GAINI:'
       ParentColor = False
-      OnClick = L_CONF_DIS_TOClick
     end
     object L_GN_GAINP: TLabel
       Left = 12
@@ -441,7 +441,7 @@ object Form_emc2301: TForm_emc2301
     Height = 186
     Top = 16
     Width = 248
-    Caption = 'Spin Up:'
+    Caption = 'Fan Spin Up:'
     ClientHeight = 167
     ClientWidth = 244
     TabOrder = 2
@@ -476,8 +476,8 @@ object Form_emc2301: TForm_emc2301
       Width = 100
       ItemHeight = 0
       Items.Strings = (
-        'NOKICK'
         'SPIN'
+        'NO_SPIN'
       )
       ItemWidth = 1
       OnChange = CB_SPIN_NOKICKChange
@@ -510,7 +510,6 @@ object Form_emc2301: TForm_emc2301
       Width = 49
       Caption = 'Nokick:'
       ParentColor = False
-      OnClick = L_CONF_DIS_TOClick
     end
     object L_SPIN_LVL: TLabel
       Left = 12
@@ -666,7 +665,6 @@ object Form_emc2301: TForm_emc2301
       Width = 68
       Caption = 'Drive_Fail:'
       ParentColor = False
-      OnClick = L_CONF_DIS_TOClick
     end
     object L_STAT_DRIVE_FAIL_I: TLabel
       Left = 12
@@ -683,7 +681,6 @@ object Form_emc2301: TForm_emc2301
       Width = 61
       Caption = 'Fan_Spin:'
       ParentColor = False
-      OnClick = L_CONF_DIS_TOClick
     end
     object L_STAT_FAN_STALL: TLabel
       Left = 12
@@ -692,7 +689,6 @@ object Form_emc2301: TForm_emc2301
       Width = 62
       Caption = 'Fan_Stall:'
       ParentColor = False
-      OnClick = L_CONF_DIS_TOClick
     end
     object L_STAT_FAN_INT: TLabel
       Left = 130
@@ -701,7 +697,6 @@ object Form_emc2301: TForm_emc2301
       Width = 50
       Caption = 'Fan_Int:'
       ParentColor = False
-      OnClick = L_CONF_DIS_TOClick
     end
     object L_STAT_FAN_SETTING: TLabel
       Left = 12
@@ -839,7 +834,6 @@ object Form_emc2301: TForm_emc2301
       Width = 48
       Caption = 'Output:'
       ParentColor = False
-      OnClick = L_CONF_DIS_TOClick
     end
     object L_PWM_BASE: TLabel
       Left = 12

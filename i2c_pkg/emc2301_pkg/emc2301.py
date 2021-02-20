@@ -15,6 +15,11 @@ fan_list = { 'POLES' : fan_type.POLES, 'EDGE' : fan_type.EDGE , 'MULTIPLIER' : f
              'GAIN_GAIND_1x' : fan_type.GAIN_GAIND_1x, 'GAIN_GAIND_2x' : fan_type.GAIN_GAIND_2x, 'GAIN_GAIND_4x' : fan_type.GAIN_GAIND_4x, 'GAIN_GAIND_8x' : fan_type.GAIN_GAIND_8x,
              'GAIN_GAINI_1x' : fan_type.GAIN_GAINI_1x, 'GAIN_GAINI_2x' : fan_type.GAIN_GAINI_2x, 'GAIN_GAINI_4x' : fan_type.GAIN_GAINI_4x, 'GAIN_GAINI_8x' : fan_type.GAIN_GAINI_8x,
              'GAIN_GAINP_1x' : fan_type.GAIN_GAINP_1x, 'GAIN_GAINP_2x' : fan_type.GAIN_GAINP_2x, 'GAIN_GAINP_4x' : fan_type.GAIN_GAINP_4x, 'GAIN_GAINP_8x' : fan_type.GAIN_GAINP_8x,
+             'FAN_SPIN_UP_TIME1' : fan_type.FAN_SPIN_UP_TIME1, 'FAN_SPIN_UP_TIME2' : fan_type.FAN_SPIN_UP_TIME2, 'FAN_SPIN_UP_TIME3' : fan_type.FAN_SPIN_UP_TIME3, 'FAN_SPIN_UP_TIME4' : fan_type.FAN_SPIN_UP_TIME4,
+             'FAN_SPIN_UP_SPIN' : fan_type.FAN_SPIN_UP_SPIN, 'FAN_SPIN_UP_NO_SPIN' : fan_type.FAN_SPIN_UP_NO_SPIN,
+             'FAN_SPIN_UP_LVL1' : fan_type.FAN_SPIN_UP_LVL1, 'FAN_SPIN_UP_LVL2' : fan_type.FAN_SPIN_UP_LVL2, 'FAN_SPIN_UP_LVL3' : fan_type.FAN_SPIN_UP_LVL3, 'FAN_SPIN_UP_LVL4' : fan_type.FAN_SPIN_UP_LVL4,
+             'FAN_SPIN_UP_LVL5' : fan_type.FAN_SPIN_UP_LVL5, 'FAN_SPIN_UP_LVL6' : fan_type.FAN_SPIN_UP_LVL6, 'FAN_SPIN_UP_LVL7' : fan_type.FAN_SPIN_UP_LVL7, 'FAN_SPIN_UP_LVL8' : fan_type.FAN_SPIN_UP_LVL8,
+             'FAN_SPIN_UP_DF1' : fan_type.FAN_SPIN_UP_DF1, 'FAN_SPIN_UP_DF2' : fan_type.FAN_SPIN_UP_DF2, 'FAN_SPIN_UP_DF3' : fan_type.FAN_SPIN_UP_DF3, 'FAN_SPIN_UP_DF4' : fan_type.FAN_SPIN_UP_DF4
              
            }
 
@@ -77,21 +82,21 @@ conf2_bit_list = { 'ERR_RNG' : emc2301_constant.ERR_RNG,
 					  }
 					  
 gain_bit_list = { 'GAIND' : emc2301_constant.GAIND,
-                        'GAINI' : emc2301_constant.GAINI,
-                        'GAINP' : emc2301_constant.GAINP,
-                        'GAIND_M' : emc2301_constant.GAIND_M,
-                        'GAINI_M' : emc2301_constant.GAINI_M,
-                        'GAINP_M' : emc2301_constant.GAINP_M,
+                  'GAINI' : emc2301_constant.GAINI,
+                  'GAINP' : emc2301_constant.GAINP,
+                  'GAIND_M' : emc2301_constant.GAIND_M,
+                  'GAINI_M' : emc2301_constant.GAINI_M,
+                  'GAINP_M' : emc2301_constant.GAINP_M
 					  }
 
-spin_bit_list =          { 'SPINUP_TIME' : emc2301_constant.SPINUP_TIME,
-                           'SPIN_LVL' : emc2301_constant.SPIN_LVL,
-                           'NOKICK' : emc2301_constant.NOKICK,
-                           'DRIVE_FAIL_CNT' : emc2301_constant.DRIVE_FAIL_CNT,
-                           'SPINUP_TIME_M' : emc2301_constant.SPINUP_TIME_M,
-                           'SPIN_LVL_M' : emc2301_constant.SPIN_LVL_M,
-                           'NOKICK_M' : emc2301_constant.NOKICK_M,
-                           'DRIVE_FAIL_CNT_M' : emc2301_constant.DRIVE_FAIL_CNT_M
+spin_bit_list =          { 'FAN_SPIN_UP_TIME' : emc2301_constant.FAN_SPIN_UP_TIME,
+                           'FAN_SPIN_UP_LVL' : emc2301_constant.FAN_SPIN_UP_LVL,
+                           'FAN_SPIN_UP_NOKICK' : emc2301_constant.FAN_SPIN_UP_NOKICK,
+                           'FAN_SPIN_UP_DRIVE_FAIL_CNT' : emc2301_constant.FAN_SPIN_UP_DRIVE_FAIL_CNT,
+                           'FAN_SPIN_UP_TIME_M' : emc2301_constant.FAN_SPIN_UP_TIME_M,
+                           'FAN_SPIN_UP_LVL_M' : emc2301_constant.FAN_SPIN_UP_LVL_M,
+                           'FAN_SPIN_UP_NOKICK_M' : emc2301_constant.FAN_SPIN_UP_NOKICK_M,
+                           'FAN_SPIN_UP_DRIVE_FAIL_CNT_M' : emc2301_constant.FAN_SPIN_UP_DRIVE_FAIL_CNT_M
                          }
 
 pwm_bit_list =      { 'POLARITY' : emc2301_constant.POLARITY,
@@ -234,10 +239,10 @@ def conf_register_list() :
    reg_conf['GAINI'] = emc_gaini.get((emc.read_register( register = 'GAIN' )[0] & gain_bit_list['GAINI']))
    reg_conf['GAINP'] = emc_gainp.get((emc.read_register( register = 'GAIN' )[0] & gain_bit_list['GAINP']))
    
-   reg_spin_up['DRIVE_FAIL_CNT'] = emc_drv_fail_cnt.get((emc.read_register( register = 'FAN_SPIN_UP' )[0] & spin_bit_list['DRIVE_FAIL_CNT']))
-   reg_spin_up['NOKICK'] = 'NO_SPIN' if emc.read_register( register = 'FAN_SPIN_UP' )[0] & spin_bit_list['NOKICK'] > 0 else 'SPIN'
-   reg_spin_up['SPIN_LVL'] = emc_spin_lvl.get((emc.read_register( register = 'FAN_SPIN_UP' )[0] & spin_bit_list['SPIN_LVL']))
-   reg_spin_up['SPINUP_TIME'] = emc_spin_time.get((emc.read_register( register = 'FAN_SPIN_UP' )[0] & spin_bit_list['SPINUP_TIME']))
+   reg_spin_up['FAN_SPIN_UP_DRIVE_FAIL_CNT'] = emc_drv_fail_cnt.get((emc.read_register( register = 'FAN_SPIN_UP' )[0] & spin_bit_list['FAN_SPIN_UP_DRIVE_FAIL_CNT']))
+   reg_spin_up['FAN_SPIN_UP_NOKICK'] = 'NO_SPIN' if emc.read_register( register = 'FAN_SPIN_UP' )[0] & spin_bit_list['FAN_SPIN_UP_NOKICK'] > 0 else 'SPIN'
+   reg_spin_up['FAN_SPIN_UP_LVL'] = emc_spin_lvl.get((emc.read_register( register = 'FAN_SPIN_UP' )[0] & spin_bit_list['FAN_SPIN_UP_LVL']))
+   reg_spin_up['FAN_SPIN_UP_TIME'] = emc_spin_time.get((emc.read_register( register = 'FAN_SPIN_UP' )[0] & spin_bit_list['FAN_SPIN_UP_TIME']))
    tbin = emc.read_register( register = 'FAN_MAX_STEP' )[0]
    res = 0
    for idx in range (0,6) :
@@ -428,9 +433,18 @@ class EMC2301(object):
                     reg_status = reg_status & gain_bit_list[bit_mask] | (bit << 4) 	
                   self._logger.debug('write_register, init reg_status: %s, bit %s', '{0:02X}'.format(reg_status), format(ibit))
                if register in ['FAN_SPIN_UP'] :
-                  reg_status = reg_status & spin_bit_list[bit_mask]
-                  if '_CLR' not in ibit :
-                     reg_status = reg_status | spin_bit_list[ibit]
+                  if ibit in['FAN_SPIN_UP_TIME'] :
+                    reg_status = reg_status & spin_bit_list[bit_mask] | (bit << 0)
+                  elif ibit in['FAN_SPIN_UP_LVL'] :
+                    reg_status = reg_status & spin_bit_list[bit_mask] | (bit << 2)
+                  elif ibit in['FAN_SPIN_UP_NOKICK'] :
+                    reg_status = reg_status & spin_bit_list[bit_mask] | (bit << 5)
+                  elif ibit in['FAN_SPIN_UP_DRIVE_FAIL_CNT'] :
+                    reg_status = reg_status & spin_bit_list[bit_mask] | (bit << 6)
+                  else:
+                    reg_status = reg_status & spin_bit_list[bit_mask]                    
+                    if '_CLR' not in ibit :
+                       reg_status = reg_status | spin_bit_list[ibit]
                   self._logger.debug('write_register, init reg_status: %s, bit %s', '{0:02X}'.format(reg_status), format(ibit))
             reg_status = reg_status & 0xff
             try :

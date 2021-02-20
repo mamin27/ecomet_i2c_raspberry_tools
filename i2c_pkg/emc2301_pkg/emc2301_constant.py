@@ -48,7 +48,7 @@ USE_EXT_CLK        = 0x01   # Enables to use a clock present on the CLK pin
 
 WATCH              = 0x80   # Indicates that the Watchdog Timer has expired
 DRIVE_FAIL         = 0x04   # Indicates that the Fan driver cannot meet the programmed fan speed at maximum PWM duty cycle
-FAN_SPIN           = 0x02   # Indicates that the Fan driver cannot spin up.
+FAN_SPIN_UP        = 0x02   # Indicates that the Fan driver cannot spin up.
 FAN_STALL          = 0x01   # Indicates that the Fan driver have stalled.
 
 # FAN STALL STATUS (0x25) 8 Bits:
@@ -132,12 +132,12 @@ GAIND             = 0x30  # Control derivate Gain
 
 # FAN_SPIN_UP (0x36) 8 Bits:
 
-SPINUP_TIME       = 0x03  # Determines max spin up time
+FAN_SPIN_UP_TIME       = 0x03  # Determines max spin up time
                           # 00 - 250ms
                           # 01 - 500ms (def)
                           # 10 - 1s
                           # 11 - 2s
-SPIN_LVL          = 0x1C  # Determines final drive level used by Spin Up Routines
+FAN_SPIN_UP_LVL          = 0x1C  # Determines final drive level used by Spin Up Routines
                           # 000 - 30%
                           # 001 - 35%
                           # 010 - 40%
@@ -146,8 +146,8 @@ SPIN_LVL          = 0x1C  # Determines final drive level used by Spin Up Routine
                           # 101 - 55%
                           # 110 - 60% (def)
                           # 111 - 65%
-NOKICK            = 0x20  # Determines if the Spin UP Routines will drive fan  to 100% duty cycle for 1/4 of the programed spin
-DRIVE_FAIL_CNT    = 0xC0  # Determines how many updates cycles are used for Drive fail detection function
+FAN_SPIN_UP_NOKICK            = 0x20  # Determines if the Spin UP Routines will drive fan  to 100% duty cycle for 1/4 of the programed spin
+FAN_SPIN_UP_DRIVE_FAIL_CNT    = 0xC0  # Determines how many updates cycles are used for Drive fail detection function
                           # 00 - Disabled
                           # 01 - 16 updates period
                           # 10 - 32 --
@@ -235,10 +235,10 @@ GAIND_M          = 0xCF # Control derivate Gain
 
 # FAN_SPIN_UP Mask (0x36) 8 Bits clear:
 
-SPINUP_TIME_M     = 0xFC  # Determines max spin up time
-SPIN_LVL_M        = 0xE3  # Determines final drive level used by Spin Up Routines
-NOKICK_M          = 0xDF  # Determines if the Spin UP Routines will drive fan  to 100% duty cycle for 1/4 of the programed spin
-DRIVE_FAIL_CNT_M  = 0x3F  # Determines how many updates cycles are used for Drive fail detection function
+FAN_SPIN_UP_TIME_M       = 0xFC  # Determines max spin up time
+FAN_SPIN_UP_LVL_M        = 0xE3  # Determines final drive level used by Spin Up Routines
+FAN_SPIN_UP_NOKICK_M     = 0xDF  # Determines if the Spin UP Routines will drive fan  to 100% duty cycle for 1/4 of the programed spin
+FAN_SPIN_UP_DRIVE_FAIL_CNT_M  = 0x3F  # Determines how many updates cycles are used for Drive fail detection function
 
 # CONF Clear (0x20) 8 Bits:        
 
@@ -297,7 +297,7 @@ GAIND_CLR            = 0x30 # Control derivate Gain
 
 # FAN_SPIN_UP Clear (0x36) 8 Bits:
 
-SPINUP_TIME_CLR     = 0x03  # Determines max spin up time
-SPIN_LVL_CLR        = 0x1C  # Determines final drive level used by Spin Up Routines
-NOKICK_CLR          = 0x20  # Determines if the Spin UP Routines will drive fan  to 100% duty cycle for 1/4 of the programed spin
-DRIVE_FAIL_CNT_CLR  = 0xC0  # Determines how many updates cycles are used for Drive fail detection function
+SPIN_UP_TIME_CLR     = 0x03  # Determines max spin up time
+SPIN_UP_LVL_CLR        = 0x1C  # Determines final drive level used by Spin Up Routines
+SPIN_UP_NOKICK_CLR          = 0x20  # Determines if the Spin UP Routines will drive fan  to 100% duty cycle for 1/4 of the programed spin
+SPIN_UP_DRIVE_FAIL_CNT_CLR  = 0xC0  # Determines how many updates cycles are used for Drive fail detection function
