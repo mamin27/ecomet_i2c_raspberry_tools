@@ -5,8 +5,7 @@ unit emc2301_write;
 interface
 
 uses
-  Classes, SysUtils,
-  emc2301_pyth_util;
+  Classes, SysUtils;
 
 type
   TDict = record
@@ -20,7 +19,6 @@ type
   end;
 
 procedure write_reg_emc (register: String; subr: Array of TChip);
-procedure write_conf_reg ();
 function EnumToChip (Tp: Integer; S: String) : TChip;
 
 Implementation
@@ -49,6 +47,12 @@ const
   TYPE_FAN_SPIN_UP_LVL = 17;
   TYPE_FAN_SPIN_UP_NOKICK = 18;
   TYPE_FAN_SPIN_UP_DRIVE_FAIL = 19;
+
+  TYPE_FAN_STAT_INT = 20;
+  TYPE_FAN_PWM_POLARITY = 21;
+  TYPE_FAN_PWM_OUTPUT = 22;
+  TYPE_FAN_PWM_BASE = 23;
+
 
 procedure write_reg_emc (register: String; subr: Array of TChip);
 var
@@ -297,46 +301,35 @@ begin
       then Result.rbit := 'FAN_SPIN_UP_DF4';
     Result.rbyte := 'FAN_SPIN_UP_DRIVE_FAIL_CNT';
   end;
-end;
-
-procedure write_conf_reg ();
-var
-  conf_idx: Integer;
-  conf_cmd: array [1..6] of String;
-  cmd: String;
-begin
-
-  conf_idx:=0;
-//  cmd := pre_write(emc.attr1.attr_val_obj.attr2.attr_chg, emc.attr1.attr_val_obj.attr2.attr_new_val);     // test change of TEMP bit
-  if cmd <> '' then begin
-     conf_idx := conf_idx + 1;
-     conf_cmd[conf_idx] := cmd;
-     emc.attr1.attr_val_obj.attr2.attr_chg := false;
+  if Tp = TYPE_FAN_STAT_INT  then begin  // STAT_INT
+    if S = 'ALERT'
+      then Result.rbyte := 'FAN_INT_EN';
+    if S = 'NO_ALERT'
+      then Result.rbyte := 'FAN_INT_EN_CLR';
   end;
-
-//  cmd := pre_write(emc.attr1.attr_val_obj.attr1.attr_chg, emc.attr1.attr_val_obj.attr1.attr_new_val);     // test change of HMDT bit
-  if cmd <> '' then begin
-     conf_idx := conf_idx + 1;
-     conf_cmd[conf_idx] := cmd;
-     emc.attr1.attr_val_obj.attr1.attr_chg := false;
+  if Tp = TYPE_FAN_PWM_POLARITY  then begin  // PWM_POLARITY
+    if S = 'INVERTED'
+      then Result.rbyte := 'POLARITY';
+    if S = 'NORMAL'
+      then Result.rbyte := 'POLARITY_CLR';
   end;
-//  cmd := pre_write(emc.attr1.attr_val_obj.attr4.attr_chg, emc.attr1.attr_val_obj.attr4.attr_new_val);     // test change of MODE bit
-  if cmd <> '' then begin
-     conf_idx := conf_idx + 1;
-     conf_cmd[conf_idx] := cmd;
-     emc.attr1.attr_val_obj.attr4.attr_chg := false;
+  if Tp = TYPE_FAN_PWM_OUTPUT  then begin  // PWM_OUTPUT
+    if S = 'PUSH-PULL'
+      then Result.rbyte := 'PWM_OT';
+    if S = 'OPEN-DRAIN'
+      then Result.rbyte := 'PWM_OT_CLR';
   end;
-//  cmd := pre_write(emc.attr1.attr_val_obj.attr5.attr_chg, emc.attr1.attr_val_obj.attr5.attr_new_val);     // test change of HEAT bit
-  if cmd <> '' then begin
-     conf_idx := conf_idx + 1;
-     conf_cmd[conf_idx] := cmd;
-     emc.attr1.attr_val_obj.attr5.attr_chg := false;
+  if Tp = TYPE_FAN_PWM_BASE  then begin  // PWM_BASE
+    if S = '26.00kHz'
+      then Result.rbit := 'FAN_PWM_BASE1';
+    if S = '19.531kHz'
+      then Result.rbit := 'FAN_PWM_BASE2';
+    if S = '4.882Hz'
+      then Result.rbit := 'FAN_PWM_BASE3';
+    if S = '2.441Hz'
+      then Result.rbit := 'FAN_PWM_BASE4';
+    Result.rbyte := 'BASE';
   end;
-
-  if conf_idx <> 0 then begin
-//    write_reg_emc('CONF',conf_cmd);
-  end;
-
 end;
 
 end.

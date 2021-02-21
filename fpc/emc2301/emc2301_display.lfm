@@ -605,19 +605,6 @@ object Form_emc2301: TForm_emc2301
     ClientHeight = 219
     ClientWidth = 246
     TabOrder = 3
-    object CB_STAT_WATCH: TComboBox
-      Left = 8
-      Height = 27
-      Top = 24
-      Width = 100
-      ItemHeight = 0
-      Items.Strings = (
-        'EXPIRED'
-        'NOT_SET'
-      )
-      ItemWidth = 1
-      TabOrder = 0
-    end
     object L_STAT_WATCH: TLabel
       Left = 12
       Height = 17
@@ -625,38 +612,6 @@ object Form_emc2301: TForm_emc2301
       Width = 44
       Caption = 'Watch:'
       ParentColor = False
-    end
-    object CB_STAT_DRIVE_FAIL: TComboBox
-      Left = 130
-      Height = 25
-      Top = 24
-      Width = 100
-      Font.Height = -11
-      Font.Name = 'Sans'
-      ItemHeight = 0
-      Items.Strings = (
-        'CANOT_MEET'
-        'MEET'
-      )
-      ItemWidth = 1
-      ParentFont = False
-      TabOrder = 1
-    end
-    object CB_STAT_DRIVE_FAIL_I: TComboBox
-      Left = 8
-      Height = 25
-      Top = 80
-      Width = 100
-      Font.Height = -11
-      Font.Name = 'Sans'
-      ItemHeight = 0
-      Items.Strings = (
-        'CANOT_REACH'
-        'REACH'
-      )
-      ItemWidth = 1
-      ParentFont = False
-      TabOrder = 2
     end
     object L_STAT_DRIVE_FAIL: TLabel
       Left = 130
@@ -706,38 +661,6 @@ object Form_emc2301: TForm_emc2301
       Caption = 'Fan_Setting [%]:'
       ParentColor = False
     end
-    object CB_STAT_FAN_SPIN: TComboBox
-      Left = 130
-      Height = 25
-      Top = 80
-      Width = 100
-      Font.Height = -11
-      Font.Name = 'Sans'
-      ItemHeight = 0
-      Items.Strings = (
-        'CANOT_SPIN'
-        'SPIN'
-      )
-      ItemWidth = 1
-      ParentFont = False
-      TabOrder = 3
-    end
-    object CB_STAT_FAN_STALL: TComboBox
-      Left = 8
-      Height = 25
-      Top = 134
-      Width = 100
-      Font.Height = -11
-      Font.Name = 'Sans'
-      ItemHeight = 0
-      Items.Strings = (
-        'STALL'
-        'NOT_STALL'
-      )
-      ItemWidth = 1
-      ParentFont = False
-      TabOrder = 4
-    end
     object CB_STAT_FAN_INT: TComboBox
       Left = 130
       Height = 25
@@ -751,14 +674,55 @@ object Form_emc2301: TForm_emc2301
         'NO_ALERT'
       )
       ItemWidth = 1
+      OnChange = CB_STAT_FAN_INTChange
       ParentFont = False
-      TabOrder = 5
+      TabOrder = 0
     end
     object ET_STAT_FAN_SETTING: TEdit
       Left = 8
       Height = 25
       Top = 184
       Width = 100
+      TabOrder = 1
+    end
+    object ET_STAT_WATCH: TEdit
+      Left = 8
+      Height = 25
+      Top = 24
+      Width = 100
+      ReadOnly = True
+      TabOrder = 2
+    end
+    object ET_STAT_DRIVE_FAIL: TEdit
+      Left = 130
+      Height = 25
+      Top = 24
+      Width = 100
+      ReadOnly = True
+      TabOrder = 3
+    end
+    object ET_STAT_DRIVE_FAIL_I: TEdit
+      Left = 8
+      Height = 25
+      Top = 80
+      Width = 100
+      ReadOnly = True
+      TabOrder = 4
+    end
+    object ET_STAT_FAN_STALL: TEdit
+      Left = 8
+      Height = 25
+      Top = 134
+      Width = 100
+      ReadOnly = True
+      TabOrder = 5
+    end
+    object ET_STAT_FAN_SPIN: TEdit
+      Left = 130
+      Height = 25
+      Top = 80
+      Width = 100
+      ReadOnly = True
       TabOrder = 6
     end
   end
@@ -782,6 +746,7 @@ object Form_emc2301: TForm_emc2301
         'NORMAL'
       )
       ItemWidth = 1
+      OnChange = CB_PWM_POLARITYChange
       TabOrder = 0
     end
     object L_PWM_POLARITY: TLabel
@@ -805,6 +770,7 @@ object Form_emc2301: TForm_emc2301
         'OPEN-DRAIN'
       )
       ItemWidth = 1
+      OnChange = CB_PWM_OUTPUTChange
       ParentFont = False
       TabOrder = 1
     end
@@ -823,7 +789,7 @@ object Form_emc2301: TForm_emc2301
         '2.441Hz'
       )
       ItemWidth = 1
-      OnChange = CB_SPIN_LVLChange
+      OnChange = CB_PWM_BASEChange
       ParentFont = False
       TabOrder = 2
     end
@@ -964,7 +930,7 @@ object Form_emc2301: TForm_emc2301
     Height = 96
     Top = 460
     Width = 250
-    Caption = 'ID:'
+    Caption = 'Chip ID:'
     ClientHeight = 77
     ClientWidth = 246
     TabOrder = 6
@@ -973,6 +939,7 @@ object Form_emc2301: TForm_emc2301
       Height = 25
       Top = 24
       Width = 40
+      ReadOnly = True
       TabOrder = 0
     end
     object ET_ID_MANUF: TEdit
@@ -980,6 +947,7 @@ object Form_emc2301: TForm_emc2301
       Height = 25
       Top = 24
       Width = 40
+      ReadOnly = True
       TabOrder = 1
     end
     object ET_ID_REVISION: TEdit
@@ -987,6 +955,7 @@ object Form_emc2301: TForm_emc2301
       Height = 25
       Top = 24
       Width = 40
+      ReadOnly = True
       TabOrder = 2
     end
   end

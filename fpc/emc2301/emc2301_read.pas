@@ -47,7 +47,8 @@ const
   TYPE_PWM_POLARITY = 22;
   TYPE_PWM_OUTPUT = 23;
   TYPE_PWM_BASE = 24;
-  TYPE_MON_SAMPLE = 25;
+
+  TYPE_MON_SAMPLE = 100;
 
 function EnumToInt (Tp: Integer; S: String) : Integer;
 begin
@@ -389,11 +390,11 @@ begin
   Form_emc2301.CB_GN_GAINI.ItemIndex := EnumToInt(TYPE_GAIN,emc.attr1.attr_val_obj.attr15.attr_val);     //GAINI
   Form_emc2301.CB_GN_GAINP.ItemIndex := EnumToInt(TYPE_GAIN,emc.attr1.attr_val_obj.attr16.attr_val);     //GAINP
 
-  Form_emc2301.CB_STAT_WATCH.ItemIndex := EnumToInt(TYPE_STAT_WATCH,emc.attr2.attr_val_obj.attr1.attr_val);     //WATCH
-  Form_emc2301.CB_STAT_DRIVE_FAIL.ItemIndex := EnumToInt(TYPE_STAT_FAIL,emc.attr2.attr_val_obj.attr2.attr_val);     //DRIVE_FAIL
-  Form_emc2301.CB_STAT_DRIVE_FAIL_I.ItemIndex := EnumToInt(TYPE_STAT_FAILI,emc.attr2.attr_val_obj.attr3.attr_val);     //DRIVE_FAIL_I
-  Form_emc2301.CB_STAT_FAN_SPIN.ItemIndex := EnumToInt(TYPE_STAT_SPIN,emc.attr2.attr_val_obj.attr4.attr_val);     //FAN_SPIN
-  Form_emc2301.CB_STAT_FAN_STALL.ItemIndex := EnumToInt(TYPE_STAT_STALL,emc.attr2.attr_val_obj.attr5.attr_val);     //FAN_STALL
+  Form_emc2301.ET_STAT_WATCH.Text := emc.attr2.attr_val_obj.attr1.attr_val;     //WATCH
+  Form_emc2301.ET_STAT_DRIVE_FAIL.Text := emc.attr2.attr_val_obj.attr2.attr_val;     //DRIVE_FAIL
+  Form_emc2301.ET_STAT_DRIVE_FAIL_I.Text := emc.attr2.attr_val_obj.attr3.attr_val;     //DRIVE_FAIL_I
+  Form_emc2301.ET_STAT_FAN_SPIN.Text := emc.attr2.attr_val_obj.attr4.attr_val;     //FAN_SPIN
+  Form_emc2301.ET_STAT_FAN_STALL.Text := emc.attr2.attr_val_obj.attr5.attr_val;     //FAN_STALL
   Form_emc2301.CB_STAT_FAN_INT.ItemIndex := EnumToInt(TYPE_STAT_INT,emc.attr2.attr_val_obj.attr6.attr_val);     //FAN_INT
   Form_emc2301.ET_STAT_FAN_SETTING.Text := FloatToStr(RoundTo(StrToFloat(emc.attr2.attr_val_obj.attr7.attr_val),-1));     //FAN_SETTING
 
@@ -417,6 +418,8 @@ begin
   Form_emc2301.ET_ID_MANUF.Text := emc.attr6.attr_val_obj.attr2.attr_val;     //MANUF_ID
   Form_emc2301.ET_ID_REVISION.Text := emc.attr6.attr_val_obj.attr3.attr_val;     //REVISION_ID
 
+
+(*
   Form_emc2301.CB_CONF_MASK.Style := csOwnerDrawVariable;
   Form_emc2301.CB_CONF_DIS_TO.Style := csOwnerDrawVariable;
   Form_emc2301.CB_CONF_WD_EN.Style := csOwnerDrawVariable;
@@ -433,6 +436,16 @@ begin
   Form_emc2301.CB_GN_GAIND.Style := csOwnerDrawVariable;
   Form_emc2301.CB_GN_GAINI.Style := csOwnerDrawVariable;
   Form_emc2301.CB_GN_GAINP.Style := csOwnerDrawVariable;
+*)
+
+  Form_emc2301.ET_STAT_WATCH.Color := clMenubar;     //WATCH
+  Form_emc2301.ET_STAT_DRIVE_FAIL.Color := clMenubar;     //DRIVE_FAIL
+  Form_emc2301.ET_STAT_DRIVE_FAIL_I.Color := clMenubar;     //DRIVE_FAIL_I
+  Form_emc2301.ET_STAT_FAN_SPIN.Color := clMenubar;     //FAN_SPIN
+  Form_emc2301.ET_STAT_FAN_STALL.Color := clMenubar;  //FAN_STALL
+  Form_emc2301.ET_ID_PRODUCT.Color := clMenubar;     //PRODUCT_ID
+  Form_emc2301.ET_ID_MANUF.Color := clMenubar;     //MANUF_ID
+  Form_emc2301.ET_ID_REVISION.Color := clMenubar;  //REVISION_ID
 
 //  Form_emc2301.Edit_serial.Text:= emc.attr2.attr_val_obj.attr1.attr_val;  //SERIAL
 //  Form_emc2301.Edit_serial.Alignment:=taRightJustify;

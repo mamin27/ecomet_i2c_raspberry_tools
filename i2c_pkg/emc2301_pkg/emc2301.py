@@ -19,8 +19,8 @@ fan_list = { 'POLES' : fan_type.POLES, 'EDGE' : fan_type.EDGE , 'MULTIPLIER' : f
              'FAN_SPIN_UP_SPIN' : fan_type.FAN_SPIN_UP_SPIN, 'FAN_SPIN_UP_NO_SPIN' : fan_type.FAN_SPIN_UP_NO_SPIN,
              'FAN_SPIN_UP_LVL1' : fan_type.FAN_SPIN_UP_LVL1, 'FAN_SPIN_UP_LVL2' : fan_type.FAN_SPIN_UP_LVL2, 'FAN_SPIN_UP_LVL3' : fan_type.FAN_SPIN_UP_LVL3, 'FAN_SPIN_UP_LVL4' : fan_type.FAN_SPIN_UP_LVL4,
              'FAN_SPIN_UP_LVL5' : fan_type.FAN_SPIN_UP_LVL5, 'FAN_SPIN_UP_LVL6' : fan_type.FAN_SPIN_UP_LVL6, 'FAN_SPIN_UP_LVL7' : fan_type.FAN_SPIN_UP_LVL7, 'FAN_SPIN_UP_LVL8' : fan_type.FAN_SPIN_UP_LVL8,
-             'FAN_SPIN_UP_DF1' : fan_type.FAN_SPIN_UP_DF1, 'FAN_SPIN_UP_DF2' : fan_type.FAN_SPIN_UP_DF2, 'FAN_SPIN_UP_DF3' : fan_type.FAN_SPIN_UP_DF3, 'FAN_SPIN_UP_DF4' : fan_type.FAN_SPIN_UP_DF4
-             
+             'FAN_SPIN_UP_DF1' : fan_type.FAN_SPIN_UP_DF1, 'FAN_SPIN_UP_DF2' : fan_type.FAN_SPIN_UP_DF2, 'FAN_SPIN_UP_DF3' : fan_type.FAN_SPIN_UP_DF3, 'FAN_SPIN_UP_DF4' : fan_type.FAN_SPIN_UP_DF4,
+             'FAN_PWM_BASE1' : fan_type.FAN_PWM_BASE1, 'FAN_PWM_BASE2' : fan_type.FAN_PWM_BASE2, 'FAN_PWM_BASE3' : fan_type.FAN_PWM_BASE3, 'FAN_PWM_BASE4' : fan_type.FAN_PWM_BASE4
            }
 
 reg_list = { 'CONF' : emc2301_constant.CONF,'FAN_STAT' : emc2301_constant.FAN_STAT, 'FAN_STALL' :  emc2301_constant.FAN_STALL, 'FAN_SPIN' : emc2301_constant.FAN_SPIN,
@@ -99,9 +99,11 @@ spin_bit_list =          { 'FAN_SPIN_UP_TIME' : emc2301_constant.FAN_SPIN_UP_TIM
                            'FAN_SPIN_UP_DRIVE_FAIL_CNT_M' : emc2301_constant.FAN_SPIN_UP_DRIVE_FAIL_CNT_M
                          }
 
-pwm_bit_list =      { 'POLARITY' : emc2301_constant.POLARITY,
+pwm_bit_list =      { 'FAN_INT_EN' : emc2301_constant.FAN_INT_EN,
+                      'POLARITY' : emc2301_constant.POLARITY,
                       'PWM_OT' : emc2301_constant.PWM_OT,
                       'BASE' :  emc2301_constant.BASE,
+                      'FAN_INT_EN_M' : emc2301_constant.FAN_INT_EN_M,
                       'POLARITY_M' : emc2301_constant.POLARITY_M,
                       'PWM_OT_M' : emc2301_constant.PWM_OT_M,
                       'BASE_M' :  emc2301_constant.BASE_M
@@ -390,7 +392,7 @@ class EMC2301(object):
              return (reg_status_bita[1],reg_status_bita[0],ret)
     def write_register(self, register, bits = None, bit = None, value = None) :
           ret = 0
-          if register in ['CONF','FAN_CONF1','FAN_CONF2','FAN_SPIN_UP','GAIN'] :
+          if register in ['CONF','FAN_CONF1','FAN_CONF2','FAN_SPIN_UP','GAIN','FAN_INTERRUPT','PWM_POLARITY','PWM_OUTPUT','PWM_BASE'] :
             (reg_status,ret) = self.read_register( register = register )
             for ibit in bits :
                if '_CLR' not in ibit :
@@ -433,18 +435,26 @@ class EMC2301(object):
                     reg_status = reg_status & gain_bit_list[bit_mask] | (bit << 4) 	
                   self._logger.debug('write_register, init reg_status: %s, bit %s', '{0:02X}'.format(reg_status), format(ibit))
                if register in ['FAN_SPIN_UP'] :
-                  if ibit in['FAN_SPIN_UP_TIME'] :
+                  if ibit in ['FAN_SPIN_UP_TIME'] :
                     reg_status = reg_status & spin_bit_list[bit_mask] | (bit << 0)
-                  elif ibit in['FAN_SPIN_UP_LVL'] :
+                  elif ibit in ['FAN_SPIN_UP_LVL'] :
                     reg_status = reg_status & spin_bit_list[bit_mask] | (bit << 2)
-                  elif ibit in['FAN_SPIN_UP_NOKICK'] :
+                  elif ibit in ['FAN_SPIN_UP_NOKICK'] :
                     reg_status = reg_status & spin_bit_list[bit_mask] | (bit << 5)
-                  elif ibit in['FAN_SPIN_UP_DRIVE_FAIL_CNT'] :
+                  elif ibit in ['FAN_SPIN_UP_DRIVE_FAIL_CNT'] :
                     reg_status = reg_status & spin_bit_list[bit_mask] | (bit << 6)
                   else:
                     reg_status = reg_status & spin_bit_list[bit_mask]                    
                     if '_CLR' not in ibit :
                        reg_status = reg_status | spin_bit_list[ibit]
+                  self._logger.debug('write_register, init reg_status: %s, bit %s', '{0:02X}'.format(reg_status), format(ibit))
+               if register in ['FAN_INTERRUPT','PWM_POLARITY','PWM_OUTPUT','PWM_BASE'] :
+                  if ibit in ['BASE'] :
+                    reg_status = reg_status & pwm_bit_list[bit_mask] | (bit << 0)
+                  else:
+                    reg_status = reg_status & pwm_bit_list[bit_mask]                    
+                    if '_CLR' not in ibit :
+                       reg_status = reg_status | pwm_bit_list[ibit]
                   self._logger.debug('write_register, init reg_status: %s, bit %s', '{0:02X}'.format(reg_status), format(ibit))
             reg_status = reg_status & 0xff
             try :

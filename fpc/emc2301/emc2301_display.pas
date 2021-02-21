@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Buttons,
-  TAGraph, TASeries, TASources,
+  TAGraph, TASeries,
   Menus, ExtCtrls, emc2301_pyth_util, rpm_source, PythonEngine;
 
   { TForm_emc2301 }
@@ -21,17 +21,12 @@ uses
     CB_PWM_POLARITY: TComboBox;
     CB_PWM_BASE: TComboBox;
     CB_PWM_OUTPUT: TComboBox;
-    CB_STAT_FAN_STALL: TComboBox;
-    CB_STAT_FAN_SPIN: TComboBox;
     CB_STAT_FAN_INT: TComboBox;
-    CB_STAT_WATCH: TComboBox;
     CB_GN_GAINI: TComboBox;
     CB_CONF_ERR_RNG: TComboBox;
     CB_SPIN_TIME: TComboBox;
     CB_SPIN_NOKICK: TComboBox;
-    CB_STAT_DRIVE_FAIL: TComboBox;
     CB_SPIN_LVL: TComboBox;
-    CB_STAT_DRIVE_FAIL_I: TComboBox;
     CB_CONF_MASK: TComboBox;
     CB_CONF_DIS_TO: TComboBox;
     CB_CONF_GLITCH_EN: TComboBox;
@@ -46,6 +41,11 @@ uses
     CB_CONF_EN_RRC: TComboBox;
     CB_GN_GAINP: TComboBox;
     ET_SPIN_FAN_MAX_STEP: TEdit;
+    ET_STAT_FAN_SPIN: TEdit;
+    ET_STAT_DRIVE_FAIL_I: TEdit;
+    ET_STAT_FAN_STALL: TEdit;
+    ET_STAT_WATCH: TEdit;
+    ET_STAT_DRIVE_FAIL: TEdit;
     ET_TACH_COUNT: TEdit;
     ET_PWM_DIVIDE: TEdit;
     ET_ID_PRODUCT: TEdit;
@@ -128,10 +128,14 @@ uses
     procedure CB_GN_GAINIChange(Sender: TObject);
     procedure CB_GN_GAINPChange(Sender: TObject);
     procedure CB_MON_SAMPLEChange(Sender: TObject);
+    procedure CB_PWM_OUTPUTChange(Sender: TObject);
+    procedure CB_PWM_POLARITYChange(Sender: TObject);
+    procedure CB_PWM_BASEChange(Sender: TObject);
     procedure CB_SPIN_DRIVE_FAIL_CNTChange(Sender: TObject);
     procedure CB_SPIN_LVLChange(Sender: TObject);
     procedure CB_SPIN_NOKICKChange(Sender: TObject);
     procedure CB_SPIN_TIMEChange(Sender: TObject);
+    procedure CB_STAT_FAN_INTChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure GraphClick(Sender: TObject);
     procedure PythonInputOutput_emc2301SendData(Sender: TObject;
@@ -166,13 +170,9 @@ uses emc2301_read, emc2301_write, emc2301_graph;
 { TForm_emc2301 }
 
 const
-  RPM_FILE = 'rpm.txt';
   cPyLibraryLinux = 'libpython3.7m.so.1.0';
   PASSED = 0;
   FAILED = 1;
-  N = 10000;
-  MIN = 0;
-  MAX = 10001;
 
 // WRITE Constant
   TYPE_CONF_MASK = 0;
@@ -196,8 +196,13 @@ const
   TYPE_FAN_SPIN_UP_NOKICK = 18;
   TYPE_FAN_SPIN_UP_DRIVE_FAIL = 19;
 
+  TYPE_FAN_STAT_INT = 20;
+  TYPE_FAN_PWM_POLARITY = 21;
+  TYPE_FAN_PWM_OUTPUT = 22;
+  TYPE_FAN_PWM_BASE = 23;
+
 // READ Constant
-  TYPE_MON_SAMPLE = 25;
+  TYPE_MON_SAMPLE = 100;
 
 procedure TForm_emc2301.DoPy_InitEngine;
 var
@@ -211,8 +216,6 @@ begin
 end;
 
 procedure TForm_emc2301.FormCreate(Sender: TObject);
-var
-  x: Double;
 begin
    DoPy_InitEngine;
    emc := emc2301Ob.Init;
@@ -338,6 +341,26 @@ end;
 procedure TForm_emc2301.CB_SPIN_DRIVE_FAIL_CNTChange(Sender: TObject);
 begin
    write_reg_emc('FAN_SPIN_UP',EnumToChip(TYPE_FAN_SPIN_UP_DRIVE_FAIL,Form_emc2301.CB_SPIN_DRIVE_FAIL_CNT.Items[Form_emc2301.CB_SPIN_DRIVE_FAIL_CNT.ItemIndex]));
+end;
+
+procedure TForm_emc2301.CB_STAT_FAN_INTChange(Sender: TObject);
+begin
+   write_reg_emc('FAN_INTERRUPT',EnumToChip(TYPE_FAN_STAT_INT,Form_emc2301.CB_STAT_FAN_INT.Items[Form_emc2301.CB_STAT_FAN_INT.ItemIndex]));
+end;
+
+procedure TForm_emc2301.CB_PWM_POLARITYChange(Sender: TObject);
+begin
+   write_reg_emc('PWM_POLARITY',EnumToChip(TYPE_FAN_PWM_POLARITY,Form_emc2301.CB_PWM_POLARITY.Items[Form_emc2301.CB_PWM_POLARITY.ItemIndex]));
+end;
+
+procedure TForm_emc2301.CB_PWM_OUTPUTChange(Sender: TObject);
+begin
+   write_reg_emc('PWM_OUTPUT',EnumToChip(TYPE_FAN_PWM_OUTPUT,Form_emc2301.CB_PWM_OUTPUT.Items[Form_emc2301.CB_PWM_OUTPUT.ItemIndex]));
+end;
+
+procedure TForm_emc2301.CB_PWM_BASEChange(Sender: TObject);
+begin
+   write_reg_emc('PWM_BASE',EnumToChip(TYPE_FAN_PWM_BASE,Form_emc2301.CB_PWM_BASE.Items[Form_emc2301.CB_PWM_BASE.ItemIndex]));
 end;
 
 procedure TForm_emc2301.CB_MON_SAMPLEChange(Sender: TObject);
