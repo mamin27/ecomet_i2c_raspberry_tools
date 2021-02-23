@@ -19,6 +19,7 @@ type
   end;
 
 procedure write_reg_emc (register: String; subr: Array of TChip);
+procedure write_reg_emc_value (register: String; value: Integer);
 function EnumToChip (Tp: Integer; S: String) : TChip;
 
 Implementation
@@ -104,6 +105,38 @@ Py_S.DelimitedText := 'from  i2c_pkg.emc2301_pkg import emc2301|' +
 
 Form_emc2301.PythonEngine_emc2301.ExecStrings(Py_S);
 Py_S.Free;
+end;
+
+procedure write_reg_emc_value (register: String; value: Integer);
+var
+  Py_S: TStringList;
+  content: String[100];
+  content_str: String[100];
+
+//sens.write_register(register = 'FAN_MAX_STEP', value = 20 )
+begin
+
+content := 'register = ' + #39 + Trim(register) + #39 + ', value = ' + IntToStr(value);
+content_str := Trim(register) + '[value = ' + IntToStr(value) + ']';
+
+writeln(content);
+
+Py_S := TStringList.Create;
+Py_S.Delimiter := '|';
+Py_S.StrictDelimiter := True;
+Py_S.DelimitedText := 'from  i2c_pkg.emc2301_pkg import emc2301|' +
+                      'sens = emc2301.EMC2301()|' +
+                      'content = ' + #34 + content_str + #34 + '|' +
+                      'register = ' + #39 + register + #39 + '|' +
+                      'ret = sens.write_register(' + content + ')|' +
+
+                      'print (":WRITE_REG:WRITE:{}:{}:{}".format(register,content,ret))|';
+               //       'print (":WRITE_REG_CONF:{}".format(register)) if ret == 0 else print (":WRITE_REG_CONF_ERR:")|';
+
+Form_emc2301.PythonEngine_emc2301.ExecStrings(Py_S);
+Py_S.Free;
+
+
 end;
 
 function EnumToChip (Tp: Integer; S: String) : TChip;

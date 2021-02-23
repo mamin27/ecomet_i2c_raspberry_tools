@@ -136,8 +136,14 @@ uses
     procedure CB_SPIN_NOKICKChange(Sender: TObject);
     procedure CB_SPIN_TIMEChange(Sender: TObject);
     procedure CB_STAT_FAN_INTChange(Sender: TObject);
+    procedure ET_PWM_DIVIDEEditingDone(Sender: TObject);
+    procedure ET_SPIN_FAN_MAX_STEPEditingDone(Sender: TObject);
+    procedure ET_SPIN_FAN_MIN_DRIVEEditingDone(Sender: TObject);
+    procedure ET_STAT_FAN_SETTINGEditingDone(Sender: TObject);
+    procedure ET_TACH_COUNTEditingDone(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure GraphClick(Sender: TObject);
+    procedure L_SPIN_FAN_MIN_DRIVEClick(Sender: TObject);
     procedure PythonInputOutput_emc2301SendData(Sender: TObject;
       const Data: AnsiString);
     procedure Timer1Timer(Sender: TObject);
@@ -165,7 +171,7 @@ implementation
 
 {$R *.lfm}
 
-uses emc2301_read, emc2301_write, emc2301_graph;
+uses emc2301_read, emc2301_write, emc2301_graph, universal;
 
 { TForm_emc2301 }
 
@@ -348,6 +354,89 @@ begin
    write_reg_emc('FAN_INTERRUPT',EnumToChip(TYPE_FAN_STAT_INT,Form_emc2301.CB_STAT_FAN_INT.Items[Form_emc2301.CB_STAT_FAN_INT.ItemIndex]));
 end;
 
+procedure TForm_emc2301.ET_PWM_DIVIDEEditingDone(Sender: TObject);
+var
+  Size: Byte;
+  in_buffer: PChar;
+  data: Integer;
+const limit = 255;
+begin
+   Size := 20;
+   GetMem(in_buffer, Size);
+   Form_emc2301.ET_PWM_DIVIDE.GetTextBuf(in_buffer,Size);
+   data := Trunc(PChatToReal(in_buffer,limit));
+   write_reg_emc_value('PWM_DIVIDE',data);
+   FreeMem(in_buffer, Size);
+
+end;
+
+procedure TForm_emc2301.ET_SPIN_FAN_MAX_STEPEditingDone(Sender: TObject);
+var
+  Size: Byte;
+  in_buffer: PChar;
+  data : Integer;
+const limit = 63;
+begin
+   Size := 20;
+   GetMem(in_buffer, Size);
+   Form_emc2301.ET_SPIN_FAN_MAX_STEP.GetTextBuf(in_buffer,Size);
+   data := Trunc(PChatToReal(in_buffer,limit));
+   write_reg_emc_value('FAN_MAX_STEP',data);
+   FreeMem(in_buffer, Size);
+end;
+
+procedure TForm_emc2301.ET_SPIN_FAN_MIN_DRIVEEditingDone(Sender: TObject);
+var
+  Size: Byte;
+  in_buffer: PChar;
+  data: Integer;
+const limit = 255;
+begin
+   Size := 20;
+   GetMem(in_buffer, Size);
+   Form_emc2301.ET_SPIN_FAN_MIN_DRIVE.GetTextBuf(in_buffer,Size);
+   data := Trunc(PChatToReal(in_buffer,limit));
+   write_reg_emc_value('FAN_MIN_DRIVE',data);
+   FreeMem(in_buffer, Size);
+
+end;
+
+procedure TForm_emc2301.ET_STAT_FAN_SETTINGEditingDone(Sender: TObject);
+var
+  Size: Byte;
+  in_buffer: PChar;
+  perc: Real;
+  data: Integer;
+const limit = 100;
+begin
+   Size := 20;
+   GetMem(in_buffer, Size);
+   Form_emc2301.ET_STAT_FAN_SETTING.GetTextBuf(in_buffer,Size);
+   perc := PChatToReal(in_buffer,limit);
+   data := Trunc((perc * 255)/ 100);
+   write_reg_emc_value('FAN_SETTING',data);
+   FreeMem(in_buffer, Size);
+
+end;
+
+procedure TForm_emc2301.ET_TACH_COUNTEditingDone(Sender: TObject);
+var
+  Size: Byte;
+  in_buffer: PChar;
+  data: Integer;
+const limit = 8160;
+begin
+   Size := 20;
+   GetMem(in_buffer, Size);
+   Form_emc2301.ET_TACH_COUNT.GetTextBuf(in_buffer,Size);
+   data := Trunc(PChatToReal(in_buffer,limit));
+   data := Trunc((255 * data)/8160);
+   write_reg_emc_value('TACH_COUNT',data);
+   FreeMem(in_buffer, Size);
+
+end;
+
+
 procedure TForm_emc2301.CB_PWM_POLARITYChange(Sender: TObject);
 begin
    write_reg_emc('PWM_POLARITY',EnumToChip(TYPE_FAN_PWM_POLARITY,Form_emc2301.CB_PWM_POLARITY.Items[Form_emc2301.CB_PWM_POLARITY.ItemIndex]));
@@ -390,6 +479,11 @@ begin
   Form_graph.Show;
 end;
 
+procedure TForm_emc2301.L_SPIN_FAN_MIN_DRIVEClick(Sender: TObject);
+begin
+
+end;
+
 procedure TForm_emc2301.PythonInputOutput_emc2301SendData(Sender: TObject;
   const Data: AnsiString);
 begin
@@ -407,6 +501,10 @@ begin
        writeln('Success write to Register: ', emc.attr8.attr_val_obj.attr1.attr_val);
        writeln('  Content: ', emc.attr8.attr_val_obj.attr2.attr_val);
        writeln('  Ret: ', emc.attr8.attr_val_obj.attr3.attr_val);
+     end;
+   'WRITE_REGVAL':
+     begin
+       writeln('Success write value to Register: ', emc.attr8.attr_val_obj.attr1.attr_val);
      end;
 {   'GRAPH':
      begin

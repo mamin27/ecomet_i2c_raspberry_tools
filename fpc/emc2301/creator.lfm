@@ -1,0 +1,35 @@
+object Form_creator: TForm_creator
+  Left = 1031
+  Height = 186
+  Top = 135
+  Width = 312
+  Caption = 'Creator'
+  ClientHeight = 186
+  ClientWidth = 312
+  OnCreate = FormCreate
+  LCLVersion = '2.0.0.4'
+  object Label_creator: TLabel
+    Left = 32
+    Height = 75
+    Top = 88
+    Width = 182
+    Caption = 'https://github.com/mamin27'#10'ecomet_i2c_raspberry_tools'#10#10'Marian Minar (c) 2020'#10'GPL-3.0 License'
+    Font.Height = -12
+    Font.Name = 'DejaVu Sans Mono'
+    ParentColor = False
+    ParentFont = False
+  end
+  object Label_project_name: TLabel
+    Left = 32
+    Height = 36
+    Top = 24
+    Width = 252
+    Caption = 'HDC1080 '#10'Temperature & Humidity sensor'
+    Font.Color = clBlue
+    Font.Height = -15
+    Font.Name = 'DejaVu Sans Mono'
+    Font.Style = [fsBold]
+    ParentColor = False
+    ParentFont = False
+  end
+end

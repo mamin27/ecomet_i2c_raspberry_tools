@@ -392,8 +392,10 @@ class EMC2301(object):
              return (reg_status_bita[1],reg_status_bita[0],ret)
     def write_register(self, register, bits = None, bit = None, value = None) :
           ret = 0
-          if register in ['CONF','FAN_CONF1','FAN_CONF2','FAN_SPIN_UP','GAIN','FAN_INTERRUPT','PWM_POLARITY','PWM_OUTPUT','PWM_BASE'] :
+          if register in ['CONF','FAN_CONF1','FAN_CONF2','FAN_SPIN_UP','GAIN','FAN_MAX_STEP','FAN_MIN_DRIVE','FAN_INTERRUPT','PWM_DIVIDE','PWM_POLARITY','PWM_OUTPUT','PWM_BASE','TACH_COUNT'] :
             (reg_status,ret) = self.read_register( register = register )
+            if bits is None :
+               bits = 'NONE'
             for ibit in bits :
                if '_CLR' not in ibit :
                   bit_mask = ibit + '_M'
@@ -479,6 +481,31 @@ class EMC2301(object):
             except :
                ret = ret + 1
                self._logger.debug('writelist error')
+          elif register in ['FAN_MIN_DRIVE','PWM_DIVIDE'] :
+              if value <= 128 :
+                reg_status = value
+                self._logger.debug('write_register, init reg_status: %s', '{0:02X}'.format(reg_status))
+              else :
+                ret = ret + 1
+                reg_status = 102 #default value
+              try :
+                 self._device.write8(reg_list[register],reg_status)
+              except :
+                 ret = ret + 1
+                 self._logger.debug('writelist error')
+          elif register in ['TACH_COUNT'] :
+              if value <= 8160 :
+                  value = int(truncate((255 * value)/8160,0))
+                  reg_status = value
+                  self._logger.debug('write_register, init reg_status: %s', '{0:02X}'.format(reg_status))
+              else :
+                ret = ret + 1
+                reg_status = 245 #default value
+              try :
+                 self._device.write8(reg_list[register],reg_status)
+              except :
+                 ret = ret + 1
+                 self._logger.debug('writelist error')
           elif register in ['TACH_TARGET','FAN_FAIL_BAND'] :
             if bits[0] <= 31 :
                sum_lb = word_lb (bits[0])

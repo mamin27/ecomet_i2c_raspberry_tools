@@ -1,10 +1,10 @@
 object Form_emc2301: TForm_emc2301
-  Left = 541
-  Height = 597
-  Top = 52
+  Left = 480
+  Height = 600
+  Top = 136
   Width = 802
   Caption = 'Form_emc2301'
-  ClientHeight = 570
+  ClientHeight = 573
   ClientWidth = 802
   Menu = MainMenu_emc2301
   OnCreate = FormCreate
@@ -229,8 +229,8 @@ object Form_emc2301: TForm_emc2301
       Left = 12
       Height = 17
       Top = 56
-      Width = 48
-      Caption = 'Wd_En:'
+      Width = 93
+      Caption = 'WatchDog_En:'
       ParentColor = False
     end
     object L_CONF_DR_EXT_CLK: TLabel
@@ -568,15 +568,16 @@ object Form_emc2301: TForm_emc2301
     end
     object L_SPIN_FAN_MIN_DRIVE: TLabel
       Left = 130
-      Height = 17
+      Height = 300
       Top = 112
-      Width = 90
+      Width = 110
       AutoSize = False
-      Caption = 'Fan_Min_Drive:'
-      Font.Height = 12
+      Caption = 'Fan_Min_Drive [%]:'
+      Font.Height = 11
       Font.Name = 'Sans'
       ParentColor = False
       ParentFont = False
+      OnClick = L_SPIN_FAN_MIN_DRIVEClick
       OptimalFill = True
     end
     object ET_SPIN_FAN_MAX_STEP: TEdit
@@ -584,6 +585,7 @@ object Form_emc2301: TForm_emc2301
       Height = 25
       Top = 134
       Width = 100
+      OnEditingDone = ET_SPIN_FAN_MAX_STEPEditingDone
       TabOrder = 4
       Text = 'ET_SPIN_FAN_MAX_STEP'
     end
@@ -592,6 +594,7 @@ object Form_emc2301: TForm_emc2301
       Height = 25
       Top = 134
       Width = 100
+      OnEditingDone = ET_SPIN_FAN_MIN_DRIVEEditingDone
       TabOrder = 5
       Text = 'ET_SPIN_FAN_MIN_DRIVE'
     end
@@ -683,6 +686,7 @@ object Form_emc2301: TForm_emc2301
       Height = 25
       Top = 184
       Width = 100
+      OnEditingDone = ET_STAT_FAN_SETTINGEditingDone
       TabOrder = 1
     end
     object ET_STAT_WATCH: TEdit
@@ -832,6 +836,7 @@ object Form_emc2301: TForm_emc2301
       Height = 25
       Top = 80
       Width = 100
+      OnEditingDone = ET_PWM_DIVIDEEditingDone
       TabOrder = 3
     end
   end
@@ -875,6 +880,7 @@ object Form_emc2301: TForm_emc2301
       Height = 25
       Top = 24
       Width = 100
+      OnEditingDone = ET_TACH_COUNTEditingDone
       TabOrder = 0
     end
     object ET_TACH_FAN_FAIL_BAND: TEdit

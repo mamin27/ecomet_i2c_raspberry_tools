@@ -1,0 +1,42 @@
+object Form_graph: TForm_graph
+  Left = 272
+  Height = 321
+  Top = 265
+  Width = 1149
+  Caption = 'Form_graph'
+  ClientHeight = 321
+  ClientWidth = 1149
+  LCLVersion = '2.0.0.4'
+  object Chart_emc2301_RPM: TChart
+    Left = 32
+    Height = 248
+    Top = 40
+    Width = 984
+    AxisList = <    
+      item
+        Marks.LabelBrush.Style = bsClear
+        Minors = <>
+        Title.LabelFont.Orientation = 900
+        Title.LabelBrush.Style = bsClear
+      end    
+      item
+        Alignment = calBottom
+        Marks.LabelBrush.Style = bsClear
+        Minors = <>
+        Title.LabelBrush.Style = bsClear
+      end>
+    Foot.Brush.Color = clBtnFace
+    Foot.Font.Color = clBlue
+    Title.Brush.Color = clBtnFace
+    Title.Font.Color = clBlue
+    Title.Text.Strings = (
+      'TAChart'
+    )
+    object RPM: TLineSeries
+    end
+  end
+  object UserDefinedChartSource_RPM: TUserDefinedChartSource
+    left = 1080
+    top = 256
+  end
+end
