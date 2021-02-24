@@ -119,16 +119,16 @@ logger = logging.getLogger(__name__)
 def word_lb (nm) :
 
    list_lb = [16,8,4,2,1]
-   list_sum = [128,64,32,16,8,4,2,1]
+   list_sum = [128,64,32,16,8]
 
    sum = 0
    tmp = nm
    sum_lb = 0
    for idx in range (0,5) :
      if tmp >= list_lb[idx] :
-       sum = sum + list_lb[idx]
        sum_lb = sum_lb + list_sum[idx]
-       tmp = tmp - sum 
+       tmp = tmp - list_lb[idx]
+       print ('sum_lb:{}:{}',sum,sum_lb)   
      
    return (sum_lb)
 
@@ -256,7 +256,7 @@ def conf_register_list() :
    for idx in range (0,8) :
      res = res + (tbin % 2)  * list_128[idx]
      tbin = tbin >> 1
-   reg_spin_up['FAN_MIN_DRIVE'] = (res/255)*100
+   reg_spin_up['FAN_MIN_DRIVE'] = round((res/255)*100,1)
    
    reg_fan_stat['WATCH'] = 'EXPIRED' if emc.read_register( register = 'FAN_STAT' )[0] & fan_stat_bit_list['WATCH'] > 0 else 'NOT_SET'
    reg_fan_stat['DRIVE_FAIL'] = 'CANOT_MEET' if emc.read_register( register = 'FAN_STAT' )[0] & fan_stat_bit_list['DRIVE_FAIL'] > 0 else 'MEET'
@@ -270,7 +270,7 @@ def conf_register_list() :
    for idx in range (0,8) :
      res = res + (tbin % 2) * list_128[idx]  
      tbin = tbin >> 1
-   reg_fan_stat['FAN_SETTING'] = (res/255)*100
+   reg_fan_stat['FAN_SETTING'] = round((res/255)*100,2)
    
    
    reg_pwm['PWM_POLARITY'] = 'INVERTED' if emc.read_register( register = 'PWM_POLARITY' )[0] & pwm_bit_list['POLARITY'] > 0 else 'NORMAL'
@@ -392,10 +392,9 @@ class EMC2301(object):
              return (reg_status_bita[1],reg_status_bita[0],ret)
     def write_register(self, register, bits = None, bit = None, value = None) :
           ret = 0
-          if register in ['CONF','FAN_CONF1','FAN_CONF2','FAN_SPIN_UP','GAIN','FAN_MAX_STEP','FAN_MIN_DRIVE','FAN_INTERRUPT','PWM_DIVIDE','PWM_POLARITY','PWM_OUTPUT','PWM_BASE','TACH_COUNT'] :
+          if register in ['CONF','FAN_CONF1','FAN_CONF2','FAN_SPIN_UP','GAIN',
+                          'FAN_INTERRUPT','PWM_POLARITY','PWM_OUTPUT','PWM_BASE'] :
             (reg_status,ret) = self.read_register( register = register )
-            if bits is None :
-               bits = 'NONE'
             for ibit in bits :
                if '_CLR' not in ibit :
                   bit_mask = ibit + '_M'
@@ -464,103 +463,86 @@ class EMC2301(object):
             except :
                ret = ret + 1
                self._logger.debug('writelist error')
-          elif register in ['FAN_SETTING','FAN_MAX_STEP'] :
-            #(reg_status,ret) = self.read_register( register = register )
-            if register in ['FAN_SETTING'] :
-              reg_status = value
-              self._logger.debug('write_register, init reg_status: %s', '{0:02X}'.format(reg_status))
+          elif register in ['FAN_SETTING','FAN_MAX_STEP','FAN_MIN_DRIVE','PWM_DIVIDE'] :
+            if register in ['FAN_SETTING','FAN_MIN_DRIVE','PWM_DIVIDE'] :
+              if value <= 255 :
+                reg_status = value
+              elif register in ['FAN_MIN_DRIVE'] :
+                reg_status = 102 #default value for FAM_MIN_DRIVE
+              elif register in ['PWM_DIVIDE'] :
+                reg_status = 1 #default value for PWM_DIVIDE
+              elif register in ['FAN_SETTING'] :
+                reg_status = 100 #default set to 0
             if register in ['FAN_MAX_STEP'] :
               if value <= 63 :
-                reg_status = value
-                self._logger.debug('write_register, init reg_status: %s', '{0:02X}'.format(reg_status))
+                list_lb = [32,16,8,4,2,1]
+                list_sum = [32,16,8,4,2,1]
+
+                sum = 0
+                tmp = value
+                sum_lb = 0
+                for idx in range (0,6) :
+                  if tmp >= list_lb[idx] :
+                    sum = sum + list_lb[idx]
+                    sum_lb = sum_lb + list_sum[idx]
+                    tmp = tmp - sum
+                reg_status = sum_lb
               else :
-                ret = ret + 1
-                reg_status = 16 #default value
+                reg_status = 16 #default for FAN_MAX_STEP
+            self._logger.debug('write_register %s, final_reg_status: (%s)', register,'{0:02X}'.format(reg_status))
             try :
-               self._device.write8(reg_list[register],reg_status)
+              self._device.write8(reg_list[register],reg_status)
             except :
-               ret = ret + 1
-               self._logger.debug('writelist error')
-          elif register in ['FAN_MIN_DRIVE','PWM_DIVIDE'] :
-              if value <= 128 :
-                reg_status = value
-                self._logger.debug('write_register, init reg_status: %s', '{0:02X}'.format(reg_status))
-              else :
-                ret = ret + 1
-                reg_status = 102 #default value
-              try :
-                 self._device.write8(reg_list[register],reg_status)
-              except :
-                 ret = ret + 1
-                 self._logger.debug('writelist error')
-          elif register in ['TACH_COUNT'] :
-              if value <= 8160 :
-                  value = int(truncate((255 * value)/8160,0))
-                  reg_status = value
-                  self._logger.debug('write_register, init reg_status: %s', '{0:02X}'.format(reg_status))
-              else :
-                ret = ret + 1
-                reg_status = 245 #default value
-              try :
-                 self._device.write8(reg_list[register],reg_status)
-              except :
-                 ret = ret + 1
-                 self._logger.debug('writelist error')
+              ret = ret + 1
           elif register in ['TACH_TARGET','FAN_FAIL_BAND'] :
-            if bits[0] <= 31 :
+            if value <= 31 :
                sum_lb = word_lb (bits[0])
-               self._logger.debug('final_sum: (%s)', sum_lb)
+               self._logger.debug('write_register %s, final_sum_lb: (%s)', register,'{0:02X}'.format(sum_lb))
                try :
                  self._device.write8(reg_list[register],sum_lb)
                except :
                  ret = ret + 1
-                 self._logger.debug('writelist error')
             else :
                list_hb = [4096,2048,1024,512,256,128,64,32]
-               list_sum = [128,64,32,16,8,4,2,1]
+               list_sum = [128,64,32,16,8,4,2,1]	
 
                sum = 0
-               tmp = bits[0]
+               tmp = value
                sum_hb = 0
                for idx in range (0,8) :
                  if tmp >= list_hb[idx] :
-                   sum = sum + list_hb[idx]
                    sum_hb = sum_hb + list_sum[idx]
-                   tmp = tmp - sum               
+                   tmp = tmp - list_hb[idx] 
+                   print('sum_hb:{}:{}',tmp,list_hb[idx])              
                sum_lb = word_lb (tmp)
-               self._logger.debug('final_sum_lb: (%s)', sum_lb)
-               self._logger.debug('final_sum_hb: (%s)', sum_hb)
+               self._logger.debug('write_register %s, final_sum_lb: (%s)', register, '{0:02X}'.format(sum_lb))
+               self._logger.debug('write_register %s, final_sum_hb: (%s)', register,'{0:02X}'.format(sum_hb))
                try :
                  self._device.write8(reg_list[register],sum_lb)
                  self._device.write8(reg_list[register]+1,sum_hb)
                except :
                  ret = ret + 1
-                 self._logger.debug('writelist error')
           elif register in ['TACH_COUNT'] :
             list_hb = [4096,2048,1024,512,256,128,64,32]
             list_sum = [128,64,32,16,8,4,2,1]
-
+            
             sum = 0
-            tmp = bits[0]
+            tmp = value
             sum_hb = 0
             for idx in range (0,8) :
               if tmp >= list_hb[idx] :
-                sum = sum + list_hb[idx]
                 sum_hb = sum_hb + list_sum[idx]
-                tmp = tmp - sum               
-            sum_lb = word_lb (tmp)
-            self._logger.debug('final_sum_hb: (%s)', sum_hb)
+                tmp = tmp - list_hb[idx]               
+            self._logger.debug('write_register %s, final_sum_hb: (%s)', register,'{0:02X}'.format(sum_hb))
             try :
               self._device.write8(reg_list[register],sum_hb)
             except :
               ret = ret + 1
-              self._logger.debug('writelist error')
+              self._logger.debug('write_register %s, writelist error', register)
           else :
               ret = 1
           if ret > 1 :
              self._logger.debug('write_register %s failed (%s)', register, ret)
-          else :
-             self._logger.debug('write_register %s', register)
           return ret
     def speed (self) :
        (tbin_lb,tbin_hb,ret) = self.read_register( register = 'TACH_READ' )

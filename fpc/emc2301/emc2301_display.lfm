@@ -888,6 +888,7 @@ object Form_emc2301: TForm_emc2301
       Height = 25
       Top = 24
       Width = 100
+      OnEditingDone = ET_TACH_FAN_FAIL_BANDEditingDone
       TabOrder = 1
     end
     object L_TACH_TARGET: TLabel
@@ -921,6 +922,7 @@ object Form_emc2301: TForm_emc2301
       Height = 25
       Top = 80
       Width = 100
+      OnEditingDone = ET_TACH_TARGETEditingDone
       TabOrder = 2
     end
     object ET_TACH_READ: TEdit

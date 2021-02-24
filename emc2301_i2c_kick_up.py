@@ -44,7 +44,11 @@ sens.write_register(register = 'FAN_SETTING', value = 0)
 sens.write_register(register = 'FAN_MAX_STEP', value = 63)
 sens.write_register(register = 'FAN_CONF1', bits = ['EN_ALGO_CLR'])
 sens.write_register(register = 'FAN_CONF1', bits = ['RANGE'], bit = fan_list['RANGE_500_1'] )
-#sens.write_register(register = 'FAN_MAX_STEP', value = 20 )
+
+#TEST
+#sens.write_register(register = 'TACH_COUNT', value = 3500)
+#sens.write_register(register = 'FAN_FAIL_BAND', value = 6600)
+#sens.write_register(register = 'FAN_MIN_DRIVE', value = 102 )
 #sens.write_register(register = 'FAN_SPIN_UP', bits = ['FAN_SPIN_UP_NOKICK'], bit = fan_list['FAN_SPIN_UP_NO_SPIN'] )
 #sens.write_register(register = 'FAN_SPIN_UP', bits = ['FAN_SPIN_UP_LVL'], bit = fan_list['FAN_SPIN_UP_LVL5'] )
 #sens.write_register(register = 'FAN_SPIN_UP', bits = ['FAN_SPIN_UP_TIME'], bit = fan_list['FAN_SPIN_UP_TIME3'] )

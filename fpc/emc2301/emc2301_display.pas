@@ -141,6 +141,8 @@ uses
     procedure ET_SPIN_FAN_MIN_DRIVEEditingDone(Sender: TObject);
     procedure ET_STAT_FAN_SETTINGEditingDone(Sender: TObject);
     procedure ET_TACH_COUNTEditingDone(Sender: TObject);
+    procedure ET_TACH_FAN_FAIL_BANDEditingDone(Sender: TObject);
+    procedure ET_TACH_TARGETEditingDone(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure GraphClick(Sender: TObject);
     procedure L_SPIN_FAN_MIN_DRIVEClick(Sender: TObject);
@@ -390,12 +392,14 @@ var
   Size: Byte;
   in_buffer: PChar;
   data: Integer;
-const limit = 255;
+  perc: Real;
+const limit = 100;
 begin
    Size := 20;
    GetMem(in_buffer, Size);
    Form_emc2301.ET_SPIN_FAN_MIN_DRIVE.GetTextBuf(in_buffer,Size);
-   data := Trunc(PChatToReal(in_buffer,limit));
+   perc := Trunc(PChatToReal(in_buffer,limit));
+   data := Trunc((perc * 255)/ 100);
    write_reg_emc_value('FAN_MIN_DRIVE',data);
    FreeMem(in_buffer, Size);
 
@@ -430,12 +434,42 @@ begin
    GetMem(in_buffer, Size);
    Form_emc2301.ET_TACH_COUNT.GetTextBuf(in_buffer,Size);
    data := Trunc(PChatToReal(in_buffer,limit));
-   data := Trunc((255 * data)/8160);
    write_reg_emc_value('TACH_COUNT',data);
    FreeMem(in_buffer, Size);
 
 end;
 
+procedure TForm_emc2301.ET_TACH_FAN_FAIL_BANDEditingDone(Sender: TObject);
+var
+  Size: Byte;
+  in_buffer: PChar;
+  data: Integer;
+const limit = 8191;
+begin
+   Size := 20;
+   GetMem(in_buffer, Size);
+   Form_emc2301.ET_TACH_FAN_FAIL_BAND.GetTextBuf(in_buffer,Size);
+   data := Trunc(PChatToReal(in_buffer,limit));
+   write_reg_emc_value('FAN_FAIL_BAND',data);
+   FreeMem(in_buffer, Size);
+
+end;
+
+procedure TForm_emc2301.ET_TACH_TARGETEditingDone(Sender: TObject);
+var
+  Size: Byte;
+  in_buffer: PChar;
+  data: Integer;
+const limit = 8191;
+begin
+   Size := 20;
+   GetMem(in_buffer, Size);
+   Form_emc2301.ET_TACH_TARGET.GetTextBuf(in_buffer,Size);
+   data := Trunc(PChatToReal(in_buffer,limit));
+   write_reg_emc_value('TACH_TARGET',data);
+   FreeMem(in_buffer, Size);
+
+end;
 
 procedure TForm_emc2301.CB_PWM_POLARITYChange(Sender: TObject);
 begin
