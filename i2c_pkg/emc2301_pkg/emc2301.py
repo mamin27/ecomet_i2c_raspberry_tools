@@ -109,6 +109,10 @@ pwm_bit_list =      { 'FAN_INT_EN' : emc2301_constant.FAN_INT_EN,
                       'BASE_M' :  emc2301_constant.BASE_M
                     }
                     
+lock_bit_list = { 'LOCK' : emc2301_constant.LOCK,
+                  'LOCK_M' : emc2301_constant.LOCK_M
+                }
+                    
 list_4096 = [32,64,128,256,512,1024,2048,4096]
 list_128 = [1,2,4,8,16,32,64,128]
 list_32 = [1,2,4,8,16,32]
@@ -145,7 +149,7 @@ def conf_register_list() :
    reg_id = {}
    
    emc_drv_fail_cnt = { 0: 'DISABLE',
-                        65: '16UP_PER',
+                        64: '16UP_PER',
                         128: '32UP_PER' ,
                         192: '64UP_PER'
 						}
@@ -225,10 +229,10 @@ def conf_register_list() :
                }
                       
    reg_conf['MASK'] = 'MASKED' if emc.read_register( register = 'CONF' )[0] & conf_bit_list['MASK'] > 0 else 'UNMASKED'
-   reg_conf['DIS_TO'] = 'ENABLED' if emc.read_register( register = 'CONF' )[0] & conf_bit_list['DIS_TO'] > 0 else 'DISABLED'
-   reg_conf['WD_EN'] = 'DISABLED' if emc.read_register( register = 'CONF' )[0] & conf_bit_list['WD_EN'] > 0 else 'OPERATE'
-   reg_conf['DR_EXT_CLK'] = 'CLK_INPUT' if emc.read_register( register = 'CONF' )[0] & conf_bit_list['DR_EXT_CLK'] > 0 else 'CLK_OUTPUT'
-   reg_conf['USE_EXT_CLK'] = 'INTERNAL' if emc.read_register( register = 'CONF' )[0] & conf_bit_list['USE_EXT_CLK'] > 0 else 'EXTERNAL'
+   reg_conf['DIS_TO'] = 'DISABLED' if emc.read_register( register = 'CONF' )[0] & conf_bit_list['DIS_TO'] > 0 else 'ENABLED'
+   reg_conf['WD_EN'] = 'OPERATE' if emc.read_register( register = 'CONF' )[0] & conf_bit_list['WD_EN'] > 0 else 'DISABLED'
+   reg_conf['DR_EXT_CLK'] = 'CLK_OUTPUT' if emc.read_register( register = 'CONF' )[0] & conf_bit_list['DR_EXT_CLK'] > 0 else 'CLK_INPUT'
+   reg_conf['USE_EXT_CLK'] = 'EXTERNAL' if emc.read_register( register = 'CONF' )[0] & conf_bit_list['USE_EXT_CLK'] > 0 else 'INTERNAL'
    reg_conf['EN_ALGO'] = 'ENABLED' if emc.read_register( register = 'FAN_CONF1' )[0] & conf1_bit_list['EN_ALGO'] > 0 else 'DISABLED'
    reg_conf['RANGE'] = emc_range.get((emc.read_register( register = 'FAN_CONF1' )[0] & conf1_bit_list['RANGE']))
    reg_conf['EDGES'] = emc_edges.get((emc.read_register( register = 'FAN_CONF1' )[0] & conf1_bit_list['EDGES']))
@@ -259,8 +263,7 @@ def conf_register_list() :
    reg_spin_up['FAN_MIN_DRIVE'] = round((res/255)*100,1)
    
    reg_fan_stat['WATCH'] = 'EXPIRED' if emc.read_register( register = 'FAN_STAT' )[0] & fan_stat_bit_list['WATCH'] > 0 else 'NOT_SET'
-   reg_fan_stat['DRIVE_FAIL'] = 'CANOT_MEET' if emc.read_register( register = 'FAN_STAT' )[0] & fan_stat_bit_list['DRIVE_FAIL'] > 0 else 'MEET'
-   reg_fan_stat['DRIVE_FAIL_I'] = 'CANOT_REACH' if emc.read_register( register = 'DRIVE_FALL' )[0] & fan_stat_bit_list['DRIVE_FAIL_I'] > 0 else 'REACH'
+   reg_fan_stat['DRIVE_FAIL'] = 'CANOT_REACH' if emc.read_register( register = 'FAN_STAT' )[0] & fan_stat_bit_list['DRIVE_FAIL'] > 0 else 'REACH'
    reg_fan_stat['FAN_SPIN'] = 'CANOT_SPIN' if emc.read_register( register = 'FAN_STAT' )[0] & fan_stat_bit_list['FAN_SPIN'] > 0 else 'SPIN'
    reg_fan_stat['FAN_STALL'] = 'STALL' if emc.read_register( register = 'FAN_STAT' )[0] & fan_stat_bit_list['FAN_STALL'] > 0 else 'NOT_STALL'
    reg_fan_stat['FAN_INT'] = 'ALERT' if emc.read_register( register = 'FAN_INTERRUPT' )[0] & fan_stat_bit_list['FAN_INT_EN'] > 0 else 'NO_ALERT'
@@ -330,6 +333,8 @@ def conf_register_list() :
    register['TACH'] = reg_tach
    register['ID'] = reg_id
    
+   register['LOCK'] = 'LOCKED' if emc.read_register( register = 'SOFTWARE_LOCK' )[0] & lock_bit_list['LOCK'] > 0 else 'UNLOCKED'
+   
    return (register);
 
 class EMC2301(object):
@@ -355,7 +360,7 @@ class EMC2301(object):
                         'GAIN', 'FAN_SPIN_UP', 'FAN_MAX_STEP','FAN_MIN_DRIVE',
                         'PWM_POLARITY','PWM_OUTPUT','PWM_BASE',
                         'TACH_COUNT','FAN_FAIL_BAND_LB','FAN_FAIL_BAND_HB','TACH_TARGET_LB','TACH_TARGET_HB','TACH_READ_LB','TACH_READ_HB',
-                        'PRODUCT_ID','MANUF_ID','REVISION_ID'] :
+                        'PRODUCT_ID','MANUF_ID','REVISION_ID','SOFTWARE_LOCK'] :
            ret = 0
            reg_type = 1
            try :
@@ -393,7 +398,7 @@ class EMC2301(object):
     def write_register(self, register, bits = None, bit = None, value = None) :
           ret = 0
           if register in ['CONF','FAN_CONF1','FAN_CONF2','FAN_SPIN_UP','GAIN',
-                          'FAN_INTERRUPT','PWM_POLARITY','PWM_OUTPUT','PWM_BASE'] :
+                          'FAN_INTERRUPT','PWM_POLARITY','PWM_OUTPUT','PWM_BASE','SOFTWARE_LOCK'] :
             (reg_status,ret) = self.read_register( register = register )
             for ibit in bits :
                if '_CLR' not in ibit :
@@ -404,6 +409,11 @@ class EMC2301(object):
                   reg_status = reg_status & conf_bit_list[bit_mask]
                   if '_CLR' not in ibit :
                     reg_status = reg_status | conf_bit_list[ibit]
+                  self._logger.debug('write_register, init reg_status: %s, bit %s', '{0:02X}'.format(reg_status), format(ibit))
+               if register in ['SOFTWARE_LOCK'] :
+                  reg_status = reg_status & lock_bit_list[bit_mask]
+                  if '_CLR' not in ibit :
+                    reg_status = reg_status | lock_bit_list[ibit]
                   self._logger.debug('write_register, init reg_status: %s, bit %s', '{0:02X}'.format(reg_status), format(ibit))
                if register in ['FAN_CONF1'] :
                   if ibit in ['RANGE'] :

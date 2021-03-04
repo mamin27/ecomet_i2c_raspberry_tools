@@ -11,8 +11,6 @@ function PChatToReal (in_str : PChar; limit : Integer) : Real;
 
 implementation
 
-uses emc2301_write;
-
 function PChatToReal (in_str : PChar; limit : Integer) : Real;
 var
   filter: String;

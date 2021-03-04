@@ -48,10 +48,10 @@ object Form_emc2301: TForm_emc2301
       Top = 24
       Width = 100
       ItemHeight = 0
-      ItemIndex = 0
+      ItemIndex = 1
       Items.Strings = (
-        'ENABLED'
         'DISABLED'
+        'ENABLED'
       )
       ItemWidth = 1
       OnChange = CB_CONF_DIS_TOChange
@@ -64,10 +64,10 @@ object Form_emc2301: TForm_emc2301
       Top = 80
       Width = 100
       ItemHeight = 0
-      ItemIndex = 1
+      ItemIndex = 0
       Items.Strings = (
-        'DISABLED'
         'OPERATE'
+        'DISABLED'
       )
       ItemWidth = 1
       OnChange = CB_CONF_WD_ENChange
@@ -82,10 +82,11 @@ object Form_emc2301: TForm_emc2301
       Font.Height = -11
       Font.Name = 'Sans'
       ItemHeight = 0
-      ItemIndex = 1
+      ItemIndex = 0
       Items.Strings = (
-        'CLK_INPUT'
         'CLK_OUTPUT'
+        'CLK_INPUT'
+        ''
       )
       ItemWidth = 1
       OnChange = CB_CONF_DR_EXT_CLKChange
@@ -99,10 +100,10 @@ object Form_emc2301: TForm_emc2301
       Top = 136
       Width = 100
       ItemHeight = 0
-      ItemIndex = 1
+      ItemIndex = 0
       Items.Strings = (
-        'INTERNAL'
         'EXTERNAL'
+        'INTERNAL'
       )
       ItemWidth = 1
       OnChange = CB_CONF_USE_EXT_CLKChange
@@ -115,10 +116,10 @@ object Form_emc2301: TForm_emc2301
       Top = 136
       Width = 100
       ItemHeight = 0
-      ItemIndex = 0
+      ItemIndex = 1
       Items.Strings = (
-        'ENABLED'
         'DISABLED'
+        'ENABLED'
       )
       ItemWidth = 1
       OnChange = CB_CONF_EN_ALGOChange
@@ -604,7 +605,7 @@ object Form_emc2301: TForm_emc2301
     Height = 238
     Top = 215
     Width = 250
-    Caption = 'Fan Stat:'
+    Caption = 'Fan Stat:     Register Lock:'
     ClientHeight = 219
     ClientWidth = 246
     TabOrder = 3
@@ -612,8 +613,8 @@ object Form_emc2301: TForm_emc2301
       Left = 12
       Height = 17
       Top = 3
-      Width = 44
-      Caption = 'Watch:'
+      Width = 97
+      Caption = 'Watchdog [4s]:'
       ParentColor = False
     end
     object L_STAT_DRIVE_FAIL: TLabel
@@ -624,16 +625,8 @@ object Form_emc2301: TForm_emc2301
       Caption = 'Drive_Fail:'
       ParentColor = False
     end
-    object L_STAT_DRIVE_FAIL_I: TLabel
-      Left = 12
-      Height = 17
-      Top = 56
-      Width = 79
-      Caption = 'Drive_Fail_I:'
-      ParentColor = False
-    end
     object L_STAT_FAN_SPIN: TLabel
-      Left = 130
+      Left = 12
       Height = 17
       Top = 56
       Width = 61
@@ -641,15 +634,15 @@ object Form_emc2301: TForm_emc2301
       ParentColor = False
     end
     object L_STAT_FAN_STALL: TLabel
-      Left = 12
+      Left = 130
       Height = 17
-      Top = 112
+      Top = 56
       Width = 62
       Caption = 'Fan_Stall:'
       ParentColor = False
     end
     object L_STAT_FAN_INT: TLabel
-      Left = 130
+      Left = 12
       Height = 17
       Top = 112
       Width = 50
@@ -665,7 +658,7 @@ object Form_emc2301: TForm_emc2301
       ParentColor = False
     end
     object CB_STAT_FAN_INT: TComboBox
-      Left = 130
+      Left = 8
       Height = 25
       Top = 134
       Width = 100
@@ -705,29 +698,46 @@ object Form_emc2301: TForm_emc2301
       ReadOnly = True
       TabOrder = 3
     end
-    object ET_STAT_DRIVE_FAIL_I: TEdit
-      Left = 8
+    object ET_STAT_FAN_STALL: TEdit
+      Left = 130
       Height = 25
       Top = 80
       Width = 100
       ReadOnly = True
       TabOrder = 4
     end
-    object ET_STAT_FAN_STALL: TEdit
-      Left = 8
-      Height = 25
-      Top = 134
-      Width = 100
-      ReadOnly = True
-      TabOrder = 5
-    end
     object ET_STAT_FAN_SPIN: TEdit
-      Left = 130
+      Left = 8
       Height = 25
       Top = 80
       Width = 100
       ReadOnly = True
+      TabOrder = 5
+    end
+    object CB_LOCK: TComboBox
+      Left = 130
+      Height = 25
+      Top = 184
+      Width = 100
+      Font.Height = -11
+      Font.Name = 'Sans'
+      ItemHeight = 0
+      Items.Strings = (
+        'UNLOCKED'
+        'LOCKED'
+      )
+      ItemWidth = 1
+      OnChange = CB_LOCKChange
+      ParentFont = False
       TabOrder = 6
+    end
+    object L_LOCK: TLabel
+      Left = 130
+      Height = 17
+      Top = 166
+      Width = 96
+      Caption = 'Software Lock:'
+      ParentColor = False
     end
   end
   object GroupBox_PWM: TGroupBox

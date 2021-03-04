@@ -40,9 +40,9 @@ uses
     CB_CONF_UPDATE: TComboBox;
     CB_CONF_EN_RRC: TComboBox;
     CB_GN_GAINP: TComboBox;
+    CB_LOCK: TComboBox;
     ET_SPIN_FAN_MAX_STEP: TEdit;
     ET_STAT_FAN_SPIN: TEdit;
-    ET_STAT_DRIVE_FAIL_I: TEdit;
     ET_STAT_FAN_STALL: TEdit;
     ET_STAT_WATCH: TEdit;
     ET_STAT_DRIVE_FAIL: TEdit;
@@ -68,6 +68,7 @@ uses
     L_CONF_DER_OPT: TLabel;
     L_SPIN_DRIVE_FAIL_CNT: TLabel;
     L_PWM_POLARITY: TLabel;
+    L_LOCK: TLabel;
     L_TACH_COUNT: TLabel;
     L_MON_SAMPLE: TLabel;
     L_TACH_TARGET: TLabel;
@@ -87,7 +88,6 @@ uses
     L_SPIN_NOKICK: TLabel;
     L_STAT_DRIVE_FAIL: TLabel;
     L_SPIN_LVL: TLabel;
-    L_STAT_DRIVE_FAIL_I: TLabel;
     L_CONF_MASK: TLabel;
     L_CONF_DIS_TO: TLabel;
     L_CONF_GLITCH_EN: TLabel;
@@ -136,6 +136,7 @@ uses
     procedure CB_SPIN_NOKICKChange(Sender: TObject);
     procedure CB_SPIN_TIMEChange(Sender: TObject);
     procedure CB_STAT_FAN_INTChange(Sender: TObject);
+    procedure CB_LOCKChange(Sender: TObject);
     procedure ET_PWM_DIVIDEEditingDone(Sender: TObject);
     procedure ET_SPIN_FAN_MAX_STEPEditingDone(Sender: TObject);
     procedure ET_SPIN_FAN_MIN_DRIVEEditingDone(Sender: TObject);
@@ -208,6 +209,8 @@ const
   TYPE_FAN_PWM_POLARITY = 21;
   TYPE_FAN_PWM_OUTPUT = 22;
   TYPE_FAN_PWM_BASE = 23;
+
+  TYPE_LOCKED = 24;
 
 // READ Constant
   TYPE_MON_SAMPLE = 100;
@@ -354,6 +357,11 @@ end;
 procedure TForm_emc2301.CB_STAT_FAN_INTChange(Sender: TObject);
 begin
    write_reg_emc('FAN_INTERRUPT',EnumToChip(TYPE_FAN_STAT_INT,Form_emc2301.CB_STAT_FAN_INT.Items[Form_emc2301.CB_STAT_FAN_INT.ItemIndex]));
+end;
+
+procedure TForm_emc2301.CB_LOCKChange(Sender: TObject);
+begin
+   write_reg_emc('SOFTWARE_LOCK',EnumToChip(TYPE_LOCKED,Form_emc2301.CB_LOCK.Items[Form_emc2301.CB_LOCK.ItemIndex]));
 end;
 
 procedure TForm_emc2301.ET_PWM_DIVIDEEditingDone(Sender: TObject);
@@ -532,13 +540,13 @@ begin
      read_speed_emc(emc);
    'WRITE_REG':
      begin
-       writeln('Success write to Register: ', emc.attr8.attr_val_obj.attr1.attr_val);
-       writeln('  Content: ', emc.attr8.attr_val_obj.attr2.attr_val);
-       writeln('  Ret: ', emc.attr8.attr_val_obj.attr3.attr_val);
+       writeln('Success write to Register: ', emc.attr9.attr_val_obj.attr1.attr_val);
+       writeln('  Content: ', emc.attr9.attr_val_obj.attr2.attr_val);
+       writeln('  Ret: ', emc.attr9.attr_val_obj.attr3.attr_val);
      end;
    'WRITE_REGVAL':
      begin
-       writeln('Success write value to Register: ', emc.attr8.attr_val_obj.attr1.attr_val);
+       writeln('Success write value to Register: ', emc.attr9.attr_val_obj.attr1.attr_val);
      end;
 {   'GRAPH':
      begin

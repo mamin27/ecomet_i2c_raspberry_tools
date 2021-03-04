@@ -54,6 +54,8 @@ const
   TYPE_FAN_PWM_OUTPUT = 22;
   TYPE_FAN_PWM_BASE = 23;
 
+  TYPE_LOCKED = 24;
+
 
 procedure write_reg_emc (register: String; subr: Array of TChip);
 var
@@ -362,6 +364,12 @@ begin
     if S = '2.441Hz'
       then Result.rbit := 'FAN_PWM_BASE4';
     Result.rbyte := 'BASE';
+  end;
+  if Tp = TYPE_LOCKED  then begin  // SOFTWARE_LOCK
+    if S = 'UNLOCKED'
+      then Result.rbyte := 'LOCK_CLR';
+    if S = 'LOCKED'
+      then Result.rbyte := 'LOCK';
   end;
 end;
 

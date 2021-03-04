@@ -48,7 +48,7 @@ USE_EXT_CLK        = 0x01   # Enables to use a clock present on the CLK pin
 
 WATCH              = 0x80   # Indicates that the Watchdog Timer has expired
 DRIVE_FAIL         = 0x04   # Indicates that the Fan driver cannot meet the programmed fan speed at maximum PWM duty cycle
-FAN_SPIN_UP        = 0x02   # Indicates that the Fan driver cannot spin up.
+FAN_SPIN           = 0x02   # Indicates that the Fan driver cannot spin up.
 FAN_STALL          = 0x01   # Indicates that the Fan driver have stalled.
 
 # FAN STALL STATUS (0x25) 8 Bits:
@@ -240,6 +240,10 @@ FAN_SPIN_UP_LVL_M        = 0xE3  # Determines final drive level used by Spin Up 
 FAN_SPIN_UP_NOKICK_M     = 0xDF  # Determines if the Spin UP Routines will drive fan  to 100% duty cycle for 1/4 of the programed spin
 FAN_SPIN_UP_DRIVE_FAIL_CNT_M  = 0x3F  # Determines how many updates cycles are used for Drive fail detection function
 
+# SOFTWARE_LOCK Mask (0xEF) 8 Bits clear:
+
+LOCK_M               = 0xFE   # locked register
+
 # CONF Clear (0x20) 8 Bits:        
 
 MASK_CLR             = 0x80   # Blocks the ALERT# pin
@@ -301,3 +305,7 @@ SPIN_UP_TIME_CLR     = 0x03  # Determines max spin up time
 SPIN_UP_LVL_CLR        = 0x1C  # Determines final drive level used by Spin Up Routines
 SPIN_UP_NOKICK_CLR          = 0x20  # Determines if the Spin UP Routines will drive fan  to 100% duty cycle for 1/4 of the programed spin
 SPIN_UP_DRIVE_FAIL_CNT_CLR  = 0xC0  # Determines how many updates cycles are used for Drive fail detection function
+
+# SOFTWARE_LOCK CLER (0xEF) 8 Bits:
+
+LOCK_CLR              = 0x00   # locked register
