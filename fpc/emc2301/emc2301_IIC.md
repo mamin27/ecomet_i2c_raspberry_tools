@@ -17,7 +17,7 @@ Install Python3 and next modules for hdc1080 [Python3 & modules](../../i2c_pkg/e
 
 ### Run application: ###
 ```console
-ecomet_i2c_tools/emc2301
+ecomet_i2c_raspberry_tools/emc2301
 ```
 
 **Features:**
@@ -65,7 +65,7 @@ Limitations:
 
 When EMC2301 Chip is not responding at I2C lines you see:
 
-![Chip_missing](./image/appl_chip_missing.png)
+![Chip_missing](./image/missing_chip.png)
 
 **Source Code (FPC):**
 * Path: ~/ecomet_i2c_raspberry_tools/fpc/emc2301
