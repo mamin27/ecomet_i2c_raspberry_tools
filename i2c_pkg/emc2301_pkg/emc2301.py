@@ -131,8 +131,7 @@ def word_lb (nm) :
    for idx in range (0,5) :
      if tmp >= list_lb[idx] :
        sum_lb = sum_lb + list_sum[idx]
-       tmp = tmp - list_lb[idx]
-       print ('sum_lb:{}:{}',sum,sum_lb)   
+       tmp = tmp - list_lb[idx]  
      
    return (sum_lb)
 
@@ -290,7 +289,7 @@ def conf_register_list() :
    res = 0
    for idx in range (0,8) :
      res = res + (tbin % 2) * list_4096[idx]
-     tbin_hb = tbin >> 1
+     tbin = tbin >> 1
    reg_tach['TACH_COUNT'] = res 
    tbin_lb = emc.read_register( register = 'FAN_FAIL_BAND_LB' )[0]
    tbin_hb = emc.read_register( register = 'FAN_FAIL_BAND_HB' )[0]
@@ -506,10 +505,11 @@ class EMC2301(object):
               ret = ret + 1
           elif register in ['TACH_TARGET','FAN_FAIL_BAND'] :
             if value <= 31 :
-               sum_lb = word_lb (bits[0])
+               sum_lb = word_lb (value)
                self._logger.debug('write_register %s, final_sum_lb: (%s)', register,'{0:02X}'.format(sum_lb))
                try :
                  self._device.write8(reg_list[register],sum_lb)
+                 self._device.write8(reg_list[register]+1,0)
                except :
                  ret = ret + 1
             else :
@@ -522,8 +522,7 @@ class EMC2301(object):
                for idx in range (0,8) :
                  if tmp >= list_hb[idx] :
                    sum_hb = sum_hb + list_sum[idx]
-                   tmp = tmp - list_hb[idx] 
-                   print('sum_hb:{}:{}',tmp,list_hb[idx])              
+                   tmp = tmp - list_hb[idx]              
                sum_lb = word_lb (tmp)
                self._logger.debug('write_register %s, final_sum_lb: (%s)', register, '{0:02X}'.format(sum_lb))
                self._logger.debug('write_register %s, final_sum_hb: (%s)', register,'{0:02X}'.format(sum_hb))
