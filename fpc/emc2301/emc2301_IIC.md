@@ -1,54 +1,76 @@
-# hdc1080_IIC module
+# emc2301_IIC module
 
-**Last modification:** 6.08.2020
+**Last modification:** 6.03.2021
 
 **Modul board:**
-[ebay](https://www.ebay.com/itm/HDC1080-module-Low-Power-Temperature-with-Sensor-Humidity-Digital-Accuracy-High/143492459090?ssPageName=STRK%3AMEBIDX%3AIT&_trksid=p2057872.m2749.l2649)
-I ordered and tested this modul board
+- ![#1589F0](https://via.placeholder.com/15/1589F0/000000?text=+) **!NEW!** Currently in development process
 
 **Reconnection with Raspberry PI 3+:**
 
 * Configuration for /dev/i2c-1
 * port 2 (SDA), port 3 (SCL)
-* pull-up resistor for this module was set to 1.5 k&#937;
+* pull-up resistor for this module was set to 2.2 k&#937;
 
 ### How to install? ###
-
 Install Lazarus-ide at raspberry [FPC & Lazarus Installation](../lazarus.md)
-Install Python3 and next modules for hdc1080 [Python3 & modules](../../i2c_pkg/hdc1080_pkg/hdc1080_python_IIC.md)
+Install Python3 and next modules for hdc1080 [Python3 & modules](../../i2c_pkg/emc2301_pkg/emc2301_python_IIC.md)
 
 ### Run application: ###
 ```console
-ecomet_i2c_tools/hdc1080
+ecomet_i2c_tools/emc2301
 ```
 
 **Features:**
 
-*  Read config and measure register of hdc1080 chip and show on concole
-*  In Accuracy section is possible to set accuracy of measurment for Temperature and Humidity setting of A/D converter
-*  Heating means (ENABLE/DISABLE) heating chip before measurement
-*  Chip (MODE) means if measurement will be done by reading temperature and humidity in one cycle or separately:
-   *  Mode Both for measurement in on cycle
-   *  Mode Sequence when each measurement is done individualy
-*  ID is only readable parameter:
-   *  First number (ID Serial) Unique serial number of chip
-   *  Second number (Manufacturer ID)
-   *  Device Type ID
-*  Help for quick help
-*  Self test for I2C connection
-*  Pushing ![ON button](./image/ON_30x30.png) will be refreshed measurement and read changes of chip setting
+* Set fan control in 2 modes: 
+  * Direct Setting Mode - Manual setting of fan parameters, speed and measure by tachometer
+  * FSC Mode (Fan Speed Controll Mode) - Automatic setting target speed a feed back speed control by in-build tachometer
+* Setting Software Lock Register for store of settings of status the some  chip registers  Unlock only after power off chip.
+* Update data from registers:
+  * Toogle the button: ![ON button](./image/ON_30x30.png)
+  
+  * Setting auto update ![Monitor Windos](./image/monitor.png)
+    * possible time update [off,1s,3s,5s,10s,20s]
+* Application GUI could run independently under chip control. You could run GUI and in other termina run test scripts working with chip.
+  * Setting automatical update at Monitor Window you could monitor current fan speed or other changes.
+* ID of the chip (ID Window)
+* Conf Reg Window:
+  * Seting fan parameters, clock input, watchdog, set mode
+* Gain Window ony in (FSC Mode):
+  * The  Gain  register  stores  the  gain  terms  used  by  the  proportional  and  integral  portions  of  the  RPM
+* Spin Up Window:
+  * Setting Spin, slope of the running curve during speed change
+* Fan Stat Window (Reading):
+  * See current status of fan [Stall, WatchDog, Drive_Fail, Reaching Spin]
+  * Setting ALARM interupt on/off
+  * Software Lock for selected Registers
+* PWM Window:
+  * Setting parameters of PWM [frequency, signal inversion, pwm output]
+* Tachometer Window:
+  * Read or Write Tachometer parameters
+* Monitor Window:
+ * Setting time offest for reading chip registers
+ * Could be used for automatick update or manual
+ 
+TABS:
+~ Graph: Currently not developed, just init preparation
+~ Help: Short help for GUI
+~ Creator: Creator information
 
+Limitations:
+~ Graph feature currently not developed
 **Application pictures:**
 
-![Works](./image/appl_work.png)
+![GUI](./image/emc2301_gui.png)
 
-Prepare for measurement
+When EMC2301 Chip is not responding at I2C lines you see:
 
 ![Chip_missing](./image/appl_chip_missing.png)
 
-Chip I2C Issue
-
-
-
 **Source Code (FPC):**
-* Path: ~/ecomet_i2c_tools/fpc/hdc1080
+* Path: ~/ecomet_i2c_raspberry_tools/fpc/emc2301
+
+**Test python scripts**
+* Path: !/ecomet_i2c_raspberry_tools/python_test_scripts
+
+scripts copy to /ecomet_i2c_raspberry_tools path and then run
