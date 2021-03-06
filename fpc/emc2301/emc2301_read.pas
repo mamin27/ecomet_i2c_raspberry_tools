@@ -13,6 +13,7 @@ procedure read_speed_emc (emc: emc2301Ob);
 procedure read_emc ();
 procedure read_speed ();
 procedure self_test ();
+procedure en_elgo_check ();
 function EnumToInt (Tp: Integer; S: String) : Integer;
 
 Implementation
@@ -393,26 +394,6 @@ begin
 
   Form_emc2301.CB_LOCK.ItemIndex := EnumToInt(TYPE_LOCK,emc.attr7.attr_val_obj.attr1.attr_val);     //SOFTWARE_LOCK
 
-
-(*
-  Form_emc2301.CB_CONF_MASK.Style := csOwnerDrawVariable;
-  Form_emc2301.CB_CONF_DIS_TO.Style := csOwnerDrawVariable;
-  Form_emc2301.CB_CONF_WD_EN.Style := csOwnerDrawVariable;
-  Form_emc2301.CB_CONF_DR_EXT_CLK.Style := csOwnerDrawVariable;
-  Form_emc2301.CB_CONF_USE_EXT_CLK.Style := csOwnerDrawVariable;
-  Form_emc2301.CB_CONF_EN_ALGO.Style := csOwnerDrawVariable;
-  Form_emc2301.CB_CONF_RANGE.Style := csOwnerDrawVariable;
-  Form_emc2301.CB_CONF_EDGES.Style := csOwnerDrawVariable;
-  Form_emc2301.CB_CONF_UPDATE.Style := csOwnerDrawVariable;
-  Form_emc2301.CB_CONF_EN_RRC.Style := csOwnerDrawVariable;
-  Form_emc2301.CB_CONF_GLITCH_EN.Style := csOwnerDrawVariable;
-  Form_emc2301.CB_CONF_DER_OPT.Style := csOwnerDrawVariable;
-  Form_emc2301.CB_CONF_ERR_RNG.Style := csOwnerDrawVariable;
-  Form_emc2301.CB_GN_GAIND.Style := csOwnerDrawVariable;
-  Form_emc2301.CB_GN_GAINI.Style := csOwnerDrawVariable;
-  Form_emc2301.CB_GN_GAINP.Style := csOwnerDrawVariable;
-*)
-
   Form_emc2301.ET_STAT_WATCH.Color := clMenubar;     //WATCH
   Form_emc2301.ET_STAT_DRIVE_FAIL.Color := clMenubar;     //DRIVE_FAIL
   Form_emc2301.ET_STAT_FAN_SPIN.Color := clMenubar;     //FAN_SPIN
@@ -420,6 +401,8 @@ begin
   Form_emc2301.ET_ID_PRODUCT.Color := clMenubar;     //PRODUCT_ID
   Form_emc2301.ET_ID_MANUF.Color := clMenubar;     //MANUF_ID
   Form_emc2301.ET_ID_REVISION.Color := clMenubar;  //REVISION_ID
+
+  en_elgo_check;
 
   if (Form_emc2301.CB_LOCK.ItemIndex = 1 ) then
   begin
@@ -522,6 +505,84 @@ begin
   Form_emc2301.ET_TACH_READ.Text := emc.attr8.attr_val_obj.attr1.attr_val;     //RPM
 //  writeln(emc.attr7.attr_val_obj.attr1.attr_val);
   Form_emc2301.BitBtn_MON.ImageIndex:= 0;
+end;
+
+procedure en_elgo_check;
+begin
+  if (Form_emc2301.CB_CONF_EN_ALGO.ItemIndex = 0 ) then begin
+    Form_emc2301.CB_CONF_EN_ALGO.Color := clDefault;
+    Form_emc2301.ET_STAT_FAN_SETTING.Color := clDefault;     //STAT_FAN_SETTING
+    Form_emc2301.ET_STAT_FAN_SETTING.ReadOnly:= False;
+    Form_emc2301.CB_CONF_DIS_TO.Color := clDefault;
+    Form_emc2301.CB_CONF_DIS_TO.Style := csDropDown;
+    Form_emc2301.CB_CONF_WD_EN.Color := clDefault;
+    Form_emc2301.CB_CONF_WD_EN.Style := csDropDown;
+    Form_emc2301.CB_CONF_DR_EXT_CLK.Color := clDefault;
+    Form_emc2301.CB_CONF_DR_EXT_CLK.Style := csDropDown;
+    Form_emc2301.CB_CONF_USE_EXT_CLK.Color := clDefault;
+    Form_emc2301.CB_CONF_USE_EXT_CLK.Style := csDropDown;
+    Form_emc2301.CB_CONF_RANGE.Color := clDefault;
+    Form_emc2301.CB_CONF_RANGE.Style := csDropDown;
+    Form_emc2301.CB_CONF_EDGES.Color := clDefault;
+    Form_emc2301.CB_CONF_EDGES.Style := csDropDown;
+    Form_emc2301.CB_CONF_UPDATE.Color := clDefault;
+    Form_emc2301.CB_CONF_UPDATE.Style := csDropDown;
+    Form_emc2301.CB_SPIN_LVL.Color := clDefault;
+    Form_emc2301.CB_SPIN_LVL.Style := csDropDown;
+    Form_emc2301.CB_SPIN_TIME.Color := clDefault;
+    Form_emc2301.CB_SPIN_TIME.Style := csDropDown;
+    Form_emc2301.ET_SPIN_FAN_MAX_STEP.Color := clDefault;
+    Form_emc2301.ET_SPIN_FAN_MAX_STEP.ReadOnly := False;
+    Form_emc2301.ET_SPIN_FAN_MIN_DRIVE.Color := clDefault;
+    Form_emc2301.ET_SPIN_FAN_MIN_DRIVE.ReadOnly := False;
+    Form_emc2301.ET_TACH_COUNT.Color := clDefault;
+    Form_emc2301.ET_TACH_COUNT.ReadOnly := False;
+    Form_emc2301.L_TACH_TARGET.Visible := False;
+    Form_emc2301.ET_TACH_TARGET.Visible := False;
+    Form_emc2301.L_SPIN_DRIVE_FAIL_CNT.Visible := False;
+    Form_emc2301.CB_SPIN_DRIVE_FAIL_CNT.Visible := False;
+    Form_emc2301.L_TACH_FAN_FAIL_BAND.Visible := False;
+    Form_emc2301.ET_TACH_FAN_FAIL_BAND.Visible := False;
+    Form_emc2301.L_MODE_DIRECT.Visible := True;
+    Form_emc2301.L_MODE_FSC.Visible := False;
+  end
+  else begin
+    Form_emc2301.CB_CONF_EN_ALGO.Color := clYellow;
+    Form_emc2301.ET_STAT_FAN_SETTING.Color := clMenubar;     //STAT_FAN_SETTING
+    Form_emc2301.ET_STAT_FAN_SETTING.ReadOnly:= True;
+    Form_emc2301.CB_CONF_DIS_TO.Color := clMenubar;
+    Form_emc2301.CB_CONF_DIS_TO.Style := csOwnerDrawFixed;
+    Form_emc2301.CB_CONF_WD_EN.Color := clMenubar;
+    Form_emc2301.CB_CONF_WD_EN.Style := csOwnerDrawFixed;
+    Form_emc2301.CB_CONF_DR_EXT_CLK.Color := clMenubar;
+    Form_emc2301.CB_CONF_DR_EXT_CLK.Style := csOwnerDrawFixed;
+    Form_emc2301.CB_CONF_USE_EXT_CLK.Color := clMenubar;
+    Form_emc2301.CB_CONF_USE_EXT_CLK.Style := csOwnerDrawFixed;
+    Form_emc2301.CB_CONF_RANGE.Color := clMenubar;
+    Form_emc2301.CB_CONF_RANGE.Style := csOwnerDrawFixed;
+    Form_emc2301.CB_CONF_EDGES.Color := clMenubar;
+    Form_emc2301.CB_CONF_EDGES.Style := csOwnerDrawFixed;
+    Form_emc2301.CB_CONF_UPDATE.Color := clMenubar;
+    Form_emc2301.CB_CONF_UPDATE.Style := csOwnerDrawFixed;
+    Form_emc2301.CB_SPIN_LVL.Color := clMenubar;
+    Form_emc2301.CB_SPIN_LVL.Style := csOwnerDrawFixed;
+    Form_emc2301.CB_SPIN_TIME.Color := clMenubar;
+    Form_emc2301.CB_SPIN_TIME.Style := csOwnerDrawFixed;
+    Form_emc2301.ET_SPIN_FAN_MAX_STEP.Color := clMenubar;
+    Form_emc2301.ET_SPIN_FAN_MAX_STEP.ReadOnly := True;
+    Form_emc2301.ET_SPIN_FAN_MIN_DRIVE.Color := clMenubar;
+    Form_emc2301.ET_SPIN_FAN_MIN_DRIVE.ReadOnly := True;
+    Form_emc2301.ET_TACH_COUNT.Color := clMenubar;
+    Form_emc2301.ET_TACH_COUNT.ReadOnly := True;
+    Form_emc2301.L_TACH_TARGET.Visible := True;
+    Form_emc2301.ET_TACH_TARGET.Visible := True;
+    Form_emc2301.L_SPIN_DRIVE_FAIL_CNT.Visible := True;
+    Form_emc2301.CB_SPIN_DRIVE_FAIL_CNT.Visible := True;
+    Form_emc2301.L_TACH_FAN_FAIL_BAND.Visible := True;
+    Form_emc2301.ET_TACH_FAN_FAIL_BAND.Visible := True;
+    Form_emc2301.L_MODE_DIRECT.Visible := False;
+    Form_emc2301.L_MODE_FSC.Visible := True;
+  end;
 end;
 
 end.

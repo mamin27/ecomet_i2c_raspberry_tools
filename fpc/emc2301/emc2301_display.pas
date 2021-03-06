@@ -66,6 +66,8 @@ uses
     GroupBox_Monitor: TGroupBox;
     ImageList: TImageList;
     L_CONF_DER_OPT: TLabel;
+    L_MODE_FSC: TLabel;
+    L_MODE_DIRECT: TLabel;
     L_SPIN_DRIVE_FAIL_CNT: TLabel;
     L_PWM_POLARITY: TLabel;
     L_LOCK: TLabel;
@@ -146,6 +148,8 @@ uses
     procedure ET_TACH_TARGETEditingDone(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure GraphClick(Sender: TObject);
+    procedure HelpClick(Sender: TOBject);
+    procedure CreatorClick(Sender: TOBject);
     procedure L_SPIN_FAN_MIN_DRIVEClick(Sender: TObject);
     procedure PythonInputOutput_emc2301SendData(Sender: TObject;
       const Data: AnsiString);
@@ -174,7 +178,7 @@ implementation
 
 {$R *.lfm}
 
-uses emc2301_read, emc2301_write, emc2301_graph, universal;
+uses emc2301_read, emc2301_write, emc2301_graph, universal, creator, help, missing_chip;
 
 { TForm_emc2301 }
 
@@ -248,9 +252,16 @@ begin
   test := FAILED;
 
   self_test();
-  read_emc();
-  Form_emc2301.Timer1.Enabled := False;
-  Form_emc2301.BitBtn_MON.ImageIndex:= 0;
+  if ( test = PASSED ) then begin
+    Application.ShowMainForm := True;
+    Form_emc2301.Visible := True;
+    Application.CreateForm(TForm_creator, Form_creator);
+    Application.CreateForm(TForm_help, Form_help);
+    read_emc();
+    en_elgo_check();
+    Form_emc2301.Timer1.Enabled := False;
+    Form_emc2301.BitBtn_MON.ImageIndex:= 0;
+  end;
 
 end;
 
@@ -513,12 +524,23 @@ begin
   Form_emc2301.BitBtn_MON.ImageIndex:= 1;
   sleep(500);
   read_emc();
+  en_elgo_check();
   read_speed();
 end;
 
 procedure TForm_emc2301.GraphClick(Sender: TObject);
 begin
   Form_graph.Show;
+end;
+
+procedure TForm_emc2301.HelpClick(Sender: TOBject);
+begin
+  Form_help.Show;
+end;
+
+procedure TForm_emc2301.CreatorClick(Sender: TOBject);
+begin
+  Form_creator.Show;
 end;
 
 procedure TForm_emc2301.L_SPIN_FAN_MIN_DRIVEClick(Sender: TObject);
@@ -543,10 +565,8 @@ begin
        writeln('Success write to Register: ', emc.attr9.attr_val_obj.attr1.attr_val);
        writeln('  Content: ', emc.attr9.attr_val_obj.attr2.attr_val);
        writeln('  Ret: ', emc.attr9.attr_val_obj.attr3.attr_val);
-     end;
-   'WRITE_REGVAL':
-     begin
-       writeln('Success write value to Register: ', emc.attr9.attr_val_obj.attr1.attr_val);
+       en_elgo_check;
+
      end;
 {   'GRAPH':
      begin
@@ -566,9 +586,9 @@ begin
      begin
        writeln('Missed chip');
        test := FAILED;
-  {     Form_emc2301.Deactivate;
+       Form_emc2301.Deactivate;
        Application.CreateForm(TForm_missing_chip, Form_missing_chip);
-       Form_missing_chip.Visible:= True;  }
+       Form_missing_chip.Visible:= True;
      end
     else
      begin
@@ -583,6 +603,7 @@ begin
 
   read_emc();
   read_speed();
+  en_elgo_check();
 end;
 
 end.

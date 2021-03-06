@@ -36,7 +36,7 @@
         <PackageName Value="LCL"/>
       </Item3>
     </RequiredPackages>
-    <Units Count="7">
+    <Units Count="10">
       <Unit0>
         <Filename Value="emc2301.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -64,12 +64,32 @@
         <Filename Value="emc2301_graph.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="Form_graph"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
       </Unit5>
       <Unit6>
         <Filename Value="universal.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit6>
+      <Unit7>
+        <Filename Value="missing_chip.pas"/>
+        <IsPartOfProject Value="True"/>
+        <HasResources Value="True"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="help.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="Form_help"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="creator.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="Form_creator"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit9>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
