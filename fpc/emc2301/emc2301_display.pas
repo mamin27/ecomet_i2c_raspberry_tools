@@ -586,6 +586,7 @@ begin
      begin
        writeln('Missed chip');
        test := FAILED;
+       Form_emc2301.Hide;
        Form_emc2301.Deactivate;
        Application.CreateForm(TForm_missing_chip, Form_missing_chip);
        Form_missing_chip.Visible:= True;

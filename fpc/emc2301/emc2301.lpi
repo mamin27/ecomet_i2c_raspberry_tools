@@ -74,7 +74,9 @@
       <Unit7>
         <Filename Value="missing_chip.pas"/>
         <IsPartOfProject Value="True"/>
+        <ComponentName Value="Form_missing_chip"/>
         <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
       </Unit7>
       <Unit8>
         <Filename Value="help.pas"/>
@@ -113,6 +115,11 @@
         <OptimizationLevel Value="4"/>
       </Optimizations>
     </CodeGeneration>
+    <Linking>
+      <Debugging>
+        <GenerateDebugInfo Value="False"/>
+      </Debugging>
+    </Linking>
   </CompilerOptions>
   <Debugging>
     <Exceptions Count="3">

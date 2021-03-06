@@ -193,7 +193,7 @@ object Form_missing_chip: TForm_missing_chip
     Height = 52
     Top = 40
     Width = 296
-    Caption = 'HDC1080 chip is missing. '#10'Lets check I2C connection!'
+    Caption = 'EMC2301 chip is missing. '#10'Lets check I2C connection!'
     Font.Color = clBlack
     Font.Height = -19
     Font.Name = 'DejaVu Sans Mono'

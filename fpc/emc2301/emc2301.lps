@@ -18,8 +18,9 @@
         <ComponentName Value="Form_emc2301"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <TopLine Value="523"/>
-        <CursorPos X="21" Y="543"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="562"/>
+        <CursorPos X="25" Y="589"/>
         <UsageCount Value="165"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -72,11 +73,15 @@
       <Unit7>
         <Filename Value="missing_chip.pas"/>
         <IsPartOfProject Value="True"/>
+        <ComponentName Value="Form_missing_chip"/>
         <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="1"/>
-        <CursorPos X="18"/>
+        <TopLine Value="5"/>
+        <CursorPos X="25" Y="47"/>
         <UsageCount Value="25"/>
         <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
       </Unit7>
       <Unit8>
         <Filename Value="help.pas"/>
@@ -84,9 +89,8 @@
         <ComponentName Value="Form_help"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="3"/>
-        <CursorPos X="20" Y="3"/>
+        <CursorPos X="102" Y="23"/>
         <UsageCount Value="25"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -203,7 +207,7 @@
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit22>
     </Units>
-    <JumpHistory Count="30" HistoryIndex="29">
+    <JumpHistory Count="29" HistoryIndex="28">
       <Position1>
         <Filename Value="emc2301_display.pas"/>
         <Caret Line="545" Column="56" TopLine="528"/>
@@ -290,40 +294,36 @@
       </Position21>
       <Position22>
         <Filename Value="emc2301_display.pas"/>
-        <Caret Line="241" Column="35" TopLine="562"/>
+        <Caret Line="532" Column="30" TopLine="507"/>
       </Position22>
       <Position23>
         <Filename Value="emc2301_display.pas"/>
-        <Caret Line="532" Column="30" TopLine="507"/>
+        <Caret Line="8" Column="44"/>
       </Position23>
       <Position24>
         <Filename Value="emc2301_display.pas"/>
-        <Caret Line="8" Column="44"/>
+        <Caret Line="259" Column="41" TopLine="244"/>
       </Position24>
       <Position25>
         <Filename Value="emc2301_display.pas"/>
-        <Caret Line="259" Column="41" TopLine="244"/>
+        <Caret Line="182" Column="88" TopLine="147"/>
       </Position25>
       <Position26>
         <Filename Value="emc2301_display.pas"/>
-        <Caret Line="182" Column="88" TopLine="147"/>
+        <Caret Line="10" Column="63"/>
       </Position26>
       <Position27>
-        <Filename Value="emc2301_display.pas"/>
-        <Caret Line="10" Column="63"/>
-      </Position27>
-      <Position28>
         <Filename Value="creator.pas"/>
         <Caret Line="19" Column="9"/>
-      </Position28>
-      <Position29>
+      </Position27>
+      <Position28>
         <Filename Value="emc2301_display.pas"/>
         <Caret Line="544" TopLine="500"/>
-      </Position29>
-      <Position30>
+      </Position28>
+      <Position29>
         <Filename Value="help.pas"/>
         <Caret Line="3" Column="20"/>
-      </Position30>
+      </Position29>
     </JumpHistory>
     <RunParams>
       <FormatVersion Value="2"/>
@@ -333,7 +333,7 @@
     </RunParams>
   </ProjectSession>
   <Debugging>
-    <BreakPoints Count="4">
+    <BreakPoints Count="1">
       <Item1>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
@@ -341,27 +341,6 @@
         <Source Value="emc2301_write.pas"/>
         <Line Value="70"/>
       </Item1>
-      <Item2>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="emc2301_display.pas"/>
-        <Line Value="538"/>
-      </Item2>
-      <Item3>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="emc2301_display.pas"/>
-        <Line Value="543"/>
-      </Item3>
-      <Item4>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="emc2301_display.pas"/>
-        <Line Value="533"/>
-      </Item4>
     </BreakPoints>
     <Watches Count="17">
       <Item1>
