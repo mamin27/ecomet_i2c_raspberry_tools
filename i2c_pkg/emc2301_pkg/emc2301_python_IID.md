@@ -218,8 +218,8 @@ else :
 
 example:
 (val,ret) = sens.manufid()
-sens._logger.info('PRODUCT Read correct') if ret == 0 else sens._logger.error('Read error %s'.format(ret))
-sens._logger.info('PRODUCT ID: %s',format(val))
+sens._logger.info('MANUFID Read correct') if ret == 0 else sens._logger.error('Read error %s'.format(ret))
+sens._logger.info('MANUF ID: %s',format(val))
 ```
 
 * **method: revisionid **
@@ -236,8 +236,8 @@ else :
 
 example:
 (val,ret) = sens.revisionid()
-sens._logger.info('PRODUCT Read correct') if ret == 0 else sens._logger.error('Read error %s'.format(ret))
-sens._logger.info('PRODUCT ID: %s',format(val))
+sens._logger.info('REVISIONID Read correct') if ret == 0 else sens._logger.error('Read error %s'.format(ret))
+sens._logger.info('REVISION ID: %s',format(val))
 ```
 
 **function: conf_register_list** - list of all chip register (used in update register status)
