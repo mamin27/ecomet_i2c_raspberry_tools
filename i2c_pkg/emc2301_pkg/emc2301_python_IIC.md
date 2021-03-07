@@ -1,6 +1,6 @@
 # emc2301_IIC python3 module
 
-**Last modification:** 27.09.2020
+**Last modification:** 07.02.2021
 
 ### List of python files: ###
 
@@ -10,6 +10,12 @@ The EMC2301 is an SMBus compliant fan controller with a  PWM  fan  driver.  The 
 **emc2301_constant.py**
 
 * list of emc2301 chip registers and their statuses
+
+**fan_type.py**
+
+* file where are set parameters for manufacturers
+
+**note:** currently only NF-8A PWM (Noctua), you can send me experiances from your test of other fan!  
 
 **emc2301.py**
 
@@ -28,15 +34,13 @@ The EMC2301 is an SMBus compliant fan controller with a  PWM  fan  driver.  The 
 * EMC2301.manufid - chip manufacture id
 * EMC2301.revisionid - chip revisionid
 
-**limitation:**
-
-* function write_register - only CON, FAN_CONF1, FAN_CONF2,
-                                           FAN_SETTING, TACH_TARGET, TACH_COUNT, 
-                                           FAN_FAIL_BAND
+function:
+conf_register_list - list of all chip register (used in update register status)
 
 ### How to call python sub? ###
 
-see details in: emc2301_i2c_test.py
+![Deail description of functions](emc2301_python_IID.md)
+
 
 **example:**
 ```
