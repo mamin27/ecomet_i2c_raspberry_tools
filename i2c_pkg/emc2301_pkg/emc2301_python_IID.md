@@ -145,7 +145,7 @@ while speed <= 255 :
    speed = speed + 1
 ```
 
-* **method: fan_kick_up **
+* **method: fan_kick_up**
 read more speed values in one measure cycle only in DIRECT MODE
 ```python3
  def fan_kick_up (
@@ -185,7 +185,7 @@ for index in range (0,10000) :
 	print ('{}:{}:{}'.format(index,sample[index],time[index]))
 ```
 
-* **method: productid **
+* **method: productid**
 read chip product id from PRODUC_ID register
 ```python3
 ()
@@ -203,7 +203,7 @@ sens._logger.info('PRODUCT Read correct') if ret == 0 else sens._logger.error('R
 sens._logger.info('PRODUCT ID: %s',format(val))
 ```
 
-* **method: manufid **
+* **method: manufid**
 read chip product id from MANUF_ID register
 ```python3
 ()
@@ -222,7 +222,7 @@ sens._logger.info('MANUFID Read correct') if ret == 0 else sens._logger.error('R
 sens._logger.info('MANUF ID: %s',format(val))
 ```
 
-* **method: revisionid **
+* **method: revisionid**
 read chip product id from REVISION_ID register
 ```python3
 ()
