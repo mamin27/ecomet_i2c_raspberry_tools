@@ -1,0 +1,50 @@
+from __future__ import division
+import logging
+
+# Platform identification constants.
+plat_list = { 0 : 'UNKONWN',
+              1 : 'RASPBERRY_PI',
+              2 : 'BEAGLEBONE_BLACK',
+              3 : 'MINNOWBOARD',
+              4 : 'JETSON_NANO',
+        }
+
+class Borad_plat(object):
+
+   def __init__(self, address=None, busnum=None, i2c=None, **kwargs) :
+        # Setup I2C interface for the device.
+        if i2c is None:
+            import i2c_pkg.i2c as I2C
+            import i2c_pkg.Platform as Platform
+            i2c = I2C
+            plat = Platform
+        self._logger = logging.getLogger(__name__)
+        self._plat = plat.platform_detect()
+        self._pi_ver = plat.pi_version()
+        self._pi_rev = plat.pi_revision()
+        self._bus = i2c.get_default_bus()
+        self._busnum = busnum
+        self._slaves = ''
+        for addr in range(0x00,0x77) :
+         ret = 0
+         try :
+           self._device = i2c.get_i2c_device(address=addr,busnum=self._busnum, **kwargs)
+           self._device.readRaw8()
+         except :
+           ret = 1
+         if ret == 0 :
+           self._slaves = self._slaves + str(hex(addr)) + ':'
+        self._slaves = self._slaves[:-1]
+   def board (self) :
+       version = plat_list[self._plat]
+       if version == 'RASPBERRY_PI' :
+          version = version + ' ' + self.pi_ver() + '.' + self.pi_rev()
+       return version
+   def pi_ver (self) :
+       return str(self._pi_ver)
+   def pi_rev (self) :
+       return str(self._pi_rev)
+   def bus (self) :
+       return str(self._bus)
+   def slaves (self) :
+       return self._slaves
