@@ -107,14 +107,14 @@ def measure_list() :
 class HDC1080(object):
     '''HDC1080() PWM LED/servo controller.'''
 
-    def __init__(self, address=hdc1080_constant.HDC1080_ADDRESS, i2c=None, **kwargs) :
+    def __init__(self, address=hdc1080_constant.HDC1080_ADDRESS, busnum=1, i2c=None, **kwargs) :
         '''Initialize the HDC1080.'''
         # Setup I2C interface for the device.
         if i2c is None:
             import i2c_pkg.i2c as I2C
             i2c = I2C
         self._logger = logging.getLogger(__name__)    
-        self._device = i2c.get_i2c_device(address, **kwargs)
+        self._device = i2c.get_i2c_device(address, busnum, **kwargs)
     def self_test(self) :
         try :
           ret = self.battery()
