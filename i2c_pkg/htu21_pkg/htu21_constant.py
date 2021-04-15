@@ -1,5 +1,5 @@
 # Address:
-
+I2CBUS             = 1         # /dev/i2c-1
 HTU21_ADDRESS    = 0x40      # 8 bit version
 
 # Register

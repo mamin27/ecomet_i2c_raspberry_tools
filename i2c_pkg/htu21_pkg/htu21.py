@@ -92,14 +92,14 @@ def measure_list() :
 class HTU21(object):
     '''htu21() PWM LED/servo controller.'''
 
-    def __init__(self, address=htu21_constant.HTU21_ADDRESS, i2c=None, **kwargs) :
+    def __init__(self, address=htu21_constant.HTU21_ADDRESS, busnum=htu21_constant.I2CBUS, i2c=None, **kwargs) :
         '''Initialize the htu21.'''
         # Setup I2C interface for the device.
         if i2c is None:
             import i2c_pkg.i2c as I2C
             i2c = I2C
         self._logger = logging.getLogger(__name__)    
-        self._device = i2c.get_i2c_device(address, **kwargs)
+        self._device = i2c.get_i2c_device(address, busnum, **kwargs)
     def sw_reset (self) :
         register = 'SRESET'
         ret = 0

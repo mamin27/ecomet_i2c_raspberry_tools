@@ -339,14 +339,14 @@ def conf_register_list() :
 class EMC2301(object):
     '''emc2301() RPM-Based  PWM  Fan  Controller'''
 
-    def __init__(self, address=emc2301_constant.EMC2301_ADDRESS, i2c=None, **kwargs) :
+    def __init__(self, address=emc2301_constant.EMC2301_ADDRESS, busnum=emc2301_constant.I2CBUS, i2c=None, **kwargs) :
         '''Initialize the emc2301.'''
         # Setup I2C interface for the device.
         if i2c is None:
             import i2c_pkg.i2c as I2C
             i2c = I2C
         self._logger = logging.getLogger(__name__)    
-        self._device = i2c.get_i2c_device(address, **kwargs)
+        self._device = i2c.get_i2c_device(address, busnum, **kwargs)
     def self_test(self) :
         try :
           (np,ret) = self.productid()

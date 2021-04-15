@@ -1,5 +1,5 @@
 # Address:
-
+I2CBUS             = 1         # /dev/i2c-1
 EMC2301_ADDRESS    = 0x2F   # 8 bit version
 
 # Register
