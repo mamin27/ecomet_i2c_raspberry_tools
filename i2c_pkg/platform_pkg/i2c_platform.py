@@ -1,5 +1,6 @@
 from __future__ import division
 import logging
+import re
 
 # Platform identification constants.
 plat_list = { 0 : 'UNKONWN',
@@ -38,7 +39,10 @@ class Borad_plat(object):
    def board (self) :
        version = plat_list[self._plat]
        if version == 'RASPBERRY_PI' :
-          version = version + ' ' + self.pi_ver() + '.' + self.pi_rev()
+          if re.search('\.',self.pi_ver()) :
+             version = version +  self.pi_ver()
+          else :
+             version = version +  self.pi_ver() + '.' + self.pi_rev()
        return version
    def pi_ver (self) :
        return str(self._pi_ver)

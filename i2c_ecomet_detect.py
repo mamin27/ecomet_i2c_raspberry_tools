@@ -9,12 +9,14 @@ import logging
 i2c_count = [ '^RASPBERRY_PI 1\..*$',
               '^RASPBERRY_PI 2\..*$',
               '^RASPBERRY_PI 3\..*$',
+              '^RASPBERRY_PI_\(CM4\).*$' ,
               '^OTHER$' ]
 
-i2c_count_max = [ 1,
-                  1,
-                  1,
-                  20 ]
+i2c_count_max = [ 2,
+                  2,
+                  2,
+                  11,
+                  21 ]
 
 plat = i2c_platform.Borad_plat(busnum=0)
 
@@ -42,7 +44,7 @@ for match_str in i2c_count :
 
 plat._logger.info('Number of I2C buses at the board: {}'.format(max))
 
-for bus_nm in (0,max) :
+for bus_nm in range(0,max) :
   plat = i2c_platform.Borad_plat(busnum=bus_nm)
   board = plat.board()
   bus = plat.bus()

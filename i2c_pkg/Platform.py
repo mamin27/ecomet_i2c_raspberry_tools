@@ -101,13 +101,27 @@ def pi_version():
         return None
     if match.group(1) == 'BCM2708':
         # Pi 1
-        return 1
+        return ' 1'
     elif match.group(1) == 'BCM2709':
         # Pi 2
-        return 2
+        return ' 2'
     elif match.group(1) == 'BCM2835':
+        match = re.search('^Model\s+:\s+(.+)$', cpuinfo,
+                       flags=re.MULTILINE | re.IGNORECASE)
+        match2 = re.search('^Raspberry\s+Pi\s+(.+)(Rev.+)$', match.group(1),
+                       flags=re.MULTILINE | re.IGNORECASE)
+        match3 = re.sub(r'\s*$','',match2.group(1))
+        revision = re.search('^.+\.(\d+)$',match2.group(2), re.IGNORECASE)
+        if match3.upper() == '3 MODULE B PLUS' :
+          if revision :
+            return ' 3' + '.' + str(revision.group(1))
+          return ' 3'
+        elif match3.upper() == 'COMPUTE MODULE 4' :
+          if revision :
+            return '_(CM4) ' + str(4) + '.' + str(revision.group(1))
+          return '_(CM4) ' + 4
         # Pi 3 / Pi on 4.9.x kernel
-        return 3
+        return ' 3'
     else:
         # Something else, not a pi.
         return None
