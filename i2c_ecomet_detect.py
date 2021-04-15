@@ -52,7 +52,7 @@ for bus_nm in range(0,max) :
 
   plat._logger.info('>>> Testing at bus: {}'.format(bus_nm))
   if not slave :
-    plat._logger.info('Not Chip connected')
+    plat._logger.info('No Chip connected')
   else :
     plat._logger.info('Default bus number: {}'.format(bus))
     plat._logger.info('Identified Slaves Chips: {}'.format(slave))
