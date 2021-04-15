@@ -1,6 +1,6 @@
 # emc2301_IIC python3 module
 
-**Last modification:** 07.02.2021
+**Last modification:** 15.04.2021
 
 ### List of python files: ###
 
@@ -9,6 +9,11 @@ The EMC2301 is an SMBus compliant fan controller with a  PWM  fan  driver.  The 
 
 **emc2301_constant.py**
 
+* Address & Bus variable
+~~~python
+I2CBUS             = 1         # /dev/i2c-1
+EMC2301_ADDRESS    = 0x2F   # 8 bit version
+~~~
 * list of emc2301 chip registers and their statuses
 
 **fan_type.py**
