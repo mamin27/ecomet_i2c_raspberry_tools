@@ -1,7 +1,8 @@
 # ecomet_i2c_raspberry_tools
 
-**Last modification:** 06.03.2021
+**Last modification:** 15.04.2021
 **Contributor:** Marian Minar
+**Twitter:** [News and statuses](https://twitter.com/mminar7)
 
 **Scope:**
 The Code for I2C Chip maintenance from **Raspberry PI 3+** and above. This code tools contains python & free pascal code focused to I2C communication of raspberry pi with IOT modules.
