@@ -1,35 +1,28 @@
-# hdc1080_IIC python3 module
+# ms5637_IIC python3 module
 
-**Last modification:** 11.07.2020
+**Last modification:** 20.05.2021
 
 ### List of python files: ###
 
 **Chip description**
-The HDC1080 is a digital humidity sensor with integrated temperature sensor that provides excellent measurement accuracy at very low power.
-The HDC1080 operates over a wide supply range,and is a low cost,low power alternative to competitive olutions in a wide range of common applications. Thehumidity and temperature sensors are factory calibrated.
+The MS5637 is an ultra-compact micro altimeter. It is optimized for  altimeter  and  barometer  applications. Thesensor  module  includes  a  high-linearity  pressure  sensor with  internal  factory-calibrated coefficients. 
+Integrated digital pressure sensor (24 bit ΔΣ ADC). Operating range: 300 to 1200 mbar, -40 to +85 °C 
 
-**hdc1080_constant.py**
+**ms5637_constant.py**
 
-* list of hdc1080 chip registers and their statuses
+* list of MS5673 chip registers and their statuses
 
-**hdc1080.py**
+**ms5637.py**
 
-* HDC1080 - main chip class
-* HDC1080.read_register - read status of one register
-* HDC1080.write_register - write new value to chip register
-* HDC1080.write_mert_invoke - touch (TEMP or HUMDT) register (used before reading TEMP or HUMDT value
-* HDC1080.both_measurement - read in one sequence TEMP and HUMDT register, CONF file will be pre-set for sequence reading, values are calculated to celsius degrees and humidity percentage
-* HDC1080.measure_temp - read only value of TEMP register
-* HDC1080.measure_hmdt - read only value of HUMDT register
-* HDC1080.sw_reset - software Reset CHIP
-* HDC1080.battery - check status of battery or power supply (must by > 2.4V)
-* HDC1080.serial - read SERIAL ID of CHIP
-* HDC1080.manufacturer - read MANUFACTURER ID
-* HDC1080.deviceid - read DEVICE ID
+* MS5637 - main chip class
+* MS5637.read_register - read status of one register
+* MS5637.write_register - write new value to chip register
+* MS5637.sw_reset - software Reset CHIP
+* MS5637.measure - read in one shot temperature & pressure with deffined accuracy
 
 ### How to call python sub? ###
 
-see **hdc1080_i2c_test.py** script
+see **ms5637_i2c_test.py** script located in python_test_scripts directory
 
 set logging:
 ```python
@@ -40,64 +33,69 @@ script will produce log hdc1080.log
 
 initialize chip:
 ```python
-sens = hdc1080.HDC1080()
+sens = ms5637.MS5637()
 ```
 
 sw reset & battery test:
 ```python
-ret = sens.sw_reset()     # make sw reset of chip
-ret = sens.battery()      # will check power_supply status, correct when voltage over than 2.4V
+ret = sens.sw_reset()     # make sw reset of chip !!necessary command before start CHIP connecting!!
 ```
 
 write to register:
 ```python 
-ret = sens.write_register ( register = *reg_name*, bits = [*bit1*,*bit2* ...])
-ret = sens.write_register ( register = *reg_name*, bits = [{*bit_name1* : *bit_value1*}, ... ]
+sens.write_register(register = <command>, stime = <variable>)
 ```
+register parameter is name of command,
+stime is accuracy adviced for measurement calculation, see in table accuracy parameters
+
+| variable | measurement accuracy | accurcy OSR  | Min measure time in [ms]   | Resolution Pressure [mbar]  | Resolution Temp [C]   |
+| -------- |:--------------------:|:------------:|:--------------------------:|:---------------------------:|:---------------------:|
+| d1_time  | 1                    | 256          | 0.54                       | 0.11                        | 0.012                 |
+| d2_time  | 2                    | 512          | 1.06                       | 0.062                       | 0.009                 |
+| d3_time  | 3                    | 1024         | 2.08                       | 0.039                       | 0.006                 |
+| d4_time  | 4                    | 2048         | 4.13                       | 0.028                       | 0.004                 |
+| d5_time  | 5                    | 4096         | 8.22                       | 0.021                       | 0.003                 |
+| d6_time  | 6                    | 8192         | 16.44                      | 0.016                       | 0.002                 |
+
+variable dX_time is defined in MS5637 class.
+also PROM calibration variable are defined in MS5637 class as (c1 - c6)
+
 example:
 ``` python
-ret = sens.write_register( register = "CONF", bits = ['MODE_BOTH','HRES_RES3','TRES_RES1'])
+sens.write_register(register = 'D2_CONV_256', stime = sens.d1_time)
 ```
 
-read ID:
+read from register:
+
 ```python
-(val,ret) = sens.serial()
-(val,ret) = sens.manufacturer()
-(val,ret) = sens.deviceid()
+(val,ret) = sens.read_register(<register>)
 ```
-read ID values (unique for each Texas Instruments HDC1080 chip
+read content of register from MS5637 chip, it is only 'ADC_READ' register used for reading measured Temperature and Pressure
+
+example:
+``` python
+D2 = sens.read_register('ADC_READ')
+```
 
 meausre:
 ```python
-(temp,hmdt, ret) = sens.both_measurement()
-(temp, ret) = sens.measure_temp()
-(hmdt, ret) = sens.measure_hmdt()
+(temp_celsius,temp_fahrenheit,pressure, ret) = sens.measure (accuracy = <acc_number 1-6>)
 ```
-measure temperature or humidity sequentially or individually 
+measure temperature in celsius, fahrenheits and pressure in mbar
 
 ret value:
 return value for each procedure (0 - correct, >0 - incorrect)
 
 output of test script:
 ```shell
-pi@raspberrypi:~/ecomet_i2c_tools $ python3 hdc1080_i2c_test.py 
-3.7.3 (default, Dec 20 2019, 18:57:59) 
+pi@raspberrypi:~/ecomet_i2c_raspberry_tools $ python3 ms5637_i2c_test.py
+3.7.3 (default, Jan 22 2021, 20:04:44)
 [GCC 8.3.0]
-ecomet.hdc1080: INFO     Start logging ...
-ecomet.hdc1080: INFO     SW Reset correct
-ecomet.hdc1080: INFO     Battery > 2.4V, correct
-ecomet.hdc1080: INFO     Write CONF register correct
-ecomet.hdc1080: INFO     SERIAL Read correct
-ecomet.hdc1080: INFO     SER ID: 0127:1A13:DC00
-ecomet.hdc1080: INFO     MANUFACTURER Read correct
-ecomet.hdc1080: INFO     MAN ID: 5449
-ecomet.hdc1080: INFO     DEVICE Read correct
-ecomet.hdc1080: INFO     DEV ID: 1050
-ecomet.hdc1080: INFO     Measured Temperate BOTH:      26.44 ℃
-ecomet.hdc1080: INFO     Measured Humidity BOTH:      57.86 %
-ecomet.hdc1080: INFO     Write CONF register correct
-ecomet.hdc1080: INFO     Measured Temperate IND:      26.54 ℃
-ecomet.hdc1080: INFO     Measured Humidity IND:      57.76 %
+ecomet.ms5637: INFO     Start logging ...
+ecomet.ms5637: INFO     SW Reset correct
+ecomet.ms5637: INFO     Pressure =    1002.22 mbar
+ecomet.ms5637: INFO     Temperature in Celsius =      24.00 ℃
+ecomet.ms5637: INFO     Temperature in Fahrenheit =      75.19 F
 ```
 
-**Note:** for more details look into hdc1080_i2c_test.py
+**Note:** for more details look into ms5637_i2c_test.py
