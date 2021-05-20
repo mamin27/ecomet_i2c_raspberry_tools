@@ -37,11 +37,12 @@ sens.write_register(register = 'FAN_CONF2', bits = ['EN_RRC'])
 
 sens.write_register(register = 'FAN_SETTING', value = 0)
 sens.write_register(register = 'FAN_CONF1', bits = ['EN_ALGO_CLR'])
-ret = sens.write_register(register = 'FAN_CONF1', bits = ['RANGE'], bit = fan_list['RANGE_1000_2'] )
+ret = sens.write_register(register = 'FAN_CONF1', bits = ['RANGE'], bit = fan_list['RANGE_500_1'] )
+ret = sens.write_register(register = 'FAN_CONF1', bits = ['EDGES'], bit = fan_list['EDGES_5_2POLE_1'] )
 print ('RET: {}'.format(ret))
 from time import sleep
 
-speed = 16
+speed = 0 #16
 while speed <= 255 :
    measure = []
    for i in range (10) :
