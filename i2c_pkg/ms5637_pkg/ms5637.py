@@ -3,7 +3,6 @@ import logging
 import time
 import math
 from i2c_pkg.ms5637_pkg import ms5637_constant
-import numpy as np
 
 cmd_list = { 'RESET' : ms5637_constant.RESET, 
              'D1_CONV_256' : ms5637_constant.D1_CONV_256, 'D1_CONV_512' : ms5637_constant.D1_CONV_512, 'D1_CONV_1024' : ms5637_constant.D1_CONV_1024, 'D1_CONV_2048' : ms5637_constant.D1_CONV_2048,
