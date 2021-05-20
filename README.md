@@ -23,7 +23,7 @@ The Code for I2C Chip maintenance from **Raspberry PI 3+** and above. This code 
 * [PCA9632 module](fpc/pca9632/pca9632_IIC.md) -> 4-bit Fm+ I2C-bus low power LED driver (could be used for motor control)
 * [HDC1080 module](fpc/hdc1080/hdc1080_IIC.md) -> High Accuracy Digital Humidity Sensor with Temperature Sensor
 * [HTU21D module](i2c_pkg/htu21_pkg/htu21_python_IIC.md) -> Digital Relative Humidity sensor with Temperature output, calculation of Dew Point
-* [MS5637 module](i2c_pkg/ms5637_pkg/ms5637_python.IIC.md) ->  **!NEWNew GUI**. Ultra-compact micro altimeter. Integrated digital pressure sensor (24 bit ΔΣ ADC), Operating range: 300 to 1200 mbar, -40 to +85 °C 
+* [MS5637 module](i2c_pkg/ms5637_pkg/ms5637_python.IIC.md) ->  **!NEW**. Ultra-compact micro altimeter. Integrated digital pressure sensor (24 bit ΔΣ ADC), Operating range: 300 to 1200 mbar, -40 to +85 °C 
 * [EMC2301 module](fpc/emc2301/emc2301_IIC.md) -> Fan controller with a PWM fan driver
 
 **Software for Chips:**
@@ -34,8 +34,8 @@ The Code for I2C Chip maintenance from **Raspberry PI 3+** and above. This code 
 | PCA9632         |      yes        |    yes   |                  | testing board developed soon info in wiki                               |                               |
 | HDC1080         |      yes        |    yes   |                  | testing board developed soon info in wiki   |                               |
 | HTU21D          |      yes        |    no    |                              | currently no GUI planned       |                               |
-| MS5637          |      yes        |    no    | [!NEW!](i2c_pkg/ms5637_pkg/ms5637_python.IIC.md) Python driver documentation |                               |
-| EMC2301         |      yes        |    yes   |                  | testing board needs to be redesigned   |                               |
+| MS5637          |      yes        |    no    | [!NEW!](i2c_pkg/ms5637_pkg/ms5637_python.IIC.md) Python driver documentation | chip included in testing board      |
+| EMC2301         |      yes        |    yes   |                  | testing board developed soon info in wiki   |                               |
  
 **Requestor Interests:**
 If you would like to reqest some new feature or add some new Chip at the development list let me know by adding issue or by email.
