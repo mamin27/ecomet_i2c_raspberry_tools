@@ -30,9 +30,18 @@ class Borad_plat(object):
          ret = 0
          try :
            self._device = i2c.get_i2c_device(address=addr,busnum=self._busnum, **kwargs)
-           self._device.readRaw8()
          except :
            ret = 1
+         if addr == 0x76 :  #special detection for ms5637 chip
+            try :
+             self._device.writeRaw8(0x1E)
+            except :
+              ret = 3 
+         else:
+            try :
+              self._device.readRaw8()
+            except :
+              ret = 2
          if ret == 0 :
            self._slaves = self._slaves + str(hex(addr)) + ':'
         self._slaves = self._slaves[:-1]
