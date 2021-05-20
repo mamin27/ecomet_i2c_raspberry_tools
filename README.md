@@ -37,5 +37,23 @@ The Code for I2C Chip maintenance from **Raspberry PI 3+** and above. This code 
 | MS5637          |      yes        |    no    | [!NEW!](i2c_pkg/ms5637_pkg/ms5637_python.IIC.md) Python driver documentation | chip included in testing board      |
 | EMC2301         |      yes        |    yes   |                  | testing board developed soon info in wiki   |                               |
  
+**! NEW ! Alternative command for I2C chip detection**
+Here is alternative command to i2cdetect for detection of active I2C chips at I2C bus:
+***i2c_ecomet_detect.py***
+
+``` python
+pi@raspberrypi:~/ecomet_i2c_raspberry_tools $ python3 i2c_ecomet_detect.py
+3.7.3 (default, Jan 22 2021, 20:04:44)
+[GCC 8.3.0]
+ecomet.Board_Platform: INFO     Start logging ...
+ecomet.Board_Platform: INFO     Board platform: RASPBERRY_PI 3.2
+ecomet.Board_Platform: INFO     Number of I2C buses at the board: 2
+i2c_pkg.platform_pkg.i2c_platform: INFO     >>> Testing at bus: 0
+i2c_pkg.platform_pkg.i2c_platform: INFO     No Chip connected
+i2c_pkg.platform_pkg.i2c_platform: INFO     >>> Testing at bus: 1
+i2c_pkg.platform_pkg.i2c_platform: INFO     Default bus number: 1
+i2c_pkg.platform_pkg.i2c_platform: INFO     Identified Slaves Chips: 0x2f:0x40:0x50:0x51:0x52:0x53:0x54:0x55:0x56:0x57:0x62:0x70:0x76
+```
+ 
 **Requestor Interests:**
 If you would like to reqest some new feature or add some new Chip at the development list let me know by adding issue or by email.
