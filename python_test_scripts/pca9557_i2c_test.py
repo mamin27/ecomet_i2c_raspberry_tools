@@ -23,7 +23,7 @@ sens._logger.info('Start logging ...')
 sens.sw_reset()
 
 #sens.write_register(register = 'REGISTER3', value = 60)
-sens.set_io('IIIIIIOO')
+sens.set_io('OOIIIIOO')
 sens.set_invert('NNNNNNNN')
 sens.set_io_name(port_arr = [[0,'LED1'],[1,'LED2'],[2,'BUT_RIG_DWN'],[3,'BUT_RIG_UP'],
                              [4,'BUT_LFT_DWN'],[5,'BUT_LFT_UP'],[6,'DIS_RST'],[7,'D/C']])
@@ -48,14 +48,19 @@ sens.reset_outputs()
 sens.port_display()
 
 
-sens.write_output_port (status = pca9557.Unset, pin = 'LED1')
-sens.write_output_port (status = pca9557.Set, pin = 'LED2')
+sens.write_output_port (status = pca9557.Low, pin = 'LED1')
+sens.write_output_port (status = pca9557.High, pin = 'LED2')
 sens.port_display()
 
 from time import sleep
 sleep(5)
-sens.write_output_port (status = pca9557.Set, pin = 'LED1')
-sens.write_output_port (status = pca9557.Unset, pin = 'LED2')
+sens.write_output_port (status = pca9557.High, pin = 'LED1')
+sens.write_output_port (status = pca9557.Low, pin = 'LED2')
+sens.port_display()
+
+sleep(5)
+sens.write_output_port (status = pca9557.High, pin = 'LED1')
+sens.write_output_port (status = pca9557.High, pin = 'LED2')
 sens.port_display()
 
 R0 = sens.read_register('REGISTER0')[0]

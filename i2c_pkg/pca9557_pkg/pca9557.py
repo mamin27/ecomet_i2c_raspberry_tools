@@ -7,22 +7,26 @@ from i2c_pkg.pca9557_pkg import pca9557_constant
 cmd_list = { 'REGISTER0' : pca9557_constant.REGISTER0, 'REGISTER1' : pca9557_constant.REGISTER1, 'REGISTER2' : pca9557_constant.REGISTER2, 'REGISTER3' : pca9557_constant.REGISTER3,
          }
 # Input & Output PIN Status
-Sleep				= 10
+Sleep				= 20
 Measure				= 2
 Threshold			= 4
 Init				= 3
 Set					= 0
 Unset				= 1
-NA					= 5
+Low					= 10
+High				= 11
 
-io_list = { 10 : 'Sleep  ',
+io_list = { 20 : 'Sleep  ',
              4 : 'Thresh.',
              3 : 'Init   ',
              2 : 'Measure',
              1 : 'Unset  ',
-             0 : 'Set    '}
+             0 : 'Set    ',
+            11 : 'High   ',
+            10 : 'Low    '}
 inv_list = { 1 : 'Invert',
-             0 : 'Normal'}
+             0 : 'Normal',
+             2 : 'NotApl'}
              
              
 
@@ -30,8 +34,11 @@ inv_list = { 1 : 'Invert',
 # Offset Status
 O_Init				= 0
 O_Pending			= 1
+
+# Inversion PIN
 NI					= 0
 INV					= 1
+NA					= 2
 
 logger = logging.getLogger(__name__) 
 
@@ -139,16 +146,16 @@ class PCA9557(object):
                 self._iport[idx_i] = [i,Measure,'X-------',inv_bit]
                 idx_i = idx_i + 1
             else :
-                self._oport[idx_o] = [i,Measure,'X-------',inv_bit]
+                self._oport[idx_o] = [i,Measure,'X-------',NA]
                 idx_o = idx_o + 1
         if (idx_i == 7 ) : self._iport[idx_i] = [i,Measure,'X-------',inv_bin]
-        if (idx_o == 7 ) : self._iport[idx_o] = [i,Measure,'X-------',inv_bin]
+        if (idx_o == 7 ) : self._iport[idx_o] = [i,Measure,'X-------',NA]
         self._logger.debug('init input ports: %s','{}'.format(self._iport))
         self._logger.debug('init output ports: %s','{}'.format(self._oport))
         return 0
     def port_show_name (self, setting = 'io') :
-        arr = [[ 'X-------','NOT INIT',Sleep,NI],[ 'X-------','NOT INIT',Sleep,NI],[ 'X-------','NOT INIT',Sleep,NI],[ 'X-------','NOT INIT',Sleep,NI],
-               [ 'X-------','NOT INIT',Sleep,NI],[ 'X-------','NOT INIT',Sleep,NI],[ 'X-------','NOT INIT',Sleep,NI],[ 'X-------','NOT INIT',Sleep,NI]]
+        arr = [[ 'X-------','NOT INIT',Sleep,NA],[ 'X-------','NOT INIT',Sleep,NA],[ 'X-------','NOT INIT',Sleep,NA],[ 'X-------','NOT INIT',Sleep,NA],
+               [ 'X-------','NOT INIT',Sleep,NA],[ 'X-------','NOT INIT',Sleep,NA],[ 'X-------','NOT INIT',Sleep,NA],[ 'X-------','NOT INIT',Sleep,NA]]
         for j in range(8) :
           for i in range(9) :
             if  (i == 8) :
@@ -164,7 +171,7 @@ class PCA9557(object):
                   arr[j][3] = NI
                   break
             elif  ( self._oport[i][0] == j  and setting == 'i' ) :
-               arr[j] = ['--------','OUTPUT',NI]
+               arr[j] = ['--------','OUTPUT',NA]
                break
             elif (self._oport[i][0] == j and (setting == 'io' or setting == 'o') ):
                if ( self._oport[i][2] != 'X-------' ) :
@@ -173,7 +180,7 @@ class PCA9557(object):
                else :
                   arr[j][1] = 'OUTPUT'
                   arr[j][2] = Sleep
-                  arr[j][3] = NI
+                  arr[j][3] = NA
                   break
             elif ( self._iport[i][0] == j  and setting == 'o' ) :
                arr[j] = ['--------','INPUT',NI]
@@ -197,7 +204,7 @@ class PCA9557(object):
         for i in self._oport :
            if ( i[0] != 10 ) :
               i[1] = Init
-    def read_input_port (self, thr = 'Unset', mtime = 10, offset = 0) :
+    def read_input_port (self, thr = 'LOW', mtime = 10, offset = 0) :
         self.reset_inputs()
         from time import sleep
         start = time.time()
@@ -216,7 +223,6 @@ class PCA9557(object):
           self._logger.debug('wrong setting of thr parameter, ->0 or ->1 possible')
           return (self._iport,2)
         self._logger.debug('mask_byte: 0b%s','{0:b}'.format(mask_byte))
-        #self.write_register(register = 'REGISTER2', value = mask_byte)
         thr_reached = O_Init
         self._logger.debug('INIT: ' + str(self._iport))
         while True :
@@ -288,41 +294,37 @@ class PCA9557(object):
                 self._oport[i][2] = port_arr[j][1]
                 break
        return (0)
-    def write_output_port (self, status = Set, pin = None, pairs = None) :
+    def write_output_port (self, status = Low, pin = None, pairs = None) :
        check_port = self.read_register('REGISTER3')[0]
        mask_byte = 0
-       if (status == Unset) :
+       if (status == Low) :
          mask_register2 = self.read_register(register = 'REGISTER1')[0]
          mask_register2 = not (mask_register2)
          for i in range(8) :
             if ( self.get_bit(check_port,i) == 1 ):
                mask_byte = mask_byte + self._bin_to_hex[i]
-       elif (status == Set) :
+       elif (status == High) :
          mask_register2 = self.read_register(register = 'REGISTER1')[0]
          for i in range(8) :
             if ( self.get_bit(check_port,i) == 0 ):
                mask_byte = mask_byte + self._bin_to_hex[i]
-       elif (status == NA) :
-         self._logger.debug('inversion output ports ignored')
        else :
-         self._logger.debug('wrong setting of thr parameter, Unset, Set or NA')
+         self._logger.debug('wrong setting of thr parameter, Low or High')
          return (self._oport,2)
-       if ( status != NA) :
-         self._logger.debug('mask_byte: 0b%s','{0:b}'.format(mask_byte))
        idx = 0
        for i in self._oport :
            pattern = self.read_register(register= 'REGISTER1')[0]
            if ( i[0] == 10 ) : break
            if ( i[2] == pin and i[1] != Sleep ) :
               self._logger.debug('Port name: %s %s','{0}'.format(i[2]),'{0}'.format(pin))
-              if ( status == Set ) :
+              if ( status == High ) :
                  pattern = self.set_bit(pattern,i[0])
                  self._logger.debug('Pattern byte: 0b%s %s','{0:b}'.format(pattern),'{}'.format(i[0]))
-                 self._oport[idx][1] = Set
-              elif ( status == Unset ) :
+                 self._oport[idx][1] = High
+              elif ( status == Low ) :
                  pattern = self.unset_bit(pattern,i[0])
                  self._logger.debug('Pattern byte: 0b%s %s','{0:b}'.format(pattern),'{}'.format(i[0]))
-                 self._oport[idx][1] = Unset
+                 self._oport[idx][1] = Low
               else :
                  return (self._oport,3)
               self.write_register(register = 'REGISTER1', value = pattern)
