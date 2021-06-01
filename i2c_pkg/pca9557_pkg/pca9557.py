@@ -13,6 +13,7 @@ Threshold			= 4
 Init				= 3
 Set					= 0
 Unset				= 1
+NA					= 5
 
 io_list = { 10 : 'Sleep  ',
              4 : 'Thresh.',
@@ -245,12 +246,14 @@ class PCA9557(object):
          self._logger.debug('pattern longer than expected, max 8 characters')
          return(-10,1)
        mask_byte = 0
-       for i in range(8) :
+       idx = 0
+       for i in reversed(range(8)) :
          if ( arr[i] == 'I' ) :
-            mask_byte = mask_byte + self._bin_to_hex[i]
+            mask_byte = mask_byte + self._bin_to_hex[idx]
          elif ( arr[i] != 'O' ) :
            self._logger.debug('wrong letter in pattern, only I or O accepted')
            return(mask_byte,2)
+         idx += 1
        self._logger.debug('Translated pattern: 0b%s','{0:b}'.format(mask_byte))
        self.write_register(register = 'REGISTER3', value = mask_byte)
        self.port_init()
@@ -261,12 +264,14 @@ class PCA9557(object):
          self._logger.debug('pattern longer than expected, max 8 characters')
          return(-10,1)
        mask_byte = 0
-       for i in range(8) :
+       idx = 0
+       for i in reversed(range(8)) :
          if ( arr[i] == 'I' ) :
-            mask_byte = mask_byte + self._bin_to_hex[i]
+            mask_byte = mask_byte + self._bin_to_hex[idx]
          elif ( arr[i] != 'N' ) :
            self._logger.debug('wrong letter in pattern, only I or N accepted')
            return(mask_byte,2)
+         idx += 1
        self._logger.debug('Translated pattern: 0b%s','{0:b}'.format(mask_byte))
        self.write_register(register = 'REGISTER2', value = mask_byte)
        self.port_init()
@@ -283,26 +288,26 @@ class PCA9557(object):
                 self._oport[i][2] = port_arr[j][1]
                 break
        return (0)
-    def write_output_port (self, thr = 'Set', pin = None, status = Set, pairs = None) :
+    def write_output_port (self, status = Set, pin = None, pairs = None) :
        check_port = self.read_register('REGISTER3')[0]
        mask_byte = 0
-       if (thr == 'Unset') :
+       if (status == Unset) :
          mask_register2 = self.read_register(register = 'REGISTER1')[0]
          mask_register2 = not (mask_register2)
          for i in range(8) :
             if ( self.get_bit(check_port,i) == 1 ):
                mask_byte = mask_byte + self._bin_to_hex[i]
-       elif (thr == 'Set') :
+       elif (status == Set) :
          mask_register2 = self.read_register(register = 'REGISTER1')[0]
          for i in range(8) :
             if ( self.get_bit(check_port,i) == 0 ):
                mask_byte = mask_byte + self._bin_to_hex[i]
-       elif (thr == 'NA') :
+       elif (status == NA) :
          self._logger.debug('inversion output ports ignored')
        else :
-         self._logger.debug('wrong setting of thr parameter, Unset, Set or == NA')
+         self._logger.debug('wrong setting of thr parameter, Unset, Set or NA')
          return (self._oport,2)
-       if ( thr != 'NA') :
+       if ( status != NA) :
          self._logger.debug('mask_byte: 0b%s','{0:b}'.format(mask_byte))
        idx = 0
        for i in self._oport :
