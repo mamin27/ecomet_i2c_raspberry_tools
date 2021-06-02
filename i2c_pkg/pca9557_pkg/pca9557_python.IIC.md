@@ -1,4 +1,4 @@
-# ms9557_IIC python3 module
+# pca9557_IIC python3 module
 
 **Last modification:** 1.06.2021
 
@@ -42,24 +42,104 @@ set logging:
 logging.basicConfig(level=logging.INFO
 ```
 set for INFO level logging. possible used DEBUG, ERROR loogin
-script will produce log hdc1080.log
+script will produce log pca9557.log
 
 initialize chip:
 ```python
 sens = pca9557.PCA9557()
 ```
 
-sw reset & battery test:
+sw reset:
 ```python
 ret = sens.sw_reset()     # make sw reset of chip !!necessary command before start CHIP connecting!!
 ```
+default setting of REGISTERs
+
+**return value:** ```(<ret>)```
+   *  ret = 0 -> correct setting REGISTERS, ret > 0 -> issue during setting
+
+read from register:
+```python 
+value = sens.read_register(register = <command>)[0]
+```
+register parameter is name of chip register ('REGISTER0-3')
+
+**return value:** ```(<8bit value>, <ret>)```
+   *  first return parameter is content of register
+   *  ret = 0 -> correct writing into register, ret > 0 -> issue during reading process
 
 write to register:
 ```python 
-sens.write_register(register = <command>, stime = <variable>)
+ret = sens.write_register(register = <command>, value = <variable>)
 ```
-register parameter is name of command,
-stime is accuracy adviced for measurement calculation, see in table accuracy parameters
+register parameter is name of chip register ('REGISTER0-3'),
+value is 8bit value written into register
+   
+**return value:** ```(<ret>)```
+   *  ret = 0 -> correct writing into register, ret > 0 -> issue during writing process
+
+port_init:
+```python
+self.port_init()
+```
+
+initialize pseudo registers _iport (all input ports) and _oport (all output ports)
+both registers are object registe that you can directly manage which are set to default values during object init.
+it's array of 8 items (for each PIN one array) 
+
+```[10,Sleep,'X-------',NI]   #[<pin number>,<pin status>,<pin name>,<pin inversion>```
+* ```<pin number>```
+    * from 0 - 7 coresponded to chip pin number P0-P7, default value 10 means no existing pin
+* ```<pin status>```
+    * Sleep - INPUT-OUTPUT (pin is not initialized) -> could not read or write to it
+    * Init - INPUT-OUTPUT (pin is initialized) -> prepared for reading or writing to it
+    * Measure - INPUT (prepared for measure input pin)
+    * Threshold - INPUT (pin reached threshold value)
+    * High - OUTPUT (pin set to logical value 1)
+    * Low - OUTPUT (pin set to logical value 0)
+* ```<pin name>```
+    * INPUT-OUTPUT use word without space and other special characters, only _ character is accepted
+* ```<pin inversion>```
+    * Invert - INPUT pin is inverted
+    * Normal - INPUT pin si not inverted
+    * NoAppl - OUTPUT inversion is not applicable
+
+Values of pin statuses are constant of pca9557.py library
+sub port_init is called internally by port_io sub, but could be used also externally
+
+**return value:** ```(0)```
+   *  0 -> correctly initialized
+
+set_io: 
+```python
+```
+setting of port configuration (I as input pin) and (O as output pin)
+set_invert:  
+```python
+```
+- setting of inversion **only for input pins** (I as inverted) and (N as normal use or not inverted)
+set_io_name: 
+```python
+```
+- add to pseudo registers _iport and _oport PIN name for ease managing for developer
+reset_inputs: 
+```python
+```
+- set _iport pseudo register to Init status
+reset_outputs: 
+```python
+```
+- set _oport pseudo register to Init status
+read_input_port:
+```python
+```
+- in loop reading of input PINS and set _iport register which maintains changed values ( Set for reached threshold ) and ( Unset for losing threshold)
+write_output_port:
+```python
+```
+- write output value into output PIN and update _oport register ( Low for 0V ) and (High for 3.3 - 5V )
+
+
 
 
 port_display:
