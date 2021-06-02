@@ -1,6 +1,6 @@
 # ecomet_i2c_raspberry_tools
 
-**Last modification:** 25.05.2021
+**Last modification:** 2.06.2021
 **Contributor:** Marian Minar
 **Twitter:** [News and statuses](https://twitter.com/mminar7) **!NEW!**
 
@@ -33,7 +33,7 @@ The Code for I2C Chip maintenance from **Raspberry PI 3+** and above. This code 
 | Chip            | Python 3 driver | FPC GUI  | Contributor Notes            | Planned work                   | Requestor Interests           |
 | --------------- |:---------------:|:--------:|:----------------------------:|:------------------------------:|:-----------------------------:|
 | EEPROM 24cXXX   |      yes        |    no    | currently tested at 24c01,24c04,24c08,24c16,24c32,24c64                  | prepared next chips for testing                      |                               |
-| PCA9557         |    in progress  |    no    | add useful featurs for developer |                    |                                |
+| PCA9557         |      yes        |    no    | [!NEW!](i2c_pkg/pca9557_pkg/pca9557_python.IIC.md) Python driver documentation | chip was tested at testing board           |
 | PCA9632         |      yes        |    yes   |                  | testing board developed soon info in wiki                               |                               |
 | HDC1080         |      yes        |    yes   |                  | testing board developed soon info in wiki   |                               |
 | HTU21D          |      yes        |    no    |                              | currently no GUI planned       |                               |
