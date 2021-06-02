@@ -146,7 +146,7 @@ class PCA9557(object):
                 self._iport[idx_i] = [i,Measure,'X-------',inv_bit]
                 idx_i = idx_i + 1
             else :
-                self._oport[idx_o] = [i,Measure,'X-------',NA]
+                self._oport[idx_o] = [i,Init,'X-------',NA]
                 idx_o = idx_o + 1
         if (idx_i == 7 ) : self._iport[idx_i] = [i,Measure,'X-------',inv_bin]
         if (idx_o == 7 ) : self._iport[idx_o] = [i,Measure,'X-------',NA]
@@ -204,7 +204,7 @@ class PCA9557(object):
         for i in self._oport :
            if ( i[0] != 10 ) :
               i[1] = Init
-    def read_input_port (self, thr = 'LOW', mtime = 10, offset = 0) :
+    def read_input_port (self, thr = 'Set', mtime = 10, offset = 0) :
         self.reset_inputs()
         from time import sleep
         start = time.time()
@@ -220,7 +220,7 @@ class PCA9557(object):
              if ( self.get_bit(check_port,i) == 1 ):
                 mask_byte = mask_byte + self._bin_to_hex[i]
         else :
-          self._logger.debug('wrong setting of thr parameter, ->0 or ->1 possible')
+          self._logger.debug('wrong setting of thr parameter, Unset or Set possible')
           return (self._iport,2)
         self._logger.debug('mask_byte: 0b%s','{0:b}'.format(mask_byte))
         thr_reached = O_Init

@@ -39,6 +39,7 @@ for j in range (1) :
    if ( interrupt[1] == 0 ) : 
       #sens._logger.info('Input signal detected:')
       for i in range(8) :
+         sens._logger.info('PIN{}: {} : {} : {}'.format(i,interrupt[0][i][0],interrupt[0][i][1],interrupt[0][i][2]))
          if ( interrupt[0][i][1] == pca9557.Threshold ) :
              sens._logger.info('Loop:{} -> PIN{}: {} ... pushed'.format(j,interrupt[0][i][0],interrupt[0][i][2])) 
    else :
