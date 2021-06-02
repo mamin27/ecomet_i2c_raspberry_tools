@@ -112,35 +112,106 @@ sub port_init is called internally by port_io sub, but could be used also extern
 
 set_io: 
 ```python
+set_io(<pattern>)
+# example
+set_io('OOIIIIOO')
 ```
 setting of port configuration (I as input pin) and (O as output pin)
+at end of def is called port_init()
+
+**return value:** ```(<mask_byte>,<ret>)```
+   *  mask_byte - byte O->0, I->1 used for REGISTER3 (is already set in def)
+   *  ret = 0 -> correct writing into register, ret > 0 -> issue during reading process
+
 set_invert:  
 ```python
+set_invert('<pattern>')
+#example
+set_invert('NNNNNNNI')
 ```
-- setting of inversion **only for input pins** (I as inverted) and (N as normal use or not inverted)
+setting of inversion **only for input pins** (I as inverted) and (N as normal use or not inverted)
+
+**return value:** ```(<mask_byte>,<ret>)```
+   *  mask_byte - byte N->0, I->1 used for REGISTER3 (is already set in def)
+   *  ret = 0 -> correct writing into register, ret > 0 -> issue during reading process
+
 set_io_name: 
 ```python
+set_io_name(port_arr=<array>)
+#example
+sens.set_io_name(port_arr = [[0,'LED1'],[1,'LED2'],[2,'BUT_RIG_DWN'],[3,'BUT_RIG_UP'],
+                             [4,'BUT_LFT_DWN'],[5,'BUT_LFT_UP'],[6,'DIS_RST'],[7,'D/C']])
 ```
-- add to pseudo registers _iport and _oport PIN name for ease managing for developer
+add to pseudo registers _iport and _oport PIN name for ease managing for developer
+* array:  8 items
+   *  <port_number> (0-7)
+   *  <port_name> 'string'
+
+**return value:** ```(0)```
+   *  0 -> correctly initialized
+
 reset_inputs: 
 ```python
+reset_inputs()
 ```
-- set _iport pseudo register to Init status
+set _iport pseudo register to Init status
+* set _iport register set all named inputs to default status status ['Init']
+
 reset_outputs: 
 ```python
+reset_outputs()
 ```
-- set _oport pseudo register to Init status
+set _oport pseudo register to Init status
+* set _oport register set all named outputs to default status status ['Init']
+
 read_input_port:
 ```python
+interrupt = sens.read_input_port(thr = 'Unset', mtime = 6, offset = 0.5)
 ```
-- in loop reading of input PINS and set _iport register which maintains changed values ( Set for reached threshold ) and ( Unset for losing threshold)
+in loop reading of input PINS and set _iport register which maintains changed values ( Set for reached threshold ) and ( Unset for losing threshold)
+
+*  mtime = max time of loop length in [seconds]
+*  offset = waiting time after catching first input threshold (waiting for multiple touching inputs) in [seconds]
+
+example:
+
+| PIN   | Name         | Status     | Note           |
+| ----- |:------------:|:----------:|:--------------:|
+|    2  | BUT_RIG_DWN  | Measure    |                |
+|    3  | BUT_RIG_UP   | Measure    |                |
+|    4  | BUT_LFT_DWN  | Threshold  | <- catched pin |
+|    5  | BUT_LFT_UP   | Measure    |                |
+
+```python
+ecomet.pca9557: INFO     PIN0: 2 : 3 : BUT_RIG_DWN
+ecomet.pca9557: INFO     PIN1: 3 : 3 : BUT_RIG_UP
+ecomet.pca9557: INFO     Loop:0 -> PIN4: BUT_LFT_DWN ... pushed
+ecomet.pca9557: INFO     PIN2: 4 : 4 : BUT_LFT_DWN
+ecomet.pca9557: INFO     PIN3: 5 : 3 : BUT_LFT_UP
+ecomet.pca9557: INFO     PIN4: 10 : 20 : X-------
+ecomet.pca9557: INFO     PIN5: 10 : 20 : X-------
+ecomet.pca9557: INFO     PIN6: 10 : 20 : X-------
+ecomet.pca9557: INFO     PIN7: 10 : 20 : X-------
+```
+
+
+**return value:** ```(<_iport>)```
+   *  array of values [<pin_number>,<pin_status>,<pin_name>]
+
 write_output_port:
 ```python
+write_output_port (status = <pin_output_status>, pin = <pin_name>)
+#example
+sens.write_output_port (status = pca9557.Low, pin = 'LED1')
 ```
-- write output value into output PIN and update _oport register ( Low for 0V ) and (High for 3.3 - 5V )
+write output value into output PIN and update _oport register ( Low for 0V ) and (High for 3.3 - 5V )
+*  status = pin output status 
+   *  Low = 0V
+   *  High = 3.3 - 5V
 
-
-
+**return value:** ```(<_oport>,<ret>)```
+*  array of values [<pin_number>,<pin_status>,<pin_name>]
+*  ret = 0 -> correct writing into register, ret > 0 -> issue during reading process
 
 port_display:
 
@@ -180,16 +251,81 @@ example:
 *  PIN3-5 buttons are not pushed, PIN5 check status 1->0
 *  PIN6 and PIN7 was not currently set and are off (Low value is difault value), status will change after writing new status in _oport
 
+
 output of test script:
 ```shell
-pi@raspberrypi:~/ecomet_i2c_raspberry_tools $ python3 ms5637_i2c_test.py
+pi@raspberrypi:~/ecomet_i2c_raspberry_tools $ python3 pca9557_i2c_test.py
 3.7.3 (default, Jan 22 2021, 20:04:44)
 [GCC 8.3.0]
-ecomet.ms5637: INFO     Start logging ...
-ecomet.ms5637: INFO     SW Reset correct
-ecomet.ms5637: INFO     Pressure =    1002.22 mbar
-ecomet.ms5637: INFO     Temperature in Celsius =      24.00 ℃
-ecomet.ms5637: INFO     Temperature in Fahrenheit =      75.19 F
+ecomet.pca9557: INFO     Start logging ...
+ecomet.pca9557: INFO     Show Ports:
+ecomet.pca9557: INFO     PIN0: LED1 : OUTPUT : 3
+ecomet.pca9557: INFO     PIN1: LED2 : OUTPUT : 3
+ecomet.pca9557: INFO     PIN2: BUT_RIG_DWN : INPUT : 2
+ecomet.pca9557: INFO     PIN3: BUT_RIG_UP : INPUT : 2
+ecomet.pca9557: INFO     PIN4: BUT_LFT_DWN : INPUT : 2
+ecomet.pca9557: INFO     PIN5: BUT_LFT_UP : INPUT : 2
+ecomet.pca9557: INFO     PIN6: DIS_RST : OUTPUT : 3
+ecomet.pca9557: INFO     PIN7: D/C : OUTPUT : 3
+ecomet.pca9557: INFO     Push 10 times any Button ....
+ecomet.pca9557: INFO     PIN0: 2 : 3 : BUT_RIG_DWN
+ecomet.pca9557: INFO     PIN1: 3 : 3 : BUT_RIG_UP
+ecomet.pca9557: INFO     Loop:0 -> PIN4: BUT_LFT_DWN ... pushed
+ecomet.pca9557: INFO     PIN2: 4 : 4 : BUT_LFT_DWN
+ecomet.pca9557: INFO     PIN3: 5 : 3 : BUT_LFT_UP
+ecomet.pca9557: INFO     PIN4: 10 : 20 : X-------
+ecomet.pca9557: INFO     PIN5: 10 : 20 : X-------
+ecomet.pca9557: INFO     PIN6: 10 : 20 : X-------
+ecomet.pca9557: INFO     PIN7: 10 : 20 : X-------
+ecomet.pca9557: INFO     Show Ports:
+ecomet.pca9557: INFO     PIN    Name            Status          Invert          Direction
+ecomet.pca9557: INFO     -----------------------------------------------------------------------------------------
+ecomet.pca9557: INFO     PIN0:  LED1 :          Init    :       NotApl :        OUTPUT
+ecomet.pca9557: INFO     PIN1:  LED2 :          Init    :       NotApl :        OUTPUT
+ecomet.pca9557: INFO     PIN2:  BUT_RIG_DWN :   Init    :       Normal :        INPUT
+ecomet.pca9557: INFO     PIN3:  BUT_RIG_UP :    Init    :       Normal :        INPUT
+ecomet.pca9557: INFO     PIN4:  BUT_LFT_DWN :   Thresh. :       Normal :        INPUT
+ecomet.pca9557: INFO     PIN5:  BUT_LFT_UP :    Init    :       Normal :        INPUT
+ecomet.pca9557: INFO     PIN6:  DIS_RST :       Init    :       NotApl :        OUTPUT
+ecomet.pca9557: INFO     PIN7:  D/C :           Init    :       NotApl :        OUTPUT
+ecomet.pca9557: INFO     Show Ports:
+ecomet.pca9557: INFO     PIN    Name            Status          Invert          Direction
+ecomet.pca9557: INFO     -----------------------------------------------------------------------------------------
+ecomet.pca9557: INFO     PIN0:  LED1 :          Low     :       NotApl :        OUTPUT
+ecomet.pca9557: INFO     PIN1:  LED2 :          High    :       NotApl :        OUTPUT
+ecomet.pca9557: INFO     PIN2:  BUT_RIG_DWN :   Init    :       Normal :        INPUT
+ecomet.pca9557: INFO     PIN3:  BUT_RIG_UP :    Init    :       Normal :        INPUT
+ecomet.pca9557: INFO     PIN4:  BUT_LFT_DWN :   Thresh. :       Normal :        INPUT
+ecomet.pca9557: INFO     PIN5:  BUT_LFT_UP :    Init    :       Normal :        INPUT
+ecomet.pca9557: INFO     PIN6:  DIS_RST :       Init    :       NotApl :        OUTPUT
+ecomet.pca9557: INFO     PIN7:  D/C :           Init    :       NotApl :        OUTPUT
+ecomet.pca9557: INFO     Show Ports:
+ecomet.pca9557: INFO     PIN    Name            Status          Invert          Direction
+ecomet.pca9557: INFO     -----------------------------------------------------------------------------------------
+ecomet.pca9557: INFO     PIN0:  LED1 :          High    :       NotApl :        OUTPUT
+ecomet.pca9557: INFO     PIN1:  LED2 :          Low     :       NotApl :        OUTPUT
+ecomet.pca9557: INFO     PIN2:  BUT_RIG_DWN :   Init    :       Normal :        INPUT
+ecomet.pca9557: INFO     PIN3:  BUT_RIG_UP :    Init    :       Normal :        INPUT
+ecomet.pca9557: INFO     PIN4:  BUT_LFT_DWN :   Thresh. :       Normal :        INPUT
+ecomet.pca9557: INFO     PIN5:  BUT_LFT_UP :    Init    :       Normal :        INPUT
+ecomet.pca9557: INFO     PIN6:  DIS_RST :       Init    :       NotApl :        OUTPUT
+ecomet.pca9557: INFO     PIN7:  D/C :           Init    :       NotApl :        OUTPUT
+ecomet.pca9557: INFO     Show Ports:
+ecomet.pca9557: INFO     PIN    Name            Status          Invert          Direction
+ecomet.pca9557: INFO     -----------------------------------------------------------------------------------------
+ecomet.pca9557: INFO     PIN0:  LED1 :          High    :       NotApl :        OUTPUT
+ecomet.pca9557: INFO     PIN1:  LED2 :          High    :       NotApl :        OUTPUT
+ecomet.pca9557: INFO     PIN2:  BUT_RIG_DWN :   Init    :       Normal :        INPUT
+ecomet.pca9557: INFO     PIN3:  BUT_RIG_UP :    Init    :       Normal :        INPUT
+ecomet.pca9557: INFO     PIN4:  BUT_LFT_DWN :   Thresh. :       Normal :        INPUT
+ecomet.pca9557: INFO     PIN5:  BUT_LFT_UP :    Init    :       Normal :        INPUT
+ecomet.pca9557: INFO     PIN6:  DIS_RST :       Init    :       NotApl :        OUTPUT
+ecomet.pca9557: INFO     PIN7:  D/C :           Init    :       NotApl :        OUTPUT
+R0 = 63
+R1 = 3
+R2 = 0
+R3 = 60
+
 ```
 
 **Note:** for more details look into pca9557_i2c_test.py
