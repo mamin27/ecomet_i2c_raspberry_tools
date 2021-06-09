@@ -1,6 +1,6 @@
-# pca9557_IIC python3 module
+# ssd1306_IIC python3 module
 
-**Last modification:** 1.06.2021
+**Last modification:** 11.06.2021 **(under construction)**
 
 ### List of python files: ###
 
