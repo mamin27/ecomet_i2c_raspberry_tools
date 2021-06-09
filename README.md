@@ -28,7 +28,7 @@ The Code for I2C Chip maintenance from **Raspberry PI 3+** and above. This code 
 * [HTU21D module](i2c_pkg/htu21_pkg/htu21_python_IIC.md) -> Digital Relative Humidity sensor with Temperature output, calculation of Dew Point
 * [MS5637 module](i2c_pkg/ms5637_pkg/ms5637_python.IIC.md) ->  Ultra-compact micro altimeter. Integrated digital pressure sensor (24 bit ΔΣ ADC), Operating range: 300 to 1200 mbar, -40 to +85 °C
 * [EMC2301 module](fpc/emc2301/emc2301_IIC.md) -> Fan controller with a PWM fan driver
-* [SSD1309 module](i2c_pkg/ssd1309_pkg/ssd1309_python.IIC.md) -> **!NEW!**. SSD1306 is a single-chip CMOS OLED/PLED driver with controller for organic / polymer light emitting
+* [SSD1306 module](i2c_pkg/ssd1306_pkg/ssd1306_python.IIC.md) -> **!NEW!**. SSD1306 is a single-chip CMOS OLED/PLED driver with controller for organic / polymer light emitting
 diode dot-matrix graphic display system.
 
 **Software for Chips:**
@@ -42,7 +42,7 @@ diode dot-matrix graphic display system.
 | HTU21D          |      yes        |    no    |                              | currently no GUI planned       |                               |
 | MS5637          |      yes        |    no    |                  | chip included in testing board      |
 | EMC2301         |      yes        |    yes   |                  | testing board developed soon info in wiki   |                               |
-| SSD1309         |      yes        |    no    | [!NEW!](i2c_pkg/ssd1309_pkg/ssd1309_python.IIC.md) Python driver documentation | chip included in testing board    |
+| SSD1306         |      yes        |    no    | [!NEW!](i2c_pkg/ssd1306_pkg/ssd1306_python.IIC.md) Python driver documentation | chip included in testing board    |
  
 **! NEW ! Alternative command for I2C chip detection**
 Here is alternative command to i2cdetect for detection of active I2C chips at I2C bus:
