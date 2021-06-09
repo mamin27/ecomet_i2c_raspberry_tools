@@ -1,6 +1,6 @@
 # ecomet_i2c_raspberry_tools
 
-**Last modification:** 2.06.2021
+**Last modification:** 10.06.2021
 **Contributor:** Marian Minar
 **Twitter:** [News and statuses](https://twitter.com/mminar7) **!NEW!**
 
@@ -15,18 +15,21 @@ The Code for I2C Chip maintenance from **Raspberry PI 3+** and above. This code 
   PCA9557
 * [Texas Instruments](https://www.ti.com/)
   HDC1080,PCA9557
-* [Measurement Specialties, TE Connectivity](https://www.te.com/) MS5637 **!NEW!**,HTU21D
+* [Measurement Specialties, TE Connectivity](https://www.te.com/) MS5637,HTU21D
 * [Microchip](https://ww1.microchip.com/downloads/en/DeviceDoc/2301.pdf) EMC2301
+* [Solomon Systech](https://www.solomon-systech.com/) **!NEW!** SSD1309
 
 **List of modules:**
 
 * [EEPROM module](i2c_pkg/eeprom_pkg/documentation/eeprom_IIC.md)
-* [PCA9557 module](i2c_pkg/pca9557_pkg/pca9557_python.IIC.md) -> **!NEW** Remote8-Bit I2C and SMBusLow-PowerI/O ExpanderWith Reset andConfigurationRegisters
+* [PCA9557 module](i2c_pkg/pca9557_pkg/pca9557_python.IIC.md) -> **!NEW!** Remote8-Bit I2C and SMBusLow-PowerI/O ExpanderWith Reset andConfigurationRegisters
 * [PCA9632 module](fpc/pca9632/pca9632_IIC.md) -> 4-bit Fm+ I2C-bus low power LED driver (could be used for motor control)
 * [HDC1080 module](fpc/hdc1080/hdc1080_IIC.md) -> High Accuracy Digital Humidity Sensor with Temperature Sensor
 * [HTU21D module](i2c_pkg/htu21_pkg/htu21_python_IIC.md) -> Digital Relative Humidity sensor with Temperature output, calculation of Dew Point
-* [MS5637 module](i2c_pkg/ms5637_pkg/ms5637_python.IIC.md) ->  **!NEW**. Ultra-compact micro altimeter. Integrated digital pressure sensor (24 bit ΔΣ ADC), Operating range: 300 to 1200 mbar, -40 to +85 °C
+* [MS5637 module](i2c_pkg/ms5637_pkg/ms5637_python.IIC.md) ->  Ultra-compact micro altimeter. Integrated digital pressure sensor (24 bit ΔΣ ADC), Operating range: 300 to 1200 mbar, -40 to +85 °C
 * [EMC2301 module](fpc/emc2301/emc2301_IIC.md) -> Fan controller with a PWM fan driver
+* [SSD1309 module](i2c_pkg/ssd1309_pkg/ssd1309_python.IIC.md) -> **!NEW!**. SSD1306 is a single-chip CMOS OLED/PLED driver with controller for organic / polymer light emitting
+diode dot-matrix graphic display system.
 
 **Software for Chips:**
 
@@ -37,8 +40,9 @@ The Code for I2C Chip maintenance from **Raspberry PI 3+** and above. This code 
 | PCA9632         |      yes        |    yes   |                  | testing board developed soon info in wiki                               |                               |
 | HDC1080         |      yes        |    yes   |                  | testing board developed soon info in wiki   |                               |
 | HTU21D          |      yes        |    no    |                              | currently no GUI planned       |                               |
-| MS5637          |      yes        |    no    | [!NEW!](i2c_pkg/ms5637_pkg/ms5637_python.IIC.md) Python driver documentation | chip included in testing board      |
+| MS5637          |      yes        |    no    |                  | chip included in testing board      |
 | EMC2301         |      yes        |    yes   |                  | testing board developed soon info in wiki   |                               |
+| SSD1309         |      yes        |    no    | [!NEW!](i2c_pkg/ssd1309_pkg/ssd1309_python.IIC.md) Python driver documentation | chip included in testing board    |
  
 **! NEW ! Alternative command for I2C chip detection**
 Here is alternative command to i2cdetect for detection of active I2C chips at I2C bus:
