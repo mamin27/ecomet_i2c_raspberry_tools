@@ -29,23 +29,75 @@ class SSD1306(object):
     def sw_reset (self) :
         ret = 0
         try:
-            self.write_register('REGISTER1', value = 0)
-            self.write_register('REGISTER2', value = 0)
-            self.write_register('REGISTER3', value = 255)
+            self.set_command (register = self._const.DISPLAY_OFF)
+            self.width = 128
+            self.height = 64
+            self.pages = int(self.height / 8)
+            self.set_command (register = self._const.SET_DISPLAY_CLOCK, value = 0x80 )
+            self.set_command (register = self._const.SET_MULTIPLEX_RATION, value = 0x3F )
+            self.set_command (register = self._const.SET_DISPLAY_OFFSET, value = 0x00 )
+            self.set_command (register = self._const.SET_COLUMN_LO, value = 0x00 )
+            self.set_command (register = self._const.SET_COLUMN_HI, value = 0x00 )
+            self.set_command (register = self._const.SET_PAGE_ADDR, value = 0 )
+            self.set_command (register = self._const.SET_COLUMN_ADDRESS, value = 0, value2 = 127 )
+            self.set_command (register = self._const.SET_SEGM_REMAP_0 )
+            self.set_command (register = self._const.SET_VERTICAL_SCROLL, value = 0x00, value2 = 0x40)
+            self.set_command (register = self._const.SET_START_LINE, value = 0x00 )
+            self.set_command (register = self._const.CHARGEPUMP, value = 0x14 )
+            self.set_command (register = self._const.SET_MEMORY_MODE, value = 0x00 )  #0x02
+            self.set_command (register = self._const.SET_REMAP_LEFT )
+            self.set_command (register = self._const.SET_OUTPUT_SCAN_UP)
+            self.set_command (register = self._const.SET_HW_CONF_MODE, value = 0x12 )
+            self.set_command (register = self._const.SET_CONTRAST, value = 0x7F )
+            self.set_command (register = self._const.SET_CHARGE_PERIOD, value = 0x22 )
+            self.set_command (register = self._const.SET_VCOM, value = 0x20 )
+            self.set_command (register = self._const.SET_ENTIRE_DISP )
+            self.set_command (register = self._const.SET_NORMAL_DISP ) 
+            self.set_command (register = self._const.DISPLAY_ON )
         except :
             ret = ret + 1
             self._logger.debug('write error')
         from time import sleep
         sleep(0.1) # wait for done sw reset
         return ret
-    def set_command (self, register, value = None, pointer = None) :
+    def setup (self) :
+        ret = 0
+        try:
+            self.set_command (register = self._const.DISPLAY_OFF)
+            self.width = 128
+            self.height = 64
+            self.pages = int(self.height / 8)
+            self.set_command (register = self._const.SET_DISPLAY_CLOCK, value = 0x80 )
+            self.set_command (register = self._const.SET_MULTIPLEX_RATION, value = 0x3F )
+            self.set_command (register = self._const.SET_DISPLAY_OFFSET, value = 0x00 )
+            self.set_command (register = self._const.SET_START_LINE, value = 0x00 )
+            self.set_command (register = self._const.CHARGEPUMP, value = 0x14 )
+            self.set_command (register = self._const.SET_MEMORY_MODE, value = 0x00 )
+            self.set_command (register = self._const.SET_REMAP_LEFT )
+            self.set_command (register = self._const.SET_OUTPUT_SCAN_UP )
+            self.set_command (register = self._const.SET_HW_CONF_MODE, value = 0x12 )
+            self.set_command (register = self._const.SET_CONTRAST, value = 0x7F )
+            self.set_command (register = self._const.SET_CHARGE_PERIOD, value = 0xF1 )
+            self.set_command (register = self._const.SET_VCOM, value = 0x20 )
+            self.set_command (register = self._const.SET_ENTIRE_DISP )
+            self.set_command (register = self._const.SET_NORMAL_DISP )
+            self.set_command (register = self._const.DISPLAY_ON )
+        except :
+            ret = ret + 1
+            self._logger.debug('write error')
+        from time import sleep
+        sleep(0.1) # wait for done sw reset
+        return ret
+    def set_command (self, register, value = None, value2 = None) :
         ret = 0
         if register in [self._const.SET_REMAP_RIGHT,self._const.SET_REMAP_LEFT,
-                        self._const.SET_ENTIRE_DISP_ON,self._const.SET_ENTIRE_DISP_OFF,
+                        self._const.SET_ENTIRE_DISP,self._const.SET_ENTIRE_DISP_IGN,
                         self._const.SET_NORMAL_DISP,self._const.SET_REVERSE_DISP,
                         self._const.SET_REVERSE_DISP,
                         self._const.DATA_DC_DC_OFF,self._const.DATA_DC_DC_ON,
-                        self._const.DISPLAY_OFF,self._const.DISPLAY_ON
+                        self._const.DISPLAY_OFF,self._const.DISPLAY_ON,
+                        self._const.SET_SEGM_REMAP_0,self._const.SET_SEGM_REMAP_127,
+                        self._const.SET_OUTPUT_SCAN_UP,self._const.SET_OUTPUT_SCAN_DOWN,
                         ] :
            try :
               self._device.writeList(self.cmd_mode,list([register]))
@@ -59,20 +111,31 @@ class SSD1306(object):
                           self._const.SET_DISPLAY_CLOCK,
                           self._const.SET_CHARGE_PERIOD,
                           self._const.SET_HW_CONF_MODE,
-                          self._const.SET_VCOM,
+                          self._const.SET_VCOM
                          ] :
            try :
                self._device.writeList(self.cmd_mode,list([register, value]))
            except :
                ret += 1
-        elif register in [self._const.SET_COLUMN_ADDRESS,
+        elif register in [self._const.SET_COLUMN_LO,
+                          self._const.SET_COLUMN_HI,
+                          self._const.SET_START_LINE,
                           self._const.SET_PAGE_ADDR,
-           
+                          self._const.SET_MEMORY_MODE] :
+           if value > 63 or ( value > 7 and register == self._conf_SET_PAGE_ADDR ) :
+               ret += 2
+           else :
+               register = register + value
+               try :
+                  self._device.writeList(self.cmd_mode,list([register]))
+               except :
+                  ret += 1
+        elif register in [self._const.SET_COLUMN_ADDRESS,
+                          self._const.SET_VERTICAL_SCROLL
                          ] :
-           bit_list = [value,pointer]
-           byt_reg = bytearray(bit_list)
+           bit_list = [register,value,value2]
            try :
-               self._device.writeList(register,byt_reg);
+               self._device.writeList(self.cmd_mode,list(bit_list));
            except :
                ret += 1
         if ret > 0 :
