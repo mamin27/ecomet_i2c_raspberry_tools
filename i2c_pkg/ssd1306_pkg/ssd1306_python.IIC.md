@@ -140,6 +140,6 @@ pi@raspberrypi:~/ecomet_i2c_raspberry_tools $ python3 ssd1306_i2c_test.py
 ```
 
 video from running script:
-[![ssd1309 test sequence]({./ssd1309_display.png})]({https://github.com/mamin27/ecomet_i2c_raspberry_tools/blob/master/i2c_pkg/ssd1306_pkg/zoom_display.mkv} "ssd1309 display")
+[![ssd1309 test sequence](ssd1309_display.png)](zoom_display.mkv "ssd1309 display")
 
 **Note:** for more details look into ssd1306_i2c_test.py
