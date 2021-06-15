@@ -139,4 +139,7 @@ pi@raspberrypi:~/ecomet_i2c_raspberry_tools $ python3 ssd1306_i2c_test.py
 [GCC 8.3.0]
 ```
 
+video from running script:
+[![ssd1309 test sequence]({image-url})]({https://github.com/mamin27/ecomet_i2c_raspberry_tools/blob/master/i2c_pkg/ssd1306_pkg/zoom_display.mkv} "ssd1309 display")
+
 **Note:** for more details look into ssd1306_i2c_test.py
