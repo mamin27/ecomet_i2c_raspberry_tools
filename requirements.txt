@@ -11,3 +11,4 @@ RPi.GPIO
 randrange
 sys
 os
+pil
