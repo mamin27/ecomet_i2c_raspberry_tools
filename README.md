@@ -1,6 +1,6 @@
 # ecomet_i2c_raspberry_tools
 
-**Last modification:** 18.06.2021
+**Last modification:** 21.06.2021
 **Contributor:** Marian Minar
 **Twitter:** [News and statuses](https://twitter.com/mminar7)
 
@@ -37,14 +37,14 @@ diode dot-matrix graphic display system.
 
 | Chip            | Python 3 driver | FPC GUI  | Hardware Board | Contributor Notes            | Planned work                   | Requestor Interests           |
 | --------------- |:---------------:|:--------:|:--------------:|:----------------------------:|:------------------------------:|:-----------------------------:|
-| EEPROM 24cXXX   |      yes        |    no    |[DISP01](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_display_current_board)| currently tested at 24c01,24c04,24c08,24c16,24c32,24c64                  | prepared next chips for testing                      |                               |
-| PCA9557         |      yes        |    no    |[DISP01](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_display_current_board/_edit)|  [!NEW!](i2c_pkg/pca9557_pkg/pca9557_python.IIC.md) Python driver documentation | chip was tested at testing board           |
-| PCA9632         |      yes        |    yes   |                  | testing board developed soon info in wiki                               |                               |
-| HDC1080         |      yes        |    yes   |                  | testing board developed soon info in wiki   |                               |
-| HTU21D          |      yes        |    no    |                              | currently no GUI planned       |                               |
-| MS5637          |      yes        |    no    |                  | chip included in testing board      |
-| EMC2301         |      yes        |    yes   |                  | testing board developed soon info in wiki   |                               |
-| SSD1306         |      yes        |    no    |[DISP01](wiki/_display_current_board) |[!NEW!](i2c_pkg/ssd1306_pkg/ssd1306_python.IIC.md) Python driver documentation | chip included in testing board    |
+| EEPROM 24cXXX   |[yes](i2c_pkg/eeprom_pkg/documentation/eeprom_IIC.md)|    no    |[I01](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_display_current_board),[I02](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_fan_board),[I03](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_temp_hmd_board),[I04](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_temp_hmd_pressure_board)| currently tested at 24c01,24c04,24c08,24c16,24c32,24c64                  | prepared next chips for testing                      |                               |
+| PCA9557         |[yes](i2c_pkg/pca9557_pkg/pca9557_python.IIC.md)|    no    |[I01](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_display_current_board)|  [!NEW!](i2c_pkg/pca9557_pkg/pca9557_python.IIC.md) Python driver documentation |            |
+| PCA9632         |[yes](i2c_pkg/pca9632/pca9632_python_IIc.md)|[yes](fpc/pca9632/pca9632_IIC.md)|[I04](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_temp_hmd_pressure_board)|                  |                               |                               |
+| HDC1080         |[yes](i2c_pkg/hdc1080_pkg/hdc1080_python_IIC.md)|[yes](fpc/hdc1080/hdc1080_IIC.md)|[I03](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_temp_hmd_board),[I04](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_temp_hmd_pressure_board)|                  |    |                               |
+| HTU21D          |[yes](i2c_pkg/htu21_pkg/htu21_python_IIC.md)|    no    |[I03](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_temp_hmd_board),[I04](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_temp_hmd_pressure_board)|                              |       |                               |
+| MS5637          |[yes](i2c_pkg/ms5637_pkg/ms5637_python.IIC.md)|    no    |[I04](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_temp_hmd_pressure_board)|                  |      |
+| EMC2301         |      yes        |[yes](fpc/emc2301/emc2301_IIC.md)|[I02](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_fan_board)|                  |    |  add EMC2302-05 chips in design                             |
+| SSD1306         |[yes](i2c_pkg/ssd1306_pkg/ssd1306_python.IIC.md)|    no    |[I01](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_display_current_board) |[!NEW!](i2c_pkg/ssd1306_pkg/ssd1306_python.IIC.md) Python driver documentation |     |
  
 **! NEW ! Alternative command for I2C chip detection**
 Here is alternative command to i2cdetect for detection of active I2C chips at I2C bus:
