@@ -1,6 +1,7 @@
 from __future__ import division
 import logging
 import re
+import Adafruit_PureIO
 
 # Platform identification constants.
 plat_list = { 0 : 'UNKONWN',
@@ -10,7 +11,7 @@ plat_list = { 0 : 'UNKONWN',
               4 : 'JETSON_NANO',
         }
 
-class Borad_plat(object):
+class Board_plat(object):
 
    def __init__(self, address=None, busnum=None, i2c=None, **kwargs) :
         # Setup I2C interface for the device.

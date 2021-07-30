@@ -111,10 +111,13 @@ def pi_version():
         match2 = re.search('^Raspberry\s+Pi\s+(.+)(Rev.+)$', match.group(1),
                        flags=re.MULTILINE | re.IGNORECASE)
         match3 = re.sub(r'\s*$','',match2.group(1))
-        revision = re.search('^.+\.(\d+)$',match2.group(2), re.IGNORECASE)
+        revision = re.search('^.\.|\s+(\d+)$',match2.group(2), re.IGNORECASE)
+        if match3.upper() == 'MODEL B' : # Raspberry Pi Model B Rev 2
+          if revision :
+            return ' 1B' + '.' + str(revision.group(1))
         if match3.upper() == '3 MODULE B PLUS' :
           if revision :
-            return ' 3' + '.' + str(revision.group(1))
+            return ' 3B' + '.' + str(revision.group(1))
           return ' 3'
         elif match3.upper() == 'COMPUTE MODULE 4' :
           if revision :
@@ -125,3 +128,4 @@ def pi_version():
     else:
         # Something else, not a pi.
         return None
+	

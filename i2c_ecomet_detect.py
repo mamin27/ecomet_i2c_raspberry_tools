@@ -7,18 +7,22 @@ from  i2c_pkg.platform_pkg import i2c_platform
 import logging
 
 i2c_count = [ '^RASPBERRY_PI 1\..*$',
+              '^RASPBERRY_PI 1B\..*$',
               '^RASPBERRY_PI 2\..*$',
               '^RASPBERRY_PI 3\..*$',
+              '^RASPBERRY_PI 3B\..*$',
               '^RASPBERRY_PI_\(CM4\).*$' ,
               '^OTHER$' ]
 
 i2c_count_max = [ 2,
                   2,
                   2,
+                  2,
+                  2,
                   11,
                   21 ]
 
-plat = i2c_platform.Borad_plat(busnum=0)
+plat = i2c_platform.Board_plat(busnum=0)
 
 logging.basicConfig(level=logging.INFO,  # change level looging to (INFO, DEBUG, ERROR)
                     format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
@@ -45,7 +49,7 @@ for match_str in i2c_count :
 plat._logger.info('Number of I2C buses at the board: {}'.format(max))
 
 for bus_nm in range(0,max) :
-  plat = i2c_platform.Borad_plat(busnum=bus_nm)
+  plat = i2c_platform.Board_plat(busnum=bus_nm)
   board = plat.board()
   bus = plat.bus()
   slave = plat.slaves()
