@@ -21,6 +21,11 @@
 Install Lazarus-ide at raspberry [FPC & Lazarus Installation](../lazarus.md)
 Install Python3 and next modules for pca9632 [Python3 & modules](../../i2c_pkg/pca9632_pkg/pca_9632_python_IIC.md)
 
+(optional when you have only lite linux version)
+```console
+sudo apt-get install gtk2-engines libgtk2.0-dev
+```
+
 ### Run application: ###
 ```console
 ecomet_i2c_tools/pca_9632
