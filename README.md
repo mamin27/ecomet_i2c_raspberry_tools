@@ -7,7 +7,8 @@
 **[Wiki:](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki)** Let's see Wiki for these who would like to buy prototypes boards. Each day will be something added. **!NEW!**
 
 **Scope:**
-The Code for I2C Chip maintenance from **Raspberry PI 3+** and above. This code tools contains python & free pascal code focused to I2C communication of raspberry pi with IOT modules.
+The Code for I2C Chip maintenance from **Raspberry PI 1B+** and above. This code tools contains python & free pascal code focused to I2C communication of raspberry pi with IOT modules.
+* tested at Raspberry PI 1B+, 3B+, 4CM, 4B+
 
 **Current CHIP maintained:**
 * EEPROM Chip
