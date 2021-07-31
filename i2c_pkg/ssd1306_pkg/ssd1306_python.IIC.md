@@ -24,6 +24,12 @@ The SSD1306 OLED/PLED dot-matrix display IC's. 128x64 dots.
 file under MIT License, Copyright (c) 2019 Vincent Studio
 library for rendering image in virtual canvas in defined size
 * used PIL library and feature Image, ImageDraw
+* used qrcode library for qrcode generation
+```console
+sudo pip3 install pillow
+sudo pip3 install qrcode
+sudo apt-get install libopenjp2-7-dev
+```
 
 ### How to call python sub? ###
 
