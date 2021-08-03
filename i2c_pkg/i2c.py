@@ -26,6 +26,7 @@
 
 import logging
 import subprocess
+import binascii
 
 import i2c_pkg.Platform as Platform
 
@@ -133,12 +134,67 @@ class Device(object):
         self._logger.debug("Wrote to register 0x%02X: %s",
                      register, data)
 
+    def write_then_readinto(self, out_buffer, in_buffer, out_start=0, out_end=None, in_start=0, in_end=None):
+        if out_end is None:
+            out_end = len(out_buffer)
+        if in_end is None:
+            in_end = len(in_buffer)
+        self.writeto_then_readfrom(
+            out_buffer,
+            in_buffer,
+            out_start=out_start,
+            out_end=out_end,
+            in_start=in_start,
+            in_end=in_end,
+        )
+
+    def writeto_then_readfrom(
+        self,
+        buffer_out,
+        buffer_in,
+        out_start=0,  #1
+        out_end=None,
+        in_start=0,   #1
+        in_end=None,
+        stop=False,
+    ):
+        """Write data from buffer_out to an address and then read data from an address and into buffer_in """
+        if out_end is None:
+            out_end = len(buffer_out)
+        if in_end is None:
+            in_end = len(buffer_in)
+        if stop:
+            self.writeto(buffer_out, start=out_start, end=out_end, stop=True)
+            self.readfrom_into(buffer_in, start=in_start, end=in_end)
+        else:
+            readin = self.readList(buffer_out[0], in_end - in_start)
+            for i in range(in_end - in_start):
+                buffer_in[i + in_start] = readin[i]
+            self._logger.debug("Read from register 0x%02X: %s" ,buffer_in[0], binascii.hexlify(buffer_in[1:]))
+
+    def writeto(self, buffer, *, start=0, end=None, stop=True):
+        """Write data from the buffer to an address"""
+        if end is None:
+            end = len(buffer)
+        self._logger.info(buffer)
+        self.writeList(buffer[0],buffer[1,])
+        self._logger.debug("Write to register 0x%02X: %s" ,buffer[0], binascii.hexlify(buffer[1:]))
+
+    def readfrom_into(self, buffer, *, start=0, end=None, stop=True):
+        """Read data from an address and into the buffer"""
+        if end is None:
+            end = len(buffer)
+        readin = self.readList(buffer[0], end - start)
+        for i in range(end - start):
+            buffer[i + start] = readin[i]
+        self._logger.debug("Read from register 0x%02X: %s" ,buffer[0], binascii.hexlify(buffer[1:]))
+
     def readList(self, register, length):
         """Read a length number of bytes from the specified register.  Results
         will be returned as a bytearray."""
         results = self._bus.read_i2c_block_data(self._address, register, length)
         self._logger.debug("Read the following from register 0x%02X: %s",
-                     register, results)
+                     register, binascii.hexlify(results))
         return results
 
     def readRaw8(self):
