@@ -107,20 +107,20 @@ class INA260(object):
         self.lowest_bit = 0
         self.buffer = {}
         self.buffer[0] = self._const.REG_CONFIG
+        self.measure_buffer_voltage = {}
+        self.measure_buffer_current = {}
+        self.measure_buffer_power = {}
         self.lsb_first = True
         self.sign_bit = False
 
         self.format = '>H'
 
-        #logging.basicConfig(level=logging.DEBUG)
         _raw_current = self.unaryStruct_get (self._const.REG_CURRENT, '>h')
         self._logger.info("Current %s mA",self.current_conversion(_raw_current,'mA'))
-        #logging.basicConfig(level=logging.INFO)
-        #from time import sleep
-        #sleep(0.5)
         _raw_voltage = self.unaryStruct_get (self._const.REG_BUSVOLTAGE, ">H")
         self._logger.info("Voltage %s V",self.voltage_conversion(_raw_voltage,'V'))
-        #_raw_power = self.unaryStruct_get (self._const.REG_POWER, ">H")
+        _raw_power = self.unaryStruct_get (self._const.REG_POWER, ">H")
+        self._logger.info("Power %s W",self.power_conversion(_raw_power,'W'))
         self.setup()
 
     def sw_reset (self) :
@@ -143,10 +143,10 @@ class INA260(object):
         alert_latch_enable = self.bit_get(self._const.REG_MASK_ENABLE, 0, 2, False)
         reset_bit = self.bit_get(self._const.REG_CONFIG, 15, 2, False)
 
-        averaging_count = self.bits_get(3, self._const.REG_CONFIG, 9, 2, False)
-        voltage_conversion_time = self.bits_get(3, self._const.REG_CONFIG, 6, 2, False)
-        current_conversion_time = self.bits_get(3, self._const.REG_CONFIG, 3, 2, False)
-        mode = self.bits_get(3, self._const.REG_CONFIG, 0, 2, False)
+        self.averaging_count = self.bits_get(3, self._const.REG_CONFIG, 9, 2, False)
+        self.voltage_conversion_time = self.bits_get(3, self._const.REG_CONFIG, 6, 2, False)
+        self.current_conversion_time = self.bits_get(3, self._const.REG_CONFIG, 3, 2, False)
+        self.mode = self.bits_get(3, self._const.REG_CONFIG, 0, 2, False)
         mask_enable = self.bits_get(16, self._const.REG_MASK_ENABLE, 0, 2, False)
         alert_limit = self.bits_get(16, self._const.REG_ALERT_LIMIT, 0, 2, False)
 
@@ -165,11 +165,18 @@ class INA260(object):
            result = (current * 1.25)/1000
         return result
 
-    def voltage_conversion (self, current, unit) :
+    def voltage_conversion (self, voltage, unit) :
         if unit == 'mV' :
-           result = current * 1.25
+           result = voltage * 1.25
         elif unit == 'V' :
-           result = (current * 1.25)/1000
+           result = (voltage * 1.25)/1000
+        return result
+
+    def power_conversion (self, power, unit) :
+        if unit == 'mW' :
+           result = power * 1.25
+        elif unit == 'W' :
+           result = (power * 1.25)/1000
         return result
 
     def bit_init (self, register, bit, register_width=1, lsb_first=True):
@@ -280,10 +287,58 @@ class INA260(object):
 
     def write_funct (self, function, value):
         if function == 'VBUSCT' :
-          return self.bits_set(3, self._const.REG_CONFIG, 6, 2, False, value=value)
+          self.voltage_conversion_time = self.bits_set(3, self._const.REG_CONFIG, 6, 2, False, value=value)
+          return self.voltage_conversion_time
         elif function == 'ISHCT' :
-          return self.bits_set(3, self._const.REG_CONFIG, 3, 2, False, value=value)
+          self.current_conversion_time = self.bits_set(3, self._const.REG_CONFIG, 3, 2, False, value=value)
+          return self.current_conversion_time
         elif function == 'AVGC' :
-          return self.bits_set(3, self._const.REG_CONFIG, 9, 2, False, value=value)
+          self.averaging_count = self.bits_set(3, self._const.REG_CONFIG, 9, 2, False, value=value)
+          return self.averaging_count
         elif function == 'MODE' :
-          return self.bits_set(3, self._const.REG_CONFIG, 0, 2, False, value=value)
+          self.mode = self.bits_set(3, self._const.REG_CONFIG, 0, 2, False, value=value)
+          return self.mode
+
+    def read_funct (self, function):
+        if function == 'VBUSCT' :
+          self.voltage_conversion_time = self.bits_get(3, self._const.REG_CONFIG, 6, 2, False)
+          return self.voltage_conversion_time
+        elif function == 'ISHCT' :
+          self.current_conversion_time = self.bits_get(3, self._const.REG_CONFIG, 3, 2, False)
+          return self.current_conversion_time
+        elif function == 'AVGC' :
+          self.averaging_count = self.bits_get(3, self._const.REG_CONFIG, 9, 2, False)
+          return self.averaging_count
+        elif function == 'MODE' :
+          self.mode = self.bits_get(3, self._const.REG_CONFIG, 0, 2, False)
+          return self.mode
+        elif function == 'VOLTAGE' :
+          self._raw_voltage = self.unaryStruct_get(self._const.REG_BUSVOLTAGE, ">H")
+          return self._raw_voltage
+        elif function == 'CURRENT' :
+          self._raw_current = self.unaryStruct_get (self._const.REG_CURRENT, '>h')
+          return self._raw_current
+
+    def measure_voltage (self, stime = 1):
+        self.measure_buffer_voltage = {}
+        size = 0
+        from time import time,sleep
+        t_start = time()
+        while (time() - t_start) <= stime :
+           while not(self.bit_get(self._const.REG_MASK_ENABLE, 3, 2, False)) :  # wait for CVRF
+              sleep(0.001)
+           self.measure_buffer_voltage[size] = self.voltage_conversion(self.read_funct('VOLTAGE'),'V')
+           size += 1
+        return (size,self.measure_buffer_voltage)
+
+    def measure_current (self, stime = 1):
+        self.measure_buffer_voltage = {}
+        size = 0
+        from time import time,sleep
+        t_start = time()
+        while (time() - t_start) <= stime :
+           while not(self.bit_get(self._const.REG_MASK_ENABLE, 3, 2, False)) :  # wait for CVRF
+              sleep(0.001)
+           self.measure_buffer_voltage[size] = self.current_conversion(self.read_funct('CURRENT'),'mA')
+           size += 1
+        return (size,self.measure_buffer_voltage)
