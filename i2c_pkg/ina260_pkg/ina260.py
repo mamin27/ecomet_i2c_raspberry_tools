@@ -116,11 +116,11 @@ class INA260(object):
         self.format = '>H'
 
         _raw_current = self.unaryStruct_get (self._const.REG_CURRENT, '>h')
-        self._logger.info("Current %s mA",self.current_conversion(_raw_current,'mA'))
+        self._logger.debug("Current %s mA",self.current_conversion(_raw_current,'mA'))
         _raw_voltage = self.unaryStruct_get (self._const.REG_BUSVOLTAGE, ">H")
-        self._logger.info("Voltage %s V",self.voltage_conversion(_raw_voltage,'V'))
+        self._logger.debug("Voltage %s V",self.voltage_conversion(_raw_voltage,'V'))
         _raw_power = self.unaryStruct_get (self._const.REG_POWER, ">H")
-        self._logger.info("Power %s W",self.power_conversion(_raw_power,'W'))
+        self._logger.debug("Power %s W",self.power_conversion(_raw_power,'W'))
         self.setup()
 
     def sw_reset (self) :
