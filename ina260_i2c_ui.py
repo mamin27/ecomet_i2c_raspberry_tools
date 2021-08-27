@@ -34,8 +34,8 @@ buf_current_1 = {}
 buf_voltage_2 = {}
 buf_current_2 = {}
 
-chip0 = ina260_ui.INA260_UI(chip = 0, time = 1)
-chip1 = ina260_ui.INA260_UI(chip = 1, time = 1)
+chip0 = ina260_ui.INA260_UI(chip = 0, time = 0.01)
+chip1 = ina260_ui.INA260_UI(chip = 1, time = 0.01)
 
 while True:
    newpid = os.fork()
@@ -43,29 +43,33 @@ while True:
       child()
    else:
       chip0._logger.debug("parent0: %d" % os.getpid())
-      ((size_current_1,buf_current_1),(size_voltage_1,buf_voltage_1)) = chip0.measure_ui()
+      ((size_current_1,unit_current_1,buf_current_1),(size_voltage_1,unit_voltage_1,buf_voltage_1)) = chip0.measure_ui()
       os.waitid(os.P_PID,newpid,os.WEXITED)
       break
 fd = open('ina_chip','rb')
-((size_current_2,buf_current_2),(size_voltage_2,buf_voltage_2)) = pickle.load(fd)
+((size_current_2,unit_current_2,buf_current_2),(size_voltage_2,unit_voltage_2,buf_voltage_2)) = pickle.load(fd)
 fd.close()
 os.remove('ina_chip')
 
 chip0._logger.info("Measure Current 0")
 chip0._logger.info("Size: %s", size_current_1)
 chip0._logger.info("Buff: %s", buf_current_1)
+chip0._logger.info("Unit: %s", unit_current_1)
 
 chip0._logger.info("Measure Voltage 0")
 chip0._logger.info("Size: %s", size_voltage_1)
 chip0._logger.info("Buff: %s", buf_voltage_1)
+chip0._logger.info("Unit: %s", unit_voltage_1)
 
 chip0._logger.info("Measure Current 1")
 chip0._logger.info("Size: %s", size_current_2)
 chip0._logger.info("Buff: %s", buf_current_2)
+chip0._logger.info("Unit: %s", unit_current_2)
 
 chip0._logger.info("Measure Voltage 1")
 chip0._logger.info("Size: %s", size_voltage_2)
 chip0._logger.info("Buff: %s", buf_voltage_2)
+chip0._logger.info("Unit: %s", unit_voltage_2)
 
 data = {'current_size_1' : size_current_1,
         'buf_current_1' : buf_current_1,

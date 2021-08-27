@@ -12,12 +12,13 @@ class INA260_UI(object):
     def __init__(self, chip=0, time = 1, **kwargs) :
        self._logger = logging.getLogger(__name__)
        if chip == 0 :
-          self._address = ina260_constant.INA260_ADDRESS1
+          self._address = ina260_constant.INA260_ADDRESS1 
           _mconst = ina260_ui_constant.set_measure_0
        elif chip == 1 :
           self._address = ina260_constant.INA260_ADDRESS2
-          _mconst = ina260_ui_constant.set_measure_0
-       _ina = ina260.INA260()
+          _mconst = ina260_ui_constant.set_measure_1
+       _ina = ina260.INA260(address=self._address)
+       self._logger.debug("address: %d" % self._address)
        self._ina = _ina
        self._measure_avgc = _ina.write_funct('AVGC', value = _mconst.AVGC)
        self._measure_ishct = _ina.write_funct('ISHCT', value = _mconst.ISHCT)

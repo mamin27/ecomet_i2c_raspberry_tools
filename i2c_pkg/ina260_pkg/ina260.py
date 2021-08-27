@@ -116,11 +116,11 @@ class INA260(object):
         self.format = '>H'
 
         _raw_current = self.unaryStruct_get (self._const.REG_CURRENT, '>h')
-        self._logger.debug("Current %s mA",self.current_conversion(_raw_current,'mA'))
+        self._logger.debug("Current %s mA",self.current_conversion(_raw_current, unit = 'mA'))
         _raw_voltage = self.unaryStruct_get (self._const.REG_BUSVOLTAGE, ">H")
-        self._logger.debug("Voltage %s V",self.voltage_conversion(_raw_voltage,'V'))
+        self._logger.debug("Voltage %s V",self.voltage_conversion(_raw_voltage, unit = 'V'))
         _raw_power = self.unaryStruct_get (self._const.REG_POWER, ">H")
-        self._logger.debug("Power %s W",self.power_conversion(_raw_power,'W'))
+        self._logger.debug("Power %s W",self.power_conversion(_raw_power, unit = 'W'))
         self.setup()
 
     def sw_reset (self) :
@@ -319,7 +319,7 @@ class INA260(object):
           self._raw_current = self.unaryStruct_get (self._const.REG_CURRENT, '>h')
           return self._raw_current
 
-    def measure_voltage (self, stime = 1):
+    def measure_voltage (self, stime = 1, unit = 'V'):
         self.measure_buffer_voltage = {}
         size = 0
         from time import time,sleep
@@ -327,11 +327,11 @@ class INA260(object):
         while (time() - t_start) <= stime :
            while not(self.bit_get(self._const.REG_MASK_ENABLE, 3, 2, False)) :  # wait for CVRF
               sleep(0.001)
-           self.measure_buffer_voltage[size] = self.voltage_conversion(self.read_funct('VOLTAGE'),'V')
+           self.measure_buffer_voltage[size] = self.voltage_conversion(self.read_funct('VOLTAGE'),unit)
            size += 1
-        return (size,self.measure_buffer_voltage)
+        return (size,unit,self.measure_buffer_voltage)
 
-    def measure_current (self, stime = 1):
+    def measure_current (self, stime = 1, unit = 'mA'):
         self.measure_buffer_voltage = {}
         size = 0
         from time import time,sleep
@@ -339,6 +339,6 @@ class INA260(object):
         while (time() - t_start) <= stime :
            while not(self.bit_get(self._const.REG_MASK_ENABLE, 3, 2, False)) :  # wait for CVRF
               sleep(0.001)
-           self.measure_buffer_voltage[size] = self.current_conversion(self.read_funct('CURRENT'),'mA')
+           self.measure_buffer_voltage[size] = self.current_conversion(self.read_funct('CURRENT'),unit)
            size += 1
-        return (size,self.measure_buffer_voltage)
+        return (size,unit,self.measure_buffer_voltage)
