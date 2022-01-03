@@ -11,10 +11,12 @@ i2c_count = [ '^RASPBERRY_PI 1\..*$',
               '^RASPBERRY_PI 2\..*$',
               '^RASPBERRY_PI 3\..*$',
               '^RASPBERRY_PI 3B\..*$',
+              '^RASPBERRY_PI 4B\:.*$',
               '^RASPBERRY_PI_\(CM4\).*$' ,
               '^OTHER$' ]
 
 i2c_count_max = [ 2,
+                  2,
                   2,
                   2,
                   2,
@@ -34,6 +36,7 @@ console.setLevel(logging.DEBUG)
 formatter = logging.Formatter('%(name)-12s: %(levelname)-8s %(message)s')
 console.setFormatter(formatter)
 logging.getLogger('').addHandler(console)
+
 plat._logger = logging.getLogger('ecomet.Board_Platform')
 plat._logger.info('Start logging ...')
 board = plat.board()

@@ -44,7 +44,7 @@ def platform_detect():
         return BEAGLEBONE_BLACK
     elif plat.lower().find('armv7l-with-ubuntu') > -1:
         return BEAGLEBONE_BLACK
-    elif plat.lower().find('armv7l-with-glibc2.4') > -1:
+    elif plat.lower().find('armv7l-with-glibc2') > -1:
         return BEAGLEBONE_BLACK
     elif plat.lower().find('tegra-aarch64-with-ubuntu') > -1:
         return JETSON_NANO
@@ -71,7 +71,7 @@ def pi_revision():
             # Match a line of the form "Revision : 0002" while ignoring extra
             # info in front of the revsion (like 1000 when the Pi was over-volted).
             match = re.match('Revision\s+:\s+.*(\w{4})$', line, flags=re.IGNORECASE)
-            if match and match.group(1) in ['0000', '0002', '0003']:
+            if match and match.group(1) in ['0000', '0002', '0003', '3114']:
                 # Return revision 1 if revision ends with 0000, 0002 or 0003.
                 return 1
             elif match:
@@ -90,6 +90,7 @@ def pi_version():
     # 2708 is pi 1
     # 2709 is pi 2
     # 2835 is pi 3 on 4.9.x kernel
+    # 2711 is pi 4
     # Anything else is not a pi.
     with open('/proc/cpuinfo', 'r') as infile:
         cpuinfo = infile.read()
@@ -125,6 +126,18 @@ def pi_version():
           return '_(CM4) ' + 4
         # Pi 3 / Pi on 4.9.x kernel
         return ' 3'
+    elif match.group(1) == 'BCM2711':
+        match = re.search('^Model\s+:\s+(.+)$', cpuinfo,
+                        flags=re.MULTILINE | re.IGNORECASE)
+        match2 = re.search('^Raspberry\s+Pi\s+(.+)(Rev.+)$', match.group(1),
+                        flags=re.MULTILINE | re.IGNORECASE)
+        match3 = re.sub(r'\s*$','',match2.group(1))
+        revision = re.search('^.\.|\s+(\d+\.\d+)$',match2.group(2), re.IGNORECASE)
+        if match3.upper() == '4 MODEL B' :
+          if revision :
+            return ' 4B' + ':' + str(revision.group(1))
+          return ' 4B'
+        return ' 4'
     else:
         # Something else, not a pi.
         return None
