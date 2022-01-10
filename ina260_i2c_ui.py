@@ -34,8 +34,8 @@ buf_current_1 = {}
 buf_voltage_2 = {}
 buf_current_2 = {}
 
-chip0 = ina260_ui.INA260_UI(chip = 0, time = 0.01)
-chip1 = ina260_ui.INA260_UI(chip = 1, time = 0.01)
+chip0 = ina260_ui.INA260_UI(chip = 0, time = 0.01, i_unit = 'mA', v_unit = 'V')
+chip1 = ina260_ui.INA260_UI(chip = 1, time = 0.01, i_unit = 'mA', v_unit = 'V')
 
 while True:
    newpid = os.fork()

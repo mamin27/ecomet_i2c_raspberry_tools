@@ -202,7 +202,7 @@ class INA260(object):
            self.buffer[self.byte] |= self.bit_mask
         else:
            self.buffer[self.byte] &= ~self.bit_mask
-        self._logger.info("Buffer %s" ,self.buffer)
+        self._logger.debug("Buffer %s" ,self.buffer)
         self._device.writeList(self.buffer[0],self.buffer[1:])
 
     def bits_init(  # pylint: disable=too-many-arguments
