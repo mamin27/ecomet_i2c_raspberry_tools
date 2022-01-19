@@ -4,10 +4,12 @@ import time
 import random
 import os
 import pickle
+import re
 from i2c_pkg.ina260_pkg import ina260,ina260_constant,ina260_ui_constant
 
 class INA260_UI(object):
     '''INA260_UI()'''
+    '''chip=0#0x40'''
 
     def __init__(self, chip=0, time = 1, i_unit = 'mA', v_unit = 'mV', **kwargs) :
        self._logger = logging.getLogger(__name__)
@@ -17,6 +19,14 @@ class INA260_UI(object):
        elif chip == 1 :
           self._address = ina260_constant.INA260_ADDRESS2
           _mconst = ina260_ui_constant.set_measure_1
+       else :
+          match = re.search('^(\d+)#(.+)$', chip,re.IGNORECASE)
+          if match.group(1) == '0' :    
+             self._address = int(match.group(2),16)
+             _mconst = ina260_ui_constant.set_measure_0
+          elif match.group(1) == '1' :
+             self._address = int(match.group(2),16)
+             _mconst = ina260_ui_constant.set_measure_1
        _ina = ina260.INA260(address=self._address)
        self._logger.debug("address: %d" % self._address)
        self._ina = _ina

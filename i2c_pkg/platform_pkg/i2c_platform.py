@@ -13,7 +13,7 @@ plat_list = { 0 : 'UNKONWN',
 
 class Board_plat(object):
 
-   def __init__(self, address=None, busnum=None, i2c=None, **kwargs) :
+   def __init__(self, address=None, busnum=None, arange=None, i2c=None, **kwargs) :
         # Setup I2C interface for the device.
         if i2c is None:
             import i2c_pkg.i2c as I2C
@@ -27,7 +27,9 @@ class Board_plat(object):
         self._bus = i2c.get_default_bus()
         self._busnum = busnum
         self._slaves = ''
-        for addr in range(0x00,0x77) :
+        if arange is None:
+            arange = [0x00,0x77];
+        for addr in range(arange[0],arange[1]) :
          ret = 0
          try :
            self._device = i2c.get_i2c_device(address=addr,busnum=self._busnum, **kwargs)

@@ -157,6 +157,17 @@ class INA260(object):
         revision_id = self.bits_get(4, self._const.REG_DIE_UID, 0, 2, False)
         if not ( _manufacturer_id == TEXAS_INSTRUMENT_ID and _device_id == hex(0x227)) :
            self._logger.error("Chip is not INA260")
+           
+    def self_test(self) :
+        ret = 0
+        TEXAS_INSTRUMENT_ID = 'TI'
+        INA260_ID = 0x227
+        _manufacturer_id = self.unaryStruct_get(self._const.REG_MANUFACTURER_ID, ">H").to_bytes(2,'big').decode('utf-8')
+        _device_id = hex(self.bits_get(12, self._const.REG_DIE_UID, 4, 2, False))
+        revision_id = self.bits_get(4, self._const.REG_DIE_UID, 0, 2, False)
+        if not ( _manufacturer_id == TEXAS_INSTRUMENT_ID and _device_id == hex(0x227)) :
+           ret = 1
+        return ret
 
     def current_conversion (self, current, unit) :
         if unit == 'mA' :
