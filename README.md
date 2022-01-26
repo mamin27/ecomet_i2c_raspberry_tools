@@ -7,6 +7,11 @@
 
 **PyPi module:** [ecomet-i2c-sensor](https://test.pypi.org/project/ecomet-i2c-sensors/)
 
+Python3 library - currently **Alpha status**
+```sh
+pip install -i https://test.pypi.org/simple/ ecomet-i2c-sensors
+```
+
 **Wiki Hardware prototypes boards:** [link](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki)
 
 **Scope:**
