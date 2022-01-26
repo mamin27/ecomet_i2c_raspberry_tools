@@ -2,7 +2,7 @@ from __future__ import division
 import logging
 import time
 import math
-from ecomet_sensors.pca9632 import pca9632_constant
+from ecomet_i2c_sensors.pca9632 import pca9632_constant
 #import pca9632_constant
 #import i2c_command_oop
 
@@ -191,7 +191,7 @@ def software_reset (address=pca9632_constant.PCA9632_SWRESET, busnum=pca9632_con
     # Setup I2C interface for device 0x00 to talk to all of them.
 
     if i2c is None:
-        import ecomet_sensors.i2c as I2C
+        import ecomet_i2c_sensors.i2c as I2C
         i2c = I2C
     try:
       device = i2c.get_i2c_device(address, busnum, **kwargs) # SWRST
@@ -217,7 +217,7 @@ class PCA9632(object):
         '''Initialize the PCA9685.'''
         # Setup I2C interface for the device.
         if i2c is None:
-            import ecomet_sensors.i2c as I2C
+            import ecomet_i2c_sensors.i2c as I2C
             i2c = I2C
         self._device = i2c.get_i2c_device(address, **kwargs)
         #self._device.write8(PWM0,0x7D)

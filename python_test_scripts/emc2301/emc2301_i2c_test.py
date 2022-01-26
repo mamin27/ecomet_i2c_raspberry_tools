@@ -2,8 +2,7 @@
 
 import sys
 print (sys.version)
-from  i2c_pkg.emc2301_pkg import emc2301
-from i2c_pkg.emc2301_pkg import fan_type
+from  ecomet_i2c_sensors.emc2301 import emc2301, fan_type
 import logging
 
 fan_list = { 'RANGE' : fan_type.RANGE , 'EDGES' : fan_type.EDGES }

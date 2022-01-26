@@ -2,9 +2,8 @@
 
 import sys
 print (sys.version)
-from  i2c_pkg.emc2301_pkg import emc2301
-from  i2c_pkg.pca9632_pkg import pca9632
-from i2c_pkg.emc2301_pkg import fan_type
+from  ecomet_i2c_sensors.emc2301 import emc2301, fan_type
+from  ecomet_i2c_sensors.pca9632 import pca9632
 import logging
 
 # RGB led connected to PWM1, PWM2, PWM3
