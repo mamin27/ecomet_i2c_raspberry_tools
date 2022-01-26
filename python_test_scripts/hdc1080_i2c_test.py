@@ -2,9 +2,8 @@
 
 import sys
 print (sys.version)
-from  i2c_pkg.hdc1080_pkg import hdc1080
+from  ecomet_i2c_sensors.hdc1080 import hdc1080
 import logging
-#from  i2c_pkg.pca9632_pkg import pca9632_constant
 
 sens = hdc1080.HDC1080()
 

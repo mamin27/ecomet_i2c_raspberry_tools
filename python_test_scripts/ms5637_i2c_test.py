@@ -2,7 +2,7 @@
 
 import sys
 print (sys.version)
-from  i2c_pkg.ms5637_pkg import ms5637
+from  ecomet_i2c_sensors.ms5637 import ms5637
 import logging
 
 sens = ms5637.MS5637()

@@ -2,7 +2,7 @@
 
 import sys
 print (sys.version)
-from  i2c_pkg.htu21_pkg import htu21 
+from  ecomet_i2c_sensors.htu21 import htu21 
 import logging
 
 sens = htu21.HTU21()

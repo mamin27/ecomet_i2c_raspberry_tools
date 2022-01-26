@@ -2,7 +2,7 @@
 
 import sys
 print (sys.version)
-from  i2c_pkg.pca9557_pkg import pca9557
+from  ecomet_i2c_sensors.pca9557 import pca9557
 import logging
 
 sens = pca9557.PCA9557()

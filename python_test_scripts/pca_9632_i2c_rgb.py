@@ -4,7 +4,7 @@
 import sys
 import time
 print (sys.version)
-from  i2c_pkg.pca9632_pkg import pca9632
+from  ecomet_i2c_sensors.pca9632 import pca9632
 
 pwm = pca9632.PCA9632()
 reg_view = pca9632.read_pca9632();

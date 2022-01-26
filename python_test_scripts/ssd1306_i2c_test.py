@@ -3,8 +3,8 @@
 import sys
 print (sys.version)
 from PIL import ImageFont, Image
-from i2c_pkg.ssd1306_pkg import ssd1306,render
-from i2c_pkg.pca9557_pkg import pca9557  # could be skipped
+from ecomet_i2c_sensors.ssd1306 import ssd1306,render
+from ecomet_i2c_sensors.pca9557 import pca9557  # could be skipped
 from time import sleep
 import qrcode
 import logging
