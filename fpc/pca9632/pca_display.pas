@@ -185,7 +185,7 @@ implementation
 uses pca_grppwm,pca_read, pca_write, creator, help, missing_chip;
 
 const
-  cPyLibraryLinux = 'libpython3.7m.so.1.0';
+  cPyLibraryLinux = 'libpython3.9.so.1.0';
 
 procedure ComboBox_init (Item1, Item2: TComboExItem; ComboBoxEx: TComboBoxEx);
 begin

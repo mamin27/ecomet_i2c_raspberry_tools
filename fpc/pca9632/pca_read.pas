@@ -55,7 +55,7 @@ begin
 Py_S := TStringList.Create;
 Py_S.Delimiter := '|';
 Py_S.StrictDelimiter := True;
-Py_S.DelimitedText := 'from  i2c_pkg.pca9632_pkg import pca9632|' +
+Py_S.DelimitedText := 'from  ecomet_i2c_sensors.pca9632 import pca9632|' +
                       'reg_view = pca9632.read_pca9632()|' +
                       'if reg_view != "" :|' +
                       '      print (":READ_PCA:{}".format(reg_view))|' +
@@ -73,7 +73,7 @@ begin
 Py_S := TStringList.Create;
 Py_S.Delimiter := '|';
 Py_S.StrictDelimiter := True;
-Py_S.DelimitedText := 'from  i2c_pkg.pca9632_pkg import pca9632|' +
+Py_S.DelimitedText := 'from  ecomet_i2c_sensors.pca9632 import pca9632|' +
                       'sens = pca9632.PCA9632()|' +
                       'ret = sens.self_test()|' +
                       'if ret == 0 :|' +

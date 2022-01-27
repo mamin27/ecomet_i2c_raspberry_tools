@@ -7,7 +7,7 @@ uses
   cthreads,
   {$ENDIF}{$ENDIF}
   Classes, SysUtils, CustApp, Interfaces,
-  Forms, pca_display, ecomet_regex, proc_py, pca_pyth_util,
+  Forms, pca_display, pca_pyth_util,
   pca_read, creator, help, missing_chip;
 
 {$R *.res}

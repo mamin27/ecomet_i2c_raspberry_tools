@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <ProjectOptions>
-    <Version Value="11"/>
+    <Version Value="12"/>
     <General>
       <Flags>
         <MainUnitHasCreateFormStatements Value="False"/>
         <MainUnitHasScaledStatement Value="False"/>
+        <CompatibilityMode Value="True"/>
       </Flags>
       <SessionStorage Value="InProjectDir"/>
-      <MainUnit Value="0"/>
       <Title Value="PCA9632 I2C Tool"/>
       <UseAppBundle Value="False"/>
       <ResourceType Value="res"/>
@@ -33,7 +33,6 @@
     </PublishOptions>
     <RunParams>
       <FormatVersion Value="2"/>
-      <Modes Count="0"/>
     </RunParams>
     <RequiredPackages Count="2">
       <Item1>
@@ -60,36 +59,36 @@
         <IsPartOfProject Value="True"/>
       </Unit2>
       <Unit3>
-        <Filename Value="proc_py.pas"/>
+        <Filename Value="pca_read.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit3>
       <Unit4>
-        <Filename Value="pca_read.pas"/>
-        <IsPartOfProject Value="True"/>
-      </Unit4>
-      <Unit5>
         <Filename Value="creator.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="Form_creator"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-      </Unit5>
-      <Unit6>
+      </Unit4>
+      <Unit5>
         <Filename Value="help.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="Form_help"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-      </Unit6>
-      <Unit7>
+      </Unit5>
+      <Unit6>
         <Filename Value="missing_chip.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="Form_missing_chip"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="../shared/proc_py.pas"/>
+        <IsPartOfProject Value="True"/>
       </Unit7>
       <Unit8>
-        <Filename Value="ecomet_regex.pas"/>
+        <Filename Value="../shared/ecomet_regex.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit8>
     </Units>
@@ -101,6 +100,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
+      <OtherUnitFiles Value="../shared"/>
       <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Parsing>

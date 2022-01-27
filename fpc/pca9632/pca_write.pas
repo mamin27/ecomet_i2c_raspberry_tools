@@ -51,7 +51,7 @@ writeln('Content: ' + content);
 Py_S := TStringList.Create;
 Py_S.Delimiter := '|';
 Py_S.StrictDelimiter := True;
-Py_S.DelimitedText := 'from  i2c_pkg.pca9632_pkg import pca9632|' +
+Py_S.DelimitedText := 'from  ecomet_i2c_sensors.pca9632 import pca9632|' +
                       'pwm = pca9632.PCA9632()|' +
                       'ret = pwm.write_register(' + content + ')|' +
                       'print (":WRITE_REG_PCA_0:") if ret == 0 else print (":WRITE_REG_PCA_1:")|';
@@ -81,7 +81,7 @@ writeln(content);
 Py_S := TStringList.Create;
 Py_S.Delimiter := '|';
 Py_S.StrictDelimiter := True;
-Py_S.DelimitedText := 'from  i2c_pkg.pca9632_pkg import pca9632|' +
+Py_S.DelimitedText := 'from  ecomet_i2c_sensors.pca9632 import pca9632|' +
                       'pwm = pca9632.PCA9632()|' +
                       'ret = pwm.write_register(' + content + ')|' +
                       'print (":WRITE_REG_PCA_0:") if ret == 0 else print (":WRITE_REG_PCA_1:")|';
@@ -144,22 +144,22 @@ Py_S := TStringList.Create;
 Py_S.Delimiter := '|';
 Py_S.StrictDelimiter := True;
 if bits.key = 'PWM' then
-  Py_S.DelimitedText := 'from  i2c_pkg.pca9632_pkg import pca9632|' +
+  Py_S.DelimitedText := 'from  ecomet_i2c_sensors.pca9632 import pca9632|' +
                         'pwm = pca9632.PCA9632()|' +
                         'ret = pwm.write_register(' + content + ')|' +
                         'print (":WRITE_REG_PWM_0:") if ret == 0 else print (":WRITE_REG_PWM_1:")|';
 if bits.key = 'SGRPPWM' then
- Py_S.DelimitedText := 'from  i2c_pkg.pca9632_pkg import pca9632|' +
+ Py_S.DelimitedText := 'from  ecomet_i2c_sensors.pca9632 import pca9632|' +
                         'pwm = pca9632.PCA9632()|' +
                         'ret = pwm.write_register(' + content + ')|' +
                         'print (":WRITE_REG_SGRPPWM_0:") if ret == 0 else print (":WRITE_REG_SGRPPWM_1:")|';
 if bits.key = 'GRPPWM' then
- Py_S.DelimitedText := 'from  i2c_pkg.pca9632_pkg import pca9632|' +
+ Py_S.DelimitedText := 'from  ecomet_i2c_sensors.pca9632 import pca9632|' +
                         'pwm = pca9632.PCA9632()|' +
                         'ret = pwm.write_register(' + content + ')|' +
                         'print (":WRITE_REG_GRPPWM_0:") if ret == 0 else print (":WRITE_REG_GRPPWM_1:")|';
 if bits.key = 'GRPFREQ' then
- Py_S.DelimitedText := 'from  i2c_pkg.pca9632_pkg import pca9632|' +
+ Py_S.DelimitedText := 'from  ecomet_i2c_sensors.pca9632 import pca9632|' +
                         'pwm = pca9632.PCA9632()|' +
                         'ret = pwm.write_register(' + content + ')|' +
                         'print (":WRITE_REG_GRPFREQ_0:") if ret == 0 else print (":WRITE_REG_GRPFREQ_1:")|';

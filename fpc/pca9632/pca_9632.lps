@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <ProjectSession>
-    <Version Value="11"/>
+    <Version Value="12"/>
     <BuildModes Active="Default"/>
-    <Units Count="22">
+    <Units Count="24">
       <Unit0>
         <Filename Value="pca_9632.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -17,9 +17,10 @@
         <ComponentName Value="pca9632_main"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="3"/>
-        <TopLine Value="870"/>
-        <CursorPos X="28" Y="906"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="180"/>
+        <CursorPos X="34" Y="188"/>
         <UsageCount Value="230"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -33,162 +34,173 @@
         <Loaded Value="True"/>
       </Unit2>
       <Unit3>
-        <Filename Value="pca_regex.pas"/>
+        <Filename Value="proc_py.pas"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="20" Y="56"/>
-        <UsageCount Value="114"/>
+        <UsageCount Value="116"/>
       </Unit3>
       <Unit4>
-        <Filename Value="proc_py.pas"/>
+        <Filename Value="pca_read.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="2"/>
-        <UsageCount Value="116"/>
+        <EditorIndex Value="8"/>
+        <TopLine Value="125"/>
+        <CursorPos X="56" Y="76"/>
+        <UsageCount Value="112"/>
         <Loaded Value="True"/>
       </Unit4>
       <Unit5>
-        <Filename Value="pca_read.pas"/>
-        <IsPartOfProject Value="True"/>
-        <EditorIndex Value="11"/>
-        <TopLine Value="38"/>
-        <CursorPos X="73" Y="61"/>
-        <UsageCount Value="112"/>
-        <Loaded Value="True"/>
-      </Unit5>
-      <Unit6>
         <Filename Value="creator.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="Form_creator"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="6"/>
-        <CursorPos Y="33"/>
+        <EditorIndex Value="4"/>
+        <TopLine Value="2"/>
+        <CursorPos X="103" Y="23"/>
         <UsageCount Value="24"/>
         <Loaded Value="True"/>
-      </Unit6>
-      <Unit7>
+      </Unit5>
+      <Unit6>
         <Filename Value="help.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="Form_help"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="7"/>
+        <EditorIndex Value="5"/>
         <TopLine Value="10"/>
         <CursorPos X="3" Y="44"/>
         <UsageCount Value="24"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
-      </Unit7>
-      <Unit8>
+      </Unit6>
+      <Unit7>
         <Filename Value="missing_chip.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="Form_missing_chip"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="4"/>
+        <EditorIndex Value="3"/>
         <CursorPos X="18"/>
         <UsageCount Value="24"/>
         <Loaded Value="True"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="ecomet_regex.pas"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="22"/>
       </Unit8>
       <Unit9>
+        <Filename Value="pca_regex.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="20" Y="56"/>
+        <UsageCount Value="114"/>
+      </Unit9>
+      <Unit10>
         <Filename Value="pca_python.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="64"/>
         <CursorPos X="3" Y="93"/>
         <UsageCount Value="17"/>
-      </Unit9>
-      <Unit10>
+      </Unit10>
+      <Unit11>
         <Filename Value="../Python-for-Lazarus/python4lazarus/Sources/Core/PythonEngine.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="3245"/>
         <CursorPos Y="3266"/>
         <UsageCount Value="19"/>
-      </Unit10>
-      <Unit11>
+      </Unit11>
+      <Unit12>
         <Filename Value="pca_9632_read.pas"/>
         <EditorIndex Value="-1"/>
         <WindowIndex Value="-1"/>
         <TopLine Value="-1"/>
         <CursorPos X="-1" Y="-1"/>
         <UsageCount Value="16"/>
-      </Unit11>
-      <Unit12>
-        <Filename Value="pca_write.pas"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="10"/>
-        <TopLine Value="29"/>
-        <CursorPos X="16" Y="39"/>
-        <UsageCount Value="46"/>
-        <Loaded Value="True"/>
       </Unit12>
       <Unit13>
+        <Filename Value="pca_write.pas"/>
+        <EditorIndex Value="7"/>
+        <TopLine Value="233"/>
+        <CursorPos X="57" Y="162"/>
+        <UsageCount Value="46"/>
+        <Loaded Value="True"/>
+      </Unit13>
+      <Unit14>
         <Filename Value="/usr/lib/lazarus/2.0.0/lcl/include/control.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="561"/>
         <CursorPos Y="580"/>
         <UsageCount Value="9"/>
-      </Unit13>
-      <Unit14>
+      </Unit14>
+      <Unit15>
         <Filename Value="/usr/lib/lazarus/2.0.0/lcl/include/buttoncontrol.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="37"/>
         <CursorPos X="28" Y="56"/>
         <UsageCount Value="8"/>
-      </Unit14>
-      <Unit15>
+      </Unit15>
+      <Unit16>
         <Filename Value="/usr/lib/lazarus/2.0.0/lcl/include/customcheckbox.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="60"/>
         <CursorPos Y="79"/>
         <UsageCount Value="8"/>
-      </Unit15>
-      <Unit16>
+      </Unit16>
+      <Unit17>
         <Filename Value="/usr/lib/lazarus/2.0.0/lcl/lclmessageglue.pas"/>
         <UnitName Value="LCLMessageGlue"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="90"/>
         <CursorPos Y="114"/>
         <UsageCount Value="8"/>
-      </Unit16>
-      <Unit17>
+      </Unit17>
+      <Unit18>
         <Filename Value="pca_grppwm.pas"/>
-        <EditorIndex Value="9"/>
+        <EditorIndex Value="6"/>
         <TopLine Value="10"/>
         <CursorPos X="70" Y="51"/>
         <UsageCount Value="31"/>
         <Loaded Value="True"/>
-      </Unit17>
-      <Unit18>
-        <Filename Value="ecomet_regex.pas"/>
-        <IsPartOfProject Value="True"/>
-        <EditorIndex Value="8"/>
-        <UsageCount Value="22"/>
-        <Loaded Value="True"/>
       </Unit18>
       <Unit19>
         <Filename Value="fpc/hdc1080/hdc1080_display.pas"/>
-        <EditorIndex Value="12"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="175"/>
         <CursorPos X="30" Y="195"/>
         <UsageCount Value="11"/>
-        <Loaded Value="True"/>
       </Unit19>
       <Unit20>
         <Filename Value="fpc/hdc1080/hdc1080.lpr"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="-1"/>
         <CursorPos X="78" Y="10"/>
         <UsageCount Value="11"/>
-        <Loaded Value="True"/>
       </Unit20>
       <Unit21>
         <Filename Value="fpc/hdc1080/hdc1080_read.pas"/>
-        <EditorIndex Value="13"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="107"/>
         <CursorPos X="117" Y="119"/>
         <UsageCount Value="11"/>
-        <Loaded Value="True"/>
       </Unit21>
+      <Unit22>
+        <Filename Value="../shared/proc_py.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit22>
+      <Unit23>
+        <Filename Value="../shared/ecomet_regex.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit23>
     </Units>
-    <JumpHistory Count="29" HistoryIndex="28">
+    <JumpHistory Count="28" HistoryIndex="27">
       <Position1>
         <Filename Value="pca_display.pas"/>
         <Caret Line="933" Column="9" TopLine="912"/>
@@ -285,112 +297,108 @@
         <Filename Value="help.pas"/>
       </Position24>
       <Position25>
-        <Filename Value="fpc/hdc1080/hdc1080.lpr"/>
-        <Caret Line="10" Column="78"/>
-      </Position25>
-      <Position26>
         <Filename Value="pca_pyth_util.pas"/>
         <Caret Line="11" Column="31"/>
-      </Position26>
-      <Position27>
+      </Position25>
+      <Position26>
         <Filename Value="pca_display.pas"/>
         <Caret Line="166" Column="22" TopLine="148"/>
+      </Position26>
+      <Position27>
+        <Filename Value="pca_write.pas"/>
+        <Caret Line="280" Column="25" TopLine="270"/>
       </Position27>
       <Position28>
         <Filename Value="pca_write.pas"/>
-        <Caret Line="280" Column="25" TopLine="270"/>
-      </Position28>
-      <Position29>
-        <Filename Value="pca_write.pas"/>
         <Caret Line="304" Column="32" TopLine="270"/>
-      </Position29>
+      </Position28>
     </JumpHistory>
     <RunParams>
       <FormatVersion Value="2"/>
-      <Modes Count="0" ActiveMode=""/>
+      <Modes ActiveMode=""/>
     </RunParams>
   </ProjectSession>
   <Debugging>
-    <BreakPoints Count="2">
-      <Item1>
+    <BreakPoints>
+      <Item>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="pca_write.pas"/>
         <Line Value="69"/>
-      </Item1>
-      <Item2>
+      </Item>
+      <Item>
         <Kind Value="bpkData"/>
         <WatchData Value="content"/>
         <WatchScope Value="wpsGlobal"/>
         <WatchKind Value="wpkWrite"/>
         <InitialEnabled Value="False"/>
-      </Item2>
+      </Item>
     </BreakPoints>
-    <Watches Count="21">
-      <Item1>
+    <Watches>
+      <Item>
         <Expression Value="value"/>
-      </Item1>
-      <Item2>
+      </Item>
+      <Item>
         <Expression Value="pca.attr7.attr_val"/>
-      </Item2>
-      <Item3>
+      </Item>
+      <Item>
         <Expression Value="StrToInt(pca.attr7.attr_val)"/>
-      </Item3>
-      <Item4>
+      </Item>
+      <Item>
         <Expression Value="x"/>
-      </Item4>
-      <Item5>
+      </Item>
+      <Item>
         <Expression Value="grpdim[i].value"/>
-      </Item5>
-      <Item6>
+      </Item>
+      <Item>
         <Expression Value="grpdim[i].perc"/>
-      </Item6>
-      <Item7>
+      </Item>
+      <Item>
         <Expression Value="pwm_input"/>
-      </Item7>
-      <Item8>
+      </Item>
+      <Item>
         <Expression Value="ALLOWED[3]"/>
-      </Item8>
-      <Item9>
+      </Item>
+      <Item>
         <Expression Value="pwm_input[i]"/>
-      </Item9>
-      <Item10>
+      </Item>
+      <Item>
         <Expression Value="pca.attr13.attr_name"/>
-      </Item10>
-      <Item11>
+      </Item>
+      <Item>
         <Expression Value="high"/>
-      </Item11>
-      <Item12>
+      </Item>
+      <Item>
         <Expression Value="low"/>
-      </Item12>
-      <Item13>
+      </Item>
+      <Item>
         <Expression Value="grpdim[i].perc"/>
-      </Item13>
-      <Item14>
+      </Item>
+      <Item>
         <Expression Value="pwm_value"/>
-      </Item14>
-      <Item15>
+      </Item>
+      <Item>
         <Expression Value="Source"/>
-      </Item15>
-      <Item16>
+      </Item>
+      <Item>
         <Expression Value="seperator"/>
-      </Item16>
-      <Item17>
+      </Item>
+      <Item>
         <Expression Value="bits.key"/>
-      </Item17>
-      <Item18>
+      </Item>
+      <Item>
         <Expression Value="cmd"/>
-      </Item18>
-      <Item19>
+      </Item>
+      <Item>
         <Expression Value="register"/>
-      </Item19>
-      <Item20>
+      </Item>
+      <Item>
         <Expression Value="content"/>
-      </Item20>
-      <Item21>
+      </Item>
+      <Item>
         <Expression Value="StrToInt(pca.attr7.attr_val)"/>
-      </Item21>
+      </Item>
     </Watches>
   </Debugging>
 </CONFIG>
