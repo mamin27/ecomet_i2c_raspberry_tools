@@ -75,7 +75,7 @@ implementation
 uses hdc1080_read, hdc1080_write, creator, help, missing_chip;
 
 const
-  cPyLibraryLinux = 'libpython3.7m.so.1.0';
+  cPyLibraryLinux = 'libpython3.9.so.1.0';
   PASSED = 0;
   FAILED = 1;
 

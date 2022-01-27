@@ -102,7 +102,7 @@ begin
 Py_S := TStringList.Create;
 Py_S.Delimiter := '|';
 Py_S.StrictDelimiter := True;
-Py_S.DelimitedText := 'from  i2c_pkg.hdc1080_pkg import hdc1080|' +
+Py_S.DelimitedText := 'from  ecomet_i2c_sensors.hdc1080 import hdc1080|' +
                       'register = hdc1080.register_list()|' +
                       'if register != "" :|' +
                       '    print (":READ_HDC:{}".format(register))|' +
@@ -120,7 +120,7 @@ begin
 Py_S := TStringList.Create;
 Py_S.Delimiter := '|';
 Py_S.StrictDelimiter := True;
-Py_S.DelimitedText := 'from  i2c_pkg.hdc1080_pkg import hdc1080|' +
+Py_S.DelimitedText := 'from  ecomet_i2c_sensors.hdc1080 import hdc1080|' +
                       'register = hdc1080.measure_list()|' +
                       'if register != "" :|' +
                       '    print (":READ_MEASURE:{}".format(register))|' +
@@ -138,7 +138,7 @@ begin
 Py_S := TStringList.Create;
 Py_S.Delimiter := '|';
 Py_S.StrictDelimiter := True;
-Py_S.DelimitedText := 'from  i2c_pkg.hdc1080_pkg import hdc1080|' +
+Py_S.DelimitedText := 'from  ecomet_i2c_sensors.hdc1080 import hdc1080|' +
                       'sens = hdc1080.HDC1080()|' +
                       'ret = sens.self_test()|' +
                       'if ret == 0 :|' +

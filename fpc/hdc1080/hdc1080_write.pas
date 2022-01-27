@@ -48,7 +48,7 @@ content := content + ']';
 Py_S := TStringList.Create;
 Py_S.Delimiter := '|';
 Py_S.StrictDelimiter := True;
-Py_S.DelimitedText := 'from  i2c_pkg.hdc1080_pkg import hdc1080|' +
+Py_S.DelimitedText := 'from  ecomet_i2c_sensors.hdc1080 import hdc1080|' +
                       'sens = hdc1080.HDC1080()|' +
                       'ret = sens.write_register(' + content + ')|' +
                       'print (":WRITE_REG_CONF:WRITE_CONF")|';
