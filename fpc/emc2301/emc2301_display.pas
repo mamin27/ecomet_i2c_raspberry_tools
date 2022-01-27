@@ -183,7 +183,7 @@ uses emc2301_read, emc2301_write, emc2301_graph, universal, creator, help, missi
 { TForm_emc2301 }
 
 const
-  cPyLibraryLinux = 'libpython3.7m.so.1.0';
+  cPyLibraryLinux = 'libpython3.9.so.1.0';
   PASSED = 0;
   FAILED = 1;
 

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <ProjectSession>
-    <Version Value="11"/>
+    <Version Value="12"/>
     <BuildModes Active="Default"/>
-    <Units Count="23">
+    <Units Count="25">
       <Unit0>
         <Filename Value="emc2301.lpr"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="8"/>
+        <EditorIndex Value="7"/>
         <CursorPos Y="22"/>
         <UsageCount Value="165"/>
         <Loaded Value="True"/>
@@ -19,8 +19,8 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="562"/>
-        <CursorPos X="25" Y="589"/>
+        <TopLine Value="178"/>
+        <CursorPos X="34" Y="186"/>
         <UsageCount Value="165"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -28,7 +28,7 @@
       <Unit2>
         <Filename Value="emc2301_pyth_util.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="9"/>
+        <EditorIndex Value="8"/>
         <TopLine Value="363"/>
         <CursorPos X="30" Y="371"/>
         <UsageCount Value="165"/>
@@ -38,14 +38,13 @@
         <Filename Value="emc2301_read.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="5"/>
-        <TopLine Value="494"/>
-        <CursorPos X="55" Y="515"/>
+        <TopLine Value="352"/>
+        <CursorPos X="55" Y="335"/>
         <UsageCount Value="165"/>
         <Loaded Value="True"/>
       </Unit3>
       <Unit4>
         <Filename Value="rpm_source.pas"/>
-        <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="18"/>
         <CursorPos X="61" Y="26"/>
@@ -57,18 +56,16 @@
         <ComponentName Value="Form_graph"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="10"/>
+        <EditorIndex Value="9"/>
         <CursorPos X="43" Y="33"/>
         <UsageCount Value="135"/>
         <Loaded Value="True"/>
       </Unit5>
       <Unit6>
         <Filename Value="universal.pas"/>
-        <IsPartOfProject Value="True"/>
-        <EditorIndex Value="7"/>
+        <EditorIndex Value="-1"/>
         <CursorPos X="15" Y="12"/>
         <UsageCount Value="62"/>
-        <Loaded Value="True"/>
       </Unit6>
       <Unit7>
         <Filename Value="missing_chip.pas"/>
@@ -165,8 +162,8 @@
       <Unit17>
         <Filename Value="emc2301_write.pas"/>
         <EditorIndex Value="6"/>
-        <TopLine Value="93"/>
-        <CursorPos X="6" Y="119"/>
+        <TopLine Value="147"/>
+        <CursorPos X="56" Y="129"/>
         <UsageCount Value="50"/>
         <Loaded Value="True"/>
       </Unit17>
@@ -206,6 +203,24 @@
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit22>
+      <Unit23>
+        <Filename Value="../shared/rpm_source.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit23>
+      <Unit24>
+        <Filename Value="../shared/universal.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit24>
     </Units>
     <JumpHistory Count="29" HistoryIndex="28">
       <Position1>
@@ -333,67 +348,67 @@
     </RunParams>
   </ProjectSession>
   <Debugging>
-    <BreakPoints Count="1">
-      <Item1>
+    <BreakPoints>
+      <Item>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="emc2301_write.pas"/>
         <Line Value="70"/>
-      </Item1>
+      </Item>
     </BreakPoints>
-    <Watches Count="17">
-      <Item1>
+    <Watches>
+      <Item>
         <Expression Value="emc_str"/>
-      </Item1>
-      <Item2>
+      </Item>
+      <Item>
         <Expression Value="emc.attr9"/>
-      </Item2>
-      <Item3>
+      </Item>
+      <Item>
         <Expression Value="emc.attr9.attr_val_obj"/>
-      </Item3>
-      <Item4>
+      </Item>
+      <Item>
         <Expression Value="keys"/>
-      </Item4>
-      <Item5>
+      </Item>
+      <Item>
         <Expression Value="emc.attr8.attr_val_obj.attr3"/>
-      </Item5>
-      <Item6>
+      </Item>
+      <Item>
         <Expression Value="emc.attr1"/>
-      </Item6>
-      <Item7>
+      </Item>
+      <Item>
         <Expression Value="ObI_emc_attr[1]"/>
-      </Item7>
-      <Item8>
+      </Item>
+      <Item>
         <Expression Value="bits"/>
-      </Item8>
-      <Item9>
+      </Item>
+      <Item>
         <Expression Value="content"/>
-      </Item9>
-      <Item10>
+      </Item>
+      <Item>
         <Expression Value="content_str"/>
-      </Item10>
-      <Item11>
+      </Item>
+      <Item>
         <Expression Value="register_str"/>
-      </Item11>
-      <Item12>
+      </Item>
+      <Item>
         <Expression Value="Py_S"/>
-      </Item12>
-      <Item13>
+      </Item>
+      <Item>
         <Expression Value="idx_emc_c_attr"/>
-      </Item13>
-      <Item14>
+      </Item>
+      <Item>
         <Expression Value="value"/>
-      </Item14>
-      <Item15>
+      </Item>
+      <Item>
         <Expression Value="filter"/>
-      </Item15>
-      <Item16>
+      </Item>
+      <Item>
         <Expression Value="in_str"/>
-      </Item16>
-      <Item17>
+      </Item>
+      <Item>
         <Expression Value="in_buffer"/>
-      </Item17>
+      </Item>
     </Watches>
   </Debugging>
 </CONFIG>

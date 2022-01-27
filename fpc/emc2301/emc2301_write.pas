@@ -95,7 +95,7 @@ content_str := StringReplace(content_str,',','-',[rfReplaceAll, rfIgnoreCase]);
 Py_S := TStringList.Create;
 Py_S.Delimiter := '|';
 Py_S.StrictDelimiter := True;
-Py_S.DelimitedText := 'from  i2c_pkg.emc2301_pkg import emc2301|' +
+Py_S.DelimitedText := 'from  ecomet_i2c_sensors.emc2301 import emc2301|' +
                       'sens = emc2301.EMC2301()|' +
                       fan_list +
                       'content = ' + #34 + content_str + #34 + '|' +
@@ -126,7 +126,7 @@ writeln(content);
 Py_S := TStringList.Create;
 Py_S.Delimiter := '|';
 Py_S.StrictDelimiter := True;
-Py_S.DelimitedText := 'from  i2c_pkg.emc2301_pkg import emc2301|' +
+Py_S.DelimitedText := 'from  ecomet_i2c_sensors.emc2301 import emc2301|' +
                       'sens = emc2301.EMC2301()|' +
                       'content = ' + #34 + content_str + #34 + '|' +
                       'register = ' + #39 + register + #39 + '|' +

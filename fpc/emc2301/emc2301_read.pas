@@ -292,7 +292,7 @@ begin
 Py_S := TStringList.Create;
 Py_S.Delimiter := '|';
 Py_S.StrictDelimiter := True;
-Py_S.DelimitedText := 'from  i2c_pkg.emc2301_pkg import emc2301|' +
+Py_S.DelimitedText := 'from  ecomet_i2c_sensors.emc2301 import emc2301|' +
                       'register = emc2301.conf_register_list()|' +
                       'if register != "" :|' +
                       '    print (":READ_emc:{}".format(register))|' +
@@ -310,7 +310,7 @@ begin
 Py_S := TStringList.Create;
 Py_S.Delimiter := '|';
 Py_S.StrictDelimiter := True;
-Py_S.DelimitedText := 'from  i2c_pkg.emc2301_pkg import emc2301|' +
+Py_S.DelimitedText := 'from  ecomet_i2c_sensors.emc2301 import emc2301|' +
                       'from time import sleep|' +
                       'import statistics|' +
                       'sens = emc2301.EMC2301()|' +
@@ -331,8 +331,8 @@ begin
 Py_S := TStringList.Create;
 Py_S.Delimiter := '|';
 Py_S.StrictDelimiter := True;
-Py_S.DelimitedText := 'from  i2c_pkg.emc2301_pkg import emc2301|' +
-                      'from i2c_pkg.emc2301_pkg import fan_type|' +
+Py_S.DelimitedText := 'from  ecomet_i2c_sensors.emc2301 import emc2301|' +
+                      'from ecomet_i2c_sensors.emc2301 import fan_type|' +
                       'sens = emc2301.EMC2301()|' +
                       'ret = sens.self_test()|' +
                       'if ret == 0 :|' +
