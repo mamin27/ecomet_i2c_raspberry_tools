@@ -68,17 +68,17 @@ Here is alternative command to i2cdetect for detection of active I2C chips at I2
 ***i2c_ecomet_detect.py***
 
 ``` python
-pi@raspberrypi:~/ecomet_i2c_raspberry_tools $ python3 i2c_ecomet_detect.py
-3.7.3 (default, Jan 22 2021, 20:04:44)
-[GCC 8.3.0]
+pi@raspberrypi:~/ecomet_i2c_raspberry_tools/bin $ python3 i2c_ecomet_detect.py
+3.9.9 (main, Jan 16 2022, 22:51:22)
+[GCC 11.2.0]
 ecomet.Board_Platform: INFO     Start logging ...
-ecomet.Board_Platform: INFO     Board platform: RASPBERRY_PI 3.2
+ecomet.Board_Platform: INFO     Board platform: RASPBERRY_PI 4B:1.4
 ecomet.Board_Platform: INFO     Number of I2C buses at the board: 2
-python.ecomet_i2c_sensors.platform.i2c_platform: INFO     >>> Testing at bus: 0
-python.ecomet_i2c_sensors.platform.i2c_platform: INFO     No Chip connected
-python.ecomet_i2c_sensors.platform.i2c_platform: INFO     >>> Testing at bus: 1
-python.ecomet_i2c_sensors.platform.i2c_platform: INFO     Default bus number: 1
-python.ecomet_i2c_sensors.platform.i2c_platform: INFO     Identified Slaves Chips: 0x2f:0x40:0x50:0x51:0x52:0x53:0x54:0x55:0x56:0x57:0x62:0x70:0x76
+ecomet_i2c_sensors.platform.i2c_platform: INFO     >>> Testing at bus: 0
+ecomet_i2c_sensors.platform.i2c_platform: INFO     No Chip connected
+ecomet_i2c_sensors.platform.i2c_platform: INFO     >>> Testing at bus: 1
+ecomet_i2c_sensors.platform.i2c_platform: INFO     Default bus number: 1
+ecomet_i2c_sensors.platform.i2c_platform: INFO     Identified Slaves Chips: 0xc:0x1a:0x2f:0x40:0x50:0x51:0x52:0x53:0x54:0x55:0x56:0x57:0x62:0x70:0x76
 ```
  
 **Requestor Interests:**
