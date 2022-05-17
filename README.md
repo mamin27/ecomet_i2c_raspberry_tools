@@ -1,6 +1,6 @@
 # ecomet_i2c_raspberry_tools
 
-**Last modification:** 26.01.2022
+**Last modification:** 17.05.2022
 **Contributor:** Marian Minar
 
 **Twitter:** [News and statuses](https://twitter.com/mminar7)
@@ -29,33 +29,36 @@ The Driver for I2C Chip maintenance from **Raspberry PI 1B+** and above. This co
 * [Measurement Specialties, TE Connectivity](https://www.te.com/) MS5637,HTU21D
 * [Microchip](https://ww1.microchip.com/downloads/en/DeviceDoc/2301.pdf) EMC2301
 * [Solomon Systech](https://www.solomon-systech.com/) SSD1309
+* [Renesas](https://www.renesas.com/eu/en) ISL28022
 
 **List of modules:**
 
-* [EEPROM module](python/ecomet_i2c_sensors/eeprom/documentation/eeprom_IIC.md) -> EEPROM read/write 24cXXX chips
-* [PCA9557 module](python/ecomet_i2c_sensors/pca9557/pca9557_python.IIC.md) -> Remote8-Bit I2C and SMBusLow-PowerI/O ExpanderWith Reset andConfigurationRegisters
+* [EEPROM module](ecomet_i2c_sensors/eeprom/documentation/eeprom_IIC.md) -> EEPROM read/write 24cXXX chips
+* [PCA9557 module](ecomet_i2c_sensors/pca9557/pca9557_python.IIC.md) -> Remote8-Bit I2C and SMBusLow-PowerI/O ExpanderWith Reset andConfigurationRegisters
 * [PCA9632 module](fpc/pca9632/pca9632_IIC.md) -> 4-bit Fm+ I2C-bus low power LED driver (could be used for motor control)
 * [HDC1080 module](fpc/hdc1080/hdc1080_IIC.md) -> High Accuracy Digital Humidity Sensor with Temperature Sensor
-* [HTU21D module](python/ecomet_i2c_sensors/htu21/htu21_python_IIC.md) -> Digital Relative Humidity sensor with Temperature output, calculation of Dew Point
-* [MS5637 module](python/ecomet_i2c_sensors/ms5637/ms5637_python.IIC.md) ->  Ultra-compact micro altimeter. Integrated digital pressure sensor (24 bit ΔΣ ADC), Operating range: 300 to 1200 mbar, -40 to +85 °C
+* [HTU21D module](ecomet_i2c_sensors/htu21/htu21_python_IIC.md) -> Digital Relative Humidity sensor with Temperature output, calculation of Dew Point
+* [MS5637 module](ecomet_i2c_sensors/ms5637/ms5637_python.IIC.md) ->  Ultra-compact micro altimeter. Integrated digital pressure sensor (24 bit ΔΣ ADC), Operating range: 300 to 1200 mbar, -40 to +85 °C
 * [EMC2301 module](fpc/emc2301/emc2301_IIC.md) -> Fan controller with a PWM fan driver
-* [SSD1306 module](python/ecomet_i2c_sensors/ssd1306/ssd1306_python.IIC.md) -> SSD1306 is a single-chip CMOS OLED/PLED driver with controller for organic / polymer light emitting
+* [SSD1306 module](ecomet_i2c_sensors/ssd1306/ssd1306_python.IIC.md) -> SSD1306 is a single-chip CMOS OLED/PLED driver with controller for organic / polymer light emitting
 diode dot-matrix graphic display system.
-* [INA226,INA260 module](python/ecomet_i2c_sensors/ina260/ina260_python.IIC.md) -> **!NEW!** will be added python module description
+* [INA226,INA260 module](ecomet_i2c_sensors/ina260/ina260_python.IIC.md) -> **!NEW!** will be added python module description
+* ISL2802x module -> **!NEW!** will be added python module description
 
 **Software for Chips:**
 
 | Chip            | Python 3 driver | FPC GUI  | Hardware Board | Contributor Notes            | Planned work                   | Requestor Interests           |
 | --------------- |:---------------:|:--------:|:--------------:|:----------------------------:|:------------------------------:|:-----------------------------:|
-| EEPROM 24cXXX   |[yes](python/ecomet_i2c_sensors/eeprom/documentation/eeprom_IIC.md)|    no    |[I01](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_display_current_board),[I02](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_fan_board),[I03](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_temp_hmd_board),[I04](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_temp_hmd_pressure_board)| currently tested at 24c01,24c04,24c08,24c16,24c32,24c64                  |                        |                               |
-| PCA9557         |[yes](python/ecomet_i2c_sensors/pca9557/pca9557_python.IIC.md)|    no    |[I01](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_display_current_board)|  |            |
-| PCA9632         |[yes](python/ecomet_i2c_sensors/pca9632/pca_9632_python_IIC.md)|[yes *1)*](fpc/pca9632/pca9632_IIC.md)|[I04](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_temp_hmd_pressure_board)|                  |                               |                               |
-| HDC1080         |[yes](python/ecomet_i2c_sensors/hdc1080/hdc1080_python_IIC.md)|[yes *1)*](fpc/hdc1080/hdc1080_IIC.md)|[I03](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_temp_hmd_board),[I04](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_temp_hmd_pressure_board)|                  |    |                               |
-| HTU21D          |[yes](python/ecomet_i2c_sensors/htu21/htu21_python_IIC.md)|    no    |[I03](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_temp_hmd_board),[I04](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_temp_hmd_pressure_board)|                              |       |                               |
-| MS5637          |[yes](python/ecomet_i2c_sensors/ms5637/ms5637_python.IIC.md)|    no    |[I04](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_temp_hmd_pressure_board)|                  |      |
-| EMC2301         |[yes](python/ecomet_i2c_sensors/emc2301/emc2301_python_IIC.md)|[yes *1)*](fpc/emc2301/emc2301_IIC.md)|[I02](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_fan_board)|                  |    |  add EMC2302-05 chips in design                             |
-| SSD1306         |[yes](python/ecomet_i2c_sensors/ssd1306/ssd1306_python.IIC.md)|    no    |[I01](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_display_current_board) | |     |
-| INA226, INA260  |[yes](python/ecomet_i2c_sensors/ina260/ina260_python.IIC.md)|    yes    |[I01](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_display_current_board) |[!NEW!](python/ecomet_i2c_sensors/ina260/ina260_python.IIC.md) Python driver documentation, GUI development in progress (see twitter) |     |
+| EEPROM 24cXXX   |[yes](ecomet_i2c_sensors/eeprom/documentation/eeprom_IIC.md)|    no    |[I01](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_display_current_board),[I02](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_fan_board),[I03](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_temp_hmd_board),[I04](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_temp_hmd_pressure_board)| currently tested at 24c01,24c04,24c08,24c16,24c32,24c64                  |                        |                               |
+| PCA9557         |[yes](ecomet_i2c_sensors/pca9557/pca9557_python.IIC.md)|    no    |[I01](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_display_current_board)|  |            |
+| PCA9632         |[yes](ecomet_i2c_sensors/pca9632/pca_9632_python_IIC.md)|[yes *1)*](fpc/pca9632/pca9632_IIC.md)|[I04](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_temp_hmd_pressure_board)|                  |                               |                               |
+| HDC1080         |[yes](ecomet_i2c_sensors/hdc1080/hdc1080_python_IIC.md)|[yes *1)*](fpc/hdc1080/hdc1080_IIC.md)|[I03](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_temp_hmd_board),[I04](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_temp_hmd_pressure_board)|                  |    |                               |
+| HTU21D          |[yes](ecomet_i2c_sensors/htu21/htu21_python_IIC.md)|    no    |[I03](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_temp_hmd_board),[I04](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_temp_hmd_pressure_board)|                              |       |                               |
+| MS5637          |[yes](ecomet_i2c_sensors/ms5637/ms5637_python.IIC.md)|    no    |[I04](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_temp_hmd_pressure_board)|                  |      |
+| EMC2301         |[yes](ecomet_i2c_sensors/emc2301/emc2301_python_IIC.md)|[yes *1)*](fpc/emc2301/emc2301_IIC.md)|[I02](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_fan_board)|                  |    |  add EMC2302-05 chips in design                             |
+| SSD1306         |[yes](ecomet_i2c_sensors/ssd1306/ssd1306_python.IIC.md)|    no    |[I01](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_display_current_board) | |     |
+| INA226, INA260  |[yes](ecomet_i2c_sensors/ina260/ina260_python.IIC.md)|    yes    |[I01](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_display_current_board) |[!NEW!](ecomet_i2c_sensors/ina260/ina260_python.IIC.md) Python driver documentation, GUI development in progress (see twitter) |     |
+| ISL2802x  |in progress |    no    | | |     |
 
 *1)* for running binary GUI program in /bin directory use -disableaccurateframe
 ```sh
