@@ -9,7 +9,7 @@ class set_measure_0(object):
 	MODE	= _mconst.MODE_SHUNT_CURRENT_CONT	# measure mode
 
 class set_measure_1(object):
-# set parameters of measure for INA260 chip 0
+# set parameters of measure for INA260 chip 1
 	_mconst = ina260_constant.register
 	AVGC	= _mconst.COUNT_1					# average count
 	ISHCT	= _mconst.TIME_332_us				# measure current time

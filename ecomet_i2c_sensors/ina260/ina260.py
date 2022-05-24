@@ -103,15 +103,6 @@ class INA260(object):
         self._device = i2c.get_i2c_device(address, busnum, **kwargs)
         self._address = address
 
-        self._mode = { 'PowerDown' : 0,
-            'Current-Triggered' : 1,
-            'Voltage-Triggered' : 2,
-            'Cur-Volt-Triggered' : 3,
-            'Current-Continued': 5,
-            'Voltage-Continued' : 6,
-            'Cur-Volt-Continued' : 7
-        }
-
         self._device_id_allowed = [hex(0x227),hex(0x226)]
 
         self.bit_mask = 0
@@ -357,7 +348,6 @@ class INA260(object):
     def measure_current (self, stime = 1, unit = 'mA'):
         self.measure_buffer_current = {}
         size = 0
-        #self.write_funct ('MODE', self._mode['Current-Continued'])
         from time import time,sleep
         t_start = time()
         while (time() - t_start) <= stime :
