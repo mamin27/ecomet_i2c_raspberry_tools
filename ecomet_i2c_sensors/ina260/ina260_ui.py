@@ -74,14 +74,6 @@ class INA260_UI(object):
        self._logger.debug("filename: %s" % self._filename)
        self._stime = time
 
-    def set_mode(self,s_mode='Cur-Volt-Continued',s_avg=1,s_vbusct='140us',s_vishct='140us') :
-        ret = 0
-        try:
-           self.write_funct ('MODE', self._mode[s_mode])
-        except:
-           ret = 1
-        return ret
-
     def child(self, vunit=None):
       if not vunit:
            vunit = self._vunit
