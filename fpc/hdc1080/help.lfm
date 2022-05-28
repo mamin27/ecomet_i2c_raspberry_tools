@@ -10,7 +10,9 @@ object Form_help: TForm_help
   Caption = 'Help'
   ClientHeight = 280
   ClientWidth = 499
-  LCLVersion = '2.0.0.4'
+  OnClose = FormClose
+  OnDestroy = FormDestroy
+  LCLVersion = '2.3.0.0'
   object Label1: TLabel
     Left = 8
     Height = 18
@@ -21,7 +23,6 @@ object Form_help: TForm_help
     Font.Height = -15
     Font.Name = 'DejaVu Sans Mono'
     Font.Style = [fsBold]
-    ParentColor = False
     ParentFont = False
   end
   object Image_ti_logo: TImage
@@ -244,18 +245,16 @@ object Form_help: TForm_help
     Font.Height = -15
     Font.Name = 'DejaVu Sans Mono'
     Font.Style = [fsBold]
-    ParentColor = False
     ParentFont = False
   end
   object Label3: TLabel
     Left = 8
-    Height = 153
+    Height = 119
     Top = 112
     Width = 320
     Caption = 'CHIP Address: 0x40'#10#10'Read Parameters:'#10'*  Serial ID Chip (Unique Serial Number)'#10'*  Manufacturer ID (0x5449)'#10'*  Device ID (0x1050)'#10#10'*  Temperature'#10'*  Humidity '
     Font.Height = -13
     Font.Name = 'DejaVu Sans Mono'
-    ParentColor = False
     ParentFont = False
   end
   object Label4: TLabel
@@ -266,7 +265,6 @@ object Form_help: TForm_help
     Caption = 'Read/Write Parameters:'#10'*  Accuracy of measure'#10'    *  Temperature (Set A/D bit accuracy)'#10'        * 11 bit'#10'        * 14 bit'#10'    *  Humidity (Set A/D bit accuracy)'#10'        * 8 bit'#10'        * 11 bit'#10'        * 14 BIT'#10'*  Chip Read Measured Data Mode'#10'   * BOTH - First data byte is Temperature and next bite '#10'                  Humidity in one sequence (32 bit Raw Read)'#10'   * ONLY - Read only Temperature or Only Humidity '#10'                 (16 bit Raw Read)'#10'*  Chip Heater'#10'   * ENABLED - Before measure is chip heated'#10'   * DISABLED - Chip heater not used'
     Font.Height = -13
     Font.Name = 'DejaVu Sans Mono'
-    ParentColor = False
     ParentFont = False
   end
 end

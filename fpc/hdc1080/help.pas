@@ -17,6 +17,8 @@ type
     Label2: TLabel;
     Label3: TLabel;
     Label4: TLabel;
+    procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
+    procedure FormDestroy(Sender: TObject);
     procedure Image_ti_logoClick(Sender: TObject);
   private
 
@@ -36,6 +38,16 @@ implementation
 procedure TForm_help.Image_ti_logoClick(Sender: TObject);
 begin
   sleep(10000);
+end;
+
+procedure TForm_help.FormClose(Sender: TObject; var CloseAction: TCloseAction);
+begin
+  writeln('close');
+end;
+
+procedure TForm_help.FormDestroy(Sender: TObject);
+begin
+  writeln('destroy');
 end;
 
 end.

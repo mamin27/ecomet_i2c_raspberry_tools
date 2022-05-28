@@ -846,7 +846,6 @@ object pca9632_main: Tpca9632_main
     Font.Color = clBlack
     Font.Height = -12
     Font.Name = 'DejaVu Sans Mono'
-    ParentBackground = False
     ParentColor = False
     ParentFont = False
     TabOrder = 56
