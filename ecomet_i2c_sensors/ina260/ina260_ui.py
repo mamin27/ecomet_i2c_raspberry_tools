@@ -16,48 +16,48 @@ class INA260_UI(object):
        if chip == 0 :
           self._address = ina260_constant.INA260_ADDRESS1 
           _mconst = ina260_ui_constant.set_measure_0
-          if avgc :
+          if avgc != None :
              _mconst.AVGC = avgc
-          if ishct :
+          if ishct != None :
              _mconst.ISHCT = ishct
-          if vbusct :
+          if vbusct != None :
              _mconst.VBUSCT = vbusct
-          if mode :
+          if mode != None :
              _mconst.MODE = mode
        elif chip == 1 :
           self._address = ina260_constant.INA260_ADDRESS2
           _mconst = ina260_ui_constant.set_measure_1
-          if avgc :
+          if avgc != None :
              _mconst.AVGC = avgc
-          if ishct :
+          if ishct != None :
              _mconst.ISHCT = ishct
-          if vbusct :
+          if vbusct != None :
              _mconst.VBUSCT = vbusct
-          if mode :
+          if mode != None :
              _mconst.MODE = mode
        else :
           match = re.search('^(\d+)#(.+)$', chip,re.IGNORECASE)
           if match.group(1) == '0' :    
              self._address = int(match.group(2),16)
              _mconst = ina260_ui_constant.set_measure_0
-             if avgc :
+             if avgc != None :
                _mconst.AVGC = avgc
-             if ishct :
+             if ishct != None :
                _mconst.ISHCT = ishct
-             if vbusct :
+             if vbusct != None :
                _mconst.VBUSCT = vbusct
-             if mode :
+             if mode != None :
                _mconst.MODE = mode
           elif match.group(1) == '1' :
              self._address = int(match.group(2),16)
              _mconst = ina260_ui_constant.set_measure_1
-             if avgc :
+             if avgc != None :
                _mconst.AVGC = avgc
-             if ishct :
+             if ishct != None :
                _mconst.ISHCT = ishct
-             if vbusct :
+             if vbusct != None :
                _mconst.VBUSCT = vbusct
-             if mode :
+             if mode != None :
                _mconst.MODE = mode
        _ina = ina260.INA260(address=self._address)
        self._logger.debug("address: %d" % self._address)
@@ -67,7 +67,6 @@ class INA260_UI(object):
        self._measure_avgc = _ina.write_funct('AVGC', value = _mconst.AVGC)
        self._measure_ishct = _ina.write_funct('ISHCT', value = _mconst.ISHCT)
        self._measure_vbusct = _ina.write_funct('VBUSCT', value = _mconst.VBUSCT)
-       print ('Mode: {}'.format(_mconst.MODE))
        self._measure_mode = _ina.write_funct('MODE', value = _mconst.MODE)
        r = random.randrange(3,999,3)
        self._filename = 'ina260_' + str(r)

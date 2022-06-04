@@ -8,8 +8,8 @@ import json
 
 buf_current_1 = {}
 
-chip0 = ina260_ui.INA260_UI(chip = '0#0x44', time = 5, i_unit = 'mA', mode = ina260_constant.register.MODE_SHUNT_CURRENT_CONT, 
-                                      avgc = ina260_constant.register.COUNT_4, ishct = ina260_constant.register.TIME_2_116_ms)
+chip0 = ina260_ui.INA260_UI(chip = '0#0x44', time = 1, i_unit = 'mA', mode = ina260_constant.register.MODE_SHUNT_CURRENT_CONT, 
+                                      avgc = ina260_constant.register.COUNT_4, ishct = ina260_constant.register.TIME_204_us)
 sens0 = ina260.conf_register_list(address = 0x44)
 print ('Reg:{}',format(sens0))
 
@@ -27,6 +27,6 @@ file = 'ina260.data'
 fd = open(file,'w')
 fd.writelines([json_curr1,'\n'])
 fd.close()
-sleep(3.5)
+sleep(0.5)
 
 print (':READ::Measure1::{}'.format(file))

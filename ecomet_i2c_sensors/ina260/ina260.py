@@ -336,11 +336,11 @@ class INA260(object):
     def measure_voltage (self, stime = 1, unit = 'V'):
         self.measure_buffer_voltage = {}
         size = 0
-        from time import time,sleep
+        from time import time
         t_start = time()
         while (time() - t_start) <= stime :
            while not(self.bit_get(self._const.REG_MASK_ENABLE, 3, 2, False)) :  # wait for CVRF
-              sleep(0.001)
+              pass
            self.measure_buffer_voltage[size] = self.voltage_conversion(self.read_funct('VOLTAGE'),unit)
            size += 1
         return (size,unit,self.measure_buffer_voltage)
@@ -348,11 +348,11 @@ class INA260(object):
     def measure_current (self, stime = 1, unit = 'mA'):
         self.measure_buffer_current = {}
         size = 0
-        from time import time,sleep
+        from time import time
         t_start = time()
         while (time() - t_start) <= stime :
            while not(self.bit_get(self._const.REG_MASK_ENABLE, 3, 2, False)) :  # wait for CVRF
-              sleep(0.001)
+              pass
            self.measure_buffer_current[size] = self.current_conversion(self.read_funct('CURRENT'),unit=unit)
            self._logger.info("Current: %s",self.measure_buffer_current[size])
            size += 1
