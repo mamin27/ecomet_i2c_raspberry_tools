@@ -213,7 +213,7 @@ Values:  {0: 1.25, 1: 0.0, 2: -1.25, 3: 0.0, 4: 0.0, 5: 0.0, 6: 0.0, 7: 0.0, 8: 
 * **method: measure_ui**
 run measure of current and voltage at once at dedicated chip
 
-see [ina260_i2c_ui.py](../../../python_test_scripts/ina260/ina260_i2c_ui.py)
+see [ina260_i2c_ui.py](ecomet_i2c_raspberry_tools/tree/master/python_test_scripts/ina260/ina260_i2c_ui.py)
 
 data are temporary stored in __ina_chip__ file because data will be read parallely
 final result will be stored in __file = 'ina260.data'__ in json format
@@ -221,20 +221,20 @@ final result will be stored in __file = 'ina260.data'__ in json format
 * **method: measure_i**
 run measure of current and voltage at once at dedicated chip
 
-see [ina260_i2c_i_1.py](../../../python_test_scripts/ina260/ina260_i2c_i_1.py)
+see [ina260_i2c_i_1.py](ecomet_i2c_raspberry_tools/tree/master/python_test_scripts/ina260/ina260_i2c_i_1.py)
 
 final result will be stored in __file = 'ina260.data'__ in json format
 
 * **method: measure_u**
 run measure of current and voltage at once at dedicated chip
 
-see [ina260_i2c_u_1.py](../../../python_test_scripts/ina260/ina260_i2c_i_1.py)
+see [ina260_i2c_u_1.py](ecomet_i2c_raspberry_tools/tree/master/python_test_scripts/ina260/ina260_i2c_i_1.py)
 
 final result will be stored in __file = 'ina260.data'__ in json format
 
 **All test script: INA260:**
 
-see directory  [INA260 test scripts](../../../python_test_scripts/ina260)
+see directory  [INA260 test scripts](ecomet_i2c_raspberry_tools/tree/master/python_test_scripts/ina260/python_test_scripts/ina260)
 
 
 
@@ -244,7 +244,7 @@ see directory  [INA260 test scripts](../../../python_test_scripts/ina260)
 |i2c_address_test.py   | Test if INA chip A & B are connected      | 
 |ina260_i2c_graph.py   | Text      | 
 |ina260_i2c_i_1.py    | Collecting measurements from INA chip A I      | 
-|ina260_i2c_i_1_u_2.py     | Text      | 
+|ina260_i2c_i_1_u_2.py     | Collecting measurements from INA chip A I chip B U      | 
 |ina260_i2c_i_2.py   |  Collecting measurements from INA chip B I       | 
 |ina260_i2c_test.py     | Text      | 
 |ina260_i2c_u_1.py     | Collecting measurements from INA chip A U     | 
@@ -254,40 +254,3 @@ see directory  [INA260 test scripts](../../../python_test_scripts/ina260)
 |ina260_i2c_ui_1_i_2.py    | Collecting measurements from INA chip A U&I  and chip B I        | 
 |ina260_i2c_ui_1_u_2.py  |  Collecting measurements from INA chip A U&I  and chip B U      | 
 |ina260_i2c_ui_2.py     | Collecting measurements from INA chip B U&I        | 
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-
