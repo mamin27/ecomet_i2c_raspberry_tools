@@ -221,20 +221,20 @@ final result will be stored in __file = 'ina260.data'__ in json format
 * **method: measure_i**
 run measure of current and voltage at once at dedicated chip
 
-see [ina260_i2c_i_1.py](ecomet_i2c_raspberry_tools/tree/master/python_test_scripts/ina260/ina260_i2c_i_1.py)
+see [ina260_i2c_i_1.py](../../python_test_scripts/ina260/ina260_i2c_i_1.py)
 
 final result will be stored in __file = 'ina260.data'__ in json format
 
 * **method: measure_u**
 run measure of current and voltage at once at dedicated chip
 
-see [ina260_i2c_u_1.py](ecomet_i2c_raspberry_tools/tree/master/python_test_scripts/ina260/ina260_i2c_i_1.py)
+see [ina260_i2c_u_1.py](../../python_test_scripts/ina260/ina260_i2c_i_1.py)
 
 final result will be stored in __file = 'ina260.data'__ in json format
 
 **All test script: INA260:**
 
-see directory  [INA260 test scripts](ecomet_i2c_raspberry_tools/tree/master/python_test_scripts/ina260/python_test_scripts/ina260)
+see directory  [INA260 test scripts](../../python_test_scripts/ina260)
 
 
 
