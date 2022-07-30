@@ -57,7 +57,7 @@ diode dot-matrix graphic display system.
 | MS5637          |[yes](ecomet_i2c_sensors/ms5637/ms5637_python.IIC.md)|    no    |[I04](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_temp_hmd_pressure_board)|                  |      |
 | EMC2301         |[yes](ecomet_i2c_sensors/emc2301/emc2301_python_IIC.md)|[yes](fpc/emc2301/emc2301_IIC.md)|[I02](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_fan_board)|                  |    |  add EMC2302-05 chips in design                             |
 | SSD1306         |[yes](ecomet_i2c_sensors/ssd1306/ssd1306_python.IIC.md)|    no    |[I01](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_display_current_board) | |     |
-| INA226, INA260  |[yes](ecomet_i2c_sensors/ina260/ina260_python.IIC.md)|    yes    |[I01](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_display_current_board) |[!NEW!](ecomet_i2c_sensors/ina260/ina260_python_IIC.md) Python driver documentation, GUI development in progress (see twitter) |     |
+| INA226, INA260  |[yes](ecomet_i2c_sensors/ina260/ina260_python_IIC.md)|    yes    |[I01](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_display_current_board) |[!NEW!](ecomet_i2c_sensors/ina260/ina260_python_IIC.md) |     |
 | ISL2802x  |in progress |    no    | | |     |
 
 ```sh
