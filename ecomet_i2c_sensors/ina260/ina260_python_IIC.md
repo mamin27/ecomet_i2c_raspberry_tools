@@ -213,7 +213,7 @@ Values:  {0: 1.25, 1: 0.0, 2: -1.25, 3: 0.0, 4: 0.0, 5: 0.0, 6: 0.0, 7: 0.0, 8: 
 * **method: measure_ui**
 run measure of current and voltage at once at dedicated chip
 
-see [ina260_i2c_ui.py](python_test_scripts/ina260/python_test_scripts/ina260/ina260_i2c_ui.py)
+see [ina260_i2c_ui.py](../../python_test_scripts/ina260/ina260_i2c_ui.py)
 
 data are temporary stored in __ina_chip__ file because data will be read parallely
 final result will be stored in __file = 'ina260.data'__ in json format
