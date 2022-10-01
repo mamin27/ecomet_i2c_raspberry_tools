@@ -242,11 +242,9 @@ see directory  [INA260 test scripts](../../python_test_scripts/ina260)
 | -------- | -------- |
 |i2c_address_search.py     | Search INA chip at I2C bus     | 
 |i2c_address_test.py   | Test if INA chip A & B are connected      | 
-|ina260_i2c_graph.py   | Text      | 
 |ina260_i2c_i_1.py    | Collecting measurements from INA chip A I      | 
 |ina260_i2c_i_1_u_2.py     | Collecting measurements from INA chip A I chip B U      | 
 |ina260_i2c_i_2.py   |  Collecting measurements from INA chip B I       | 
-|ina260_i2c_test.py     | Text      | 
 |ina260_i2c_u_1.py     | Collecting measurements from INA chip A U     | 
 |ina260_i2c_u_2.py   | Collecting measurements from INA chip B U       | 
 |ina260_i2c_ui.py    | Collecting measurements from INA chip A&B and U&I      | 
