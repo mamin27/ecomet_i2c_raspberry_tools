@@ -114,6 +114,8 @@ class INA260(object):
         self.measure_buffer_power = {}
         self.lsb_first = True
         self.sign_bit = False
+        self._ioffset = 0
+        self._uoffset = 0
 
         self.format = '>H'
 
@@ -313,7 +315,7 @@ class INA260(object):
           self.mode = self.bits_set(3, self._const.REG_CONFIG, 0, 2, False, value=value)
           return self.mode
 
-    def read_funct (self, function):
+    def read_funct (self, function, offset):
         if function == 'VBUSCT' :
           self.voltage_conversion_time = self.bits_get(3, self._const.REG_CONFIG, 6, 2, False)
           return self.voltage_conversion_time
@@ -327,33 +329,37 @@ class INA260(object):
           self.mode = self.bits_get(3, self._const.REG_CONFIG, 0, 2, False)
           return self.mode
         elif function == 'VOLTAGE' :
-          self._raw_voltage = self.unaryStruct_get(self._const.REG_BUSVOLTAGE, ">H")
+          self._raw_voltage = self.unaryStruct_get(self._const.REG_BUSVOLTAGE, ">H") + offset
           return self._raw_voltage
         elif function == 'CURRENT' :
-          self._raw_current = self.unaryStruct_get (self._const.REG_CURRENT, '>h')
+          self._raw_current = self.unaryStruct_get (self._const.REG_CURRENT, '>h') + offset
           return self._raw_current
 
-    def measure_voltage (self, stime = 1, unit = 'V'):
+    def measure_voltage (self, stime = 1, unit = 'mV', uoffset = None):
         self.measure_buffer_voltage = {}
         size = 0
+        if not uoffset:
+           uoffset = self._uoffset
         from time import time
         t_start = time()
         while (time() - t_start) <= stime :
            while not(self.bit_get(self._const.REG_MASK_ENABLE, 3, 2, False)) :  # wait for CVRF
               pass
-           self.measure_buffer_voltage[size] = self.voltage_conversion(self.read_funct('VOLTAGE'),unit)
+           self.measure_buffer_voltage[size] = self.voltage_conversion(self.read_funct(function = 'VOLTAGE',offset = uoffset),unit = unit)
            size += 1
         return (size,unit,self.measure_buffer_voltage)
 
-    def measure_current (self, stime = 1, unit = 'mA'):
+    def measure_current (self, stime = 1, unit = 'mA', ioffset = None):
         self.measure_buffer_current = {}
         size = 0
+        if not ioffset:
+           ioffset = self._ioffset
         from time import time
         t_start = time()
         while (time() - t_start) <= stime :
            while not(self.bit_get(self._const.REG_MASK_ENABLE, 3, 2, False)) :  # wait for CVRF
               pass
-           self.measure_buffer_current[size] = self.current_conversion(self.read_funct('CURRENT'),unit=unit)
+           self.measure_buffer_current[size] = self.current_conversion(self.read_funct(function = 'CURRENT',offset = ioffset),unit = unit)
            self._logger.info("Current: %s",self.measure_buffer_current[size])
            size += 1
         return (size,unit,self.measure_buffer_current)

@@ -72,29 +72,35 @@ class INA260_UI(object):
        self._filename = 'ina260_' + str(r)
        self._logger.debug("filename: %s" % self._filename)
        self._stime = time
+       self._ioffset = 0
+       self._uoffset = 0
 
-    def child(self, vunit=None):
+    def child(self, vunit=None, uoffset=None):
       if not vunit:
            vunit = self._vunit
       fd = open(self._filename,'wb')
       self._logger.debug("child: %d" % os.getpid())
-      voltage = self._ina.measure_voltage(stime = self._stime, unit = vunit)
+      voltage = self._ina.measure_voltage(stime = self._stime, unit = vunit, uoffset = uoffset)
       pickle.dump(voltage, fd,-1)
       fd.close()
       os._exit(0)
 
-    def parent(self, stime=None, iunit=None, vunit=None):
+    def parent(self, stime=None, iunit=None, vunit=None, ioffset=None, uoffset=None):
       if not stime:
            stime = self._stime
       if not iunit:
            iunit = self._iunit
+      if not ioffset:
+           ioffset = self._ioffset
+      if not uoffset:
+           uoffset = self._uoffset
       while True:
          newpid = os.fork()
          if newpid == 0:
-            self.child( vunit = vunit)
+            self.child( vunit = vunit, uoffset = uoffset)
          else:
             self._logger.debug("parent: %d" % os.getpid())
-            current = self._ina.measure_current(stime = stime, unit = iunit )
+            current = self._ina.measure_current(stime = stime, unit = iunit, ioffset = ioffset )
             os.waitid(os.P_PID,newpid,os.WEXITED)
             break
       fd = open(self._filename,'rb')
@@ -105,41 +111,53 @@ class INA260_UI(object):
       multi_measure = [current,voltage]
       return (multi_measure)
 
-    def parent_i(self, stime=None, iunit=None):
+    def parent_i(self, stime=None, iunit=None, ioffset=None):
       if not stime:
            stime = self._stime
       if not iunit:
            iunit = self._iunit
-      current = self._ina.measure_current(stime = stime, unit = iunit )
+      if not ioffset:
+           ioffset = self._ioffset
+      current = self._ina.measure_current(stime = stime, unit = iunit, ioffset = ioffset )
       return (current)
 
-    def parent_u(self, stime=None, vunit=None):
+    def parent_u(self, stime=None, vunit=None, uoffset=None):
       if not stime:
            stime = self._stime
       if not vunit:
            vunit = self._vunit
-      voltage = self._ina.measure_voltage(stime = self._stime, unit = vunit)
+      if not uoffset:
+           uoffset = self._uoffset
+      voltage = self._ina.measure_voltage(stime = self._stime, unit = vunit, uoffset = uoffset )
       return (voltage)
 
-    def measure_ui (self, iunit=None, vunit=None) :
+    def measure_ui (self, iunit=None, vunit=None, ioffset=None, uoffset=None) :
        if not iunit:
            iunit = self._iunit
        if not vunit:
            vunit = self._vunit
+       if iunit == 'A' and ioffset:
+          ioffset = ioffset * 0.001
+       if vunit == 'U' and uoffset:
+          uoffset = uoffset * 0.001
        data = {}
-       data = self.parent( iunit = iunit, vunit = vunit)
+       data = self.parent( iunit = iunit, vunit = vunit, ioffset = ioffset, uoffset = uoffset )
        return data
 
-    def measure_i (self, iunit=None) :
+    def measure_i (self, iunit=None, ioffset=None) :
        if not iunit:
            iunit = self._iunit
+       if iunit == 'A' and ioffset:
+          ioffset = ioffset * 0.001
        data = {}
-       data = self.parent_i( iunit = iunit )
+       data = self.parent_i( iunit = iunit, ioffset = ioffset )
        return data
 
-    def measure_u (self, vunit=None) :
+    def measure_u (self, vunit=None, uoffset=None) :
        if not vunit:
            vunit = self._vunit
+       if vunit == 'U' and uoffset:
+          uoffset = uoffset * 0.001
        data = {}
-       data = self.parent_u( vunit = vunit )
+       data = self.parent_u( vunit = vunit, uoffset = uoffset )
        return data
