@@ -39,8 +39,27 @@ internal function:
 
 * INA260_UI - main measure class
 * INA260_UI.measure_ui - run measurement of voltage and current at once
+- attributes: 
+              
+	      iunit - current measure units ['A','mA'] - (optional, default = mA) 
+              
+	      ioffset - measure offset (calibration) in mA - (optional, default = 0)
+	      
+	      uunit - voltage measure units ['V','mV'] - (optional, default = mA) 
+              
+	      uoffset - measure offset (calibration) in mV - (optional, default = 0)
 * INA260_UI.measure_u - run measurement of voltage
+- attributes: 
+          
+	      uunit - voltage measure units ['V','mV'] - (optional, default = mA) 
+              
+	      uoffset - measure offset (calibration) in mV - (optional, default = 0)
 * INA260_UI.measure_i - run measurement of current
+- attributes: 
+             
+	      iunit - current measure units ['A','mA'] - (optional, default = mA) 
+              
+	      ioffset - measure offset (calibration) in mA - (optional, default = 0)
 
 **initialize chip**
 -- set chip address 
