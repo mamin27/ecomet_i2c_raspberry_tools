@@ -1,9 +1,16 @@
 # ecomet_i2c_raspberry_tools
 
-**Last modification:** 17.05.2022
+**Last modification:** 10.10.2022
 **Contributor:** Marian Minar
 
 **Twitter:** [News and statuses](https://twitter.com/mminar7)
+
+**NEW! SourceForge.net:**
+* Oscilloscope-like application **eCScope** for Raspberry PI 4+ (32bit Raspbian) based on INA260 chips and built with the Ecomet-i2c-sensors Python library.
+
+[![Download eCScope](https://a.fsdn.com/con/app/sf-download-button)](https://sourceforge.net/projects/ecomet-i2c-raspberry-tools/files/latest/download)
+
+Project eCScope was created to show progress in development. Insert the #eCScope keyword into the issue section.
 
 **PyPi module:** [ecomet-i2c-sensor](https://test.pypi.org/project/ecomet-i2c-sensors/)
 
