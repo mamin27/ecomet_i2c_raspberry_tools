@@ -6,10 +6,11 @@ import pickle
 import os
 import json
 
-sens = ina260.INA260()
+base_data = 'ina260.data'
+file_data = '/tmp/' + base_data
 
 def child ():
-   fd = open('ina_chip','wb')
+   fd = open(file_data,'wb')
    data = chip1.measure_i()
    pickle.dump(data, fd,-1)
    fd.close()
@@ -18,29 +19,29 @@ def child ():
 buf_current_1 = {}
 buf_current_2 = {}
 
-chip0 = ina260_ui.INA260_UI(chip = '0#0x44', time = 1, i_unit = 'mA', mode = ina260_constant.register.MODE_SHUNT_CURRENT_CONT, 
+chip0 = ina260_ui.INA260_UI(chip = '0#0x46', time = 1, i_unit = 'mA', mode = ina260_constant.register.MODE_SHUNT_CURRENT_CONT, 
                                       avgc = ina260_constant.register.COUNT_1, ishct = ina260_constant.register.TIME_204_us)
-chip1 = ina260_ui.INA260_UI(chip = '1#0x45', time = 1, i_unit = 'mA', mode = ina260_constant.register.MODE_SHUNT_CURRENT_CONT, 
+chip1 = ina260_ui.INA260_UI(chip = '1#0x47', time = 1, i_unit = 'mA', mode = ina260_constant.register.MODE_SHUNT_CURRENT_CONT, 
                                       avgc = ina260_constant.register.COUNT_1, ishct = ina260_constant.register.TIME_204_us)
-sens0 = ina260.conf_register_list(address = 0x44)
-sens1 = ina260.conf_register_list(address = 0x45)
+
+sens0 = ina260.conf_register_list(address = 0x46)
+sens1 = ina260.conf_register_list(address = 0x47)
 print ('Reg:{}',format(sens0))
 print ('Reg:{}',format(sens1))
-
 
 while True:
    newpid = os.fork()
    if newpid == 0:
       child()
    else:
-      ((size_current_1,unit_current_1,buf_current_1)) = chip0.measure_i()
+      ((size_current_1,unit_current_1,buf_current_1)) = chip0.measure_i( ioffset = 4.1 )
       os.waitid(os.P_PID,newpid,os.WEXITED)
       break
-fd = open('ina_chip','rb')
+fd = open(file_data,'rb')
 ((size_current_2,unit_current_2,buf_current_2)) = pickle.load(fd)
 fd.close()
-#print('{}'.format(os.listdir()))
-os.remove('ina_chip')
+
+os.remove(file_data)
 
 arr_current_1 = ()
 arr_current_2 = ()
@@ -53,11 +54,10 @@ data_curr2 = {'current_size_2' : size_current_2,'unit_current_2' : unit_current_
 
 json_curr1 = json.dumps(data_curr1)
 json_curr2 = json.dumps(data_curr2)
-file = 'ina260.data'
-fd = open(file,'w')
+fd = open(file_data,'w')
 fd.writelines([json_curr1,'\n'])
 fd.writelines([json_curr2,'\n'])
 fd.close()
 sleep(0.5)
 
-print (':READ::Measure::{}'.format(file))
+print (':READ::Measure::{}'.format(base_data))
