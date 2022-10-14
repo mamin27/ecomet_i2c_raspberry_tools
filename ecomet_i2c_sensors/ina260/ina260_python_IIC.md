@@ -1,6 +1,6 @@
 # ina260_IIC python3 module
 
-**Last modification:** 1.08.2022
+**Last modification:** 14.10.2022
 
 ### List of python files: ###
 
@@ -169,12 +169,13 @@ print (':TEST::Address::#A:{}::#B:{}'.format(statA,statB))
 run measure of voltage at dedicated chip
 
 ```sh
-def INA260.measure_voltage(stime=0.1,unit='mV')
+def INA260.measure_voltage(stime=0.1,unit='mV', uoffset = 0)
 attributes (stime = integer [seconds];
                  units = enum ['mV','V']
+		 uoffset = real (in mV)
 return values (size = integer;
                       units = enum['mV,'V'];
-					  buf = dictionary {number: measured_value})
+		      buf = dictionary {number: measured_value})
 ```
 
 Example:
@@ -183,7 +184,7 @@ from ecomet_i2c_sensors.ina260 import ina260, ina260_ui, ina260_constant
 
 buf = {}
 sens0 = ina260.INA260(address = 0x40)
-(size,unit,buf) = sens0.measure_voltage(stime=0.1,unit='mV')
+(size,unit,buf) = sens0.measure_voltage(self, stime = 1, unit = 'mV', uoffset = 0)
 print ('Size: ',format(size))
 print ('Units: ', format(unit))
 print ('Values: ', format(buf))
@@ -201,12 +202,13 @@ Values:  {0: 0.0, 1: 0.0, 2: 5.0, 3: 2.5, 4: 0.0, 5: 0.0, 6: 0.0, 7: 0.0, 8: 0.0
 run measure of current at dedicated chip
 
 ```sh
-def INA260.measure_current(stime=0.1,unit='mA')
+def INA260.measure_current(stime=0.1,unit='mA',ioffset = 0)
 attributes (stime = integer [seconds];
                  units = enum ['mA','A']
+		 ioffset = real (in mA)
 return values (size = integer;
                       units = enum['mA,'A'];
-					  buf = dictionary {number: measured_value})
+		      buf = dictionary {number: measured_value})
 ```
 
 Example:
@@ -215,7 +217,7 @@ from ecomet_i2c_sensors.ina260 import ina260, ina260_ui, ina260_constant
 
 buf = {}
 sens0 = ina260.INA260(address = 0x40)
-(size,unit,buf) = sens0.measure_current(stime=0.1,unit='mA')
+(size,unit,buf) = sens0.measure_current(stime=0.1,unit='mA',ioffset = 0)
 print ('Size: ',format(size))
 print ('Units: ', format(unit))
 print ('Values: ', format(buf))
