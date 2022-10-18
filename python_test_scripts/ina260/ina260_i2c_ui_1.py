@@ -12,7 +12,7 @@ file_data = '/tmp/' + base_data
 buf_voltage_1 = {}
 buf_current_1 = {}
 
-chip0 = ina260_ui.INA260_UI(chip = '0#0x46', time = 1, v_unit = 'mV', i_unit = 'mA', mode = ina260_constant.register.MODE_CUR_VOLT_CONT, 
+chip0 = ina260_ui.INA260_UI(chip = '0#0x46', time = 1, u_unit = 'mV', i_unit = 'mA', mode = ina260_constant.register.MODE_CUR_VOLT_CONT, 
                                       avgc = ina260_constant.register.COUNT_1, vbusct = ina260_constant.register.TIME_558_us, ishct = ina260_constant.register.TIME_558_us)
 sens0 = ina260.conf_register_list(address = 0x46)
 print ('Reg:{}',format(sens0))

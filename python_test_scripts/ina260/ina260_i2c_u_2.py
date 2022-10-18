@@ -19,9 +19,9 @@ def child ():
 buf_voltage_1 = {}
 buf_voltage_2 = {}
 
-chip0 = ina260_ui.INA260_UI(chip = '0#0x46', time = 1, v_unit = 'mV', mode = ina260_constant.register.MODE_BUS_VOLT_CONT, 
+chip0 = ina260_ui.INA260_UI(chip = '0#0x46', time = 1, u_unit = 'mV', mode = ina260_constant.register.MODE_BUS_VOLT_CONT, 
                                       avgc = ina260_constant.register.COUNT_1, vbusct = ina260_constant.register.TIME_204_us)
-chip1 = ina260_ui.INA260_UI(chip = '1#0x47', time = 1, v_unit = 'mV', mode = ina260_constant.register.MODE_BUS_VOLT_CONT, 
+chip1 = ina260_ui.INA260_UI(chip = '1#0x47', time = 1, u_unit = 'mV', mode = ina260_constant.register.MODE_BUS_VOLT_CONT, 
                                       avgc = ina260_constant.register.COUNT_1, vbusct = ina260_constant.register.TIME_204_us)
 sens0 = ina260.conf_register_list(address = 0x46)
 sens1 = ina260.conf_register_list(address = 0x47)

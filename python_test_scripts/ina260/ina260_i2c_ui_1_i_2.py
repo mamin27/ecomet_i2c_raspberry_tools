@@ -20,7 +20,7 @@ buf_voltage_1 = {}
 buf_current_1 = {}
 buf_current_2 = {}
 
-chip0 = ina260_ui.INA260_UI(chip = '0#0x46', time = 1, v_unit = 'mV', i_unit = 'mA', mode = ina260_constant.register.MODE_CUR_VOLT_CONT, 
+chip0 = ina260_ui.INA260_UI(chip = '0#0x46', time = 1, u_unit = 'mV', i_unit = 'mA', mode = ina260_constant.register.MODE_CUR_VOLT_CONT, 
                                       avgc = ina260_constant.register.COUNT_1, vbusct = ina260_constant.register.TIME_1_1_ms, ishct = ina260_constant.register.TIME_1_1_ms)
 chip1 = ina260_ui.INA260_UI(chip = '1#0x47', time = 1, i_unit = 'mA', mode = ina260_constant.register.MODE_SHUNT_CURRENT_CONT, 
                                       avgc = ina260_constant.register.COUNT_1, ishct = ina260_constant.register.TIME_1_1_ms)
