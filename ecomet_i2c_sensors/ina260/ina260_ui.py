@@ -11,7 +11,7 @@ class INA260_UI(object):
     '''INA260_UI()'''
     '''chip=0#0x40'''
 
-    def __init__(self, chip=0, time = 1, i_unit = 'mA', v_unit = 'mV', avgc = None, ishct = None, vbusct = None, mode = None, **kwargs) :
+    def __init__(self, chip=0, time = 1, i_unit = 'mA', u_unit = 'mV', avgc = None, ishct = None, vbusct = None, mode = None, **kwargs) :
        self._logger = logging.getLogger(__name__)
        if chip == 0 :
           self._address = ina260_constant.INA260_ADDRESS1 
@@ -63,7 +63,7 @@ class INA260_UI(object):
        self._logger.debug("address: %d" % self._address)
        self._ina = _ina
        self._iunit = i_unit
-       self._vunit = v_unit
+       self._uunit = u_unit
        self._measure_avgc = _ina.write_funct('AVGC', value = _mconst.AVGC)
        self._measure_ishct = _ina.write_funct('ISHCT', value = _mconst.ISHCT)
        self._measure_vbusct = _ina.write_funct('VBUSCT', value = _mconst.VBUSCT)
@@ -75,17 +75,17 @@ class INA260_UI(object):
        self._ioffset = 0
        self._uoffset = 0
 
-    def child(self, vunit=None, uoffset=None):
-      if not vunit:
-           vunit = self._vunit
+    def child(self, uunit=None, uoffset=None):
+      if not uunit:
+           uunit = self._uunit
       fd = open(self._filename,'wb')
       self._logger.debug("child: %d" % os.getpid())
-      voltage = self._ina.measure_voltage(stime = self._stime, unit = vunit, uoffset = uoffset)
+      voltage = self._ina.measure_voltage(stime = self._stime, unit = uunit, uoffset = uoffset)
       pickle.dump(voltage, fd,-1)
       fd.close()
       os._exit(0)
 
-    def parent(self, stime=None, iunit=None, vunit=None, ioffset=None, uoffset=None):
+    def parent(self, stime=None, iunit=None, uunit=None, ioffset=None, uoffset=None):
       if not stime:
            stime = self._stime
       if not iunit:
@@ -97,7 +97,7 @@ class INA260_UI(object):
       while True:
          newpid = os.fork()
          if newpid == 0:
-            self.child( vunit = vunit, uoffset = uoffset)
+            self.child( uunit = uunit, uoffset = uoffset)
          else:
             self._logger.debug("parent: %d" % os.getpid())
             current = self._ina.measure_current(stime = stime, unit = iunit, ioffset = ioffset )
@@ -121,27 +121,27 @@ class INA260_UI(object):
       current = self._ina.measure_current(stime = stime, unit = iunit, ioffset = ioffset )
       return (current)
 
-    def parent_u(self, stime=None, vunit=None, uoffset=None):
+    def parent_u(self, stime=None, uunit=None, uoffset=None):
       if not stime:
            stime = self._stime
-      if not vunit:
-           vunit = self._vunit
+      if not uunit:
+           uunit = self._uunit
       if not uoffset:
            uoffset = self._uoffset
-      voltage = self._ina.measure_voltage(stime = self._stime, unit = vunit, uoffset = uoffset )
+      voltage = self._ina.measure_voltage(stime = self._stime, unit = uunit, uoffset = uoffset )
       return (voltage)
 
-    def measure_ui (self, iunit=None, vunit=None, ioffset=None, uoffset=None) :
+    def measure_ui (self, iunit=None, uunit=None, ioffset=None, uoffset=None) :
        if not iunit:
            iunit = self._iunit
-       if not vunit:
-           vunit = self._vunit
+       if not uunit:
+           uunit = self._uunit
        if iunit == 'A' and ioffset:
           ioffset = ioffset * 0.001
-       if vunit == 'U' and uoffset:
+       if uunit == 'V' and uoffset:
           uoffset = uoffset * 0.001
        data = {}
-       data = self.parent( iunit = iunit, vunit = vunit, ioffset = ioffset, uoffset = uoffset )
+       data = self.parent( iunit = iunit, uunit = uunit, ioffset = ioffset, uoffset = uoffset )
        return data
 
     def measure_i (self, iunit=None, ioffset=None) :
@@ -153,11 +153,11 @@ class INA260_UI(object):
        data = self.parent_i( iunit = iunit, ioffset = ioffset )
        return data
 
-    def measure_u (self, vunit=None, uoffset=None) :
-       if not vunit:
-           vunit = self._vunit
-       if vunit == 'U' and uoffset:
+    def measure_u (self, uunit=None, uoffset=None) :
+       if not uunit:
+           uunit = self._uunit
+       if uunit == 'V' and uoffset:
           uoffset = uoffset * 0.001
        data = {}
-       data = self.parent_u( vunit = vunit, uoffset = uoffset )
+       data = self.parent_u( uunit = uunit, uoffset = uoffset )
        return data
