@@ -174,18 +174,19 @@ class INA260(object):
            ret = 1
         return ret
 
-    def current_conversion (self, current, unit) :
+    def current_conversion (self, current, unit, ioffset = 0) :
         if unit == 'mA' :
-           result = current * 1.25
+           result = current * 1.25 + ioffset
         elif unit == 'A' :
-           result = (current * 1.25)/1000
+           result = (current * 1.25)/1000 + ioffset
+        #print ('current_conversion: {}'.format(result))
         return result
 
-    def voltage_conversion (self, voltage, unit) :
+    def voltage_conversion (self, voltage, unit, uoffset = 0) :
         if unit == 'mV' :
-           result = voltage * 1.25
+           result = voltage * 1.25 + uoffset
         elif unit == 'V' :
-           result = (voltage * 1.25)/1000
+           result = (voltage * 1.25)/1000 + uoffset
         return result
 
     def power_conversion (self, power, unit) :
@@ -315,7 +316,7 @@ class INA260(object):
           self.mode = self.bits_set(3, self._const.REG_CONFIG, 0, 2, False, value=value)
           return self.mode
 
-    def read_funct (self, function, offset):
+    def read_funct (self, function):
         if function == 'VBUSCT' :
           self.voltage_conversion_time = self.bits_get(3, self._const.REG_CONFIG, 6, 2, False)
           return self.voltage_conversion_time
@@ -329,10 +330,10 @@ class INA260(object):
           self.mode = self.bits_get(3, self._const.REG_CONFIG, 0, 2, False)
           return self.mode
         elif function == 'VOLTAGE' :
-          self._raw_voltage = self.unaryStruct_get(self._const.REG_BUSVOLTAGE, ">H") + offset
+          self._raw_voltage = self.unaryStruct_get(self._const.REG_BUSVOLTAGE, ">H")
           return self._raw_voltage
         elif function == 'CURRENT' :
-          self._raw_current = self.unaryStruct_get (self._const.REG_CURRENT, '>h') + offset
+          self._raw_current = self.unaryStruct_get (self._const.REG_CURRENT, '>h')
           return self._raw_current
 
     def measure_voltage (self, stime = 1, unit = 'mV', uoffset = None):
@@ -345,7 +346,7 @@ class INA260(object):
         while (time() - t_start) <= stime :
            while not(self.bit_get(self._const.REG_MASK_ENABLE, 3, 2, False)) :  # wait for CVRF
               pass
-           self.measure_buffer_voltage[size] = self.voltage_conversion(self.read_funct(function = 'VOLTAGE',offset = uoffset),unit = unit)
+           self.measure_buffer_voltage[size] = self.voltage_conversion(self.read_funct(function = 'VOLTAGE'),unit = unit, uoffset = uoffset)
            size += 1
         return (size,unit,self.measure_buffer_voltage)
 
@@ -359,7 +360,7 @@ class INA260(object):
         while (time() - t_start) <= stime :
            while not(self.bit_get(self._const.REG_MASK_ENABLE, 3, 2, False)) :  # wait for CVRF
               pass
-           self.measure_buffer_current[size] = self.current_conversion(self.read_funct(function = 'CURRENT',offset = ioffset),unit = unit)
+           self.measure_buffer_current[size] = self.current_conversion(self.read_funct(function = 'CURRENT'),unit = unit, ioffset = ioffset)
            self._logger.info("Current: %s",self.measure_buffer_current[size])
            size += 1
         return (size,unit,self.measure_buffer_current)
