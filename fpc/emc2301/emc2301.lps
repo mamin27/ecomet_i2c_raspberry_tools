@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <ProjectSession>
-    <Version Value="12"/>
+    <Version Value="11"/>
     <BuildModes Active="Default"/>
     <Units Count="25">
       <Unit0>
@@ -9,7 +9,7 @@
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="7"/>
         <CursorPos Y="22"/>
-        <UsageCount Value="165"/>
+        <UsageCount Value="166"/>
         <Loaded Value="True"/>
       </Unit0>
       <Unit1>
@@ -19,9 +19,9 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="178"/>
-        <CursorPos X="34" Y="186"/>
-        <UsageCount Value="165"/>
+        <TopLine Value="175"/>
+        <CursorPos X="54" Y="145"/>
+        <UsageCount Value="166"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit1>
@@ -31,7 +31,7 @@
         <EditorIndex Value="8"/>
         <TopLine Value="363"/>
         <CursorPos X="30" Y="371"/>
-        <UsageCount Value="165"/>
+        <UsageCount Value="166"/>
         <Loaded Value="True"/>
       </Unit2>
       <Unit3>
@@ -40,17 +40,10 @@
         <EditorIndex Value="5"/>
         <TopLine Value="352"/>
         <CursorPos X="55" Y="335"/>
-        <UsageCount Value="165"/>
+        <UsageCount Value="166"/>
         <Loaded Value="True"/>
       </Unit3>
       <Unit4>
-        <Filename Value="rpm_source.pas"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="18"/>
-        <CursorPos X="61" Y="26"/>
-        <UsageCount Value="156"/>
-      </Unit4>
-      <Unit5>
         <Filename Value="emc2301_graph.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="Form_graph"/>
@@ -58,16 +51,10 @@
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="9"/>
         <CursorPos X="43" Y="33"/>
-        <UsageCount Value="135"/>
+        <UsageCount Value="136"/>
         <Loaded Value="True"/>
-      </Unit5>
-      <Unit6>
-        <Filename Value="universal.pas"/>
-        <EditorIndex Value="-1"/>
-        <CursorPos X="15" Y="12"/>
-        <UsageCount Value="62"/>
-      </Unit6>
-      <Unit7>
+      </Unit4>
+      <Unit5>
         <Filename Value="missing_chip.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="Form_missing_chip"/>
@@ -76,11 +63,11 @@
         <EditorIndex Value="1"/>
         <TopLine Value="5"/>
         <CursorPos X="25" Y="47"/>
-        <UsageCount Value="25"/>
+        <UsageCount Value="26"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
-      </Unit7>
-      <Unit8>
+      </Unit5>
+      <Unit6>
         <Filename Value="help.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="Form_help"/>
@@ -88,11 +75,11 @@
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="3"/>
         <CursorPos X="102" Y="23"/>
-        <UsageCount Value="25"/>
+        <UsageCount Value="26"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
-      </Unit8>
-      <Unit9>
+      </Unit6>
+      <Unit7>
         <Filename Value="creator.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="Form_creator"/>
@@ -100,10 +87,41 @@
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="2"/>
         <CursorPos X="32" Y="16"/>
-        <UsageCount Value="25"/>
+        <UsageCount Value="26"/>
         <Loaded Value="True"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="../shared/rpm_source.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="21"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="../shared/universal.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="21"/>
       </Unit9>
       <Unit10>
+        <Filename Value="rpm_source.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="18"/>
+        <CursorPos X="61" Y="26"/>
+        <UsageCount Value="156"/>
+      </Unit10>
+      <Unit11>
+        <Filename Value="universal.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="15" Y="12"/>
+        <UsageCount Value="62"/>
+      </Unit11>
+      <Unit12>
         <Filename Value="fpc/emc2301/emc2301_display.pas"/>
         <ComponentName Value="Form_emc2301"/>
         <HasResources Value="True"/>
@@ -112,114 +130,95 @@
         <TopLine Value="122"/>
         <CursorPos X="31" Y="130"/>
         <UsageCount Value="22"/>
-      </Unit10>
-      <Unit11>
+      </Unit12>
+      <Unit13>
         <Filename Value="fpc/emc2301/emc2301_pyth_util.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="78"/>
         <CursorPos X="61" Y="115"/>
         <UsageCount Value="10"/>
-      </Unit11>
-      <Unit12>
+      </Unit13>
+      <Unit14>
         <Filename Value="emc2301_display.lfm"/>
         <HasResources Value="True"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="92" Y="31"/>
         <UsageCount Value="81"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
-      </Unit12>
-      <Unit13>
+      </Unit14>
+      <Unit15>
         <Filename Value="/usr/lib/lazarus/2.0.0/components/tachart/tacustomseries.pas"/>
         <UnitName Value="TACustomSeries"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="892"/>
         <CursorPos X="111" Y="914"/>
         <UsageCount Value="10"/>
-      </Unit13>
-      <Unit14>
+      </Unit15>
+      <Unit16>
         <Filename Value="rpm.txt"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="105" Y="18"/>
         <UsageCount Value="51"/>
         <DefaultSyntaxHighlighter Value="None"/>
-      </Unit14>
-      <Unit15>
+      </Unit16>
+      <Unit17>
         <Filename Value="graph.pas"/>
         <EditorIndex Value="-1"/>
         <WindowIndex Value="-1"/>
         <TopLine Value="-1"/>
         <CursorPos X="-1" Y="-1"/>
         <UsageCount Value="13"/>
-      </Unit15>
-      <Unit16>
+      </Unit17>
+      <Unit18>
         <Filename Value="../Python-for-Lazarus/python4lazarus/PythonEngine.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="65"/>
         <CursorPos X="3" Y="82"/>
         <UsageCount Value="11"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit16>
-      <Unit17>
+      </Unit18>
+      <Unit19>
         <Filename Value="emc2301_write.pas"/>
         <EditorIndex Value="6"/>
         <TopLine Value="147"/>
         <CursorPos X="56" Y="129"/>
         <UsageCount Value="50"/>
         <Loaded Value="True"/>
-      </Unit17>
-      <Unit18>
+      </Unit19>
+      <Unit20>
         <Filename Value="/usr/lib/lazarus/2.0.0/lcl/include/customcombobox.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="924"/>
         <CursorPos Y="943"/>
         <UsageCount Value="24"/>
-      </Unit18>
-      <Unit19>
+      </Unit20>
+      <Unit21>
         <Filename Value="/usr/lib/lazarus/2.0.0/lcl/interfaces/gtk2/gtk2int.pas"/>
         <UnitName Value="Gtk2Int"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="626"/>
         <CursorPos Y="645"/>
         <UsageCount Value="24"/>
-      </Unit19>
-      <Unit20>
+      </Unit21>
+      <Unit22>
         <Filename Value="/usr/lib/lazarus/2.0.0/ide/lazarus.pp"/>
         <UnitName Value="Lazarus"/>
         <EditorIndex Value="-1"/>
         <UsageCount Value="6"/>
-      </Unit20>
-      <Unit21>
+      </Unit22>
+      <Unit23>
         <Filename Value="/usr/local/lib/lazarus/components/lazutils/lazutils.pas"/>
         <UnitName Value="LazUtils"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="44" Y="5"/>
         <UsageCount Value="8"/>
-      </Unit21>
-      <Unit22>
+      </Unit23>
+      <Unit24>
         <Filename Value="help.lfm"/>
         <EditorIndex Value="4"/>
         <CursorPos X="123" Y="27"/>
         <UsageCount Value="23"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
-      </Unit22>
-      <Unit23>
-        <Filename Value="../shared/rpm_source.pas"/>
-        <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
-        <WindowIndex Value="-1"/>
-        <TopLine Value="-1"/>
-        <CursorPos X="-1" Y="-1"/>
-        <UsageCount Value="20"/>
-      </Unit23>
-      <Unit24>
-        <Filename Value="../shared/universal.pas"/>
-        <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
-        <WindowIndex Value="-1"/>
-        <TopLine Value="-1"/>
-        <CursorPos X="-1" Y="-1"/>
-        <UsageCount Value="20"/>
       </Unit24>
     </Units>
     <JumpHistory Count="29" HistoryIndex="28">
@@ -347,68 +346,4 @@
       </Modes>
     </RunParams>
   </ProjectSession>
-  <Debugging>
-    <BreakPoints>
-      <Item>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="emc2301_write.pas"/>
-        <Line Value="70"/>
-      </Item>
-    </BreakPoints>
-    <Watches>
-      <Item>
-        <Expression Value="emc_str"/>
-      </Item>
-      <Item>
-        <Expression Value="emc.attr9"/>
-      </Item>
-      <Item>
-        <Expression Value="emc.attr9.attr_val_obj"/>
-      </Item>
-      <Item>
-        <Expression Value="keys"/>
-      </Item>
-      <Item>
-        <Expression Value="emc.attr8.attr_val_obj.attr3"/>
-      </Item>
-      <Item>
-        <Expression Value="emc.attr1"/>
-      </Item>
-      <Item>
-        <Expression Value="ObI_emc_attr[1]"/>
-      </Item>
-      <Item>
-        <Expression Value="bits"/>
-      </Item>
-      <Item>
-        <Expression Value="content"/>
-      </Item>
-      <Item>
-        <Expression Value="content_str"/>
-      </Item>
-      <Item>
-        <Expression Value="register_str"/>
-      </Item>
-      <Item>
-        <Expression Value="Py_S"/>
-      </Item>
-      <Item>
-        <Expression Value="idx_emc_c_attr"/>
-      </Item>
-      <Item>
-        <Expression Value="value"/>
-      </Item>
-      <Item>
-        <Expression Value="filter"/>
-      </Item>
-      <Item>
-        <Expression Value="in_str"/>
-      </Item>
-      <Item>
-        <Expression Value="in_buffer"/>
-      </Item>
-    </Watches>
-  </Debugging>
 </CONFIG>

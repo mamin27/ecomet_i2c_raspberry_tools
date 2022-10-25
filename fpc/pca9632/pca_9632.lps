@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <ProjectSession>
-    <Version Value="12"/>
+    <Version Value="11"/>
     <BuildModes Active="Default"/>
     <Units Count="24">
       <Unit0>
@@ -33,11 +33,6 @@
         <Loaded Value="True"/>
       </Unit2>
       <Unit3>
-        <Filename Value="proc_py.pas"/>
-        <EditorIndex Value="-1"/>
-        <UsageCount Value="116"/>
-      </Unit3>
-      <Unit4>
         <Filename Value="pca_read.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="8"/>
@@ -45,8 +40,8 @@
         <CursorPos X="56" Y="76"/>
         <UsageCount Value="112"/>
         <Loaded Value="True"/>
-      </Unit4>
-      <Unit5>
+      </Unit3>
+      <Unit4>
         <Filename Value="creator.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="Form_creator"/>
@@ -57,8 +52,8 @@
         <CursorPos X="103" Y="23"/>
         <UsageCount Value="24"/>
         <Loaded Value="True"/>
-      </Unit5>
-      <Unit6>
+      </Unit4>
+      <Unit5>
         <Filename Value="help.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="Form_help"/>
@@ -70,8 +65,8 @@
         <UsageCount Value="24"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
-      </Unit6>
-      <Unit7>
+      </Unit5>
+      <Unit6>
         <Filename Value="missing_chip.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="Form_missing_chip"/>
@@ -81,107 +76,8 @@
         <CursorPos X="18"/>
         <UsageCount Value="24"/>
         <Loaded Value="True"/>
-      </Unit7>
-      <Unit8>
-        <Filename Value="ecomet_regex.pas"/>
-        <EditorIndex Value="-1"/>
-        <UsageCount Value="22"/>
-      </Unit8>
-      <Unit9>
-        <Filename Value="pca_regex.pas"/>
-        <EditorIndex Value="-1"/>
-        <CursorPos X="20" Y="56"/>
-        <UsageCount Value="114"/>
-      </Unit9>
-      <Unit10>
-        <Filename Value="pca_python.pas"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="64"/>
-        <CursorPos X="3" Y="93"/>
-        <UsageCount Value="17"/>
-      </Unit10>
-      <Unit11>
-        <Filename Value="../Python-for-Lazarus/python4lazarus/Sources/Core/PythonEngine.pas"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="3245"/>
-        <CursorPos Y="3266"/>
-        <UsageCount Value="19"/>
-      </Unit11>
-      <Unit12>
-        <Filename Value="pca_9632_read.pas"/>
-        <EditorIndex Value="-1"/>
-        <WindowIndex Value="-1"/>
-        <TopLine Value="-1"/>
-        <CursorPos X="-1" Y="-1"/>
-        <UsageCount Value="16"/>
-      </Unit12>
-      <Unit13>
-        <Filename Value="pca_write.pas"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="7"/>
-        <TopLine Value="162"/>
-        <CursorPos X="57" Y="162"/>
-        <UsageCount Value="46"/>
-        <Loaded Value="True"/>
-      </Unit13>
-      <Unit14>
-        <Filename Value="/usr/lib/lazarus/2.0.0/lcl/include/control.inc"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="561"/>
-        <CursorPos Y="580"/>
-        <UsageCount Value="9"/>
-      </Unit14>
-      <Unit15>
-        <Filename Value="/usr/lib/lazarus/2.0.0/lcl/include/buttoncontrol.inc"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="37"/>
-        <CursorPos X="28" Y="56"/>
-        <UsageCount Value="8"/>
-      </Unit15>
-      <Unit16>
-        <Filename Value="/usr/lib/lazarus/2.0.0/lcl/include/customcheckbox.inc"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="60"/>
-        <CursorPos Y="79"/>
-        <UsageCount Value="8"/>
-      </Unit16>
-      <Unit17>
-        <Filename Value="/usr/lib/lazarus/2.0.0/lcl/lclmessageglue.pas"/>
-        <UnitName Value="LCLMessageGlue"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="90"/>
-        <CursorPos Y="114"/>
-        <UsageCount Value="8"/>
-      </Unit17>
-      <Unit18>
-        <Filename Value="pca_grppwm.pas"/>
-        <EditorIndex Value="6"/>
-        <TopLine Value="10"/>
-        <CursorPos X="70" Y="51"/>
-        <UsageCount Value="31"/>
-        <Loaded Value="True"/>
-      </Unit18>
-      <Unit19>
-        <Filename Value="fpc/hdc1080/hdc1080_display.pas"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="175"/>
-        <CursorPos X="30" Y="195"/>
-        <UsageCount Value="11"/>
-      </Unit19>
-      <Unit20>
-        <Filename Value="fpc/hdc1080/hdc1080.lpr"/>
-        <EditorIndex Value="-1"/>
-        <CursorPos X="78" Y="10"/>
-        <UsageCount Value="11"/>
-      </Unit20>
-      <Unit21>
-        <Filename Value="fpc/hdc1080/hdc1080_read.pas"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="107"/>
-        <CursorPos X="117" Y="119"/>
-        <UsageCount Value="11"/>
-      </Unit21>
-      <Unit22>
+      </Unit6>
+      <Unit7>
         <Filename Value="../shared/proc_py.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
@@ -189,8 +85,8 @@
         <TopLine Value="-1"/>
         <CursorPos X="-1" Y="-1"/>
         <UsageCount Value="20"/>
-      </Unit22>
-      <Unit23>
+      </Unit7>
+      <Unit8>
         <Filename Value="../shared/ecomet_regex.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
@@ -198,6 +94,110 @@
         <TopLine Value="-1"/>
         <CursorPos X="-1" Y="-1"/>
         <UsageCount Value="20"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="proc_py.pas"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="116"/>
+      </Unit9>
+      <Unit10>
+        <Filename Value="ecomet_regex.pas"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="22"/>
+      </Unit10>
+      <Unit11>
+        <Filename Value="pca_regex.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="20" Y="56"/>
+        <UsageCount Value="114"/>
+      </Unit11>
+      <Unit12>
+        <Filename Value="pca_python.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="64"/>
+        <CursorPos X="3" Y="93"/>
+        <UsageCount Value="17"/>
+      </Unit12>
+      <Unit13>
+        <Filename Value="../Python-for-Lazarus/python4lazarus/Sources/Core/PythonEngine.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="3245"/>
+        <CursorPos Y="3266"/>
+        <UsageCount Value="19"/>
+      </Unit13>
+      <Unit14>
+        <Filename Value="pca_9632_read.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="16"/>
+      </Unit14>
+      <Unit15>
+        <Filename Value="pca_write.pas"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="7"/>
+        <TopLine Value="162"/>
+        <CursorPos X="57" Y="162"/>
+        <UsageCount Value="46"/>
+        <Loaded Value="True"/>
+      </Unit15>
+      <Unit16>
+        <Filename Value="/usr/lib/lazarus/2.0.0/lcl/include/control.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="561"/>
+        <CursorPos Y="580"/>
+        <UsageCount Value="9"/>
+      </Unit16>
+      <Unit17>
+        <Filename Value="/usr/lib/lazarus/2.0.0/lcl/include/buttoncontrol.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="37"/>
+        <CursorPos X="28" Y="56"/>
+        <UsageCount Value="8"/>
+      </Unit17>
+      <Unit18>
+        <Filename Value="/usr/lib/lazarus/2.0.0/lcl/include/customcheckbox.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="60"/>
+        <CursorPos Y="79"/>
+        <UsageCount Value="8"/>
+      </Unit18>
+      <Unit19>
+        <Filename Value="/usr/lib/lazarus/2.0.0/lcl/lclmessageglue.pas"/>
+        <UnitName Value="LCLMessageGlue"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="90"/>
+        <CursorPos Y="114"/>
+        <UsageCount Value="8"/>
+      </Unit19>
+      <Unit20>
+        <Filename Value="pca_grppwm.pas"/>
+        <EditorIndex Value="6"/>
+        <TopLine Value="10"/>
+        <CursorPos X="70" Y="51"/>
+        <UsageCount Value="31"/>
+        <Loaded Value="True"/>
+      </Unit20>
+      <Unit21>
+        <Filename Value="fpc/hdc1080/hdc1080_display.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="175"/>
+        <CursorPos X="30" Y="195"/>
+        <UsageCount Value="11"/>
+      </Unit21>
+      <Unit22>
+        <Filename Value="fpc/hdc1080/hdc1080.lpr"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="78" Y="10"/>
+        <UsageCount Value="11"/>
+      </Unit22>
+      <Unit23>
+        <Filename Value="fpc/hdc1080/hdc1080_read.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="107"/>
+        <CursorPos X="117" Y="119"/>
+        <UsageCount Value="11"/>
       </Unit23>
     </Units>
     <JumpHistory Count="28" HistoryIndex="27">
@@ -315,90 +315,7 @@
     </JumpHistory>
     <RunParams>
       <FormatVersion Value="2"/>
-      <Modes ActiveMode=""/>
+      <Modes Count="0" ActiveMode=""/>
     </RunParams>
   </ProjectSession>
-  <Debugging>
-    <BreakPoints>
-      <Item>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="pca_write.pas"/>
-        <Line Value="69"/>
-      </Item>
-      <Item>
-        <Kind Value="bpkData"/>
-        <WatchData Value="content"/>
-        <WatchScope Value="wpsGlobal"/>
-        <WatchKind Value="wpkWrite"/>
-        <InitialEnabled Value="False"/>
-      </Item>
-    </BreakPoints>
-    <Watches>
-      <Item>
-        <Expression Value="value"/>
-      </Item>
-      <Item>
-        <Expression Value="pca.attr7.attr_val"/>
-      </Item>
-      <Item>
-        <Expression Value="StrToInt(pca.attr7.attr_val)"/>
-      </Item>
-      <Item>
-        <Expression Value="x"/>
-      </Item>
-      <Item>
-        <Expression Value="grpdim[i].value"/>
-      </Item>
-      <Item>
-        <Expression Value="grpdim[i].perc"/>
-      </Item>
-      <Item>
-        <Expression Value="pwm_input"/>
-      </Item>
-      <Item>
-        <Expression Value="ALLOWED[3]"/>
-      </Item>
-      <Item>
-        <Expression Value="pwm_input[i]"/>
-      </Item>
-      <Item>
-        <Expression Value="pca.attr13.attr_name"/>
-      </Item>
-      <Item>
-        <Expression Value="high"/>
-      </Item>
-      <Item>
-        <Expression Value="low"/>
-      </Item>
-      <Item>
-        <Expression Value="grpdim[i].perc"/>
-      </Item>
-      <Item>
-        <Expression Value="pwm_value"/>
-      </Item>
-      <Item>
-        <Expression Value="Source"/>
-      </Item>
-      <Item>
-        <Expression Value="seperator"/>
-      </Item>
-      <Item>
-        <Expression Value="bits.key"/>
-      </Item>
-      <Item>
-        <Expression Value="cmd"/>
-      </Item>
-      <Item>
-        <Expression Value="register"/>
-      </Item>
-      <Item>
-        <Expression Value="content"/>
-      </Item>
-      <Item>
-        <Expression Value="StrToInt(pca.attr7.attr_val)"/>
-      </Item>
-    </Watches>
-  </Debugging>
 </CONFIG>
