@@ -6,7 +6,7 @@
 **Twitter:** [News and statuses](https://twitter.com/mminar7)
 
 **NEW! SourceForge.net:**
-* Oscilloscope-like application **eCScope** for Raspberry PI 4+ (32bit Raspbian) based on INA260 chips and built with the Ecomet-i2c-sensors Python library.
+* Oscilloscope-like application **eCScope** for Raspberry PI 3+ (32bit Raspbian) based on INA260 chips and built with the Ecomet-i2c-sensors Python library.
 
 [![Download eCScope](https://a.fsdn.com/con/app/sf-download-button)](https://sourceforge.net/projects/ecomet-i2c-raspberry-tools/files/latest/download)
 
