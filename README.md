@@ -3,12 +3,12 @@
 **Last modification:** 10.10.2022
 **Contributor:** Marian Minar
 
+<a href="https://www.buymeacoffee.com/scQ8LwgTBt"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=scQ8LwgTBt&button_colour=5F7FFF&font_colour=ffffff&font_family=Cookie&outline_colour=000000&coffee_colour=FFDD00" /></a>
+
 **Twitter:** [News and statuses](https://twitter.com/mminar7)
 
 **NEW! SourceForge.net:**
 * Oscilloscope-like application **eCScope** for Raspberry PI 3+ (32bit Raspbian) based on INA260 chips and built with the Ecomet-i2c-sensors Python library.
-
-<a href="https://www.buymeacoffee.com/scQ8LwgTBt"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=scQ8LwgTBt&button_colour=5F7FFF&font_colour=ffffff&font_family=Cookie&outline_colour=000000&coffee_colour=FFDD00" /></a>
 
 [![Download eCScope](https://a.fsdn.com/con/app/sf-download-button)](https://sourceforge.net/projects/ecomet-i2c-raspberry-tools/files/latest/download)
 
