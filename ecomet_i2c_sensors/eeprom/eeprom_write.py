@@ -1,6 +1,6 @@
 #eeprom_write
 # Author: Marian Minar
-# Copyright 2020
+# Copyright 2020 - 2023
 
 from ecomet_i2c_sensors.eeprom import chip_list
 import RPi.GPIO as rGPIO
