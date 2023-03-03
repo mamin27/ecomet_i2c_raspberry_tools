@@ -12,7 +12,8 @@ i2c_count = [ '^RASPBERRY_PI 1\..*$',
               '^RASPBERRY_PI 3\..*$',
               '^RASPBERRY_PI 3B\..*$',
               '^RASPBERRY_PI 4B\:.*$',
-              '^RASPBERRY_PI_\(CM4\).*$' ,
+              '^RASPBERRY_PI_\(CM4\).*$',
+              '^RASPBERRY_PI ZERO 2 W.*$',
               '^OTHER$' ]
 
 i2c_count_max = [ 2,
@@ -22,6 +23,7 @@ i2c_count_max = [ 2,
                   2,
                   2,
                   11,
+                  2,
                   21 ]
 
 plat = i2c_platform.Board_plat(busnum=0)

@@ -124,6 +124,11 @@ def pi_version():
           if revision :
             return '_(CM4) ' + str(4) + '.' + str(revision.group(1))
           return '_(CM4) ' + 4
+        elif match3.upper() == 'ZERO 2 W' :
+          revision = re.search('(\d+\.\d+)$',match2.group(2), re.IGNORECASE)
+          if revision.group(1):
+            return ' ZERO 2 W ' + str(revision.group(1))
+          return ' ZERO 2 W'
         # Pi 3 / Pi on 4.9.x kernel
         return ' 3'
     elif match.group(1) == 'BCM2711':

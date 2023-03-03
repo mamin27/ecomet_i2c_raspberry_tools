@@ -56,9 +56,24 @@ def write_full_from_file (file,smb,slaveaddr,writestrobe,chip) :
 
     rGPIO.cleanup()
     f.close()
-   
+
     return 0
     
+def writeNBytes(addr, datax, smb, slaveaddr, writestrobe, chip) :
+    try:
+        chip_list.xchip[chip][1]
+    except:
+        return 3
+
+    idx = 0
+    for i in range(addr,addr + len(datax)) :
+        try:
+            i2c_command.eeprom_write_byte(i,datax[idx],smb,slaveaddr,writestrobe,chip_list.xchip[chip][0])
+        except IOError:
+            return 1
+        idx = idx + 1
+    return 0
+
 def split_strg(text):
 
     # split the text
