@@ -1,6 +1,6 @@
 # ecomet_i2c_raspberry_tools
 
-**Last modification:** 10.10.2022
+**Last modification:** 4.6.2023
 **Contributor:** Marian Minar
 
 <a href="https://www.buymeacoffee.com/scQ8LwgTBt"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=scQ8LwgTBt&button_colour=5F7FFF&font_colour=ffffff&font_family=Cookie&outline_colour=000000&coffee_colour=FFDD00" /></a>
@@ -24,8 +24,9 @@ pip install ecomet-i2c-sensors
 **Wiki Hardware prototypes boards:** [link](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki)
 
 **Scope:**
-The Driver for I2C Chip maintenance from **Raspberry PI 1B+** and above. This code tools contains python & free pascal code focused to I2C communication of raspberry pi with IOT modules.
+The Driver for I2C Chip maintenance from **Raspberry PI 1B+** and above and **AllWinner CPU**. This code tools contains python & free pascal code focused to I2C communication of raspberry pi with IOT modules.
 * tested at Raspberry PI 1B+, 3B+, 4B+, 4CM
+* tested at AllWinner CPU H616, mangopi MCore-H616, Orange PI Zero2
 
 **Current CHIP maintained:**
 * EEPROM Chip
@@ -37,6 +38,7 @@ The Driver for I2C Chip maintenance from **Raspberry PI 1B+** and above. This co
   HDC1080,PCA9557,INA226,INA260
 * [Measurement Specialties, TE Connectivity](https://www.te.com/) MS5637,HTU21D
 * [Microchip](https://ww1.microchip.com/downloads/en/DeviceDoc/2301.pdf) EMC2301
+* [Panasonic](https://na.industrial.panasonic.com/products/sensors/air-quality-gas-flow-sensors/lineup/laser-type-pm-sensor/series/123557/model/123559) SN-GCJA5
 * [Solomon Systech](https://www.solomon-systech.com/) SSD1309
 * [Renesas](https://www.renesas.com/eu/en) ISL28022
 
@@ -51,8 +53,9 @@ The Driver for I2C Chip maintenance from **Raspberry PI 1B+** and above. This co
 * [EMC2301 module](fpc/emc2301/emc2301_IIC.md) -> Fan controller with a PWM fan driver
 * [SSD1306 module](ecomet_i2c_sensors/ssd1306/ssd1306_python.IIC.md) -> SSD1306 is a single-chip CMOS OLED/PLED driver with controller for organic / polymer light emitting
 diode dot-matrix graphic display system.
-* [INA226,INA260 module](ecomet_i2c_sensors/ina260/ina260_python.IIC.md) -> **!NEW!** will be added python module description
-* ISL2802x module -> **!NEW!** will be added python module description
+* [INA226,INA260 module](ecomet_i2c_sensors/ina260/ina260_python.IIC.md) -> Precision Digital Current and Power Monitor With Low-Drift, Precision Integrated Shunt
+* ISL2802x module ->  will be added python module description
+* [SN-GCJA5](ecomet_i2c_sensors/sn_gcja5/sn_gcja5_python.IIC.md) -> **!NEW!** Laser Type PM Sensor
 
 **Software for Chips:**
 
@@ -66,8 +69,9 @@ diode dot-matrix graphic display system.
 | MS5637          |[yes](ecomet_i2c_sensors/ms5637/ms5637_python.IIC.md)|    no    |[I04](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_temp_hmd_pressure_board)|                  |      |
 | EMC2301         |[yes](ecomet_i2c_sensors/emc2301/emc2301_python_IIC.md)|[yes](fpc/emc2301/emc2301_IIC.md)|[I02](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_fan_board)|                  |    |  add EMC2302-05 chips in design                             |
 | SSD1306         |[yes](ecomet_i2c_sensors/ssd1306/ssd1306_python.IIC.md)|    no    |[I01](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_display_current_board) | |     |
-| INA226, INA260  |[yes](ecomet_i2c_sensors/ina260/ina260_python_IIC.md)|    yes    |[I01](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_display_current_board) |[!NEW!](ecomet_i2c_sensors/ina260/ina260_python_IIC.md) |     |
+| INA226, INA260  |[yes](ecomet_i2c_sensors/ina260/ina260_python_IIC.md)|    yes    |[I01](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_display_current_board) | |     |
 | ISL2802x  |in progress |    no    | | |     |
+|[!NEW!]SN-GCJA5|[yes](ecomet_i2c_sensors/sn_gcja5/sn_gcja5_python_IIC.md)|    no    | | |     |
 
 ```sh
 hdc1080 -disableaccurateframe
