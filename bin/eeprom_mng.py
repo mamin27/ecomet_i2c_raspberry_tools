@@ -15,15 +15,21 @@ from colorama import Fore
 import sys, getopt
 import yaml
 from smbus2 import SMBus
-import RPi.GPIO as rGPIO  # if you try to import RPi.GPIO you get an error message
 import re
 
-from ecomet_i2c_sensors import i2c_command
+from ecomet_i2c_sensors import i2c_command,Platform
+from ecomet_i2c_sensors.platform import i2c_platform
 from ecomet_i2c_sensors.eeprom import chip_list
 from ecomet_i2c_sensors.eeprom import eeprom_check
 from ecomet_i2c_sensors.eeprom import eeprom_wipe
 from ecomet_i2c_sensors.eeprom import eeprom_read
 from ecomet_i2c_sensors.eeprom import eeprom_write
+
+plat = i2c_platform.plat_list[Platform.platform_detect()]
+if plat == 'H616':
+   import OPi.GPIO as rGPIO
+else:
+   import RPi.GPIO as rGPIO
 
 with open("i2c_config.yaml") as c:
     try:
@@ -105,12 +111,12 @@ if __name__ == '__main__' :
         elif opt in ('-f', '--file'):
             ffile = arg
     mode = rGPIO.getmode();
-    version = rGPIO.RPI_INFO
+    version = rGPIO.BOARD
 
     
     print ("Model: {}".format(mode))
-    print ("Board version: {}".format(version['TYPE']))
-    print ("Board RAM: {}".format(version['RAM']))
+    #print ("Board version: {}".format(version['TYPE']))
+    #print ("Board RAM: {}".format(version['RAM']))
     print ("Chip: {}".format(chip))
     print ("I2C Bus: {}".format(config['i2c']['smb']))
     print ("I2C Address: 0x{:02x}".format(config['i2c']['eeprom']['slaveaddr']))

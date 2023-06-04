@@ -2,12 +2,18 @@
 # Author: Marian Minar
 # Copyright 2020 - 2023
 
-from ecomet_i2c_sensors.eeprom import chip_list
-import RPi.GPIO as rGPIO
 import time
 import sys
 import os
-from .. import i2c_command
+from .. import i2c_command,Platform
+from ecomet_i2c_sensors.eeprom import chip_list
+from ecomet_i2c_sensors.platform import i2c_platform
+
+plat = i2c_platform.plat_list[Platform.platform_detect()]
+if plat == 'H616':
+   import OPi.GPIO as rGPIO
+else:
+   import RPi.GPIO as rGPIO
 
 def write_full_from_file (file,smb,slaveaddr,writestrobe,chip) :
     

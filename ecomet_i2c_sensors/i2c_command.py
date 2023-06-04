@@ -3,8 +3,16 @@
 # Copyright 2020
 
 import time
-import RPi.GPIO as rGPIO
 from smbus2 import SMBus
+from ecomet_i2c_sensors import Platform
+from ecomet_i2c_sensors.platform import i2c_platform
+
+plat = i2c_platform.plat_list[Platform.platform_detect()]
+if plat == 'H616':
+   import OPi.GPIO as rGPIO
+else:
+   import RPi.GPIO as rGPIO
+
 
 def eeprom_set_addr(addr,smb,slaveaddr,chip) :
     

@@ -26,7 +26,8 @@ UNKNOWN          = 0
 RASPBERRY_PI     = 1
 BEAGLEBONE_BLACK = 2
 MINNOWBOARD      = 3
-JETSON_NANO       = 4
+JETSON_NANO      = 4
+H616             = 5
 
 def platform_detect():
     """Detect if running on the Raspberry Pi or Beaglebone Black and return the
@@ -40,6 +41,7 @@ def platform_detect():
     # TODO: Check the Beaglebone Black /proc/cpuinfo value instead of reading
     # the platform.
     plat = platform.platform()
+
     if plat.lower().find('armv7l-with-debian') > -1:
         return BEAGLEBONE_BLACK
     elif plat.lower().find('armv7l-with-ubuntu') > -1:
@@ -48,7 +50,9 @@ def platform_detect():
         return BEAGLEBONE_BLACK
     elif plat.lower().find('tegra-aarch64-with-ubuntu') > -1:
         return JETSON_NANO
-        
+    elif plat.lower().find('sun50iw9-aarch64-with-glibc2') > -1:
+        return H616
+
     # Handle Minnowboard
     # Assumption is that mraa is installed
     try: 

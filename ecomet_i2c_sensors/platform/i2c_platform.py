@@ -9,6 +9,7 @@ plat_list = { 0 : 'UNKONWN',
               2 : 'BEAGLEBONE_BLACK',
               3 : 'MINNOWBOARD',
               4 : 'JETSON_NANO',
+              5 : 'H616',
         }
 
 class Board_plat(object):
@@ -22,8 +23,9 @@ class Board_plat(object):
             plat = Platform
         self._logger = logging.getLogger(__name__)
         self._plat = plat.platform_detect()
-        self._pi_ver = plat.pi_version()
-        self._pi_rev = plat.pi_revision()
+        if plat_list[self._plat] == 'RASPBERRY_PI' :
+           self._pi_ver = plat.pi_version()
+           self._pi_rev = plat.pi_revision()
         self._bus = i2c.get_default_bus()
         self._busnum = busnum
         self._slaves = ''

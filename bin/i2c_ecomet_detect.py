@@ -14,6 +14,7 @@ i2c_count = [ '^RASPBERRY_PI 1\..*$',
               '^RASPBERRY_PI 4B\:.*$',
               '^RASPBERRY_PI_\(CM4\).*$',
               '^RASPBERRY_PI ZERO 2 W.*$',
+              '^H616$',
               '^OTHER$' ]
 
 i2c_count_max = [ 2,
@@ -23,6 +24,7 @@ i2c_count_max = [ 2,
                   2,
                   2,
                   11,
+                  2,
                   2,
                   21 ]
 
