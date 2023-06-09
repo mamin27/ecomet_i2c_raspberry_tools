@@ -116,7 +116,7 @@ def conf_register_list() :
 class SN_GCJA5(object):
     '''sn-gcja5() RPM-Based  PWM  Fan  Controller'''
 
-    def __init__(self, address=sn_gcja5_constant.SN_GCJA5_ADDRESS, busnum=sn_gcja5_constant.I2CBUS, i2c=None, **kwargs) :
+    def __init__(self, address=sn_gcja5_constant.SN_GCJA5_ADDRESS, busnum=None, i2c=None, **kwargs) :
         '''Initialize the sn-gcja5.'''
         # Setup I2C interface for the device.
         if i2c is None:

@@ -92,7 +92,7 @@ def conf_register_list(address=ina260_constant.INA260_ADDRESS) :
 class INA260(object):
     '''INA260()'''
 
-    def __init__(self, address=ina260_constant.INA260_ADDRESS, busnum=ina260_constant.I2CBUS, i2c=None, **kwargs) :
+    def __init__(self, address=ina260_constant.INA260_ADDRESS, busnum=None, i2c=None, **kwargs) :
         '''Initialize the ina260.'''
         # Setup I2C interface for the device.
         if i2c is None:

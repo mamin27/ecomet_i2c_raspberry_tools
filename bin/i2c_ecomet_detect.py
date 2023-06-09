@@ -25,7 +25,7 @@ i2c_count_max = [ 2,
                   2,
                   11,
                   2,
-                  2,
+                  4,
                   21 ]
 
 plat = i2c_platform.Board_plat(busnum=0)

@@ -57,9 +57,11 @@ def eeprom_write_byte(addr, byte, smb, slaveaddr, writestrobe, chip) :
     if (chip <= 2) :
         data = [byte]
         try:
-            rGPIO.output(writestrobe, rGPIO.LOW)
+            if plat != 'H616' and writestrobe :
+               rGPIO.output(writestrobe, rGPIO.LOW)
             smb.write_i2c_block_data(hslaveaddr, addr%256, data)
-            rGPIO.output(writestrobe, rGPIO.HIGH)
+            if plat != 'H616' and writestrobe :
+               rGPIO.output(writestrobe, rGPIO.HIGH)
         finally:
             time.sleep(0.015)
     elif (chip > 2 and chip <= 5) :

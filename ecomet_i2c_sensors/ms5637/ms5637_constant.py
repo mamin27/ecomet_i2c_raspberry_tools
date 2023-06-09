@@ -1,6 +1,5 @@
 # Address:
 
-I2CBUS             = 1         # /dev/i2c-1
 MS5637_ADDRESS     = 0x76      # 8 bit version
 
 

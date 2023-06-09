@@ -186,7 +186,7 @@ def read_pca9632() :
    
    return (register)
  
-def software_reset (address=pca9632_constant.PCA9632_SWRESET, busnum=pca9632_constant.I2CBUS, i2c=None, **kwargs):
+def software_reset (address=pca9632_constant.PCA9632_SWRESET, busnum=None, i2c=None, **kwargs):
     '''Sends a software reset (SWRST) command to all servo drivers on the bus.'''
     # Setup I2C interface for device 0x00 to talk to all of them.
 

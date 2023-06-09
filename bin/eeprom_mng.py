@@ -15,7 +15,7 @@ from colorama import Fore
 import sys, getopt
 import yaml
 from smbus2 import SMBus
-import re
+import os,re
 
 from ecomet_i2c_sensors import i2c_command,Platform
 from ecomet_i2c_sensors.platform import i2c_platform
@@ -31,19 +31,22 @@ if plat == 'H616':
 else:
    import RPi.GPIO as rGPIO
 
-with open("i2c_config.yaml") as c:
+path = os.path.expanduser('~/.comet')
+with open(path + "/config.yaml") as c: 
     try:
         config = yaml.safe_load(c)
     except yaml.YAMLError as exc:
         print(exc)
 
+ic = config['i2c']['eeprom']['ic']
 slaveaddr= config['i2c']['eeprom']['slaveaddr'] # for eeprom (main i2c address)
 smb = SMBus(int(re.search("^i2c-(\d+)$",config['i2c']['smb']).group(1))) # set bus i2c-1
 writestrobe = config['i2c']['eeprom']['writestrobe'] # hold pin low to write to eeprom
 
 rGPIO.setmode(rGPIO.BOARD)
 rGPIO.setwarnings(False)
-rGPIO.setup(writestrobe, rGPIO.OUT)
+if plat != 'H616':
+   rGPIO.setup(writestrobe, rGPIO.OUT)
 
 def help() :
     print ('eeprom_mgr.py <option>')
@@ -57,6 +60,7 @@ def help() :
     print ('  -f file name, used with read and write commands')
     print (' ')
     print (' <-p>,<--chip> chip name:')
+    print ('   this attribute default read from ~/.comet/config.yaml')
     print ('   list of these chips are usable')
     print ('   24C01,24C02,24C04,24C08,24C16,24C32,24C64,24C128,24C256,24C512,24C1024')
     print (' <-t>|<--test> test mode:')
@@ -92,6 +96,8 @@ if __name__ == '__main__' :
     except getopt.error:
         help()
         sys.exit(10)
+    if ic :
+       chip = ic
     for opt, arg in opts:
         if opt == ('-h','--help'):
             help()

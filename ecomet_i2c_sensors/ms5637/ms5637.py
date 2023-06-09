@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 class MS5637(object):
     '''MS5637() micro altimeter. It is optimized for  altimeter  and  barometer  applications.'''
 
-    def __init__(self, address=ms5637_constant.MS5637_ADDRESS, busnum=ms5637_constant.I2CBUS, i2c=None, **kwargs) :
+    def __init__(self, address=ms5637_constant.MS5637_ADDRESS, busnum=None, i2c=None, **kwargs) :
         '''Initialize the MS5637.'''
         # Setup I2C interface for the device.
         if i2c is None:

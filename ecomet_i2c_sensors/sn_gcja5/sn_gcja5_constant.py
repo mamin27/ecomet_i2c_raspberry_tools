@@ -1,5 +1,4 @@
 # Address:
-I2CBUS             = 1         # /dev/i2c-1
 SN_GCJA5_ADDRESS   = 0x33   # 8 bit version
 
 # Register

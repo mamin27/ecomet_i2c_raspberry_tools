@@ -101,7 +101,7 @@ def conf_register_list(address=isl2802x_constant.ISL28022_ADDRESS) :
 class ISL28022(object):
     '''ISL28022()'''
 
-    def __init__(self, address=isl2802x_constant.ISL28022_ADDRESS, busnum=isl2802x_constant.I2CBUS, i2c=None, **kwargs) :
+    def __init__(self, address=isl2802x_constant.ISL28022_ADDRESS, busnum=None, i2c=None, **kwargs) :
         '''Initialize the isl2802x.'''
         # Setup I2C interface for the device.
         if i2c is None:

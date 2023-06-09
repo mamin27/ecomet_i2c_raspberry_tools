@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 class SSD1306(object):
     '''SSD1306() micro altimeter. It is optimized for  altimeter  and  barometer  applications.'''
 
-    def __init__(self, address=ssd1306_constant.SSD1306_ADDRESS_CMD, busnum=ssd1306_constant.I2CBUS, i2c=None, **kwargs) :
+    def __init__(self, address=ssd1306_constant.SSD1306_ADDRESS_CMD, busnum=None, i2c=None, **kwargs) :
         '''Initialize the ssd1306.'''
         # Setup I2C interface for the device.
         if i2c is None:

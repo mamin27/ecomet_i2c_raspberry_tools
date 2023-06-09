@@ -1,6 +1,5 @@
 # Address:
 
-I2CBUS             = 1         # /dev/i2c-1
 HDC1080_ADDRESS    = 0x40      # 8 bit version
 
 # Register

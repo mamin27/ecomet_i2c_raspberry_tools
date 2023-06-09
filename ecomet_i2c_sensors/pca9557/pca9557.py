@@ -46,7 +46,7 @@ logger = logging.getLogger(__name__)
 class PCA9557(object):
     '''PCA9557() micro altimeter. It is optimized for  altimeter  and  barometer  applications.'''
 
-    def __init__(self, address=pca9557_constant.PCA9557_ADDRESS, busnum=pca9557_constant.I2CBUS, i2c=None, **kwargs) :
+    def __init__(self, address=pca9557_constant.PCA9557_ADDRESS, busnum=None, i2c=None, **kwargs) :
         '''Initialize the PCA9557.'''
         # Setup I2C interface for the device.
         if i2c is None:

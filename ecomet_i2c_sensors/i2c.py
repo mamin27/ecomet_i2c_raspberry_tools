@@ -27,6 +27,8 @@
 import logging
 import subprocess
 import binascii
+import os,yaml,re
+from smbus2 import SMBus
 
 import ecomet_i2c_sensors.Platform as Platform
 
@@ -47,6 +49,10 @@ def get_default_bus():
     For a Beaglebone Black the first user accessible bus, 1, will be returned.
     """
     plat = Platform.platform_detect()
+    smb = load_comet_yaml()
+    if smb != -99 :
+           return smb 
+    
     if plat == Platform.RASPBERRY_PI:
         if Platform.pi_revision() == 1:
             # Revision 1 Pi uses I2C bus 0.
@@ -58,10 +64,22 @@ def get_default_bus():
         # Beaglebone Black has multiple I2C buses, default to 1 (P9_19 and P9_20).
         return 1
     elif plat == Platform.H616:
-        # AllWinner Procesor 
+        # AllWinner Procesor
         return 1
     else:
         raise RuntimeError('Could not determine default I2C bus for platform.')
+
+def load_comet_yaml():
+
+    ret = -99
+    path = os.path.expanduser('~/.comet')
+    with open(path + "/config.yaml") as c:
+       try:
+          config = yaml.safe_load(c)
+       except yaml.YAMLError as exc:
+          return ret
+
+    return int(re.search("^i2c-(\d+)$",config['i2c']['smb']).group(1))
 
 def get_i2c_device(address, busnum=None, i2c_interface=None, **kwargs):
     """Return an I2C device for the specified address and on the specified bus.

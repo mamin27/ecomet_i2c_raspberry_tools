@@ -1,6 +1,5 @@
 # Address:
 
-I2CBUS					= 1         # /dev/i2c-1
 SSD1306_ADDRESS_CMD		= 0x3C      # 8 bit version Command Mode
 
 

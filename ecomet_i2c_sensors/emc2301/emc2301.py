@@ -339,7 +339,7 @@ def conf_register_list() :
 class EMC2301(object):
     '''emc2301() RPM-Based  PWM  Fan  Controller'''
 
-    def __init__(self, address=emc2301_constant.EMC2301_ADDRESS, busnum=emc2301_constant.I2CBUS, i2c=None, **kwargs) :
+    def __init__(self, address=emc2301_constant.EMC2301_ADDRESS, busnum=None, i2c=None, **kwargs) :
         '''Initialize the emc2301.'''
         # Setup I2C interface for the device.
         if i2c is None:

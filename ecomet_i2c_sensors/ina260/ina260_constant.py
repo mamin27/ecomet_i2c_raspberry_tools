@@ -1,6 +1,5 @@
 # Address:
 
-I2CBUS					= 1         # /dev/i2c-1
 INA260_ADDRESS			= 0x45      # 8 bit version Command Mode
 INA260_ADDRESS1			= 0x40      # 8 bit version Command Mode
 INA260_ADDRESS2			= 0x45      # 8 bit version Command Mode
