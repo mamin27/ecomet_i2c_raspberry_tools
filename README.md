@@ -1,6 +1,6 @@
 # ecomet_i2c_raspberry_tools
 
-**Last modification:** 4.6.2023
+**Last modification:** 27.6.2023
 **Contributor:** Marian Minar
 
 <a href="https://www.buymeacoffee.com/scQ8LwgTBt"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=scQ8LwgTBt&button_colour=5F7FFF&font_colour=ffffff&font_family=Cookie&outline_colour=000000&coffee_colour=FFDD00" /></a>
@@ -41,6 +41,7 @@ The Driver for I2C Chip maintenance from **Raspberry PI 1B+** and above and **Al
 * [Panasonic](https://na.industrial.panasonic.com/products/sensors/air-quality-gas-flow-sensors/lineup/laser-type-pm-sensor/series/123557/model/123559) SN-GCJA5
 * [Solomon Systech](https://www.solomon-systech.com/) SSD1309
 * [Renesas](https://www.renesas.com/eu/en) ISL28022
+* [AMS-OSRAM](https://ams.com/en/tsl25911) TSL25911
 
 **List of modules:**
 
@@ -56,6 +57,7 @@ diode dot-matrix graphic display system.
 * [INA226,INA260 module](ecomet_i2c_sensors/ina260/ina260_python.IIC.md) -> Precision Digital Current and Power Monitor With Low-Drift, Precision Integrated Shunt
 * ISL2802x module ->  will be added python module description
 * [SN-GCJA5](ecomet_i2c_sensors/sn_gcja5/sn_gcja5_python.IIC.md) -> **!NEW!** Laser Type PM Sensor
+* [SN-TSL25911](ecomet_i2c_sensors/tsl2591/tsl2591_python.IIC.md) -> **!NEW!** Ambient Light Sensor
 
 **Software for Chips:**
 
@@ -71,7 +73,8 @@ diode dot-matrix graphic display system.
 | SSD1306         |[yes](ecomet_i2c_sensors/ssd1306/ssd1306_python.IIC.md)|    no    |[I01](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_display_current_board) | |     |
 | INA226, INA260  |[yes](ecomet_i2c_sensors/ina260/ina260_python_IIC.md)|    yes    |[I01](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_display_current_board) | |     |
 | ISL2802x  |in progress |    no    | | |     |
-|[!NEW!]SN-GCJA5|[yes](ecomet_i2c_sensors/sn_gcja5/sn_gcja5_python_IIC.md)|    no    | | |     |
+|**!NEW!**SN-GCJA5|[yes](ecomet_i2c_sensors/sn_gcja5/sn_gcja5_python_IIC.md)|    no    | | |     |
+|**!NEW!**TSL25911|[yes](ecomet_i2c_sensors/tsl2591/tsl2591_python_IIC.md)|    no    | | |     |
 
 ```sh
 hdc1080 -disableaccurateframe
