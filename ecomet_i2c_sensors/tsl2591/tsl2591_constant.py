@@ -1,9 +1,6 @@
 # Address:
 TSL2591_ADDRESS    = 0x29   # 8 bit version
 
-# Command BIT
-COMMAD_BIT         = 0xa0
-
 # Registers
 ENABLE             = 0x00   # Enable Register
 CONTROL            = 0x01   # Control Register
@@ -69,17 +66,17 @@ GAIN_HIGH          = 0x20  # medium gain high (428x)
 GAIN_MAX           = 0x30  # max gain (9876x)
 
 # LUX coefficient
-LUX_DF             = '408.0F' # Lux coefficient
-LUX_COEFB		   = '1.64F'  # CH0 coefficient
-LUX_COEFC		   = '0.59F'  # CH1 coefficient A
-LUX_COEFD		   = '0.86F'  # CH2 coefficient B
+#LUX_DF             = '408.0F' # Lux coefficient
+#LUX_COEFB		   = '1.64F'  # CH0 coefficient
+#LUX_COEFC		   = '0.59F'  # CH1 coefficient A
+#LUX_COEFD		   = '0.86F'  # CH2 coefficient B
 
 # Commands
 COMMAND_BIT		   = 0xa0   # 1010 0000: bits 7 and 5 for 'command normal'
-CLEAR_INT		   = 0xe7   # Special Function Command for "Clear ALS and no persist ALS interrupt"
-TEST_INT		   = 0xe4   # Special Function Command for "Interrupt set - forces an interrupt"
-WORD_BIT		   = 0x20   # < 1 = read/write word (rather than byte)
-LOCK_BIT		   = 0x10   # < 1 = using block read/write
+#CLEAR_INT		   = 0xe7   # Special Function Command for "Clear ALS and no persist ALS interrupt"
+#TEST_INT		   = 0xe4   # Special Function Command for "Interrupt set - forces an interrupt"
+#WORD_BIT		   = 0x20   # < 1 = read/write word (rather than byte)
+#LOCK_BIT		   = 0x10   # < 1 = using block read/write
 
 # Enable Mask Bit
 ENABLE_NPIEN	   = 0x80   # No Persist Interrupt Enable. When asserted NP Threshold conditions will generate an interrupt, bypassing the persist filter.
@@ -104,3 +101,8 @@ PID_MASK		   = 0x18   # DEVICE_PID MASK
 NPINTR_MASK		   = 0x10   # No-persist Interrupt. Indicates that the device has encountered a no-persist interrupt condition. MASK
 AINT_MASK		   = 0x08   # ALS Interrupt. Indicates that the device is asserting an ALS interrupt. MASK
 AVALID_MASK		   = 0x01   # ALS Valid. Indicates that the ADC channels have completed an integration cycle since the AEN bit was asserted.
+
+#LUX_DB coeficient
+LUX_DF			   = 762.0
+MAX_COUNT_100MS	   = (36863)
+MAX_COUNT		   = (65535)

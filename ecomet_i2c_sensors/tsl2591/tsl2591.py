@@ -68,7 +68,12 @@ persist_bit_list = 		{ 'PERSIST_EVERY' : tsl2591_constant.PERSIST_EVERY,
 						  'PERSIST_55'	  : tsl2591_constant.PERSIST_55,
 						  'PERSIST_60'	  : tsl2591_constant.PERSIST_60
 						}
-                     
+
+lux_const =				 { 'LUX_DF'          : tsl2591_constant.LUX_DF,
+						   'MAX_COUNT_100MS' : tsl2591_constant.MAX_COUNT_100MS,
+						   'MAX_COUNT'       : tsl2591_constant.MAX_COUNT
+						}
+
 logger = logging.getLogger(__name__)
 
 def conf_register_list() :
@@ -178,6 +183,14 @@ class TSL2591(object):
         self._logger = logging.getLogger(__name__)    
         self._device = i2c.get_i2c_device(address, busnum, **kwargs)
         self._gain = None
+        self._IntegralTime = None
+
+        self.enable_ic()
+        self.set_gain('GAIN_MED')
+        self.set_IntegralTime('TIME_100MS')
+        self.write_register('PERSIST_FILTER',persist_bit_list['PERSIST_ANY'])
+        self.disable_ic()
+
     def self_test(self) :
         reg_status = 0
         ret = 0
@@ -220,7 +233,7 @@ class TSL2591(object):
           control &= mask
           control |= again_bit_list[data]
           self.write_register('CONTROL',control)
-          self._gain = data
+          self._gain = again_bit_list[data]
     def get_IntegralTime (self):
         data = self.read_register('CONTROL')[0]
         return data & ctrl_mask_list['CTLR_ATIME']
@@ -231,7 +244,7 @@ class TSL2591(object):
            control &= mask
            control |= atime_bit_list[data]
            self.write_register('CONTROL',control)
-           self._gain = data
+           self._IntegralTime = atime_bit_list[data]
     def read_register(self, register) :
         if register in ['ENABLE','CONTROL','STATUS','THR_AI','THR_NPAI',
 			 'PERSIST_FILTER','PACKAGE_PID','DEVICE_ID','DEVICE_STATUS',
@@ -297,4 +310,74 @@ class TSL2591(object):
               except :
                  ret = ret + 1
         return (ret)
+    @property
+    def Read_FullSpectrum(self) :
+       self.enable_ic()
+       data = (self.read_register('CHAN1')[0] << 16) | self.read_register('CHAN0')[0]
+       self.disable_ic()
+       return data
+    @property
+    def Read_Infrared(self):
+       self.enable_ic()
+       data = self.read_register('CHAN0')[0]
+       self.disable_ic()
+       return data
+    @property
+    def Read_Visible(self):
+       self.enable_ic()
+       ch1 = self.read_register('CHAN1')[0]
+       ch0 = self.read_register('CHAN0')[0]
+       self.disable_ic()
+       full = (ch1 << 16) | ch0
+       return full -ch1
+    @property
+    def Lux(self):
+       self.enable_ic()
+       for i in range(0, self._IntegralTime + 2):
+          time.sleep(0.1)
+       channel_0 = self.read_register('CHAN0')[0]
+       channel_1 = self.read_register('CHAN1')[0]
+       self.disable_ic()
 
+       self.enable_ic()
+       cregister = (reg_list['COMMAND'] | 0xe7 & 0xff)
+       self._device.write8(cregister,0x13)
+       self.disable_ic()
+
+       atime = 100.0 * self._IntegralTime + 100.0
+
+       if self._IntegralTime == atime_bit_list['TIME_100MS']:
+          max_counts = lux_const['MAX_COUNT_100MS']
+       else:
+          max_counts = lux_const['MAX_COUNT']
+
+       if channel_0 >= max_counts or channel_1 >= max_counts:
+          gain_t = self.get_gain()
+          if (gain_t != again_bit_list['GAIN_LOW']):
+             gain_t = ((gain_t>>4)-1)<<4
+             self.set_gain(gaint_t)
+             channel_0 = 0
+             channel_1 = 0
+             while( channel_0 <= 0 and channel_1 <=0 ):
+                channel_0 = self.read_register('CHAN0')[0]
+                channel_1 = self.read_register('CHAN1')[0]
+          else :
+             raise RuntimeError('Numerical overflow!')
+       again = 1.0
+       if self._gain == again_bit_list['GAIN_MED']:
+          again = 25.0
+       elif self._gain == again_bit_list['GAIN_HIGH']:
+          again = 428.0
+       elif self._gain == again_bit_list['GAIN_MAX']:
+          again = 9876.0
+
+       #print('atime: ',atime)
+       #print('again: ',again)
+       #print('channel_0: ', channel_0)
+       #print('cahnnel_1: ', channel_1)
+       cpl = (atime * again) / lux_const['LUX_DF']
+       lux1 = (channel_0 - (2 * channel_1))/ cpl
+       #print('cpl: ',cpl)
+       #print('lux1: ',lux1)
+
+       return max(int(lux1),int(0))
