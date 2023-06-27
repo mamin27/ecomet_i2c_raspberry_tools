@@ -43,12 +43,26 @@ again_bit_list =	   { 'GAIN_LOW' : tsl2591_constant.GAIN_LOW,
 					   'GAIN_MAX' : tsl2591_constant.GAIN_MAX
 					}
 
+again_byte_to_txt = 	{ tsl2591_constant.GAIN_LOW : 'GAIN_LOW' ,
+					      tsl2591_constant.GAIN_MED : 'GAIN_MED',
+					      tsl2591_constant.GAIN_HIGH : 'GAIN_HIGH',
+					      tsl2591_constant.GAIN_MAX : 'GAIN_MAX'
+					}
+
 atime_bit_list =		{ 'TIME_100MS' : tsl2591_constant.TIME_100MS,
 					    'TIME_200MS' : tsl2591_constant.TIME_200MS,
 					    'TIME_300MS' : tsl2591_constant.TIME_300MS,
 					    'TIME_400MS' : tsl2591_constant.TIME_400MS,
 					    'TIME_500MS' : tsl2591_constant.TIME_500MS,
 					    'TIME_600MS' : tsl2591_constant.TIME_600MS
+					}
+
+atime_byte_to_txt =		{ tsl2591_constant.TIME_100MS : 'TIME_100MS',
+					      tsl2591_constant.TIME_200MS : 'TIME_200MS',
+					      tsl2591_constant.TIME_300MS : 'TIME_300MS',
+					      tsl2591_constant.TIME_400MS : 'TIME_400MS',
+					      tsl2591_constant.TIME_500MS : 'TIME_500MS',
+					      tsl2591_constant.TIME_600MS : 'TIME_600MS' 
 					}
 
 persist_bit_list = 		{ 'PERSIST_EVERY' : tsl2591_constant.PERSIST_EVERY,
@@ -330,13 +344,21 @@ class TSL2591(object):
        self.disable_ic()
        full = (ch1 << 16) | ch0
        return full -ch1
-    @property
-    def Lux(self):
+
+    def Lux(self, calibrate = None):
        self.enable_ic()
+       print('Measured Gain: ',again_byte_to_txt[self._gain])
+       print('Measured Time: ',atime_byte_to_txt[self._IntegralTime])
        for i in range(0, self._IntegralTime + 2):
           time.sleep(0.1)
-       channel_0 = self.read_register('CHAN0')[0]
-       channel_1 = self.read_register('CHAN1')[0]
+       if calibrate == 1 :
+           (channel_0,channel_1,ret) = self.SelfCalibrate
+           print ('calibrated ...')
+       else :
+          channel_0 = self.read_register('CHAN0')[0]
+          channel_1 = self.read_register('CHAN1')[0]
+       print('channel_0: ', channel_0)
+       print('cahnnel_1: ', channel_1)
        self.disable_ic()
 
        self.enable_ic()
@@ -353,9 +375,11 @@ class TSL2591(object):
 
        if channel_0 >= max_counts or channel_1 >= max_counts:
           gain_t = self.get_gain()
+          print('Initial Gain: ',again_byte_to_txt[self._gain])
           if (gain_t != again_bit_list['GAIN_LOW']):
              gain_t = ((gain_t>>4)-1)<<4
-             self.set_gain(gaint_t)
+             print('Calculated Gain: {:02x}',again_byte_to_txt[self._gain])
+             self.set_gain(gain_t)
              channel_0 = 0
              channel_1 = 0
              while( channel_0 <= 0 and channel_1 <=0 ):
@@ -371,13 +395,71 @@ class TSL2591(object):
        elif self._gain == again_bit_list['GAIN_MAX']:
           again = 9876.0
 
-       #print('atime: ',atime)
-       #print('again: ',again)
-       #print('channel_0: ', channel_0)
-       #print('cahnnel_1: ', channel_1)
+       print('atime: ',atime)
+       print('again: ',again)
+       print('channel_0: ', channel_0)
+       print('cahnnel_1: ', channel_1)
        cpl = (atime * again) / lux_const['LUX_DF']
        lux1 = (channel_0 - (2 * channel_1))/ cpl
-       #print('cpl: ',cpl)
-       #print('lux1: ',lux1)
+       print('cpl: ',cpl)
+       print('lux1: ',lux1)
 
        return max(int(lux1),int(0))
+    @property
+    def SelfCalibrate (self):
+       max_counts = lux_const['MAX_COUNT']
+       self.set_gain('GAIN_MAX')
+       self.set_IntegralTime('TIME_500MS')
+       for i in range(0, self._IntegralTime + 2):
+                time.sleep(0.1)
+       channel_0 = self.read_register('CHAN0')[0]
+       channel_1 = self.read_register('CHAN1')[0]
+       gain_t = self._gain
+       while (channel_0 >= max_counts or channel_1 >= max_counts) and (gain_t >= 0x10):
+          gain_t = ((gain_t>>4)-1)<<4
+          self.set_gain(again_byte_to_txt[gain_t])
+          for i in range(0, self._IntegralTime + 2):
+                time.sleep(0.1)
+          channel_0 = self.read_register('CHAN0')[0]
+          channel_1 = self.read_register('CHAN1')[0]
+          print('channel_0: ', channel_0)
+          print('cahnnel_1: ', channel_1)
+          print('New Gain: ',again_byte_to_txt[self._gain])
+          
+
+       if (gain_t <= 0x20) :
+          gain_t = ((gain_t>>4)+1)<<4
+       self.set_gain(again_byte_to_txt[gain_t])
+       it_t = self._IntegralTime
+       channel_0 = self.read_register('CHAN0')[0]
+       channel_1 = self.read_register('CHAN1')[0]
+
+       while channel_0 >= max_counts or channel_1 >= max_counts:
+          it_t = it_t - 1
+          self.set_IntegralTime(atime_byte_to_txt[it_t])
+          if ( int(it_t) == 0 ) :
+             gain_t = ((gain_t>>4)-1)<<4
+             self.set_gain(again_byte_to_txt[gain_t])
+             channel_0 = self.read_register('CHAN0')[0]
+             channel_1 = self.read_register('CHAN1')[0]
+             for i in range(0, self._IntegralTime + 2):
+                time.sleep(0.1)
+             print('Calibrated Gain: ',again_byte_to_txt[self._gain])
+             print('Calculated Time: ',atime_byte_to_txt[self._IntegralTime])
+             if channel_0 >= max_counts or channel_1 >= max_counts:
+                print('channel_0: ', channel_0)
+                print('cahnnel_1: ', channel_1)
+                return (channel_0,channel_1,2) # still overflow!
+             print('channel_0: ', channel_0)
+             print('cahnnel_1: ', channel_1)
+             return (channel_0,channel_1,1) # minimum
+          channel_0 = self.read_register('CHAN0')[0]
+          channel_1 = self.read_register('CHAN1')[0]
+          print('channel_0: ', channel_0)
+          print('cahnnel_1: ', channel_1)
+
+       print('Calibrated Gain: ',again_byte_to_txt[self._gain])
+       print('Calculated Time: ',atime_byte_to_txt[self._IntegralTime])
+       print('channel_0: ', channel_0)
+       print('cahnnel_1: ', channel_1)
+       return (channel_0,channel_1,0) # correctly set

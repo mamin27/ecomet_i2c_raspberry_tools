@@ -35,15 +35,17 @@ sens._logger.info('Start logging ...')
 #print('Gain: ',sens.get_gain())
 #print('IntegralTime: ',sens.get_IntegralTime())
 
-#sens.set_gain('GAIN_MAX')
+#sens.set_gain('GAIN_MED')
 #print(tsl2591.conf_register_list())
-#sens.set_IntegralTime('TIME_500MS')
+#sens.set_IntegralTime('TIME_200MS')
 #print(tsl2591.conf_register_list())
+#ret = sens.SelfCalibrate
+#print ('SelfCalibration ret = ',ret)
 
 data = sens.Read_FullSpectrum
 data2 = sens.Read_Infrared
 data3 = sens.Read_Visible
-lux = sens.Lux
+lux = sens.Lux(calibrate = 1)
 
 print('Lux: ',lux)
 print('Infrared light: ', data2)
