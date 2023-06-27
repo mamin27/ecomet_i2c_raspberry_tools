@@ -73,8 +73,8 @@ diode dot-matrix graphic display system.
 | SSD1306         |[yes](ecomet_i2c_sensors/ssd1306/ssd1306_python.IIC.md)|    no    |[I01](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_display_current_board) | |     |
 | INA226, INA260  |[yes](ecomet_i2c_sensors/ina260/ina260_python_IIC.md)|    yes    |[I01](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_display_current_board) | |     |
 | ISL2802x  |in progress |    no    | | |     |
-|**!NEW!**SN-GCJA5|[yes](ecomet_i2c_sensors/sn_gcja5/sn_gcja5_python_IIC.md)|    no    | | |     |
-|**!NEW!**TSL25911|[yes](ecomet_i2c_sensors/tsl2591/tsl2591_python_IIC.md)|    no    | | |     |
+|**!NEW!** SN-GCJA5|[yes](ecomet_i2c_sensors/sn_gcja5/sn_gcja5_python_IIC.md)|    no    | | |     |
+|**!NEW!** TSL25911|[yes](ecomet_i2c_sensors/tsl2591/tsl2591_python_IIC.md)|    no    | | |     |
 
 ```sh
 hdc1080 -disableaccurateframe
