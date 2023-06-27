@@ -57,7 +57,7 @@ diode dot-matrix graphic display system.
 * [INA226,INA260 module](ecomet_i2c_sensors/ina260/ina260_python.IIC.md) -> Precision Digital Current and Power Monitor With Low-Drift, Precision Integrated Shunt
 * ISL2802x module ->  will be added python module description
 * [SN-GCJA5](ecomet_i2c_sensors/sn_gcja5/sn_gcja5_python.IIC.md) -> **!NEW!** Laser Type PM Sensor
-* [SN-TSL25911](ecomet_i2c_sensors/tsl2591/tsl2591_python.IIC.md) -> **!NEW!** Ambient Light Sensor
+* [TSL25911](ecomet_i2c_sensors/tsl2591/tsl2591_python.IIC.md) -> **!NEW!** Ambient Light Sensor
 
 **Software for Chips:**
 
