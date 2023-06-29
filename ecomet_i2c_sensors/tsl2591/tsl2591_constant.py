@@ -88,7 +88,7 @@ DISABLE_NPIEN	   = 0x3f
 DISABLE_SAI		   = 0x5f
 DISABLE_AIEN	   = 0xef
 DISABLE_AEN		   = 0xfd
-DISABLE_POWER	   = 0xfe   # Flag for ENABLE register to disable internal oscillator
+DISABLE_POWER	   = 0x00   # Flag for ENABLE register to disable internal oscillator
 
 # Control Mask Bit
 CTLR_RESET		   = 0x80   # System reset. When asserted, the device will reset equivalent to a power-on reset. SRESET is self-clearing.
@@ -103,6 +103,23 @@ AINT_MASK		   = 0x08   # ALS Interrupt. Indicates that the device is asserting a
 AVALID_MASK		   = 0x01   # ALS Valid. Indicates that the ADC channels have completed an integration cycle since the AEN bit was asserted.
 
 #LUX_DB coeficient
-LUX_DF			   = 762.0
+LUX_DF			   = 408.0
+LUX_COEFB		   = 1.64
+LUX_COEFC		   = 0.59
+LUX_COEFD		   = 0.86
 MAX_COUNT_100MS	   = (36863)
 MAX_COUNT		   = (65535)
+
+#Special Commands
+SetInterrupt	     = 0xe4 # Interrupt set  forces an interrupt
+ClearAlsInt		     = 0xe6 # Clears ALS interrupt
+ClearAlsNoPersAlsInt = 0xe7 # Clears ALS and no persist ALS interrupt
+ClearsNoPersAlsInt   = 0xea # Clears no persist ALS interrupt
+
+# The interrupt set special function command sets the interrupt bits 
+# in the status register (0x13). For the interrupt to be visible on the 
+# INT pin, one of the interrupt enable bits in the enable register 
+# (0x00) must be asserted.
+# The interrupt set special function must be cleared with an interrupt 
+# clear special function. The ALS interrupt clear special functions 
+# clear any pending interrupt(s) and are self-clearing.

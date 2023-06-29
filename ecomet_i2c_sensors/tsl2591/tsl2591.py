@@ -5,6 +5,8 @@ import math
 from tsl2591 import tsl2591_constant
 #from ecomet_i2c_sensors.tsl2591 import tsl2591_constant
 
+INI_PIN             = 3
+
 reg_list = { 'COMMAND' : tsl2591_constant.COMMAND_BIT,'ENABLE' : tsl2591_constant.ENABLE,'CONTROL' : tsl2591_constant.CONTROL, 'STATUS' : tsl2591_constant.STATUS,
 			 'THR_AI_LTL' :  tsl2591_constant.THR_AI_LTL, 'THR_AI_LTH' : tsl2591_constant.THR_AI_LTH,'THR_AI_HTL' : tsl2591_constant.THR_AI_HTL,'THR_AI_HTH' : tsl2591_constant.THR_AI_HTH, 
 			 'THR_NPAI_LTL' :  tsl2591_constant.THR_NPAI_LTL, 'THR_NPAI_LTH' : tsl2591_constant.THR_NPAI_LTH,'THR_NPAI_HTL' : tsl2591_constant.THR_NPAI_HTL,'THR_NPAI_HTH' : tsl2591_constant.THR_NPAI_HTH,
@@ -35,6 +37,12 @@ pid_mask_list =       { 'PID' : tsl2591_constant.PID_MASK }
 status_mask_list =    { 'NPINTR_MASK' : tsl2591_constant.NPINTR_MASK,
 						'AINT_MASK' : tsl2591_constant.AINT_MASK,
 						'AVALID_MASK' : tsl2591_constant.AVALID_MASK
+					}
+
+special_funct = 		{ 'SetInterrupt' : tsl2591_constant.SetInterrupt,
+						'ClearAlsInt' : tsl2591_constant.ClearAlsInt,
+						'ClearAlsNoPersAlsInt' : tsl2591_constant.ClearAlsNoPersAlsInt,
+						'ClearsNoPersAlsInt' : tsl2591_constant.ClearsNoPersAlsInt
 					}
 
 again_bit_list =	   { 'GAIN_LOW' : tsl2591_constant.GAIN_LOW,
@@ -84,6 +92,9 @@ persist_bit_list = 		{ 'PERSIST_EVERY' : tsl2591_constant.PERSIST_EVERY,
 						}
 
 lux_const =				 { 'LUX_DF'          : tsl2591_constant.LUX_DF,
+						   'LUX_COEFB'       : tsl2591_constant.LUX_COEFB,
+						   'LUX_COEFC'       : tsl2591_constant.LUX_COEFC,
+						   'LUX_COEFD'       : tsl2591_constant.LUX_COEFD,
 						   'MAX_COUNT_100MS' : tsl2591_constant.MAX_COUNT_100MS,
 						   'MAX_COUNT'       : tsl2591_constant.MAX_COUNT
 						}
@@ -199,11 +210,16 @@ class TSL2591(object):
         self._gain = None
         self._IntegralTime = None
 
-        self.enable_ic()
+        self._id = self.read_register('DEVICE_ID')
+        if(self._id[0] != 0x50):
+           print("ID = ",hex(self._id[0]))
+           sys.exit()
+
+        self.enable_ic
         self.set_gain('GAIN_MED')
-        self.set_IntegralTime('TIME_100MS')
+        self.set_IntegralTime('TIME_200MS')
         self.write_register('PERSIST_FILTER',persist_bit_list['PERSIST_ANY'])
-        self.disable_ic()
+        self.disable_ic
 
     def self_test(self) :
         reg_status = 0
@@ -215,28 +231,33 @@ class TSL2591(object):
         if int.from_bytes(reg_status,"big") != 0 or ret != 0:
              ret = 2
         return ret
+    @property
     def enable_ic(self) :
         ret = 0
-        data = self.read_register('ENABLE')[0]
-        data = data | enable_mask_list['ENABLE_POWER'] | enable_mask_list['ENABLE_AIEN'] | enable_mask_list['ENABLE_AEN'] | enable_mask_list['ENABLE_NPIEN']
+        #data = self.read_register('ENABLE')[0]
+        data = 0x00 | enable_mask_list['ENABLE_POWER'] | enable_mask_list['ENABLE_AIEN'] | enable_mask_list['ENABLE_AEN'] | enable_mask_list['ENABLE_NPIEN']
         try:
            self.write_register('ENABLE',data)
         except :
            ret = ret + 1
         return (ret)
+    @property
     def disable_ic(self) :
         ret = 0
-        data = self.read_register('ENABLE')[0]
-        data = data & enable_mask_list['DISABLE_POWER']
+        #data = self.read_register('ENABLE')[0]
+        data = enable_mask_list['DISABLE_POWER']
         try:
            self.write_register('ENABLE',data)
         except :
            ret = ret + 1
         return (ret)
+    @property
     def reset_ic (self):
        control = self.read_register('CONTROL')[0]
        control |= ctrl_mask_list['CTLR_RESET']
+       time.sleep(1)
        self.write_register('CONTROL',control)
+    @property
     def get_gain (self):
        data = self.read_register('CONTROL')[0]
        return data & ctrl_mask_list['CTLR_AGAIN']
@@ -248,6 +269,7 @@ class TSL2591(object):
           control |= again_bit_list[data]
           self.write_register('CONTROL',control)
           self._gain = again_bit_list[data]
+    @property
     def get_IntegralTime (self):
         data = self.read_register('CONTROL')[0]
         return data & ctrl_mask_list['CTLR_ATIME']
@@ -283,18 +305,15 @@ class TSL2591(object):
            elif register in ['CHAN0','CHAN1'] :	
               try :
                  cregister_l = (reg_list['COMMAND'] | reg_list[register + '_L']) & 0xff
-                 cregister_h = (reg_list['COMMAND'] | reg_list[register + '_H']) & 0xff
-                 reg_status_l = self._device.readList(cregister_l,1)
-                 reg_status_h = self._device.readList(cregister_h,1)
-                 reg_status_list = bytes(reg_status_h) + bytes(reg_status_l)
-                 reg_status = int.from_bytes(reg_status_list,"big")
+                 reg_status = int(self._device.readU16(cregister_l))
+                 #print("addr: ",hex(cregister_l)," data: ",hex(reg_status))
               except :
                  ret = ret + 1
            else :
 
               try :
                  cregister = (reg_list['COMMAND'] | reg_list[register]) & 0xff
-                 reg_status = int.from_bytes(self._device.readList(cregister,1),"big")
+                 reg_status = int(self._device.readU8(cregister))
               except :
                  ret = ret + 1
         return (reg_status,ret)
@@ -324,47 +343,55 @@ class TSL2591(object):
               except :
                  ret = ret + 1
         return (ret)
-    @property
-    def Read_FullSpectrum(self) :
-       self.enable_ic()
-       data = (self.read_register('CHAN1')[0] << 16) | self.read_register('CHAN0')[0]
-       self.disable_ic()
-       return data
-    @property
-    def Read_Infrared(self):
-       self.enable_ic()
-       data = self.read_register('CHAN0')[0]
-       self.disable_ic()
-       return data
-    @property
-    def Read_Visible(self):
-       self.enable_ic()
-       ch1 = self.read_register('CHAN1')[0]
-       ch0 = self.read_register('CHAN0')[0]
-       self.disable_ic()
+    def Read_FullSpectrum(self, calibrate = None) :
+       self.enable_ic
+       if calibrate :
+          data = (self.SelfCalibrate_perChannel('CHAN1')[0] << 16) | self.SelfCalibrate_perChannel('CHAN0')[0]
+       else :
+          data = (self.read_register('CHAN1')[0] << 16) | self.read_register('CHAN0')[0]
+       self.disable_ic
+       return (data,again_byte_to_txt[self._gain],atime_byte_to_txt[self._IntegralTime])
+    def Read_Infrared(self, calibrate = None):
+       self.enable_ic
+       if calibrate :
+          data = self.SelfCalibrate_perChannel('CHAN0')[0]
+       else :
+          data = self.read_register('CHAN0')[0]
+       self.disable_ic
+       return (data,again_byte_to_txt[self._gain],atime_byte_to_txt[self._IntegralTime])
+    def Read_Visible(self, calibrate = None):
+       if calibrate :
+          ch1 = self.SelfCalibrate_perChannel('CHAN1')[0]
+          ch0 = self.SelfCalibrate_perChannel('CHAN0')[0]
+       else:
+          ch1 = self.read_register('CHAN1')[0]
+          ch0 = self.read_register('CHAN0')[0]
+       self.disable_ic
        full = (ch1 << 16) | ch0
-       return full -ch1
-
+       return (full -ch1,again_byte_to_txt[self._gain],atime_byte_to_txt[self._IntegralTime])
+    def SpecialFunction(self,funct):
+       if funct in ['SetInterrupt','ClearAlsInt','ClearAlsNoPersAlsInt','ClearsNoPersAlsInt']:
+          self.enable_ic
+          cregister = (reg_list['COMMAND'] | special_funct[funct] & 0xff)
+          self._device.write8(cregister,reg_list['STATUS'])
+          self.disable_ic
     def Lux(self, calibrate = None):
-       self.enable_ic()
-       print('Measured Gain: ',again_byte_to_txt[self._gain])
-       print('Measured Time: ',atime_byte_to_txt[self._IntegralTime])
+       print('start LUX ....')
+       self.enable_ic
+       #print('Measured Gain: ',again_byte_to_txt[self._gain])
+       #print('Measured Time: ',atime_byte_to_txt[self._IntegralTime])
        for i in range(0, self._IntegralTime + 2):
           time.sleep(0.1)
        if calibrate == 1 :
            (channel_0,channel_1,ret) = self.SelfCalibrate
-           print ('calibrated ...')
        else :
           channel_0 = self.read_register('CHAN0')[0]
           channel_1 = self.read_register('CHAN1')[0]
-       print('channel_0: ', channel_0)
-       print('cahnnel_1: ', channel_1)
-       self.disable_ic()
+       #print('channel_0: ', channel_0)
+       #print('cahnnel_1: ', channel_1)
+       self.disable_ic
 
-       self.enable_ic()
-       cregister = (reg_list['COMMAND'] | 0xe7 & 0xff)
-       self._device.write8(cregister,0x13)
-       self.disable_ic()
+       self.SpecialFunction('ClearAlsNoPersAlsInt')
 
        atime = 100.0 * self._IntegralTime + 100.0
 
@@ -374,18 +401,21 @@ class TSL2591(object):
           max_counts = lux_const['MAX_COUNT']
 
        if channel_0 >= max_counts or channel_1 >= max_counts:
-          gain_t = self.get_gain()
-          print('Initial Gain: ',again_byte_to_txt[self._gain])
+          gain_t = self.get_gain
+          #print('Initial Gain: ',again_byte_to_txt[self._gain])
           if (gain_t != again_bit_list['GAIN_LOW']):
              gain_t = ((gain_t>>4)-1)<<4
-             print('Calculated Gain: {:02x}',again_byte_to_txt[self._gain])
+             #print('Calculated Gain: {:02x}',again_byte_to_txt[self._gain])
              self.set_gain(gain_t)
              channel_0 = 0
              channel_1 = 0
              while( channel_0 <= 0 and channel_1 <=0 ):
                 channel_0 = self.read_register('CHAN0')[0]
                 channel_1 = self.read_register('CHAN1')[0]
+                for i in range(0, self._IntegralTime + 2):
+                   time.sleep(0.1)
           else :
+             print('Numberical overflow!')
              raise RuntimeError('Numerical overflow!')
        again = 1.0
        if self._gain == again_bit_list['GAIN_MED']:
@@ -395,71 +425,156 @@ class TSL2591(object):
        elif self._gain == again_bit_list['GAIN_MAX']:
           again = 9876.0
 
-       print('atime: ',atime)
-       print('again: ',again)
-       print('channel_0: ', channel_0)
-       print('cahnnel_1: ', channel_1)
+       #print('atime: ',atime)
+       #print('again: ',again)
+       #print('channel_0: ', channel_0)
+       #print('cahnnel_1: ', channel_1)
        cpl = (atime * again) / lux_const['LUX_DF']
-       lux1 = (channel_0 - (2 * channel_1))/ cpl
-       print('cpl: ',cpl)
-       print('lux1: ',lux1)
+       lux1 = (channel_0 - (lux_const['LUX_COEFB'] * channel_1))/ cpl
+       lux2 = ((lux_const['LUX_COEFC'] * channel_0) - (lux_const['LUX_COEFD'] * channel_1)) / cpl
+       #print('cpl: ',cpl)
+       #print('lux1: ',lux1)
+       #print('lux2: ',lux2)
 
-       return max(int(lux1),int(0))
+       return (max(int(lux1),int(lux2),int(0)),again_byte_to_txt[self._gain],atime_byte_to_txt[self._IntegralTime])
     @property
     def SelfCalibrate (self):
-       max_counts = lux_const['MAX_COUNT']
        self.set_gain('GAIN_MAX')
        self.set_IntegralTime('TIME_500MS')
+       max_counts = lux_const['MAX_COUNT']
        for i in range(0, self._IntegralTime + 2):
-                time.sleep(0.1)
+          time.sleep(0.1)
        channel_0 = self.read_register('CHAN0')[0]
        channel_1 = self.read_register('CHAN1')[0]
-       gain_t = self._gain
-       while (channel_0 >= max_counts or channel_1 >= max_counts) and (gain_t >= 0x10):
-          gain_t = ((gain_t>>4)-1)<<4
-          self.set_gain(again_byte_to_txt[gain_t])
+       while ((channel_0 >= max_counts or channel_1 >= max_counts) and self.get_IntegralTime >= atime_bit_list['TIME_200MS'] and self.get_gain >= again_bit_list['GAIN_MED']):
+          self._IntegralTime = self._IntegralTime - 1
+          if self._IntegralTime == atime_bit_list['TIME_100MS']:
+             max_counts = lux_const['MAX_COUNT_100MS']
+          else:
+             max_counts = lux_const['MAX_COUNT']
+          self.set_IntegralTime(atime_byte_to_txt[self._IntegralTime])
           for i in range(0, self._IntegralTime + 2):
-                time.sleep(0.1)
+             time.sleep(0.1)
           channel_0 = self.read_register('CHAN0')[0]
           channel_1 = self.read_register('CHAN1')[0]
-          print('channel_0: ', channel_0)
-          print('cahnnel_1: ', channel_1)
-          print('New Gain: ',again_byte_to_txt[self._gain])
-          
-
-       if (gain_t <= 0x20) :
-          gain_t = ((gain_t>>4)+1)<<4
-       self.set_gain(again_byte_to_txt[gain_t])
-       it_t = self._IntegralTime
-       channel_0 = self.read_register('CHAN0')[0]
-       channel_1 = self.read_register('CHAN1')[0]
-
-       while channel_0 >= max_counts or channel_1 >= max_counts:
-          it_t = it_t - 1
-          self.set_IntegralTime(atime_byte_to_txt[it_t])
-          if ( int(it_t) == 0 ) :
-             gain_t = ((gain_t>>4)-1)<<4
-             self.set_gain(again_byte_to_txt[gain_t])
-             channel_0 = self.read_register('CHAN0')[0]
-             channel_1 = self.read_register('CHAN1')[0]
+          if (channel_0 >= max_counts or channel_1 >= max_counts) :
+             self._gain = ((self._gain>>4)-1)<<4
+             self.set_gain(again_byte_to_txt[self._gain])
              for i in range(0, self._IntegralTime + 2):
                 time.sleep(0.1)
-             print('Calibrated Gain: ',again_byte_to_txt[self._gain])
-             print('Calculated Time: ',atime_byte_to_txt[self._IntegralTime])
-             if channel_0 >= max_counts or channel_1 >= max_counts:
-                print('channel_0: ', channel_0)
-                print('cahnnel_1: ', channel_1)
-                return (channel_0,channel_1,2) # still overflow!
-             print('channel_0: ', channel_0)
-             print('cahnnel_1: ', channel_1)
-             return (channel_0,channel_1,1) # minimum
+             channel_0 = self.read_register('CHAN0')[0]
+             channel_1 = self.read_register('CHAN1')[0]
+             if (channel_0 < max_counts and channel_1 < max_counts) :
+                #print('Calibrated Gain0: ',again_byte_to_txt[self._gain])
+                #print('Calculated Time0: ',atime_byte_to_txt[self._IntegralTime])
+                #print('channel_0: ', channel_0)
+                #print('cahnnel_1: ', channel_1)
+                return (channel_0,channel_1,0) # correctly set
+          else :
+             #print('Calibrated Gain1: ',again_byte_to_txt[self._gain])
+             #print('Calculated Time1: ',atime_byte_to_txt[self._IntegralTime])
+             #print('channel_0: ', channel_0)
+             #print('cahnnel_1: ', channel_1)
+             return (channel_0,channel_1,0) # correctly set
+          #print('Gain,IT: ',channel_0,channel_1, max_counts,again_byte_to_txt[self.get_gain],atime_byte_to_txt[self.get_IntegralTime])
+
+       if (channel_0 >= max_counts or channel_1 >= max_counts) :
+          #print('Calibrated Gain2: ',again_byte_to_txt[self._gain])
+          #print('Calculated Time2: ',atime_byte_to_txt[self._IntegralTime])
+          #print('channel_0: ', channel_0)
+          #print('cahnnel_1: ', channel_1)
+          return (channel_0,channel_1,0) # correctly set
+       self._IntegralTime = atime_bit_list['TIME_100MS']
+       max_counts = lux_const['MAX_COUNT_100MS']
+       self.set_IntegralTime('TIME_100MS')
+       for i in range(0, self._IntegralTime + 2):
+          time.sleep(0.1)
+       channel_0 = self.read_register('CHAN0')[0]
+       channel_1 = self.read_register('CHAN1')[0]
+       if (channel_0 >= max_counts or channel_1 >= max_counts) :
+          self._gain = again_bit_list['GAIN_LOW']
+          self.set_gain('GAIN_MED')
+          for i in range(0, self._IntegralTime + 2):
+             time.sleep(0.1)
           channel_0 = self.read_register('CHAN0')[0]
           channel_1 = self.read_register('CHAN1')[0]
-          print('channel_0: ', channel_0)
-          print('cahnnel_1: ', channel_1)
+          if (channel_0 >= max_counts or channel_1 >= max_counts) :
+             raise RuntimeError('Numerical overflow!')
+             return (lux_const['MAX_COUNT'],lux_const['MAX_COUNT'],1)
+          else :
+             #print('Calibrated Gain3: ',again_byte_to_txt[self._gain])
+             #print('Calculated Time3: ',atime_byte_to_txt[self._IntegralTime])
+             #print('channel_0: ', channel_0)
+             #print('cahnnel_1: ', channel_1)
+             return (channel_0,channel_1,0) # correctly set
+       else :
+          #print('Calibrated Gain4: ',again_byte_to_txt[self._gain])
+          #print('Calculated Time4: ',atime_byte_to_txt[self._IntegralTime])
+          #print('channel_0: ', channel_0)
+          #print('cahnnel_1: ', channel_1)
+          return (channel_0,channel_1,0) # correctly set
+    def SelfCalibrate_perChannel (self,chan):
+       self.set_gain('GAIN_MAX')
+       self.set_IntegralTime('TIME_500MS')
+       max_counts = lux_const['MAX_COUNT']
+       for i in range(0, self._IntegralTime + 2):
+          time.sleep(0.1)
+       channel = self.read_register(chan)[0]
+       while (channel >= max_counts and self.get_IntegralTime >= atime_bit_list['TIME_200MS'] and self.get_gain >= again_bit_list['GAIN_MED']):
+          self._IntegralTime = self._IntegralTime - 1
+          if self._IntegralTime == atime_bit_list['TIME_100MS']:
+             max_counts = lux_const['MAX_COUNT_100MS']
+          else:
+             max_counts = lux_const['MAX_COUNT']
+          self.set_IntegralTime(atime_byte_to_txt[self._IntegralTime])
+          for i in range(0, self._IntegralTime + 2):
+             time.sleep(0.1)
+          channel = self.read_register(chan)[0]
+          if (channel >= max_counts) :
+             self._gain = ((self._gain>>4)-1)<<4
+             self.set_gain(again_byte_to_txt[self._gain])
+             for i in range(0, self._IntegralTime + 2):
+                time.sleep(0.1)
+             channel = self.read_register(chan)[0]
+             if (channel < max_counts) :
+                #print('Calibrated Gain0: ',again_byte_to_txt[self._gain])
+                #print('Calculated Time0: ',atime_byte_to_txt[self._IntegralTime])
+                #print('channel: ', channel)
+                return (channel,0) # correctly set
+          else :
+             #print('Calibrated Gain1: ',again_byte_to_txt[self._gain])
+             #print('Calculated Time1: ',atime_byte_to_txt[self._IntegralTime])
+             #print('channel: ', channel)
+             return (channel,0) # correctly set
+          #print('Gain,IT: ',channel,max_counts,again_byte_to_txt[self.get_gain],atime_byte_to_txt[self.get_IntegralTime])
 
-       print('Calibrated Gain: ',again_byte_to_txt[self._gain])
-       print('Calculated Time: ',atime_byte_to_txt[self._IntegralTime])
-       print('channel_0: ', channel_0)
-       print('cahnnel_1: ', channel_1)
-       return (channel_0,channel_1,0) # correctly set
+       if (channel < max_counts) :
+          #print('Calibrated Gain0: ',again_byte_to_txt[self._gain])
+          #print('Calculated Time0: ',atime_byte_to_txt[self._IntegralTime])
+          #print('channel: ', channel)
+          return (channel,0) # correctly set
+       self._IntegralTime = atime_bit_list['TIME_100MS']
+       max_counts = lux_const['MAX_COUNT_100MS']
+       self.set_IntegralTime('TIME_100MS')
+       for i in range(0, self._IntegralTime + 2):
+          time.sleep(0.1)
+       channel = self.read_register(chan)[0]
+       if (channel >= max_counts) :
+          self._gain = again_bit_list['GAIN_LOW']
+          self.set_gain('GAIN_MED')
+          for i in range(0, self._IntegralTime + 2):
+             time.sleep(0.1)
+          channel = self.read_register(chan)[0]
+          if (channel >= max_counts) :
+             raise RuntimeError('Numerical overflow!')
+             return (lux_const['MAX_COUNT'],1)
+          else :
+             #print('Calibrated Gain2: ',again_byte_to_txt[self._gain])
+             #print('Calculated Time2: ',atime_byte_to_txt[self._IntegralTime])
+             #print('channel: ', channel)
+             return (channel,0) # correctly set
+       else :
+          #print('Calibrated Gain3: ',again_byte_to_txt[self._gain])
+          #print('Calculated Time3: ',atime_byte_to_txt[self._IntegralTime])
+          #print('channel: ', channel)
+          return (channel,0) # correctly set
