@@ -24,6 +24,7 @@ sens._logger.info('Start logging ...')
 #sens.reset_ic  make throuble
 
 print('Manual Setting of Gain and Integral Time.')
+print('<--------------------------------------->')
 
 data = sens.Read_FullSpectrum ()
 data2 = sens.Read_Infrared ()
@@ -36,6 +37,7 @@ print('Visible light: ',data3[0])
 print('Full spectrum (IR + visible) light: ',data[0])
 print('Measure Gain: ',lux[1],' IntegralTime: ',lux[2])
 
+sens.reset_ic
 sens.set_gain('GAIN_MED')
 sens.set_IntegralTime('TIME_300MS')
 
@@ -50,6 +52,7 @@ print('Visible light: ',data3[0])
 print('Full spectrum (IR + visible) light: ',data[0])
 print('Measure Gain: ',lux[1],' IntegralTime: ',lux[2])
 
+sens.reset_ic
 sens.set_gain('GAIN_HIGH')
 sens.set_IntegralTime('TIME_500MS')
 
@@ -64,7 +67,9 @@ print('Visible light: ',data3[0])
 print('Full spectrum (IR + visible) light: ',data[0])
 print('Measure Gain: ',lux[1],' IntegralTime: ',lux[2])
 
+sens.reset_ic
 print('Calibration')
+print('<--------------------------------------->')
 
 lux = sens.Lux(calibrate = 1)
 data = sens.Read_FullSpectrum (calibrate = 1)
@@ -79,3 +84,10 @@ print('Visible light: ',data3[0])
 print('Measure Gain: ',data3[1],' IntegralTime: ',data3[2])
 print('Full spectrum (IR + visible) light: ',data[0])
 print('Measure Gain: ',data[1],' IntegralTime: ',data[2])
+
+print('Set Interrupt')
+print('<--------------------------------------->')
+sens.SET_InterruptThreshold(HIGH = 0xff00, LOW = 0x0010)
+print('List of Registers')
+print('<--------------------------------------->')
+print (tsl2591.conf_register_list())

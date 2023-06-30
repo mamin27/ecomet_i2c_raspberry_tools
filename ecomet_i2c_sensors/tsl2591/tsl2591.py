@@ -183,8 +183,10 @@ def conf_register_list() :
    channel['CHAN0'] = tsl.read_register( register = 'CHAN0' )[0]
    channel['CHAN1'] = tsl.read_register( register = 'CHAN1' )[0]
 
-   thr['THR_AI'] = tsl.read_register( register = 'THR_AI' )[0]
-   thr['THR_NPAI'] = tsl.read_register( register = 'THR_NPAI' )[0]
+   thr['THR_AIL'] = hex(tsl.read_register( register = 'THR_AI_L' )[0])
+   thr['THR_AIH'] = hex(tsl.read_register( register = 'THR_AI_H' )[0])
+   thr['THR_NPAIL'] = hex(tsl.read_register( register = 'THR_NPAI_L' )[0])
+   thr['THR_NPAIH'] = hex(tsl.read_register( register = 'THR_NPAI_H' )[0])
 
    register['ENABLE'] = reg_enable
    register['CONTROL'] = reg_control
@@ -234,8 +236,8 @@ class TSL2591(object):
     @property
     def enable_ic(self) :
         ret = 0
-        #data = self.read_register('ENABLE')[0]
-        data = 0x00 | enable_mask_list['ENABLE_POWER'] | enable_mask_list['ENABLE_AIEN'] | enable_mask_list['ENABLE_AEN'] | enable_mask_list['ENABLE_NPIEN']
+        data = self.read_register('ENABLE')[0]
+        data = data | enable_mask_list['ENABLE_POWER'] | enable_mask_list['ENABLE_AIEN'] | enable_mask_list['ENABLE_AEN'] | enable_mask_list['ENABLE_NPIEN']
         try:
            self.write_register('ENABLE',data)
         except :
@@ -244,8 +246,8 @@ class TSL2591(object):
     @property
     def disable_ic(self) :
         ret = 0
-        #data = self.read_register('ENABLE')[0]
-        data = enable_mask_list['DISABLE_POWER']
+        data = self.read_register('ENABLE')[0]
+        data = data | enable_mask_list['DISABLE_POWER']
         try:
            self.write_register('ENABLE',data)
         except :
@@ -253,6 +255,7 @@ class TSL2591(object):
         return (ret)
     @property
     def reset_ic (self):
+       print('Reset IC')
        control = self.read_register('CONTROL')[0]
        control |= ctrl_mask_list['CTLR_RESET']
        time.sleep(1)
@@ -282,31 +285,23 @@ class TSL2591(object):
            self.write_register('CONTROL',control)
            self._IntegralTime = atime_bit_list[data]
     def read_register(self, register) :
-        if register in ['ENABLE','CONTROL','STATUS','THR_AI','THR_NPAI',
+        if register in ['ENABLE','CONTROL','STATUS','THR_AI_L','THR_AI_H','THR_NPAI_L','THR_NPAI_H',
 			 'PERSIST_FILTER','PACKAGE_PID','DEVICE_ID','DEVICE_STATUS',
 			 'CHAN0','CHAN1'] :
            ret = 0
            reg_status = -9999
            #print ( register )
-           if register in ['THR_AI','THR_NPAI'] :
+           if register in ['THR_AI_L','THR_AI_H','THR_NPAI_L','THR_NPAI_H'] :
               try :
-                 cregister_ltl = (reg_list['COMMAND'] | reg_list[register + '_LTL']) & 0xff
-                 cregister_lth = (reg_list['COMMAND'] | reg_list[register + '_LTH']) & 0xff
-                 cregister_htl = (reg_list['COMMAND'] | reg_list[register + '_HTL']) & 0xff
-                 cregister_hth = (reg_list['COMMAND'] | reg_list[register + '_HTH']) & 0xff
-                 reg_status_ll = self._device.readList(cregister_ltl,1)
-                 reg_status_lh = self._device.readList(cregister_lth,1)
-                 reg_status_hl = self._device.readList(cregister_htl,1)
-                 reg_status_hh = self._device.readList(cregister_hth,1)
-                 reg_status_list = bytes(reg_status_hh) + bytes(reg_status_hl) + bytes(reg_status_lh) + bytes(reg_status_ll)
-                 reg_status = int.from_bytes(reg_status_list,"big")
+                 cregister = (reg_list['COMMAND'] | reg_list[register + 'TL']) & 0xff
+                 reg_status = int(self._device.readU16(cregister))
               except :
                  ret = ret + 1
            elif register in ['CHAN0','CHAN1'] :	
               try :
-                 cregister_l = (reg_list['COMMAND'] | reg_list[register + '_L']) & 0xff
-                 reg_status = int(self._device.readU16(cregister_l))
-                 #print("addr: ",hex(cregister_l)," data: ",hex(reg_status))
+                 cregister = (reg_list['COMMAND'] | reg_list[register + '_L']) & 0xff
+                 reg_status = int(self._device.readU16(cregister))
+                 #print("addr: ",hex(cregister)," data: ",hex(reg_status))
               except :
                  ret = ret + 1
            else :
@@ -318,22 +313,14 @@ class TSL2591(object):
                  ret = ret + 1
         return (reg_status,ret)
     def write_register(self, register,data) :
-        if register in ['ENABLE','CONTROL','STATUS','THR_AI','THR_NPAI',
+        if register in ['ENABLE','CONTROL','STATUS','THR_AI_L','THR_AI_H','THR_NPAI_L','THR_NPAI_H',
 			 'PERSIST_FILTER'] :
            ret = 0
            #print ( register )
-           if register in ['THR_AI','THR_NPAI'] :
+           if register in ['THR_AI_L','THR_AI_H','THR_NPAI_L','THR_NPAI_H'] :
               try :
-                 bytes_val = data.to_bytes(4, 'little')
-                 print(bytes_val)
-                 cregister_ltl = (reg_list['COMMAND'] | reg_list[register + '_LTL']) & 0xff
-                 cregister_lth = (reg_list['COMMAND'] | reg_list[register + '_LTH']) & 0xff
-                 cregister_htl = (reg_list['COMMAND'] | reg_list[register + '_HTL']) & 0xff
-                 cregister_hth = (reg_list['COMMAND'] | reg_list[register + '_HTH']) & 0xff
-                 self._device.write8(cregister_ltl,bytes_val[0])
-                 self._device.write8(cregister_lth,bytes_val[1])
-                 self._device.write8(cregister_htl,bytes_val[2])
-                 self._device.write8(cregister_hth,bytes_val[3])
+                 cregister = (reg_list['COMMAND'] | reg_list[register + 'TL']) & 0xff
+                 self._device.write16(cregister,data)
               except :
                  ret = ret + 1
            else :
@@ -376,7 +363,7 @@ class TSL2591(object):
           self._device.write8(cregister,reg_list['STATUS'])
           self.disable_ic
     def Lux(self, calibrate = None):
-       print('start LUX ....')
+       #print('start LUX ....')
        self.enable_ic
        #print('Measured Gain: ',again_byte_to_txt[self._gain])
        #print('Measured Time: ',atime_byte_to_txt[self._IntegralTime])
@@ -493,7 +480,7 @@ class TSL2591(object):
        channel_1 = self.read_register('CHAN1')[0]
        if (channel_0 >= max_counts or channel_1 >= max_counts) :
           self._gain = again_bit_list['GAIN_LOW']
-          self.set_gain('GAIN_MED')
+          self.set_gain('GAIN_LOW')
           for i in range(0, self._IntegralTime + 2):
              time.sleep(0.1)
           channel_0 = self.read_register('CHAN0')[0]
@@ -578,3 +565,33 @@ class TSL2591(object):
           #print('Calculated Time3: ',atime_byte_to_txt[self._IntegralTime])
           #print('channel: ', channel)
           return (channel,0) # correctly set
+    def SET_InterruptThreshold(self, HIGH, LOW):
+        self.enable_ic
+        self.write_register('THR_AI_L',LOW)
+        self.write_register('THR_AI_H',HIGH)
+
+        self.write_register('THR_NPAI_L',0x00)
+        self.write_register('THR_NPAI_H',0xff)
+        self.disable_ic
+    def TSL2591_SET_LuxInterrupt(self, SET_LOW, SET_HIGH):
+        atime  = 100 * self.IntegralTime + 100
+        again = 1.0;
+        if(self.Gain == MEDIUM_AGAIN):
+            again = 25.0;
+        elif(self.Gain == HIGH_AGAIN):
+            again = 428.0
+        elif(self.Gain == MAX_AGAIN):
+            again = 9876.0;
+        Cpl = (atime * again) / LUX_DF
+        channel_1 = self.read_register('CHAN1')[0]
+
+        SET_HIGH =  (int)(Cpl * SET_HIGH)+ 2*channel_1-1
+        SET_LOW = (int)(Cpl * SET_LOW)+ 2*channel_1+1
+
+        self.enable_ic
+        self.write_register('THR_AI_L',SET_LOW)
+        self.write_register('THR_AI_H',SET_HIGH)
+
+        self.write_register('THR_NPAI_L',0x00)
+        self.write_register('THR_NPAI_H',0xff)
+        self.disable_ic
