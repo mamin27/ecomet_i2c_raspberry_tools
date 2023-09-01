@@ -214,8 +214,8 @@ class TSL2591(object):
 
         self._id = self.read_register('DEVICE_ID')
         if(self._id[0] != 0x50):
-           print("ID = ",hex(self._id[0]))
-           sys.exit()
+           self._logger.fatal("ID = (%s)",hex(self._id[0]))
+           return -1
 
         self.enable_ic
         self.set_gain('GAIN_MED')
