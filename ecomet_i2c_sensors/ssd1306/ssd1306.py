@@ -122,7 +122,7 @@ class SSD1306(object):
                           self._const.SET_START_LINE,
                           self._const.SET_PAGE_ADDR,
                           self._const.SET_MEMORY_MODE] :
-           if value > 63 or ( value > 7 and register == self._conf_SET_PAGE_ADDR ) :
+           if (value > 63 or  value > 7 and register == self._const.SET_PAGE_ADDR ) :
                ret += 2
            else :
                register = register + value
@@ -149,8 +149,8 @@ class SSD1306(object):
         assert(image.size[0] == self.width)
         assert(image.size[1] == self.height)
 
-        self.set_command(self._const.SET_COLUMN_ADDRESS, 0x00, self.width-1)	# Column start/end address
-        self.set_command(self._const.SET_PAGE_ADDR, 0x00, self.pages-1)			# Page start/end address
+        self.set_command(self._const.SET_COLUMN_ADDRESS, value = 0, value2 = self.width-1)	# Column start/end address
+        self.set_command(self._const.SET_PAGE_ADDR, value = 0, value2 = self.pages-1)			# Page start/end address
 
         pix = list(image.getdata())
         step = self.width * 8
