@@ -33,7 +33,7 @@ lux = sens.Lux()
 
 sens._logger.info('Lux: (%s)',lux[0])
 sens._logger.info('Infrared light: (%s)', data2[0])
-sens._logger.info('Visible light: ',data3[0])
+sens._logger.info('Visible light: (%s)',data3[0])
 sens._logger.info('Full spectrum (IR + visible) light: (%s)',data[0])
 sens._logger.info('Measure Gain: (%s) IntegralTime: (%s)',lux[1],lux[2])
 
@@ -48,7 +48,7 @@ lux = sens.Lux()
 
 sens._logger.info('Lux: (%s)',lux[0])
 sens._logger.info('Infrared light: (%s)', data2[0])
-sens._logger.info('Visible light: ',data3[0])
+sens._logger.info('Visible light: (%s) ',data3[0])
 sens._logger.info('Full spectrum (IR + visible) light: (%s)',data[0])
 sens._logger.info('Measure Gain: (%s) IntegralTime: (%s)',lux[1],lux[2])
 
