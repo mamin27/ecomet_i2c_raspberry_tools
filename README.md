@@ -1,6 +1,6 @@
 # ecomet_i2c_raspberry_tools
 
-**Last modification:** 27.6.2023
+**Last modification:** 04.9.2023
 **Contributor:** Marian Minar
 
 <a href="https://www.buymeacoffee.com/scQ8LwgTBt"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=scQ8LwgTBt&button_colour=5F7FFF&font_colour=ffffff&font_family=Cookie&outline_colour=000000&coffee_colour=FFDD00" /></a>
@@ -14,7 +14,9 @@
 
 Project eCScope was created to show progress in development. Insert the #eCScope keyword into the issue section.
 
-**PyPi module:** [ecomet-i2c-sensor](https://test.pypi.org/project/ecomet-i2c-sensors/)
+**PyPi module:** [ecomet-i2c-sensor](https://pypi.org/project/ecomet-i2c-sensors/)
+
+**Current release:** 0.1.7
 
 Python3 library - currently **Beta status**
 ```sh
