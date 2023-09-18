@@ -454,9 +454,9 @@ class TSL2591(object):
              self._lux.remove(max(self._lux))
              self._lux.remove(min(self._lux))
        if len(self._lux) >= 2 :
-          lux_average = np.average(lux)
-          lux_avg = np.std(lux, dtype = np.float64)
-          lux_var = np.var(lux, dtype = np.float64)
+          lux_average = np.average(self._lux)
+          lux_avg = np.std(self._lux, dtype = np.float64)
+          lux_var = np.var(self._lux, dtype = np.float64)
           self._logger.info('Avg Lux: (%s)',lux_avg)
           self._logger.info('Var Lux: (%s)',lux_var)
        else :
