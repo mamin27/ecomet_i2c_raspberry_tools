@@ -49,10 +49,11 @@ def get_default_bus():
     For a Beaglebone Black the first user accessible bus, 1, will be returned.
     """
     plat = Platform.platform_detect()
-    smb = load_comet_yaml()
-    if smb != -99 :
-           return smb 
-    
+    smb_ret = load_comet_yaml()
+    if smb_ret == -99 :
+       return smb_ret 
+    else :
+       return int(re.search("^i2c-(\d+)$",smb_ret['i2c']['smb']).group(1))
     if plat == Platform.RASPBERRY_PI:
         if Platform.pi_revision() == 1:
             # Revision 1 Pi uses I2C bus 0.
@@ -79,7 +80,7 @@ def load_comet_yaml():
        except yaml.YAMLError as exc:
           return ret
 
-    return int(re.search("^i2c-(\d+)$",config['i2c']['smb']).group(1))
+    return config
 
 def get_i2c_device(address, busnum=None, i2c_interface=None, **kwargs):
     """Return an I2C device for the specified address and on the specified bus.

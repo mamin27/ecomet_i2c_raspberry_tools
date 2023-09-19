@@ -2,6 +2,7 @@ from __future__ import division
 import logging
 import time
 import math
+from ecomet_i2c_sensors.i2c import load_comet_yaml
 from ecomet_i2c_sensors.ms5637 import ms5637_constant
 
 cmd_list = { 'RESET' : ms5637_constant.RESET, 
@@ -28,6 +29,13 @@ class MS5637(object):
         if i2c is None:
             import ecomet_i2c_sensors.i2c as I2C
             i2c = I2C
+        smb = load_comet_yaml()
+        if smb != -99 :
+           self._pressure_min = smb['i2c']['sensor']['ms5637']['pressure']['min']
+           self._pressure_max = smb['i2c']['sensor']['ms5637']['pressure']['max']
+        else :
+           self._pressure_min = 0
+           self._pressure_max = 2000
         self._logger = logging.getLogger(__name__)    
         self._device = i2c.get_i2c_device(address, busnum, **kwargs)
         self.c1 = self.read_register('PROM_PRE_SENS')
@@ -167,4 +175,7 @@ class MS5637(object):
         tempc = temp/100
         tempf = tempc * 1.8 + 32
         pressure = ((((D1 * SENS) / 2**21) - OFF) / 2**15) / 100.0
-        return(tempc,tempf,pressure,ret)
+        if (pressure >= self._pressure_min and pressure <= self._pressure_max) :
+           return(tempc,tempf,pressure,ret)
+        else :
+           return(tempc,tempf,0,-1)

@@ -214,17 +214,19 @@ class TSL2591(object):
         self._persistent = None
         self._IntegralTime = None
         self._lux = []
+        self._exit = None
 
         self._id = self.read_register('DEVICE_ID')
         if(self._id[0] != 0x50):
            self._logger.fatal("ID = (%s)",hex(self._id[0]))
-           return -1
-
-        self.enable_ic
-        self.set_gain('GAIN_LOW')
-        self.set_IntegralTime('TIME_100MS')
-        self.set_persistent('PERSIST_ANY')
-        self.disable_ic
+           self._exit = -1
+        else:
+           self.enable_ic
+           self.set_gain('GAIN_LOW')
+           self.set_IntegralTime('TIME_100MS')
+           self.set_persistent('PERSIST_ANY')
+           self.disable_ic
+           self._exit = 0
 
     def self_test(self) :
         reg_status = 0
@@ -370,17 +372,14 @@ class TSL2591(object):
           cregister = (reg_list['COMMAND'] | special_funct[funct] & 0xff)
           self._device.write8(cregister,reg_list['STATUS'])
           self.disable_ic
-    def Lux(self, calibrate = None):
+    def Lux(self):
        self.enable_ic
        self._logger.debug('Measured Gain: ',again_byte_to_txt[self._gain])
        self._logger.debug('Measured Time: ',atime_byte_to_txt[self._IntegralTime])
        for i in range(0, self._IntegralTime + 2):
           time.sleep(0.1)
-       if calibrate == 1 :
-           (channel_0,channel_1,ret) = self.SelfCalibrate
-       else :
-          channel_0 = self.read_register('CHAN0')[0]
-          channel_1 = self.read_register('CHAN1')[0]
+       channel_0 = self.read_register('CHAN0')[0]
+       channel_1 = self.read_register('CHAN1')[0]
        self._logger.debug('channel_0: ', channel_0)
        self._logger.debug('cahnnel_1: ', channel_1)
        self.disable_ic
@@ -459,10 +458,10 @@ class TSL2591(object):
           lux_var = np.var(self._lux, dtype = np.float64)
           self._logger.info('Avg Lux: (%s)',lux_avg)
           self._logger.info('Var Lux: (%s)',lux_var)
+          self._logger.info('Lux values: ',self._lux)
        else :
           lux_average = 0
           self._logger.info('No data, set to 0')
-       self._logger.debug('Lux values [end]: ',self._lux)
        return (lux_average)
     def SelfCalibrate_perChannel (self,chan):
        self.set_gain('GAIN_MAX')

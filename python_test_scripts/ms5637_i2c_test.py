@@ -39,6 +39,9 @@ data = sens.measure (accuracy = 6)
 temp = data[0]
 temp_f = data[1]
 pressure = data[2]
-sens._logger.info('Pressure = %s mbar','{0:10.2f}'.format(pressure))
-sens._logger.info('Temperature in Celsius = %s \u2103','{0:10.2f}'.format(temp))
-sens._logger.info('Temperature in Fahrenheit = %s F','{0:10.2f}'.format(temp_f))
+if data[3] == 0 :
+   sens._logger.info('Pressure = %s mbar','{0:10.2f}'.format(pressure))
+   sens._logger.info('Temperature in Celsius = %s \u2103','{0:10.2f}'.format(temp))
+   sens._logger.info('Temperature in Fahrenheit = %s F','{0:10.2f}'.format(temp_f))
+else :
+   sens._logger.error('Pressure out of range')

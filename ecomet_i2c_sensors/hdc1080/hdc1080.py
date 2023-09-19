@@ -175,10 +175,10 @@ class HDC1080(object):
             try :
                 self._device.writeRaw8(reg_list[register]);
             except :
-                self._logger.info('write_invoke %s mask failed', register)
+                self._logger.debug('write_invoke %s mask failed', register)
                 return 1
             finally :
-                self._logger.info('write_invoke %s mask', register)
+                self._logger.debug('write_invoke %s mask', register)
                 return 0
     def both_measurement (self) :
         byt_reg = ()

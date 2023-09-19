@@ -71,13 +71,12 @@ sens.reset_ic
 sens._logger.info('Calibration')
 sens._logger.info('<--------------------------------------->')
 
-lux = sens.Lux(calibrate = 1)
+lux = sens.SelfCalibrate
 data = sens.Read_FullSpectrum (calibrate = 1)
 data2 = sens.Read_Infrared (calibrate = 1)
 data3 = sens.Read_Visible (calibrate = 1)
 
-sens._logger.info('Lux: (%s)',lux[0])
-sens._logger.info('Measure Gain: (%s) IntegralTime: (%s)',lux[1],lux[2])
+sens._logger.info('Lux: (%s)',lux)
 sens._logger.info('Infrared light: (%s)', data2[0])
 sens._logger.info('Measure Gain: (%s) IntegralTime: (%s)',data2[1],data2[2])
 sens._logger.info('Visible light: (%s)',data3[0])
