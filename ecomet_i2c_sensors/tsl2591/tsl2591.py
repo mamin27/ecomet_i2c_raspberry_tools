@@ -448,9 +448,9 @@ class TSL2591(object):
              self.append_lux
        self._logger.debug('Lux values [start]: ',self._lux)
        if len(self._lux) >= 6 :
-          lux_avg = np.std(lux, dtype = np.float64)
+          lux_avg = np.std(self._lux, dtype = np.float64)
           if lux_avg >= 1:
-             slef._logger.debug('Lux remove limits')
+             self._logger.debug('Lux remove limits')
              self._lux.remove(max(self._lux))
              self._lux.remove(min(self._lux))
        if len(self._lux) >= 2 :
