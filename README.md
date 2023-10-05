@@ -3,6 +3,8 @@
 **Last modification:** 14.9.2023
 **Contributor:** Marian Minar
 
+**Dont forget to add ![star](/images/star.png) if you were satisfy with the software!**
+
 <a href="https://www.buymeacoffee.com/scQ8LwgTBt"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=scQ8LwgTBt&button_colour=5F7FFF&font_colour=ffffff&font_family=Cookie&outline_colour=000000&coffee_colour=FFDD00" /></a>
 
 **Twitter:** [News and statuses](https://twitter.com/mminar7)
