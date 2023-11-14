@@ -15,6 +15,7 @@ i2c_count = [ '^RASPBERRY_PI 1\..*$',
               '^RASPBERRY_PI_\(CM4\).*$',
               '^RASPBERRY_PI ZERO 2 W.*$',
               '^H616$',
+              '^A10$',
               '^OTHER$' ]
 
 i2c_count_max = [ 2,
@@ -26,9 +27,10 @@ i2c_count_max = [ 2,
                   11,
                   2,
                   4,
+                  2,
                   21 ]
 
-plat = i2c_platform.Board_plat(busnum=0)
+plat = i2c_platform.Board_plat()
 
 logging.basicConfig(level=logging.INFO,  # change level looging to (INFO, DEBUG, ERROR)
                     format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',

@@ -26,7 +26,7 @@ from ecomet_i2c_sensors.eeprom import eeprom_read
 from ecomet_i2c_sensors.eeprom import eeprom_write
 
 plat = i2c_platform.plat_list[Platform.platform_detect()]
-if plat == 'H616':
+if plat in ['H616','A10']:
    import OPi.GPIO as rGPIO
 else:
    import RPi.GPIO as rGPIO
@@ -41,12 +41,14 @@ with open(path + "/config.yaml") as c:
 ic = config['i2c']['eeprom']['ic']
 slaveaddr= config['i2c']['eeprom']['slaveaddr'] # for eeprom (main i2c address)
 smb = SMBus(int(re.search("^i2c-(\d+)$",config['i2c']['smb']).group(1))) # set bus i2c-1
-writestrobe = config['i2c']['eeprom']['writestrobe'] # hold pin low to write to eeprom
 
 rGPIO.setmode(rGPIO.BOARD)
 rGPIO.setwarnings(False)
-if plat != 'H616':
+if config['i2c']['eeprom']['writestrobe'] != 'NO' :
+   writestrobe = config['i2c']['eeprom']['writestrobe'] # hold pin low to write to eeprom
    rGPIO.setup(writestrobe, rGPIO.OUT)
+else:
+   writestrobe = None
 
 def help() :
     print ('eeprom_mgr.py <option>')

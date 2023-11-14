@@ -67,6 +67,9 @@ def get_default_bus():
     elif plat == Platform.H616:
         # AllWinner Procesor
         return 1
+    elif plat == Platform.A10:
+        # AllWinner Procesor Olimex
+        return 0
     else:
         raise RuntimeError('Could not determine default I2C bus for platform.')
 
@@ -128,6 +131,9 @@ class Device(object):
             self._bus = i2c_interface(busnum)
         self._logger = logging.getLogger('Adafruit_I2C.Device.Bus.{0}.Address.{1:#0X}' \
                                 .format(busnum, address))
+
+    def close(self) :
+        self._bus.close()
 
     def writeRaw8(self, value):
         """Write an 8-bit value on the bus (without register)."""
