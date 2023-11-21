@@ -9,6 +9,7 @@ from ctypes import c_uint8, BigEndianStructure, Union
 reg_list = { 'POWER_OPERATING_MODE_REG' : axp209_constant.POWER_OPERATING_MODE_REG, 'POWER_INPUT_STATUS_REG' : axp209_constant.POWER_INPUT_STATUS_REG,
              'BATTERY_GAUGE_REG' : axp209_constant.BATTERY_GAUGE_REG,
              'INTERNAL_TEMPERATURE_REG' : axp209_constant.INTERNAL_TEMPERATURE_REG, 'BATTERY_VOLTAGE_REG' : axp209_constant.BATTERY_VOLTAGE_REG,
+             'BATTERY_CHARGE_CURRENT_REG' : axp209_constant.BATTERY_CHARGE_CURRENT_REG,
              'BATTERY_DISCHARGE_CURRENT_REG' : axp209_constant.BATTERY_DISCHARGE_CURRENT_REG, 'BATTERY_VOLTAGE_REG' : axp209_constant.BATTERY_VOLTAGE_REG,
              'VBUS_IPSOUT_CHANNEL_MANAGEMENT_REG' : axp209_constant.VBUS_IPSOUT_CHANNEL_MANAGEMENT_REG,
              'ADC_ENABLE1_REG' : axp209_constant.ADC_ENABLE1_REG, 'ADC_ENABLE2_REG' : axp209_constant.ADC_ENABLE2_REG
@@ -26,7 +27,8 @@ class AXP209(object):
             import ecomet_i2c_sensors.i2c as I2C
             i2c = I2C
         self._logger = logging.getLogger(__name__)    
-        self._device = i2c.get_i2c_device(address, busnum, **kwargs)
+        self._device = i2c.get_i2c_device(address, busnum=busnum, i2c_interface='smbus2', **kwargs)
+        #i2c_interface parameter choise smbus2 lib insted of Adafruit PureIO
         
     def __enter__(self):
         return self
@@ -61,7 +63,7 @@ class AXP209(object):
     def adc_enable1(self, flags):
         if hasattr(flags, "asbyte"):
             flags = flags.asbyte
- #       self.bus.write_byte_data(AXP209_ADDRESS, ADC_ENABLE1_REG, flags)
+        self.write_register('ADC_ENABLE1_REG', flags)
 
     @property
     def adc_enable2(self):
@@ -73,7 +75,7 @@ class AXP209(object):
     def adc_enable2(self, flags):
         if hasattr(flags, "asbyte"):
             flags = flags.asbyte
- #       self.bus.write_byte_data(AXP209_ADDRESS, ADC_ENABLE2_REG, flags)
+        self.write_register('ADC_ENABLE2_REG', flags)
 
     @property
     def vbus_current_limit(self):
@@ -243,18 +245,6 @@ class AXP209(object):
            self._device.write8(reg_list[register],data)
            try :
               self._device.write8(reg_list[register],data)
-           except :
-              ret = ret + 1
-        elif register in ['THR_AI_L','THR_AI_H','THR_NPAI_L','THR_NPAI_H'] :
-           try :
-              cregister = (reg_list['COMMAND'] | reg_list[register + 'TL']) & 0xff
-              self._device.write16(cregister,data)
-           except :
-              ret = ret + 1
-        else :
-           try :
-              cregister = (reg_list['COMMAND'] | reg_list[register]) & 0xff
-              self._device.write8(cregister,data)
            except :
               ret = ret + 1
         return (ret)

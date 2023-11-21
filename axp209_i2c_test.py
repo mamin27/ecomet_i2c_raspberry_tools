@@ -28,7 +28,7 @@ print("battery_voltage: %.1fmV" % axp.battery_voltage)
 print("battery_discharge_current: %.1fmA" % axp.battery_discharge_current)
 print("battery_charge_current: %.1fmA" % axp.battery_charge_current)
 print("battery_gauge: %d%%" % axp.battery_gauge)
-#axp.vbus_current_limit = 'no limit'
+axp.vbus_current_limit = '500 mA'
 print("VBUS current limit: %s" % axp.vbus_current_limit)
 print("ADC enable 1:")
 print("  Battery voltage ADC Enable: %s" % axp.battery_current_adc_enable)

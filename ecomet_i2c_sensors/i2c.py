@@ -122,10 +122,13 @@ class Device(object):
         """Create an instance of the I2C device at the specified address on the
         specified I2C bus number."""
         self._address = address
+        self._i2c_interface = i2c_interface
         if i2c_interface is None:
             # Use pure python I2C interface if none is specified.
             import Adafruit_PureIO.smbus
             self._bus = Adafruit_PureIO.smbus.SMBus(busnum)
+        elif i2c_interface == 'smbus2':
+            self._bus = SMBus(bus = busnum, force=True)
         else:
             # Otherwise use the provided class to create an smbus interface.
             self._bus = i2c_interface(busnum)
@@ -221,8 +224,12 @@ class Device(object):
         """Read a length number of bytes from the specified register.  Results
         will be returned as a bytearray."""
         results = self._bus.read_i2c_block_data(self._address, register, length)
-        self._logger.debug("Read the following from register 0x%02X: %s",
-                     register, binascii.hexlify(results))
+        if self._i2c_interface == 'smbus2' :
+           self._logger.debug("Read the following from register 0x%02X: 0x%s",register,
+                     ''.join(map(str,bytes(results).hex())))
+        else :
+           self._logger.debug("Read the following from register 0x%02X: %s",
+                     register, binascii.hexlify(results)) 
         return results
 
     def readRaw8(self):
