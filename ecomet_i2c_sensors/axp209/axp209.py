@@ -29,6 +29,9 @@ class AXP209(object):
         self._logger = logging.getLogger(__name__)    
         self._device = i2c.get_i2c_device(address, busnum=busnum, i2c_interface='smbus2', **kwargs)
         #i2c_interface parameter choise smbus2 lib insted of Adafruit PureIO
+
+        # force ADC enable for battery voltage and current
+        self.adc_enable1 = 0xc3
         
     def __enter__(self):
         return self
@@ -51,7 +54,7 @@ class AXP209(object):
             flags.gpio_function = 0b111
         else:
             flags.gpio_function = 0b000
-        #self.bus.write_byte_data(AXP209_ADDRESS, GPIO2_FEATURE_SET_REG, flags.asbyte)
+        self.write_register('ADC_ENABLE1_REG', flags.asbyte)
 
     @property
     def adc_enable1(self):
@@ -241,7 +244,7 @@ class AXP209(object):
     def write_register(self, register,data) :
         ret = 0
         #print ( register )
-        if register in ['VBUS_IPSOUT_CHANNEL_MANAGEMENT_REG'] :
+        if register in ['VBUS_IPSOUT_CHANNEL_MANAGEMENT_REG','ADC_ENABLE1_REG','ADC_ENABLE2_REG'] :
            self._device.write8(reg_list[register],data)
            try :
               self._device.write8(reg_list[register],data)
