@@ -81,7 +81,7 @@ diode dot-matrix graphic display system.
 | ISL2802x  |in progress |    no    | | |     |
 |SN-GCJA5|yes [check](ecomet_i2c_sensors/common/support.md)|    no    | | |     |
 |TSL25911|yes [check](ecomet_i2c_sensors/common/support.md)|    no    | | |     |
-|**!NEW!** AXP209|yes [check](ecomet_i2c_sensors/common/support.md)|    no    |[A10 Olimex](https://www.olimex.com/Products/OLinuXino/A10/open-source-hardware) | Only partially implemented [pdf](ecomet_i2c_sensors/axp209/AXP209.pdf), [check](ecomet_i2c_sensors/common/support.md)   | |
+|**!NEW!** AXP209|yes [check](ecomet_i2c_sensors/common/support.md)|    no    |[A10 Olimex](https://www.olimex.com/Products/OLinuXino/A10/open-source-hardware) | Only partially implemented [pdf](ecomet_i2c_sensors/axp209/AXP209.PDF), [check](ecomet_i2c_sensors/common/support.md)   | |
 
 **Setting of config file for ecomet-i2c-sensors python library:**
 
