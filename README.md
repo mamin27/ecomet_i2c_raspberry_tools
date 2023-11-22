@@ -63,7 +63,7 @@ diode dot-matrix graphic display system.
 * ISL2802x module ->  will be added python module description
 * [SN-GCJA5](ecomet_i2c_sensors/sn_gcja5/sn_gcja5_python.IIC.md) -> Laser Type PM Sensor
 * [TSL25911](ecomet_i2c_sensors/tsl2591/tsl2591_python.IIC.md) -> Ambient Light Sensor
-* [AXP209](ecomet_i2c_sensors/axp209/AXP209.pdf) -> **!NEW!** PMU (Power Management Unit) Sensor
+* [AXP209](ecomet_i2c_sensors/axp209/AXP209.PDF) -> **!NEW!** PMU (Power Management Unit) Sensor
 
 **Software for Chips:**
 
