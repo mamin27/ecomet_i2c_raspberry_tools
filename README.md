@@ -79,9 +79,9 @@ diode dot-matrix graphic display system.
 | SSD1306         |[yes](ecomet_i2c_sensors/ssd1306/ssd1306_python.IIC.md)|    no    |[I01](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_display_current_board) | |     |
 | INA226, INA260  |[yes](ecomet_i2c_sensors/ina260/ina260_python_IIC.md)|    yes    |[I01](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_display_current_board) | |     |
 | ISL2802x  |in progress |    no    | | |     |
-|SN-GCJA5|yes [check](ecomet_i2c_sensors/common/support.md)|    no    | | |     |
-|TSL25911|yes [check](ecomet_i2c_sensors/common/support.md)|    no    | | |     |
-|**!NEW!** AXP209|yes [check](ecomet_i2c_sensors/common/support.md)|    no    |[A10 Olimex](https://www.olimex.com/Products/OLinuXino/A10/open-source-hardware) | Only partially implemented [pdf](ecomet_i2c_sensors/axp209/AXP209.PDF), [check](ecomet_i2c_sensors/common/support.md)   | |
+|SN-GCJA5|yes [check](wiki/common/support.md)|    no    | | |     |
+|TSL25911|yes [check](wiki/common/support.md)|    no    | | |     |
+|**!NEW!** AXP209|yes [check](wiki/common/support.md)|    no    |[A10 Olimex](https://www.olimex.com/Products/OLinuXino/A10/open-source-hardware) | Only partially implemented [pdf](ecomet_i2c_sensors/axp209/AXP209.PDF), [check](wiki/common/support.md)   | |
 
 **Setting of config file for ecomet-i2c-sensors python library:**
 
