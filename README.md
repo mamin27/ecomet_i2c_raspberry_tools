@@ -1,6 +1,6 @@
 # ecomet_i2c_raspberry_tools
 
-**Last modification:** 14.9.2023
+**Last modification:** 22.11.2023
 **Contributor:** Marian Minar
 
 **Dont forget to add ![/python_test_script/display/images/star.png](https://github.com/mamin27/ecomet_i2c_raspberry_tools/blob/master/python_test_scripts/display/images/star.png) if you were satisfy with the software!**
@@ -46,6 +46,7 @@ The Driver for I2C Chip maintenance from **Raspberry PI 1B+** and above and **Al
 * [Solomon Systech](https://www.solomon-systech.com/) SSD1309
 * [Renesas](https://www.renesas.com/eu/en) ISL28022
 * [AMS-OSRAM](https://ams.com/en/tsl25911) TSL25911
+* [X-Powers](http://www.x-powers.com/en.php) AXP209
 
 **List of modules:**
 
@@ -60,8 +61,9 @@ The Driver for I2C Chip maintenance from **Raspberry PI 1B+** and above and **Al
 diode dot-matrix graphic display system.
 * [INA226,INA260 module](ecomet_i2c_sensors/ina260/ina260_python.IIC.md) -> Precision Digital Current and Power Monitor With Low-Drift, Precision Integrated Shunt
 * ISL2802x module ->  will be added python module description
-* [SN-GCJA5](ecomet_i2c_sensors/sn_gcja5/sn_gcja5_python.IIC.md) -> **!NEW!** Laser Type PM Sensor
-* [TSL25911](ecomet_i2c_sensors/tsl2591/tsl2591_python.IIC.md) -> **!NEW!** Ambient Light Sensor
+* [SN-GCJA5](ecomet_i2c_sensors/sn_gcja5/sn_gcja5_python.IIC.md) -> Laser Type PM Sensor
+* [TSL25911](ecomet_i2c_sensors/tsl2591/tsl2591_python.IIC.md) -> Ambient Light Sensor
+* [AXP209](ecomet_i2c_sensors/axp209/AXP209.pdf) -> **!NEW!** PMU (Power Management Unit) Sensor
 
 **Software for Chips:**
 
@@ -77,8 +79,9 @@ diode dot-matrix graphic display system.
 | SSD1306         |[yes](ecomet_i2c_sensors/ssd1306/ssd1306_python.IIC.md)|    no    |[I01](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_display_current_board) | |     |
 | INA226, INA260  |[yes](ecomet_i2c_sensors/ina260/ina260_python_IIC.md)|    yes    |[I01](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_display_current_board) | |     |
 | ISL2802x  |in progress |    no    | | |     |
-|**!NEW!** SN-GCJA5|in progress|    no    | | |     |
-|**!NEW!** TSL25911|in progress|    no    | | |     |
+|SN-GCJA5|yes [check](ecomet_i2c_sensors/common/support.md)|    no    | | |     |
+|TSL25911|yes [check](ecomet_i2c_sensors/common/support.md)|    no    | | |     |
+|**!NEW!** AXP209|yes [check](ecomet_i2c_sensors/common/support.md)|    no    |[A10 Olimex](https://www.olimex.com/Products/OLinuXino/A10/open-source-hardware) | Only partially implemented [pdf](ecomet_i2c_sensors/axp209/AXP209.pdf), [check](ecomet_i2c_sensors/common/support.md)   | |
 
 **Setting of config file for ecomet-i2c-sensors python library:**
 
