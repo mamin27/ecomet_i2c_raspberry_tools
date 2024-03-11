@@ -1,6 +1,6 @@
 # ecomet_i2c_raspberry_tools
 
-**Last modification:** 22.11.2023
+**Last modification:** 11.03.2024
 **Contributor:** Marian Minar
 
 **Dont forget to add ![/python_test_script/display/images/star.png](https://github.com/mamin27/ecomet_i2c_raspberry_tools/blob/master/python_test_scripts/display/images/star.png) if you were satisfy with the software!**
@@ -18,7 +18,7 @@ Project eCScope was created to show progress in development. Insert the #eCScope
 
 **PyPi module:** [ecomet-i2c-sensor](https://pypi.org/project/ecomet-i2c-sensors/)
 
-**Current release:** 0.1.7
+**Current release:** 0.1.8
 
 Python3 library - currently **Beta status**
 ```sh
@@ -81,7 +81,7 @@ diode dot-matrix graphic display system.
 | ISL2802x  |in progress |    no    | | |     |
 |SN-GCJA5|yes [check](wiki/common/support.md)|    no    | | |     |
 |TSL25911|yes [check](wiki/common/support.md)|    no    | | |     |
-|**!NEW!** AXP209|yes [check](wiki/common/support.md)|    no    |[A10 Olimex](https://www.olimex.com/Products/OLinuXino/A10/open-source-hardware) | Only partially implemented [pdf](ecomet_i2c_sensors/axp209/AXP209.PDF), [check](wiki/common/support.md)   | |
+|AXP209|yes [check](wiki/common/support.md)|    no    |[A10 Olimex](https://www.olimex.com/Products/OLinuXino/A10/open-source-hardware) | Only partially implemented [pdf](ecomet_i2c_sensors/axp209/AXP209.PDF), [check](wiki/common/support.md)   | |
 
 **Setting of config file for ecomet-i2c-sensors python library:**
 
