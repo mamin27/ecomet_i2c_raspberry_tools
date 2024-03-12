@@ -20,6 +20,13 @@ Project eCScope was created to show progress in development. Insert the #eCScope
 
 **Current release:** 0.1.8
 
+**New features**
+* AXP209 driver added (X-Powers)
+* TSL25911 driver added (Osram-AMS)
+* add i2c_interface parameter as switch for libraries Adafruit_PureIO or smbus2
+* Add Allwiner CPU A10 driver, olimex OLinuXino A10
+* update load_config_yaml
+
 Python3 library - **Stable status**
 ```sh
 pip install ecomet-i2c-sensors
