@@ -20,9 +20,15 @@ Project eCScope was created to show progress in development. Insert the #eCScope
 
 **Current release:** 0.1.8
 
-Python3 library - currently **Beta status**
+Python3 library - **Stable status**
 ```sh
 pip install ecomet-i2c-sensors
+```
+**Test release:** 0.1.9.post1
+
+Python3 library - **Alpfa status**
+```sh
+pip3 install -i https://test.pypi.org/simple/ecomet-i2c-sensors
 ```
 
 **Wiki Hardware prototypes boards:** [link](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki)
