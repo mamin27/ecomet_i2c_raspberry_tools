@@ -1,4 +1,5 @@
 '''!
+  @origin code
   @file DFRobot_AS3935_Lib.py
   @brief Define the basic structure of the DFRobot_AS3935 class, the implementation of the basic methods.
   @copyright   Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
@@ -7,6 +8,11 @@
   @version  V1.0.2
   @date  2021-9-28
   @url https://github.com/DFRobot/DFRobot_AS3935
+  
+  Updated Code: 2024-03-13
+  Copyright (c) 2024 eComet Co.Ltd (https://twitter.com/mminar7)
+  @author      <mminar7@gmail.com>
+  @license	   GPL-3.0
 '''
 from time import sleep
 import logging
@@ -299,25 +305,7 @@ class AS3935:
    def read_register(self, register) :
        reg_status = -9999
        ret = 0
-       if register in ['INTERNAL_TEMPERATURE_REG','BATTERY_VOLTAGE_REG','BATTERY_CHARGE_CURRENT_REG'] :
-          try :
-		  # 12 bit
-             reg_status_bita = self._device.readList(reg_list[register],2)
-             reg_status_hex_high = reg_status_bita[0]
-             reg_status_hex_low = reg_status_bita[1]
-             reg_status = reg_status_hex_high << 4 | reg_status_hex_low & 0x0f
-          except :
-             ret = ret + 1
-       elif register in ['BATTERY_DISCHARGE_CURRENT_REG'] :
-          try :
-		  # 13 bit
-             reg_status_bita = self._device.readList(reg_list[register],2)
-             reg_status_hex_high = reg_status_bita[0]
-             reg_status_hex_low = reg_status_bita[1]
-             reg_status = reg_status_hex_high << 5 | reg_status_hex_low & 0x1f
-          except :
-             ret = ret + 1
-       elif register in ['POWER_REG','STAT_REG_1','STAT_REG_2','STAT_REG_3','DISTANCE_REG','SET_IRQ_SIGNAL','ENG_LIGHT_LB','ENG_LIGHT_HB', 'ENG_LIGHT_MMSB'] :
+       if register in ['POWER_REG','STAT_REG_1','STAT_REG_2','STAT_REG_3','DISTANCE_REG','SET_IRQ_SIGNAL','ENG_LIGHT_LB','ENG_LIGHT_HB', 'ENG_LIGHT_MMSB'] :
           try :
              reg_status = self._device.readU8(reg_list[register])
           except :
