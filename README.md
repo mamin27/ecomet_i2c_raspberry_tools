@@ -57,6 +57,7 @@ The Driver for I2C Chip maintenance from **Raspberry PI 1B+** and above and **Al
   PCA9557
 * [Panasonic](https://na.industrial.panasonic.com/products/sensors/air-quality-gas-flow-sensors/lineup/laser-type-pm-sensor/series/123557/model/123559) SN-GCJA5
 * [Renesas](https://www.renesas.com/eu/en) ISL28022
+* [Sensirion](https://sensirion.com/) SGP40
 * [Solomon Systech](https://www.solomon-systech.com/) SSD1309
 * [Texas Instruments](https://www.ti.com/)
   HDC1080,PCA9557,INA226,INA260
@@ -76,6 +77,7 @@ The Driver for I2C Chip maintenance from **Raspberry PI 1B+** and above and **Al
 * [MS5637 module](ecomet_i2c_sensors/ms5637/ms5637_python.IIC.md) ->  Ultra-compact micro altimeter. Integrated digital pressure sensor (24 bit ΔΣ ADC), Operating range: 300 to 1200 mbar, -40 to +85 °C
 * [PCA9557 module](ecomet_i2c_sensors/pca9557/pca9557_python.IIC.md) -> Remote8-Bit I2C and SMBusLow-PowerI/O ExpanderWith Reset andConfigurationRegisters
 * [PCA9632 module](fpc/pca9632/pca9632_IIC.md) -> 4-bit Fm+ I2C-bus low power LED driver (could be used for motor control)
+* [SGP40 module](https://sensirion.com/products/catalog/SGP40) -> **!NEW!** Indoor Air Quality Sensor for VOC Measurements
 * [SN-GCJA5](ecomet_i2c_sensors/sn_gcja5/sn_gcja5_python.IIC.md) -> Laser Type PM Sensor
 * [SSD1306 module](ecomet_i2c_sensors/ssd1306/ssd1306_python.IIC.md) -> SSD1306 is a single-chip CMOS OLED/PLED driver with controller for organic / polymer light emitting
 diode dot-matrix graphic display system.
@@ -99,6 +101,7 @@ diode dot-matrix graphic display system.
 | PCA9557         |[yes](ecomet_i2c_sensors/pca9557/pca9557_python.IIC.md)|    no    |[I01](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_display_current_board)|  |            |
 | PCA9632         |[yes](ecomet_i2c_sensors/pca9632/pca_9632_python_IIC.md)|[yes](fpc/pca9632/pca9632_IIC.md)|[I04](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_temp_hmd_pressure_board)|                  |                               |                               |
 |SN-GCJA5|yes [check](wiki/common/support.md)|    no    | | |     |
+|**!NEW!** SGP40|yes [check](wiki/common/support.md)|    no    | | |     |
 | SSD1306         |[yes](ecomet_i2c_sensors/ssd1306/ssd1306_python.IIC.md)|    no    |[I01](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_display_current_board) | |     |
 |TSL25911|yes [check](wiki/common/support.md)|    no    | | |     |
 
