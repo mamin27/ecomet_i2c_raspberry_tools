@@ -128,7 +128,7 @@ i2c:
       ic: '24c01'
       slaveaddr: 0x50
       writestrobe: 26 # hold pin low to write to eeprom
-sensor:
+    sensor:
       ms5637:
         pressure:
           { min: 600, max: 1300 }
