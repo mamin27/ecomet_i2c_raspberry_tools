@@ -143,13 +143,13 @@ class SGP40:
     def index_to_explanation(self,index) :
         if index < 80 :
             return 'excelent'
-        elif index >= 80 and index < 180 :
+        elif index >= 80 and index < 150 :
             return 'normal'
-        elif index >= 180 and index < 300 :
+        elif index >= 150 and index < 250 :
             return 'warning'
-        elif index >= 300 and index < 400 :
+        elif index >= 250 and index < 400 :
             return 'major'
-        elif index > 500 :
+        elif index >= 400 :
             return 'critical' 
 
     '''

@@ -77,18 +77,20 @@ der = [1,2,4,8,10,12,14,16,18,20]
             
 
 palette = [blue,violet,magenta,rose,red,orange,yellow,chartre,green,springg,cyan,azure]
+#palette = [blue,red,green]
 from time import sleep
-for loop in range (1,10) :
+for loop in range (1,2) :
  for i in palette :
 	 
-   pwm1.write_register( register = 'PWM2', bits = [{'PWM' : int(i['R'] / der[loop]) }])
-   pwm1.write_register( register = 'PWM1', bits = [{'PWM' : int(i['G'] / der[loop]) }])
-   pwm1.write_register( register = 'PWM0', bits = [{'PWM' : int(i['B'] / der[loop]) }])
-   
-   pwm2.write_register( register = 'PWM2', bits = [{'PWM' : int(i['R'] / der[loop]) }])
-   pwm2.write_register( register = 'PWM1', bits = [{'PWM' : int(i['G'] / der[loop]) }])
-   pwm2.write_register( register = 'PWM0', bits = [{'PWM' : int(i['B'] / der[loop]) }])
-   sleep(0.1)
+   pwm1.write_register( register = 'PWM2', bits = [{'PWM' : int(i['B'] / der[loop]) }])
+   pwm1.write_register( register = 'PWM1', bits = [{'PWM' : int(i['R'] / der[loop]) }])
+   pwm1.write_register( register = 'PWM0', bits = [{'PWM' : int(i['G'] / der[loop]) }])
+  
+   pwm2.write_register( register = 'PWM2', bits = [{'PWM' : int(i['B'] / der[loop]) }])
+   pwm2.write_register( register = 'PWM1', bits = [{'PWM' : int(i['R'] / der[loop]) }])
+   pwm2.write_register( register = 'PWM0', bits = [{'PWM' : int(i['G'] / der[loop]) }])
+   print ('palette: %s',i)
+   sleep(2)
    
 pwm1.write_register( register = 'PWM2', bits = [{'PWM' : '0' }])
 pwm1.write_register( register = 'PWM1', bits = [{'PWM' : '0' }])

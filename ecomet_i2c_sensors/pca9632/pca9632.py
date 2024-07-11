@@ -6,8 +6,6 @@ from ecomet_i2c_sensors.pca9632 import pca9632_constant
 #import pca9632_constant
 #import i2c_command_oop
 
-
-
 reg_list = { 'MODE1' : pca9632_constant.MODE1, 'MODE2' :  pca9632_constant.MODE2, 
              'PWM0' : pca9632_constant.PWM0, 'PWM1' : pca9632_constant.PWM1, 'PWM2' : pca9632_constant.PWM2, 'PWM3' : pca9632_constant.PWM3,
              'GRPPWM' : pca9632_constant.GRPPWM, 'GRPFREQ' : pca9632_constant.GRPFREQ, 'LEDOUT' : pca9632_constant.LEDOUT,
@@ -213,13 +211,17 @@ def ledout_clear ():
 class PCA9632(object):
     '''PCA9632() PWM LED/servo controller.'''
 
-    def __init__(self, address=pca9632_constant.PCA9632_ADDRESS, i2c=None, **kwargs) :
-        '''Initialize the PCA9685.'''
+    def __init__(self, address=None, i2c=None, **kwargs) :
+        '''Initialize the PCA9632.'''
         # Setup I2C interface for the device.
+        if address is None:
+            address=pca9632_constant.PCA9632_ADDRESS
         if i2c is None:
             import ecomet_i2c_sensors.i2c as I2C
             i2c = I2C
+        self._logger = logging.getLogger(__name__)
         self._device = i2c.get_i2c_device(address, **kwargs)
+        self._logger.info('address: 0x%s', '{0:02x}'.format(address))
         #self._device.write8(PWM0,0x7D)
     def self_test(self) :
         try :

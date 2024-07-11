@@ -1,0 +1,15 @@
+MCP_ADDR        = 0x4F
+
+VDD = 5		# Voltage = 5V
+MAX_DEGREE = 360 # 360 Degree max position
+WEST = 75
+SOUTH = 176
+EAST = 280
+NORTH = 360
+NORTH_WEST = 36
+SOUTH_WEST = 125
+SOUTH_EAST = 225
+NORTH_EAST = 330
+
+MAX_VDD = 4095
+
