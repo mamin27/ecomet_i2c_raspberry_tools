@@ -13,7 +13,7 @@
 
 ### How to install? ###
 Install Lazarus-ide at raspberry [FPC & Lazarus Installation](../lazarus.md)
-Install Python3 and next modules for hdc1080 [Python3 & modules](ecomet_i2c_sensors/hdc1080/hdc1080_python_IIC.md)
+Install Python3 and next modules for hdc1080 [Python3 & modules](../../ecomet_i2c_sensors/hdc1080/hdc1080_python_IIC.md)
 
 (optional when you have only lite linux version)
 ```console
