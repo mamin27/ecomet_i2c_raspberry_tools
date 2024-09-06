@@ -10,6 +10,7 @@ plat_list = { 0 : 'UNKONWN',
               3 : 'MINNOWBOARD',
               4 : 'JETSON_NANO',
               5 : 'H616',
+              6 : 'A10',
         }
 
 class Board_plat(object):
