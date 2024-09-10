@@ -13,44 +13,37 @@ def power (base, exponent) :
       return base * power (base, exponent -1)
 
 reg_list = { 'TEMP' : hdc1080_constant.TEMP, 'HUMDT' :  hdc1080_constant.HUMDT, 
-             'CONF' : hdc1080_constant.CONF, 'SER_ID1' : hdc1080_constant.SER_ID1, 'SER_ID2' : hdc1080_constant.SER_ID2, 'SER_ID3' : hdc1080_constant.SER_ID3,
+             'CONF' : hdc1080_constant.CONF, 'SER_ID1' : hdc1080_constant.SER_ID1,
+             'SER_ID2' : hdc1080_constant.SER_ID2, 'SER_ID3' : hdc1080_constant.SER_ID3,
              'MANUF' : hdc1080_constant.MANUF, 'DEVID' : hdc1080_constant.DEVID,
-        }
-conf_bit_on_list = { 'HRES_RES1' : hdc1080_constant.HRES_RES1,
-                     'HRES_RES2' : hdc1080_constant.HRES_RES2,
-                     'HRES_RES3' : hdc1080_constant.HRES_RES3,
-                     'TRES_RES1' : hdc1080_constant.TRES_RES1,
-                     'TRES_RES2' : hdc1080_constant.TRES_RES2,
-                     'BTST_HI' : hdc1080_constant.BTST_HI,
-                     'BTST_LO' : hdc1080_constant.BTST_LO,
-                     'MODE_ONLY' : hdc1080_constant.MODE_ONLY,
-                     'MODE_BOTH' : hdc1080_constant.MODE_BOTH,
-                     'HEAT_DISABLE' : hdc1080_constant.HEAT_DISABLE,
-                     'HEAT_ENABLE' : hdc1080_constant.HEAT_ENABLE,
-                     'RST_ON' : hdc1080_constant.RST_ON
-                }
+           }
+conf_bit = { 'HRES' : hdc1080_constant.HRES,
+             'TRES' : hdc1080_constant.TRES,
+             'BTST' : hdc1080_constant.BTST,
+             'MODE' : hdc1080_constant.MODE,
+             'HEAT' : hdc1080_constant.HEAT,
+             'RST'  : hdc1080_constant.RST
+            }
 
-conf_bit_off_list = { 'HRES_RES1_CLR' : hdc1080_constant.HRES_RES1_CLR,
-                      'HRES_RES2_CLR' : hdc1080_constant.HRES_RES2_CLR,
-                      'HRES_RES3_CLR' : hdc1080_constant.HRES_RES3_CLR,
-                      'TRES_RES1_CLR' : hdc1080_constant.TRES_RES1_CLR,
-                      'TRES_RES2_CLR' : hdc1080_constant.TRES_RES2_CLR,
-                      'BTST_HI_CLR' : hdc1080_constant.BTST_HI_CLR,
-                      'BTST_LO_CLR' : hdc1080_constant.BTST_LO_CLR,
-                      'MODE_ONLY_CLR' : hdc1080_constant.MODE_ONLY_CLR,
-                      'MODE_BOTH_CLR' : hdc1080_constant.MODE_BOTH_CLR,
-                      'HEAT_DISABLE_CLR' : hdc1080_constant.HEAT_DISABLE_CLR,
-                      'HEAT_ENABLE_CLR' : hdc1080_constant.HEAT_ENABLE_CLR,
-                      'RST_ON_CLR' : hdc1080_constant.RST_ON_CLR
-                }
-   
-conf_mask_bit_list = { 'CONF_HRES' : hdc1080_constant.CONF_HRES,
-                       'CONF_TRES' : hdc1080_constant.CONF_TRES,
-                       'CONF_BAT' : hdc1080_constant.CONF_BAT,
-                       'CONF_MODE' : hdc1080_constant.CONF_MODE,
-                       'CONF_HEAT' : hdc1080_constant.CONF_HEAT
-                      }
-                      
+conf_stat = {'MODE_BOTH' : hdc1080_constant.MODE_BOTH,
+             'MODE_ONLY' : hdc1080_constant.MODE_ONLY,
+             'HRES_14'   : hdc1080_constant.HRES_14,
+             'HRES_11'   : hdc1080_constant.HRES_11,
+             'HRES_08'   : hdc1080_constant.HRES_08,
+             'TRES_14'   : hdc1080_constant.TRES_14,
+             'TRES_11'   : hdc1080_constant.TRES_11,
+             'HEAT_DISABLE' : hdc1080_constant.HEAT_DISABLE,
+             'HEAT_ENABLE'  : hdc1080_constant.HEAT_ENABLE,
+             'RST_ON'    : hdc1080_constant.RST_ON
+            }
+
+conf_mask = {'MODE_Mask' : hdc1080_constant.MODE_Mask,
+             'HRES_Mask' : hdc1080_constant.HRES_Mask,
+             'TRES_Mask' : hdc1080_constant.TRES_Mask,
+             'HEAT_Mask' : hdc1080_constant.HEAT_Mask,
+             'BTST_Mask' : hdc1080_constant.BTST_Mask
+             }
+
 logger = logging.getLogger(__name__) 
 
 def register_list() :
@@ -63,45 +56,47 @@ def register_list() :
    reg_id = {}
    
    hres_switch = { 0: '14BIT',
-                   256: '11BIT',
-                   512: '8BIT' }
-   
+                   1: '11BIT',
+                   3: '8BIT' }
+
    tres_switch = { 0: '14BIT',
-                   1024: '11BIT' }
-                   
-   reg_conf['HRES'] = hres_switch.get((hdc.read_register( register = 'CONF' )[0] & conf_mask_bit_list['CONF_HRES']))
-   reg_conf['TRES'] = tres_switch.get((hdc.read_register( register = 'CONF' )[0] & conf_mask_bit_list['CONF_TRES']))
-   reg_conf['BAT'] = 'LOW' if hdc.read_register( register = 'CONF' )[0] & conf_mask_bit_list['CONF_BAT'] > 0 else 'GOOD'      
-   reg_conf['MODE'] = 'BOTH' if hdc.read_register( register = 'CONF' )[0] & conf_mask_bit_list['CONF_MODE'] > 0 else 'ONLY'      
-   reg_conf['HEAT'] = 'ENABLE' if hdc.read_register( register = 'CONF' )[0] & conf_mask_bit_list['CONF_HEAT'] > 0 else 'DISABLE' 
-        
+                   1: '11BIT' }
+
+   keys = hdc.read_register( register = 'CONF', bits = [{'HRES':'Mask'},{'TRES':'Mask'},{'BTST':'Mask'},{'MODE':'Mask'},{'HEAT':'Mask'}])
+   reg_conf['HRES'] = hres_switch.get(keys[0]['HRES'])
+   reg_conf['TRES'] = tres_switch.get(keys[0]['TRES'])
+   reg_conf['BAT'] = 'LOW' if keys[0]['BTST'] > 0 else 'GOOD'
+   reg_conf['MODE'] = 'BOTH' if keys[0]['MODE'] > 0 else 'ONLY'
+   reg_conf['HEAT'] = 'ENABLE' if keys[0]['HEAT'] > 0 else 'DISABLE'
+
    reg_id['SERIAL'] = hdc.serial()[0]
    reg_id['MANUF'] = hdc.manufacturer()[0]
    reg_id['DEVID'] = hdc.deviceid()[0]
-   
+
    register['CONF'] = reg_conf
    register['ID'] = reg_id
-   
+
    return (register);
-   
+
 def measure_list() :
-   
+
    hdc = HDC1080()
    hdc._logger = logging.getLogger('ecomet.hdc1080.reglist') 
    measure = {}
    mlist = {}
    ret = 0
-   
-   if hdc.read_register( register = 'CONF' )[0] & conf_mask_bit_list['CONF_MODE'] > 0 : 
+
+   keys = hdc.read_register( register = 'CONF', bits = [{'MODE':'Mask'}])
+   if keys[0]['MODE'] > 0 :
      (mlist['TEMP'],mlist['HMDT'],ret) = hdc.both_measurement()
    else :
      (mlist['TEMP'],nret) = hdc.measure_temp()
      ret = ret + nret
      (mlist['HMDT'],nret) = hdc.measure_hmdt()
      ret = ret + nret
-     
+
    measure['MEASURE'] = mlist
-   
+
    return (measure,ret)
 
 class HDC1080(object):
@@ -121,55 +116,56 @@ class HDC1080(object):
         except :
           ret = 1
         return ret
-    def read_register(self, register) :
+    def read_register(self, register, bits = None) :
         if register == 'TEMP' or register == 'HUMDT' or register == 'CONF' or register == 'SER_ID1' or register == 'SER_ID2' or register == 'SER_ID3' or register == 'MANUF' or register == 'DEVID' :
            ret = 0
            try:
-              reg_status_bita = self._device.readList(reg_list[register],2)
-              if not reg_status_bita:
-                return (0x0000,2)
-              reg_status_hex = '0x' + '{0:02x}'.format(reg_status_bita[0]) + '{0:02x}'.format(reg_status_bita[1])
-              reg_status = int(reg_status_hex, 0)
-           except :
-              ret = ret + 1;
+               reg_status_bita = self._device.readList(reg_list[register],2)
+               reg_status = int.from_bytes(reg_status_bita,byteorder='big')
+           except:
+               ret = ret + 1
+           if (register == 'CONF') & (bits != None):
+               stat_bits = {}
+               for ibit in bits :
+                   if isinstance(ibit,dict):
+                       keys = list(ibit.keys())
+                       dvalue = keys[0]+'_Mask'
+                       stat_bit = (reg_status & (conf_mask[dvalue] << conf_bit[keys[0]])) >>  conf_bit[keys[0]]
+                       self._logger.debug('read_register: %s[%s] = %s', register, keys[0], '{0:4b}'.format(stat_bit))
+                       stat_bits[keys[0]] = stat_bit
+               return (stat_bits,0)
            if ret > 1 :
               self._logger.debug('read_register %s failed (%s)',register,ret)
               return (0x0000,ret)
            else :
-              self._logger.debug('read_register, init reg_status: %s', '{0}'.format(reg_status_hex))
-              self._logger.debug('read_register %s, data: %s', register, '{0:b}'.format(reg_status))
+              self._logger.debug('read_register %s, data: 0x%s[0b%s]', register,'{0:04X}'.format(reg_status), '{0:16b}'.format(reg_status))
               return (reg_status,0)
-    def write_register(self, register, bits) :
-          ret = 0
-          (reg_status,ret) = self.read_register( register = register )
-          if register == 'CONF' :
+    def write_register(self, register, bits = None) :
+        ret = 0
+        (reg_status,ret) = self.read_register( register = register )
+        if register == 'CONF' :
            for ibit in bits :
-               #bit = conf_bit_on_list[ibit]
-               bit_clr = ibit + '_CLR'
-               reg_status = reg_status & conf_bit_off_list[bit_clr]
-               self._logger.debug('write_register, init reg_status: %s, bit_mask_reg %s', '{0:04X}'.format(reg_status), format(bit_clr))
-               reg_status = reg_status | conf_bit_on_list[ibit]
-               self._logger.debug('write_register, init reg_status: %s, bit %s', '{0:04X}'.format(reg_status), '{0:04X}'.format(conf_bit_on_list[ibit]))
-           reg_status_msb = (reg_status >> 8) & 0xff
-           reg_status_lsb = reg_status & 0xff
-           reg_status_msb = reg_status_msb.to_bytes(length=1, byteorder='big')
-           reg_status_lsb = reg_status_lsb.to_bytes(length=1, byteorder='big')
-           byt_reg = bytearray()
-           byt_reg += bytearray(reg_status_msb)
-           byt_reg += bytearray(reg_status_lsb)
+               if isinstance(ibit,dict):
+                   keys = list(ibit.keys())
+                   values = list(ibit.values())
+                   dvalue = keys[0]+'_'+values[0]
+                   if dvalue == 'MODE_BOTH':
+                       reg_status = reg_status & 0b1110111111111111
+                   else:
+                       reg_status = reg_status | (conf_stat[dvalue] << conf_bit[keys[0]])
+                   self._logger.debug('write_register preparation, init reg_status: %s[%s], bit %s', '{0:04x}'.format(reg_status), '{0:16b}'.format(reg_status), '{}'.format(keys[0]))
            try :
-               self._device.writeList(reg_list[register],byt_reg);
+               self._device.writeList(reg_list[register],reg_status.to_bytes(2,byteorder='big'))
            except :
                ret = ret + 1
-               self._logger.debug('writelist error')
-          else :
-              ret = 1
-          if ret > 1 :
-             self._logger.debug('write_register %s failed (%s)', register, ret)
-          else :
-             self._logger.debug('write_register %s, byte data: %s', register,byt_reg)
-             self._logger.debug('write_register %s, data: %s', register, '{0:04X}'.format(reg_status))
-          return ret
+               self._logger.debug('write16 error')
+        else :
+           ret = 1
+        if ret > 1 :
+           self._logger.debug('write_register %s failed (%s)', register, ret)
+        else :
+           self._logger.debug('write_register %s, data: 0x%s, bits: 0b%s', register, '{0:04X}'.format(reg_status),'{0:16b}'.format(reg_status))
+        return ret
     def write_mert_invoke (self, register) :
         if register == 'TEMP' or register == 'HUMDT' :
             try :
@@ -224,17 +220,12 @@ class HDC1080(object):
         hmdt = hmdt*100
         return (hmdt,ret)
     def sw_reset (self) :
-        ret = self.write_register( register = 'CONF', bits = ['RST_ON'])
+        ret = self.write_register( register = 'CONF', bits = [{'RST':'ON'}])
         from time import sleep
         sleep(0.1) # wait for done sw reset
         return ret
     def battery (self) :
-        (reg_status,ret) = self.read_register( register = 'CONF' )
-        reg_status = reg_status & conf_bit_on_list['BTST_LO']
-        if reg_status > 0 :
-            ret = 1
-        else :
-            ret = 0
+        (reg_status,ret) = self.read_register( register = 'CONF', bits = [{'BTST':'Mask'}])
         return ret
     def serial (self) :
        ret = 0

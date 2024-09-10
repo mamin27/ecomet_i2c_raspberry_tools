@@ -11,41 +11,32 @@ SER_ID1            = 0xFB
 SER_ID2            = 0xFC
 SER_ID3            = 0xFD
 MANUF              = 0xFE
-DEVID			   = 0xFF
+DEVID              = 0xFF
 
 # CONF 16 Bits allow (MBS):        
 
-HRES_RES1          = 0x0000   # rw, humidity measurement resolution 14 bit
-HRES_RES2          = 0x0100   # rw, humidity measurement resolution 11 bit
-HRES_RES3          = 0x0200   # rw, humidity measurement resolution 8 bit
-TRES_RES1          = 0x0000   # rw, temperature measurement resolution 14 bit
-TRES_RES2          = 0x0400   # rw, temperature measurement resolution 11 bit
-BTST_HI			   = 0x0000   # r, Battery voltage > 2.8V(readonly)
-BTST_LO            = 0x0800   # r, Battery voltage < 2.8V(readonly)
-MODE_BOTH          = 0x1000   # rw, temperature or humidity is acquired
-MODE_ONLY          = 0x0000   # rw, temperature and humidity are acquiredin sequence,temperature first
-HEAT_DISABLE       = 0x0000   # rw, heater disabled
-HEAT_ENABLE        = 0x3000   # rw, heater enable
-RST_ON             = 0x8000   # w, software reset
+HRES               = 8    # rw, humidity measurement resolution - 2 bits
+TRES               = 10   # rw, temperature measurement resolution - 1 bit
+BTST               = 11   # r, Battery voltage > 2.8V(readonly) -1 bit
+MODE               = 12   # rw, temperature or humidity is acquired, serial or once - 1 bit
+HEAT               = 13   # rw, heater bit - 1 bit
+RST                = 15   # w, software reset 1-bit
 
-# CONF 16 Bits clear (MBS):        
+#Status of CONF Bit
+MODE_BOTH          = 0
+MODE_ONLY          = 1
+HRES_14            = 0b00   # rw, humidity measurement resolution 14 bit
+HRES_11            = 0b01   # rw, humidity measurement resolution 11 bit
+HRES_08            = 0b11   # rw, humidity measurement resolution 8 bit
+TRES_14            = 0      # rw, humidity measurement resolution 14 bit
+TRES_11            = 1      # rw, humidity measurement resolution 11 bit
+HEAT_DISABLE       = 0      # rw, heater disabled
+HEAT_ENABLE        = 1      # rw, heater enable
+RST_ON             = 1      # r, software reset enable
 
-HRES_RES1_CLR      = 0xFCFF   # rw, humidity measurement clear (set to 14 bit)
-HRES_RES2_CLR      = 0xFCFF   # rw, humidity measurement clear (set to 14 bit)
-HRES_RES3_CLR      = 0xFCFF   # rw, humidity measurement clear (set to 14 bit)
-TRES_RES1_CLR      = 0xFBFF   # rw, temperature measurement resolution clear (set to 14 bit)
-TRES_RES2_CLR      = 0xFBFF   # rw, temperature measurement resolution clear (set to 14 bit)
-BTST_HI_CLR        = 0xF7FF
-BTST_LO_CLR        = 0xF7FF
-MODE_ONLY_CLR      = 0xEFFF   # rw, temperature or humidity clear ( set MODE_ONLY)
-MODE_BOTH_CLR      = 0xEFFF   # rw, temperature and humidity clear ( set MODE_ONLY)
-HEAT_DISABLE_CLR   = 0xDFFF   # rw, heater disabled
-HEAT_ENABLE_CLR    = 0xDFFF   # rw, heater enable
-RST_ON_CLR         = 0x7FFF   # w, software reset
-
-# CONF Mask bites
-CONF_HRES          = 0x0300
-CONF_TRES          = 0x0400
-CONF_BAT           = 0x0800
-CONF_MODE          = 0x1000
-CONF_HEAT          = 0x2000
+#Status Mask of CONF Bit
+MODE_Mask          = 0b1
+HRES_Mask          = 0b11   # rw, humidity measurement resolution 2 bits
+TRES_Mask          = 0b1    # rw, humidity measurement resolution 1 bit
+HEAT_Mask          = 0b1    # rw, heater disabled
+BTST_Mask          = 0b1
