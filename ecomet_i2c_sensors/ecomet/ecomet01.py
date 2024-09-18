@@ -10,8 +10,9 @@ import smbus2
 import logging
 from ecomet import ecomet01_constant
 
-reg_list = { 'CONF0' : ecomet01_constant.CONF0, 'CONF1' :  ecomet01_constant.CONF1, 'CONF2' : ecomet01_constant.CONF2, 'CONF3' :  ecomet01_constant.CONF3,
-             'READ0' : ecomet01_constant.READ0, 'READ1' :  ecomet01_constant.READ1, 'READ2' : ecomet01_constant.READ2, 'READ3' :  ecomet01_constant.READ3,
+reg_list = { 'REG00' : ecomet01_constant.REG00,
+             'REG01' : ecomet01_constant.REG01, 'REG02' :  ecomet01_constant.REG02, 'REG03' : ecomet01_constant.REG03,
+             'REG04' : ecomet01_constant.REG04, 'REG05' :  ecomet01_constant.REG05,
         }
 
 class ECOMET01:
@@ -21,14 +22,7 @@ class ECOMET01:
             import ecomet_i2c_sensors.i2c as I2C
             i2c = I2C
         self._logger = logging.getLogger(__name__)  
-        self._device = i2c.get_i2c_device(address, busnum=busnum, i2c_interface='smbus2', **kwargs)
-
- #   @property
-    def read_register(self, register) :
-       #return self._device.readU8(0x51)
-       return self._device.readU8(reg_list[register])
-       #return self._device.readRaw8()
-       #return self._device.readList(reg_list[register],2)
+        self._device = i2c.get_i2c_device(address, busnum=busnum, i2c_interface=None, **kwargs)
 
     @property
     def read_value(self) :
@@ -42,4 +36,59 @@ class ECOMET01:
        except :
              ret = ret + 1
        return(out,ret)
+
+#    @property
+    def read_register(self, register = None):
+       if register == 'REG01' or register == 'REG02' or register == 'REG03' or register == 'REG04' or register == 'REG05' or register == 'REG00' or register == 'REG06' \
+          or register == 'REG_UNI':
+           ret = 0
+           if register == 'REG00' or register == 'REG01' or register == 'REG02':
+               try:
+                   reg_status_bita = self._device.readList(reg_list[register],1)
+                   reg_status = int.from_bytes(reg_status_bita,byteorder='big')
+               except:
+                   ret = ret + 1
+           elif register == 'REG03':
+               try:
+                   reg_status_bita = self._device.readList(reg_list[register],2)
+                   reg_status = int.from_bytes(reg_status_bita,byteorder='big')
+               except:
+                   ret = ret + 1
+           elif register == 'REG_UNI':
+               try:
+                   reg_status_bita = self._device.readRawBytes(9)
+                   reg_status = int.from_bytes(reg_status_bita,byteorder='big')
+               except:
+                   ret = ret + 1
+               self._logger.debug('read data: 0x%s[0b%s]','{0:04X}'.format(reg_status), '{0:16b}'.format(reg_status))
+               return (reg_status,0)
+           elif register == 'REG04':
+               try:
+                   reg_status_bita = self._device.readList(reg_list[register],4)
+                   reg_status = int.from_bytes(reg_status_bita,byteorder='big')
+               except:
+                   ret = ret + 1
+           if ret > 1 :
+              self._logger.debug('read_register %s failed (%s)',register,ret)
+              return (0x0000,ret)
+           else :
+              self._logger.debug('read_register %s, data: 0x%s[0b%s]', register,'{0:04X}'.format(reg_status), '{0:16b}'.format(reg_status))
+              return (reg_status,0)
+
+    def write_register(self, register = None, value = []):
+       if register == 'REG00' or register == 'REG01' or register == 'REG02' \
+          or register == 'REG03' or register == 'REG04' or register == 'REG05':
+           ret = 0
+           if register == 'REG00' or register == 'REG01' or register == 'REG02' \
+           or register == 'REG03' or register == 'REG04' or register == 'REG05':
+               try:
+                   self._device.writeList(register = reg_list[register], data = value)
+               except:
+                   ret = ret + 1
+           if ret > 1 :
+              self._logger.debug('write_register %s failed (%s)',register,ret)
+              return (ret)
+           else :
+              self._logger.debug('write_register %s, data [%s]', register, format(':'.join(hex(x) for x in value)))
+              return (ret)
 
