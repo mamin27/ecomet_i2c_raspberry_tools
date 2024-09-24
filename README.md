@@ -1,6 +1,6 @@
 # ecomet_i2c_raspberry_tools
 
-**Last modification:** 11.07.2024
+**Last modification:** 24.09.2024
 **Contributor:** Marian Minar
 
 **Dont forget to add ![/python_test_script/display/images/star.png](https://github.com/mamin27/ecomet_i2c_raspberry_tools/blob/master/python_test_scripts/display/images/star.png) if you were satisfy with the software!**
@@ -30,12 +30,13 @@ Project eCScope was created to show progress in development. Insert the #eCScope
 ```sh
 pip install ecomet-i2c-sensors
 ```
-**Test release:** 0.1.9.post2
+**Test release:** 0.1.9.post3
 * AS3935 driver added (Sciosens)
 * SGP40 driver added (Sensirion)
 * MCP3221 driver added (Microchip)
 * MCP3221 added feature for convert measured number to range or 360 degree, or cardinal points
 * Fixes in PCA9632, prepared for multiple chips at I2C bus
+* HDC1080 driver mainly code rewritten, different methon calls
 
 ```sh
 pip3 install -i https://test.pypi.org/simple/ecomet-i2c-sensors
@@ -97,7 +98,7 @@ diode dot-matrix graphic display system.
 |AXP209|yes [check](wiki/common/support.md)|    no    |[A10 Olimex](https://www.olimex.com/Products/OLinuXino/A10/open-source-hardware) | Only partially implemented [pdf](ecomet_i2c_sensors/axp209/AXP209.PDF), [check](wiki/common/support.md)   | |
 | EEPROM 24cXXX   |[yes](ecomet_i2c_sensors/eeprom/documentation/eeprom_IIC.md)|    no    |[I01](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_display_current_board),[I02](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_fan_board),[I03](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_temp_hmd_board),[I04](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_temp_hmd_pressure_board)| currently tested at 24c01,24c04,24c08,24c16,24c32,24c64                  |                        |                               |
 | EMC2301         |[yes](ecomet_i2c_sensors/emc2301/emc2301_python_IIC.md)|[yes](fpc/emc2301/emc2301_IIC.md)|[I02](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_fan_board)|                  |    |  add EMC2302-05 chips in design                             |
-| HDC1080         |[yes](ecomet_i2c_sensors/hdc1080/hdc1080_python_IIC.md)|[yes](fpc/hdc1080/hdc1080_IIC.md)|[I03](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_temp_hmd_board),[I04](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_temp_hmd_pressure_board)|                  |    |                               |
+| HDC1080         |[yes](ecomet_i2c_sensors/hdc1080/hdc1080_python_IIC.md)|[yes](fpc/hdc1080/hdc1080_IIC.md)|[I03](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_temp_hmd_board),[I04](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_temp_hmd_pressure_board)| **!NEW!** python lib not compatible with previous version, see test script                 |    |                               |
 | HTU21D          |[yes](ecomet_i2c_sensors/htu21/htu21_python_IIC.md)|    no    |[I03](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_temp_hmd_board),[I04](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_temp_hmd_pressure_board)|                              |       |                               |
 | INA226, INA260  |[yes](ecomet_i2c_sensors/ina260/ina260_python_IIC.md)|    yes    |[I01](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_display_current_board) | |     |
 | ISL2802x  |in progress |    no    | | |     |
