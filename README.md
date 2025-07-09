@@ -1,6 +1,6 @@
 # ecomet_i2c_raspberry_tools
 
-**Last modification:** 24.09.2024
+**Last modification:** 09/07/2025
 **Contributor:** Marian Minar
 
 **Dont forget to add ![/python_test_script/display/images/star.png](https://github.com/mamin27/ecomet_i2c_raspberry_tools/blob/master/python_test_scripts/display/images/star.png) if you were satisfy with the software!**
@@ -18,25 +18,21 @@ Project eCScope was created to show progress in development. Insert the #eCScope
 
 **PyPi module:** [ecomet-i2c-sensor](https://pypi.org/project/ecomet-i2c-sensors/)
 
-**Current release:** 0.1.8
+**Current release:** 0.1.9 !NEW!
 
 **New features**
 
-* AXP209 driver added (X-Powers)
-* TSL25911 driver added (Osram-AMS)
-* add i2c_interface parameter as switch for libraries Adafruit_PureIO or smbus2
-* Add Allwiner CPU A10 driver, olimex OLinuXino A10 update load_config_yaml
-
-```sh
-pip install ecomet-i2c-sensors
-```
-**Test release:** 0.1.9.post3
 * AS3935 driver added (Sciosens)
 * SGP40 driver added (Sensirion)
 * MCP3221 driver added (Microchip)
 * MCP3221 added feature for convert measured number to range or 360 degree, or cardinal points
 * Fixes in PCA9632, prepared for multiple chips at I2C bus
-* HDC1080 driver mainly code rewritten, different methon calls
+* HDC1080 driver mainly code rewritten, different method calls
+
+```sh
+pip install ecomet-i2c-sensors
+```
+**Test release:** 0.1.9
 
 ```sh
 pip3 install -i https://test.pypi.org/simple/ecomet-i2c-sensors
