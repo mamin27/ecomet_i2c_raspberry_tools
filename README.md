@@ -1,6 +1,6 @@
 # ecomet_i2c_raspberry_tools
 
-**Last modification:** 09/07/2025
+**Last modification:** 25/08/2025
 **Contributor:** Marian Minar
 
 **Dont forget to add ![/python_test_script/display/images/star.png](https://github.com/mamin27/ecomet_i2c_raspberry_tools/blob/master/python_test_scripts/display/images/star.png) if you were satisfy with the software!**
@@ -18,7 +18,7 @@ Project eCScope was created to show progress in development. Insert the #eCScope
 
 **PyPi module:** [ecomet-i2c-sensor](https://pypi.org/project/ecomet-i2c-sensors/)
 
-**Current release:** 0.1.9 !NEW!
+**Current release:** 0.1.10 !NEW!
 
 **New features**
 
@@ -32,7 +32,7 @@ Project eCScope was created to show progress in development. Insert the #eCScope
 ```sh
 pip install ecomet-i2c-sensors
 ```
-**Test release:** 0.1.9
+**Test release:** 0.1.9.post5
 
 ```sh
 pip3 install -i https://test.pypi.org/simple/ecomet-i2c-sensors
@@ -136,6 +136,8 @@ i2c:
           { min: 0, max: 1200 }
         PM10:
           { min: 0, max: 1200 }
+      pca9632:
+          { address: 0x62 }
 
 ```
 
