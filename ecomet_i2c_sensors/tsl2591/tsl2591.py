@@ -234,7 +234,7 @@ class TSL2591(object):
         try :
           reg_status = self._device.readList(reg_list['STATE'],1)
         except :
-          ret = 1
+          return 1
         if int.from_bytes(reg_status,"big") != 0 or ret != 0:
              ret = 2
         return ret
