@@ -2,6 +2,7 @@ from __future__ import division
 import logging
 import time
 import math
+from ecomet_i2c_sensors.i2c import load_comet_yaml
 from ecomet_i2c_sensors.hdc1080 import hdc1080_constant
 #import hdc1080_constant
 #import i2c_command_oop
@@ -110,6 +111,23 @@ class HDC1080(object):
             i2c = I2C
         self._logger = logging.getLogger(__name__)    
         self._device = i2c.get_i2c_device(address, busnum, **kwargs)
+        smb = load_comet_yaml()
+        if smb != -99 :
+           busnum = smb['i2c']['smb'].replace('i2c-', '')
+           self.measure_mode = smb['i2c']['sensor']['hdc1080']['measure_mode'].upper()
+           self.heating = smb['i2c']['sensor']['hdc1080']['heating'].upper()
+           self.temperature_resolution = smb['i2c']['sensor']['hdc1080']['temperature_resolution']
+           self.humidity_resolution = smb['i2c']['sensor']['hdc1080']['humidity_resolution']
+        else :
+           busnum = 0
+           self.measure_mode = 'BOTH'
+           self.heating = 'DISABLE'
+           self.temperature_resolution = '11'
+           self.humidity_resolution = '11'
+        if (self.measure_mode == 'individual'):
+           self.write_register( register = 'CONF', bits = [{'MODE':'ONLY'},{'HRES':self.humidity_resolution},{'TRES':self.temperature_resolution},{'HEAT':self.heating}])
+        else:
+           self.write_register( register = 'CONF', bits = [{'MODE':'BOTH'},{'HRES':self.humidity_resolution},{'TRES':self.temperature_resolution},{'HEAT':self.heating}])
     def self_test(self) :
         try :
           ret = self.battery()
