@@ -119,26 +119,33 @@ comet@orangepizero2:~/.comet $ cat config.yaml
 --- # The I2C config file
 
 i2c:
-    smb: i2c-3 # set bus i2c-1
-    smb_detect: 0..3 # list of monitored smb bus by i2cdetect
+    smb: i2c-3				# set bus i2c-1
+    smb_detect: 0..3		# list of monitored smb bus by i2cdetect 
     eeprom:
-      ic: '24c01'
+      #ic: '24c256'
+      #slaveaddr: 0x57 # for eeprom (main i2c address)
+      ic: '24c02'
       slaveaddr: 0x50
-      writestrobe: 26 # hold pin low to write to eeprom
+      writestrobe: 26		# hold pin low to write to eeprom
     sensor:
       ms5637:
         pressure:
-          { min: 600, max: 1300 }
+          { min: 600, max: 1300 }	# accepted only values in interval min..max
       sn_gcja5:
         PM1_0:
-          { min: 0, max: 1200 }
+          { min: 0, max: 1200 }		# accepted only values in interval min..max
         PM2_5:
-          { min: 0, max: 1200 }
+          { min: 0, max: 1200 }		# accepted only values in interval min..max
         PM10:
-          { min: 0, max: 1200 }
+          { min: 0, max: 1200 }		# accepted only values in interval min..max
+      hdc1080:
+          { measure_mode: 'only',			# 'only' (individual measurement), 'both' (measurement in sequence)
+            heating: 'disable',				# 'disable', 'enable'
+            temperature_resolution: '14',	# '11','14' bit
+            humidity_resolution: '14'		# '8','11','14' bit
+          }
       pca9632:
-          { address: 0x62 }
-
+          { address1: 0x62 }				# IC1 address
 ```
 
 | parameter | sub-parameter | description | example value |
