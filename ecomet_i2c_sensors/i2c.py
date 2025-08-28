@@ -81,8 +81,8 @@ def load_comet_yaml():
        try:
           config = yaml.safe_load(c)
        except yaml.YAMLError as exc:
+          raise RuntimeError(f"Yaml error: {exc}")
           return ret
-
     return config
 
 def get_i2c_device(address, busnum=None, i2c_interface=None, **kwargs):

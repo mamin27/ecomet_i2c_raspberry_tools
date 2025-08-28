@@ -124,10 +124,12 @@ class HDC1080(object):
            self.heating = 'DISABLE'
            self.temperature_resolution = '11'
            self.humidity_resolution = '11'
-        if (self.measure_mode == 'individual'):
-           self.write_register( register = 'CONF', bits = [{'MODE':'ONLY'},{'HRES':self.humidity_resolution},{'TRES':self.temperature_resolution},{'HEAT':self.heating}])
-        else:
-           self.write_register( register = 'CONF', bits = [{'MODE':'BOTH'},{'HRES':self.humidity_resolution},{'TRES':self.temperature_resolution},{'HEAT':self.heating}])
+        self.s_test = self.self_test()
+        if (self.s_test == 0):
+           if (self.measure_mode == 'individual'):
+              self.write_register( register = 'CONF', bits = [{'MODE':'ONLY'},{'HRES':self.humidity_resolution},{'TRES':self.temperature_resolution},{'HEAT':self.heating}])
+           else:
+              self.write_register( register = 'CONF', bits = [{'MODE':'BOTH'},{'HRES':self.humidity_resolution},{'TRES':self.temperature_resolution},{'HEAT':self.heating}])
     def self_test(self) :
         try :
           ret = self.battery()
