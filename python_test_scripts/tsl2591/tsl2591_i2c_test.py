@@ -20,11 +20,14 @@ logging.getLogger('').addHandler(console)
 sens = tsl2591.TSL2591()
 sens._logger = logging.getLogger('ecomet.tsl2591')
 sens._logger.info('Start logging ...')
+sens._logger.info(f"Self test: {sens.self_test()}")
 
 #sens.reset_ic  make throuble
 
 sens._logger.info('Manual Setting of Gain and Integral Time.')
 sens._logger.info('<--------------------------------------->')
+
+sens._logger.info(tsl2591.conf_register_list())
 
 data = sens.Read_FullSpectrum ()
 data2 = sens.Read_Infrared ()

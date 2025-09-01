@@ -232,10 +232,10 @@ class TSL2591(object):
         reg_status = 0
         ret = 0
         try :
-          reg_status = self._device.readList(reg_list['STATE'],1)
+          (reg_status,ret) = self.read_register( register = 'DEVICE_ID' )
         except :
           return 1
-        if int.from_bytes(reg_status,"big") != 0 or ret != 0:
+        if reg_status != 80 or ret != 0:			#device_id = 0x50 (80)
              ret = 2
         return ret
     @property
