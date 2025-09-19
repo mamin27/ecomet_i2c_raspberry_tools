@@ -35,6 +35,7 @@ pip install ecomet-i2c-sensors
 **Test release:** 0.1.9.post5
 
 ```sh
+pip3 install -r requirements.txt --user
 pip3 install -i https://test.pypi.org/simple/ecomet-i2c-sensors
 ```
 
