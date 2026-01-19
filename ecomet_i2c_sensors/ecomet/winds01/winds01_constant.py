@@ -14,10 +14,11 @@ REG_GUST00         = 0x07   # 2 bytes read register
 REG_GUST30         = 0x08   # 2 bytes read register
 REG_GUST60         = 0x09   # 2 bytes read register
 REG_GUST360        = 0x0A   # 2 bytes read register
-REG_ValidCnt       = 0x0B	# 1 byte read regiter
-REG_BULK           = 0x0C	# 19 bytes read register
-REG_EEPROM_AVG     = 0x0D	# 128 bytes read register
-REG_EEPROM_GUST    = 0x0E	# 128 bytes read register
+REG_ValidCnt       = 0x0B	# 1 byte read register
+REG_EE_Index       = 0x0C	# 1 byte read register
+REG_BULK           = 0x0D	# 19 bytes read register
+REG_EEPROM_AVG     = 0x0E	# 128 bytes read register
+REG_EEPROM_GUST    = 0x0F	# 128 bytes read register
 
 VDD = 5		# Voltage = 5V
 MAX_DEGREE = 360 # 360 Degree max position

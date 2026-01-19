@@ -11,7 +11,8 @@ from ecomet_i2c_sensors.i2c import load_comet_yaml
 from ecomet_i2c_sensors.ecomet.winds01 import winds01_constant
 
 reg_list = { 'REG_SERIAL_NUMBER' : winds01_constant.REG_SERIAL_NUMBER,
-             'REG_CONF' : winds01_constant.REG_CONF, 'REG_INIT' :  winds01_constant.REG_INIT, 'REG_ValidCnt' : winds01_constant.REG_ValidCnt,
+             'REG_CONF' : winds01_constant.REG_CONF, 'REG_INIT' :  winds01_constant.REG_INIT, 
+             'REG_ValidCnt' : winds01_constant.REG_ValidCnt, 'REG_EE_Index': winds01_constant.REG_EE_Index,
              'REG_AVG00' : winds01_constant.REG_AVG00, 'REG_AVG30' : winds01_constant.REG_AVG30,
              'REG_AVG60' : winds01_constant.REG_AVG60, 'REG_AVG360' : winds01_constant.REG_AVG360,
              'REG_GUST00' : winds01_constant.REG_GUST00, 'REG_GUST30' : winds01_constant.REG_GUST30,
@@ -50,12 +51,12 @@ class WINDS01:
 
 #    @property
     def read_register(self, register = None):
-       if register == 'REG_SERIAL_NUMBER' or register == 'REG_CONF' or register == 'REG_INIT' or register == 'REG_ValidCnt' \
+       if register == 'REG_SERIAL_NUMBER' or register == 'REG_CONF' or register == 'REG_INIT' or register == 'REG_ValidCnt' or register == 'REG_EE_Index' \
           or register == 'REG_AVG00' or register == 'REG_AVG30' or register == 'REG_AVG60' or register == 'REG_AVG360' \
           or register == 'REG_GUST00' or register == 'REG_GUST30' or register == 'REG_GUST60' or register == 'REG_GUST360' \
           or register == 'REG_BULK' or register == 'REG_EEPROM_AVG' or register == 'REG_EEPROM_GUST':
            ret = 0
-           if register == 'REG_CONF' or register == 'REG_INIT' or register == 'REG_ValidCnt':
+           if register == 'REG_CONF' or register == 'REG_INIT' or register == 'REG_ValidCnt' or register == 'REG_EE_Index' :
                try:
                    reg_status_bita = self._device.readList(reg_list[register],1)
                    reg_status = int.from_bytes(reg_status_bita,byteorder='big')
@@ -87,14 +88,14 @@ class WINDS01:
                    ret = ret + 1
            elif register == 'REG_BULK':
                try:
-                   reg_status_bita = self._device.readList(reg_list[register],20)
+                   reg_status_bita = self._device.readList(reg_list[register],21)
                    reg_status = int.from_bytes(reg_status_bita,byteorder='big')
                except:
                    ret = ret + 1
            if ret > 1 :
               self._logger.debug('read_register %s failed (%s)',register,ret)
               return (0x0000,ret)
-           elif ret == 0 and (register == 'REG_ValidCnt'):
+           elif ret == 0 and (register == 'REG_ValidCnt' or register == 'REG_EE_Index'):
               self._logger.debug('read_register %s, data: 0x%s[0b%s]', register,'{0:02X}'.format(reg_status), '{0:8b}'.format(reg_status))
               return (reg_status,0)
            elif ret == 0 and (register == 'REG_CONF' or register == 'REG_INIT'):
