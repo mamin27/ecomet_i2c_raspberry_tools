@@ -1,6 +1,6 @@
 # ecomet_i2c_raspberry_tools
 
-**Last modification:** 25/08/2025
+**Last modification:** 20/01/2026
 **Contributor:** Marian Minar
 
 **Dont forget to add ![/python_test_script/display/images/star.png](https://github.com/mamin27/ecomet_i2c_raspberry_tools/blob/master/python_test_scripts/display/images/star.png) if you were satisfy with the software!**
@@ -52,7 +52,7 @@ The Driver for I2C Chip maintenance from **Raspberry PI 1B+** and above and **Al
 * EEPROM Chip
   24c01,24c02,24c04,24c08,24c16,24c32,24c64,24c128,24c256,24c512,24c1024
 * [Measurement Specialties, TE Connectivity](https://www.te.com/) MS5637,HTU21D
-* [Microchip](https://ww1.microchip.com/downloads/en/DeviceDoc/2301.pdf) EMC2301, MCP3221
+* [Microchip](https://ww1.microchip.com/downloads/en/DeviceDoc/2301.pdf) EMC2301, MCP3221, PIC12F1822
 * [NXP Semiconductor](https://www.nxp.com/)
   PCA9632 (could be modified for PCA9624,PCA9635PW,PCA9685,PCA9955B,PCA9956B)
   PCA9557
@@ -84,6 +84,7 @@ The Driver for I2C Chip maintenance from **Raspberry PI 1B+** and above and **Al
 * [SSD1306 module](ecomet_i2c_sensors/ssd1306/ssd1306_python.IIC.md) -> SSD1306 is a single-chip CMOS OLED/PLED driver with controller for organic / polymer light emitting
 diode dot-matrix graphic display system.
 * [TSL25911](ecomet_i2c_sensors/tsl2591/tsl2591_python.IIC.md) -> Ambient Light Sensor
+* [WINDS01](ecomet_i2c_sensors/ecomet/winds01/winds01.md) -> Wind sensor
 
 
 
@@ -107,6 +108,7 @@ diode dot-matrix graphic display system.
 |SGP40|yes [check](wiki/common/support.md)|    no    | | |     |
 | SSD1306         |[yes](ecomet_i2c_sensors/ssd1306/ssd1306_python.IIC.md)|    no    |[I01](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_display_current_board) | |     |
 |TSL25911|yes [check](wiki/common/support.md)|    no    | | |     |
+|WIND01|yes [check](wiki/common/support.md)| no ||||
 
 
 
