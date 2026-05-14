@@ -104,53 +104,61 @@ def pi_version():
     # Match a line like 'Hardware   : BCM2709'
     match = re.search('^Hardware\s+:\s+(\w+)$', cpuinfo,
                       flags=re.MULTILINE | re.IGNORECASE)
-    if not match:
+    match2 = re.search(r'^Model\s*:\s*(.+)$', cpuinfo, 
+                      flags=re.MULTILINE | re.IGNORECASE)
+    # Model           : Raspberry Pi 4 Model B Rev 1.4
+    if not match and not match2:
         # Couldn't find the hardware, assume it isn't a pi.
         return None
-    if match.group(1) == 'BCM2708':
-        # Pi 1
-        return ' 1'
-    elif match.group(1) == 'BCM2709':
-        # Pi 2
-        return ' 2'
-    elif match.group(1) == 'BCM2835':
-        match = re.search('^Model\s+:\s+(.+)$', cpuinfo,
-                       flags=re.MULTILINE | re.IGNORECASE)
-        match2 = re.search('^Raspberry\s+Pi\s+(.+)(Rev.+)$', match.group(1),
-                       flags=re.MULTILINE | re.IGNORECASE)
-        match3 = re.sub(r'\s*$','',match2.group(1))
-        revision = re.search('^.\.|\s+(\d+)$',match2.group(2), re.IGNORECASE)
-        if match3.upper() == 'MODEL B' : # Raspberry Pi Model B Rev 2
-          if revision :
-            return ' 1B' + '.' + str(revision.group(1))
-        if match3.upper() == '3 MODULE B PLUS' :
-          if revision :
-            return ' 3B' + '.' + str(revision.group(1))
-          return ' 3'
-        elif match3.upper() == 'COMPUTE MODULE 4' :
-          if revision :
-            return '_(CM4) ' + str(4) + '.' + str(revision.group(1))
-          return '_(CM4) ' + 4
-        elif match3.upper() == 'ZERO 2 W' :
-          revision = re.search('(\d+\.\d+)$',match2.group(2), re.IGNORECASE)
-          if revision.group(1):
-            return ' ZERO 2 W ' + str(revision.group(1))
-          return ' ZERO 2 W'
-        # Pi 3 / Pi on 4.9.x kernel
-        return ' 3'
-    elif match.group(1) == 'BCM2711':
-        match = re.search('^Model\s+:\s+(.+)$', cpuinfo,
-                        flags=re.MULTILINE | re.IGNORECASE)
-        match2 = re.search('^Raspberry\s+Pi\s+(.+)(Rev.+)$', match.group(1),
-                        flags=re.MULTILINE | re.IGNORECASE)
-        match3 = re.sub(r'\s*$','',match2.group(1))
-        revision = re.search('^.\.|\s+(\d+\.\d+)$',match2.group(2), re.IGNORECASE)
-        if match3.upper() == '4 MODEL B' :
-          if revision :
-            return ' 4B' + ':' + str(revision.group(1))
-          return ' 4B'
-        return ' 4'
+
+    if match2:
+        if re.search('raspberry', match2.group(1), re.IGNORECASE):
+            match_ver = re.search(
+                r'Raspberry Pi (\d+)\s+Model\s+([A-Z0-9]+).*?Rev\s+(.+?)(?:\s|$)', 
+                match2.group(1), 
+                re.IGNORECASE
+            )
+            return f' {match_ver.group(1)}{match_ver.group(2)}: ver:{match_ver.group(3)}'
     else:
-        # Something else, not a pi.
-        return None
-	
+        if match.group(1) == 'BCM2708':
+            # Pi 1
+            return ' 1'
+        elif match.group(1) == 'BCM2709':
+            # Pi 2
+            return ' 2'
+        elif match.group(1) == 'BCM2835':
+            match = re.search('^Model\s+:\s+(.+)$', cpuinfo,
+                           flags=re.MULTILINE | re.IGNORECASE)
+            match2 = re.search('^Raspberry\s+Pi\s+(.+)(Rev.+)$', match.group(1),
+                           flags=re.MULTILINE | re.IGNORECASE)
+            match3 = re.sub(r'\s*$','',match2.group(1))
+            revision = re.search('^.\.|\s+(\d+)$',match2.group(2), re.IGNORECASE)
+            if match3.upper() == 'MODEL B' : # Raspberry Pi Model B Rev 2
+              if revision :
+                 return ' 1B' + '.' + str(revision.group(1))
+            if match3.upper() == '3 MODULE B PLUS' :
+              if revision :
+                 return ' 3B' + '.' + str(revision.group(1))
+              return ' 3'
+            elif match3.upper() == 'COMPUTE MODULE 4' :
+              if revision :
+                 return '_(CM4) ' + str(4) + '.' + str(revision.group(1))
+              return '_(CM4) ' + 4
+            elif match3.upper() == 'ZERO 2 W' :
+              revision = re.search('(\d+\.\d+)$',match2.group(2), re.IGNORECASE)
+              if revision.group(1):
+                 return ' ZERO 2 W ' + str(revision.group(1))
+            # Pi 3 / Pi on 4.9.x kernel
+              return ' 3'
+        elif match.group(1) == 'BCM2711':
+            match = re.search('^Model\s+:\s+(.+)$', cpuinfo,
+                            flags=re.MULTILINE | re.IGNORECASE)
+            match2 = re.search('^Raspberry\s+Pi\s+(.+)(Rev.+)$', match.group(1),
+                            flags=re.MULTILINE | re.IGNORECASE)
+            match3 = re.sub(r'\s*$','',match2.group(1))
+            revision = re.search('^.\.|\s+(\d+\.\d+)$',match2.group(2), re.IGNORECASE)
+            if match3.upper() == '4 MODEL B' :
+              if revision :
+                return ' 4B' + ':' + str(revision.group(1))
+              return ' 4B'
+            return ' 4'
