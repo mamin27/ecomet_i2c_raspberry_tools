@@ -13,6 +13,7 @@ from ecomet_i2c_sensors.ecomet.winds01 import winds01_constant
 reg_list = { 'REG_SERIAL_NUMBER' : winds01_constant.REG_SERIAL_NUMBER,
              'REG_CONF' : winds01_constant.REG_CONF, 'REG_INIT' :  winds01_constant.REG_INIT, 
              'REG_ValidCnt' : winds01_constant.REG_ValidCnt, 'REG_EE_Index': winds01_constant.REG_EE_Index,
+             'REG_TACH_TIC_Cnt' : winds01_constant.REG_TACH_TIC_Cnt,
              'REG_AVG00' : winds01_constant.REG_AVG00, 'REG_AVG30' : winds01_constant.REG_AVG30,
              'REG_AVG60' : winds01_constant.REG_AVG60, 'REG_AVG360' : winds01_constant.REG_AVG360,
              'REG_GUST00' : winds01_constant.REG_GUST00, 'REG_GUST30' : winds01_constant.REG_GUST30,
@@ -51,12 +52,12 @@ class WINDS01:
 
 #    @property
     def read_register(self, register = None):
-       if register == 'REG_SERIAL_NUMBER' or register == 'REG_CONF' or register == 'REG_INIT' or register == 'REG_ValidCnt' or register == 'REG_EE_Index' \
+       if register == 'REG_SERIAL_NUMBER' or register == 'REG_CONF' or register == 'REG_INIT' or register == 'REG_ValidCnt' or register == 'REG_EE_Index' or register == 'REG_TACH_TIC_Cnt' \
           or register == 'REG_AVG00' or register == 'REG_AVG30' or register == 'REG_AVG60' or register == 'REG_AVG360' \
           or register == 'REG_GUST00' or register == 'REG_GUST30' or register == 'REG_GUST60' or register == 'REG_GUST360' \
           or register == 'REG_BULK' or register == 'REG_EEPROM_AVG' or register == 'REG_EEPROM_GUST':
            ret = 0
-           if register == 'REG_CONF' or register == 'REG_INIT' or register == 'REG_ValidCnt' or register == 'REG_EE_Index' :
+           if register == 'REG_CONF' or register == 'REG_INIT' or register == 'REG_ValidCnt' or register == 'REG_EE_Index' or register == 'REG_TACH_TIC_Cnt' :
                try:
                    reg_status_bita = self._device.readList(reg_list[register],1)
                    reg_status = int.from_bytes(reg_status_bita,byteorder='big')
@@ -118,9 +119,9 @@ class WINDS01:
               return (reg_status,0)
 
     def write_register(self, register = None, value = []):
-       if register == 'REG_CONF' or register == 'REG_INIT':
+       if register == 'REG_CONF' or register == 'REG_INIT' or register == 'REG_TACH_TIC_Cnt':
            ret = 0
-           if register == 'REG_CONF' or register == 'REG_INIT':
+           if register == 'REG_CONF' or register == 'REG_INIT' or register == 'REG_TACH_TIC_Cnt':
                try:
                    self._device.writeList(register = reg_list[register], data = value)
                except:
