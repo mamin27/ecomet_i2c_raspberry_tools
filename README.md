@@ -48,9 +48,9 @@ The Driver for I2C Chip maintenance from **Raspberry PI 1B+** and above and **Al
 * [AMS-OSRAM](https://ams.com/en/tsl25911) TSL25911
 * EEPROM Chip
   24c01,24c02,24c04,24c08,24c16,24c32,24c64,24c128,24c256,24c512,24c1024
-* [eComet Ltd.](https://www.linkedin.com/company/104175903)
+* [eComet Ltd.](https://www.linkedin.com/company/104175903) PIC12F1822, MCP3221
 * [Measurement Specialties, TE Connectivity](https://www.te.com/) MS5637,HTU21D
-* [Microchip](https://ww1.microchip.com/downloads/en/DeviceDoc/2301.pdf) EMC2301, MCP3221, PIC12F1822
+* [Microchip](https://ww1.microchip.com/downloads/en/DeviceDoc/2301.pdf) EMC2301, MCP3221
 * [NXP Semiconductor](https://www.nxp.com/)
   PCA9632 (could be modified for PCA9624,PCA9635PW,PCA9685,PCA9955B,PCA9956B)
   PCA9557
