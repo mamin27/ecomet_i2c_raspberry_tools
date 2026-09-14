@@ -1,6 +1,6 @@
 # ecomet_i2c_raspberry_tools
 
-**Last modification:** 25/06/2026
+**Last modification:** 14/09/2026
 **Contributor:** Marian Minar
 
 **Dont forget to add ![/python_test_script/display/images/star.png](https://github.com/mamin27/ecomet_i2c_raspberry_tools/blob/master/python_test_scripts/display/images/star.png) if you were satisfy with the software!**
@@ -18,7 +18,7 @@ Project eCScope was created to show progress in development. Insert the #eCScope
 
 **PyPi module:** [ecomet-i2c-sensor](https://pypi.org/project/ecomet-i2c-sensors/)
 
-**Current release:** 0.1.10 !NEW!
+**Current release:** 0.1.10
 
 **New features**
 
@@ -28,7 +28,15 @@ Project eCScope was created to show progress in development. Insert the #eCScope
 ```sh
 pip install ecomet-i2c-sensors
 ```
-**Test release:** 0.1.9.post5
+**Test release: 0.1.10.post6 !NEW!**
+
+***0.1.10.post6 (14/09/2006)***
+- Add interface into RockChip Chip (BPI_P2_PRO)
+- HDC1080 expand .comet/config.yaml file, add init functionality accurance of measuremnt, heating, mode
+- SN-GCJA5 & TSL25911 fix for not installed status
+- PCA9632 expand .comet/config.yaml file, add address variable for chip #1
+- HDC1080 fix issue when IC' not installed
+- Fix TSL25911 driver and function self_test
 
 ```sh
 pip3 install -r requirements.txt --user
