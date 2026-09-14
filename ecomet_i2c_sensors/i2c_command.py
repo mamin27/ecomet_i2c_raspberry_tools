@@ -8,7 +8,31 @@ from ecomet_i2c_sensors import Platform
 from ecomet_i2c_sensors.platform import i2c_platform
 
 plat = i2c_platform.plat_list[Platform.platform_detect()]
-if plat in ['H616','A10']:
+
+class _NoGPIO:
+    BOARD = 10
+    BCM = 11
+    OUT = 0
+    IN = 1
+    HIGH = 1
+    LOW = 0
+
+    def setmode(self, mode=None, *a, **k):
+        self._mode = mode if mode is not None else self.BOARD
+        return self._mode
+
+    def getmode(self, *a, **k):
+        return getattr(self, "_mode", self.BOARD)
+
+    def setwarnings(self, *a, **k): pass
+    def setup(self, *a, **k): pass
+    def output(self, *a, **k): pass
+    def input(self, *a, **k): return 0
+    def cleanup(self, *a, **k): pass
+
+if plat in ['BANANA_PI_P2_PRO']:
+   from ecomet_i2c_sensors.platform import RK.GPIO as rGPIO 
+elif plat in ['H616','A10']:
    import OPi.GPIO as rGPIO
 else:
    import RPi.GPIO as rGPIO
