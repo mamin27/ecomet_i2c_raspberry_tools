@@ -33,7 +33,7 @@ ctrl_mask_list =	  { 'CTLR_RESET' : tsl2591_constant.CTLR_RESET,
 					  'CTLR_ATIME' : tsl2591_constant.CTLR_ATIME
 				}
 
-persist_mask_list =   { 'PERSIST' : tsl2591_constant.CTLR_ATIME }
+persist_mask_list =   { 'PERSIST' : tsl2591_constant.PERSIST }
 pid_mask_list =       { 'PID' : tsl2591_constant.PID_MASK }
 status_mask_list =    { 'NPINTR_MASK' : tsl2591_constant.NPINTR_MASK,
 						'AINT_MASK' : tsl2591_constant.AINT_MASK,
@@ -251,10 +251,11 @@ class TSL2591(object):
     @property
     def disable_ic(self) :
         ret = 0
-        data = self.read_register('ENABLE')[0]
-        data = data | enable_mask_list['DISABLE_POWER']
+        # DISABLE_POWER is 0x00; OR with 0 leaves PON/AEN on. Write 0 to drop PON.
+        #data = self.read_register('ENABLE')[0]
+        #data = data | enable_mask_list['DISABLE_POWER']
         try:
-           self.write_register('ENABLE',data)
+           self.write_register('ENABLE',enable_mask_list['DISABLE_POWER'])
         except :
            ret = ret + 1
         return (ret)
@@ -280,7 +281,7 @@ class TSL2591(object):
     def set_persistent (self,data) :
        if data in ['PERSIST_EVERY','PERSIST_ANY','PERSIST_2','PERSIST_3','PERSIST_5','PERSIST_10','PERSIST_15','PERSIST_20','PERSIST_25','PERSIST_30',
                    'PERSIST_35','PERSIST_40','PERSIST_45','PERSIST_50','PERSIST_55','PERSIST_60'] :
-          self.write_register('PERSIST_FILTER',data)
+          self.write_register('PERSIST_FILTER',persist_bit_list[data])
           self._persistent = persist_bit_list[data]
     @property
     def get_IntegralTime (self):
@@ -294,6 +295,16 @@ class TSL2591(object):
            control |= atime_bit_list[data]
            self.write_register('CONTROL',control)
            self._IntegralTime = atime_bit_list[data]
+    def _wait_integration(self):
+        steps = (self._IntegralTime if self._IntegralTime is not None else 0) + 2
+        for i in range(0, steps):
+           time.sleep(0.1)
+        for _ in range(20):
+           st = self.read_register('STATUS')[0]
+           if st != -9999 and (st & tsl2591_constant.AVALID_MASK):
+              return True
+           time.sleep(0.02)
+        return False
     def read_register(self, register) :
         if register in ['ENABLE','CONTROL','STATUS','THR_AI_L','THR_AI_H','THR_NPAI_L','THR_NPAI_H',
 			 'PERSIST_FILTER','PACKAGE_PID','DEVICE_ID','DEVICE_STATUS',
@@ -351,21 +362,26 @@ class TSL2591(object):
     def Read_Infrared(self, calibrate = None):
        self.enable_ic
        if calibrate :
-          data = self.SelfCalibrate_perChannel('CHAN0')[0]
+          data = self.SelfCalibrate_perChannel('CHAN1')[0]
        else :
-          data = self.read_register('CHAN0')[0]
+          self._wait_integration()
+          data = self.read_register('CHAN1')[0]
        self.disable_ic
        return (data,again_byte_to_txt[self._gain],atime_byte_to_txt[self._IntegralTime])
     def Read_Visible(self, calibrate = None):
+       self.enable_ic
        if calibrate :
           ch1 = self.SelfCalibrate_perChannel('CHAN1')[0]
           ch0 = self.SelfCalibrate_perChannel('CHAN0')[0]
        else:
+          self._wait_integration()
           ch1 = self.read_register('CHAN1')[0]
           ch0 = self.read_register('CHAN0')[0]
        self.disable_ic
-       full = (ch1 << 16) | ch0
-       return (full -ch1,again_byte_to_txt[self._gain],atime_byte_to_txt[self._IntegralTime])
+       vis = ch0 - ch1
+       if vis < 0:
+          vis = 0
+       return (vis,again_byte_to_txt[self._gain],atime_byte_to_txt[self._IntegralTime])
     def SpecialFunction(self,funct):
        if funct in ['SetInterrupt','ClearAlsInt','ClearAlsNoPersAlsInt','ClearsNoPersAlsInt']:
           self.enable_ic
@@ -374,14 +390,14 @@ class TSL2591(object):
           self.disable_ic
     def Lux(self):
        self.enable_ic
-       self._logger.debug('Measured Gain: ',again_byte_to_txt[self._gain])
-       self._logger.debug('Measured Time: ',atime_byte_to_txt[self._IntegralTime])
+       self._logger.debug('Measured Gain: %s',again_byte_to_txt[self._gain])
+       self._logger.debug('Measured Time: %s',atime_byte_to_txt[self._IntegralTime])
        for i in range(0, self._IntegralTime + 2):
           time.sleep(0.1)
        channel_0 = self.read_register('CHAN0')[0]
        channel_1 = self.read_register('CHAN1')[0]
-       self._logger.debug('channel_0: ', channel_0)
-       self._logger.debug('cahnnel_1: ', channel_1)
+       self._logger.debug('channel_0: %s', channel_0)
+       self._logger.debug('cahnnel_1: %s', channel_1)
        self.disable_ic
 
        self.SpecialFunction('ClearAlsNoPersAlsInt')
@@ -398,8 +414,8 @@ class TSL2591(object):
           self._logger.debug('Initial Gain: ',again_byte_to_txt[self._gain])
           if (gain_t != again_bit_list['GAIN_LOW']):
              gain_t = ((gain_t>>4)-1)<<4
-             self._logger.debug('Calculated Gain: {:02x}',again_byte_to_txt[self._gain])
-             self.set_gain(gain_t)
+             self._logger.debug('Calculated Gain: %s',again_byte_to_txt[self._gain])
+             self.set_gain(again_byte_to_txt[gain_t])
              channel_0 = 0
              channel_1 = 0
              while( channel_0 <= 0 and channel_1 <=0 ):
@@ -418,16 +434,16 @@ class TSL2591(object):
        elif self._gain == again_bit_list['GAIN_MAX']:
           again = 9876.0
 
-       self._logger.debug('atime: ',atime)
-       self._logger.debug('again: ',again)
-       self._logger.debug('channel_0: ', channel_0)
-       self._logger.debug('cahnnel_1: ', channel_1)
+       self._logger.debug('atime: %s',atime)
+       self._logger.debug('again: %s',again)
+       self._logger.debug('channel_0: %s', channel_0)
+       self._logger.debug('cahnnel_1: %s', channel_1)
        cpl = (atime * again) / lux_const['LUX_DF']
        lux1 = (channel_0 - (lux_const['LUX_COEFB'] * channel_1))/ cpl
        lux2 = ((lux_const['LUX_COEFC'] * channel_0) - (lux_const['LUX_COEFD'] * channel_1)) / cpl
-       self._logger.debug('cpl: ',cpl)
-       self._logger.debug('lux1: ',lux1)
-       self._logger.debug('lux2: ',lux2)
+       self._logger.debug('cpl: %s',cpl)
+       self._logger.debug('lux1: %s',lux1)
+       self._logger.debug('lux2: %s',lux2)
 
        return (max(int(lux1),int(lux2),int(0)),again_byte_to_txt[self._gain],atime_byte_to_txt[self._IntegralTime])
     @property
@@ -445,7 +461,7 @@ class TSL2591(object):
              self.set_gain(gain)
              self.set_IntegralTime(itime)
              self.append_lux
-       self._logger.debug('Lux values [start]: ',self._lux)
+       self._logger.debug('Lux values [start]: %s ',self._lux)
        if len(self._lux) >= 6 :
           lux_avg = np.std(self._lux, dtype = np.float64)
           if lux_avg >= 1:
@@ -456,9 +472,9 @@ class TSL2591(object):
           lux_average = np.average(self._lux)
           lux_avg = np.std(self._lux, dtype = np.float64)
           lux_var = np.var(self._lux, dtype = np.float64)
-          self._logger.info('Avg Lux: (%s)',lux_avg)
+          self._logger.info('Avg Lux: (%s)',lux_average)
           self._logger.info('Var Lux: (%s)',lux_var)
-          self._logger.info('Lux values: ',self._lux)
+          self._logger.info('Lux values: %s ',self._lux)
        else :
           lux_average = 0
           self._logger.info('No data, set to 0')
@@ -511,13 +527,13 @@ class TSL2591(object):
        channel = self.read_register(chan)[0]
        if (channel >= max_counts) :
           self._gain = again_bit_list['GAIN_LOW']
-          self.set_gain('GAIN_MED')
+          self.set_gain('GAIN_LOW')
           for i in range(0, self._IntegralTime + 2):
              time.sleep(0.1)
           channel = self.read_register(chan)[0]
           if (channel >= max_counts) :
-             raise RuntimeError('Numerical overflow!')
-             return (lux_const['MAX_COUNT'],1)
+             self._logger.debug('Numberical overflow!')
+             return (channel,1)
           else :
              #print('Calibrated Gain2: ',again_byte_to_txt[self._gain])
              #print('Calculated Time2: ',atime_byte_to_txt[self._IntegralTime])

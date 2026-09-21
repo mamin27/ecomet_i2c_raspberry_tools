@@ -37,7 +37,7 @@ lux = sens.Lux()
 sens._logger.info('Lux: (%s)',lux[0])
 sens._logger.info('Infrared light: (%s)', data2[0])
 sens._logger.info('Visible light: (%s)',data3[0])
-sens._logger.info('Full spectrum (IR + visible) light: (%s)',data[0])
+sens._logger.info('Full spectrum packed: (%s) CH0: (%s) CH1: (%s)', data[0], data[0] & 0xFFFF, data[0] >> 16)
 sens._logger.info('Measure Gain: (%s) IntegralTime: (%s)',lux[1],lux[2])
 
 sens.reset_ic
@@ -52,7 +52,7 @@ lux = sens.Lux()
 sens._logger.info('Lux: (%s)',lux[0])
 sens._logger.info('Infrared light: (%s)', data2[0])
 sens._logger.info('Visible light: (%s) ',data3[0])
-sens._logger.info('Full spectrum (IR + visible) light: (%s)',data[0])
+sens._logger.info('Full spectrum packed: (%s) CH0: (%s) CH1: (%s)', data[0], data[0] & 0xFFFF, data[0] >> 16)
 sens._logger.info('Measure Gain: (%s) IntegralTime: (%s)',lux[1],lux[2])
 
 sens.reset_ic
@@ -67,7 +67,7 @@ lux = sens.Lux()
 sens._logger.info('Lux: (%s)',lux[0])
 sens._logger.info('Infrared light: (%s)', data2[0])
 sens._logger.info('Visible light: (%s)',data3[0])
-sens._logger.info('Full spectrum (IR + visible) light: (%s)',data[0])
+sens._logger.info('Full spectrum packed: (%s) CH0: (%s) CH1: (%s)', data[0], data[0] & 0xFFFF, data[0] >> 16)
 sens._logger.info('Measure Gain: (%s) IntegralTime: (%s)',lux[1],lux[2])
 
 sens.reset_ic
@@ -84,7 +84,7 @@ sens._logger.info('Infrared light: (%s)', data2[0])
 sens._logger.info('Measure Gain: (%s) IntegralTime: (%s)',data2[1],data2[2])
 sens._logger.info('Visible light: (%s)',data3[0])
 sens._logger.info('Measure Gain: (%s) IntegralTime: (%s)',data3[1],data3[2])
-sens._logger.info('Full spectrum (IR + visible) light: (%s)',data[0])
+sens._logger.info('Full spectrum packed: (%s) CH0: (%s) CH1: (%s)', data[0], data[0] & 0xFFFF, data[0] >> 16)
 sens._logger.info('Measure Gain: (%s) IntegralTime: (%s)',data[1],data[2])
 
 sens._logger.info('Set Interrupt')
