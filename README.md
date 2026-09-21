@@ -112,7 +112,7 @@ diode dot-matrix graphic display system.
 |SN-GCJA5|yes [check](wiki/common/support.md)|    no    | | |     |
 |SGP40|yes [check](wiki/common/support.md)|    no    | | |     |
 | SSD1306         |[yes](ecomet_i2c_sensors/ssd1306/ssd1306_python.IIC.md)|    no    |[I01](https://github.com/mamin27/ecomet_i2c_raspberry_tools/wiki/_display_current_board) | |     |
-|TSL25911|yes [check](wiki/common/support.md)|    no    | Fix low lux light issue | |     |
+|TSL25911|yes [check](wiki/common/support.md)|    no    | |Fix low lux light issue|     |
 |**!NEW!** WIND_SPEED01|yes [check](wiki/common/support.md)| no ||||
 |**!NEW!** WIND_ARROW01|yes [check](wiki/common/support.md)| no ||||
 
