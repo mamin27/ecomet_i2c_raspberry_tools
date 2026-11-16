@@ -116,3 +116,27 @@ python3 eeprom_mng.py -p 24c32 --write
 0070:  ff ff ff ff  ff ff ff ff  ff ff ff ff  ff ff ff ff
 ```
 
+#### Additional details for the current Python implementation ####
+
+The current command-line entry point is `bin/eeprom_mng.py`. It reads the
+I2C bus, EEPROM address, chip model, and write-strobe pin from
+`~/.comet/config.yaml`. The `-p`/`--chip` option overrides the configured
+chip, and `-f`/`--file` selects a file; if omitted for read or write, the
+default file is `data/eeprom_<chip>.hex`. Current option aliases are
+`-h` (help), `-t`/`--test`, `-e`/`--wipe`, `-r`/`--read`, and
+`-w`/`--write`. The current wipe option is `--wipe` (or `-e`).
+
+The Python helpers are in `eeprom_read.py`, `eeprom_write.py`,
+`eeprom_wipe.py`, and `eeprom_check.py`:
+
+| Function | Description |
+|---|---|
+| `readNBytes(addr_start, addr_end, smb, slaveaddr, writestrobe, chip)` | Read an address range from the selected chip. |
+| `writeNBytes(addr, datax, smb, slaveaddr, writestrobe, chip)` | Write bytes starting at an address. |
+| `read_full_to_file(file, smb, slaveaddr, writestrobe, chip)` | Save the full chip contents to a file. |
+| `write_full_from_file(file, smb, slaveaddr, writestrobe, chip)` | Write a file image to the chip. |
+| `wipe(smb, slaveaddr, writestrobe, chip)` | Fill the chip with `0xFF`. |
+| `filecmp(file1, file2, smb, slaveaddr, writestrobe, chip)` | Write test data, read it back, and compare the results. |
+
+These operations can change persistent EEPROM contents. Check the selected
+chip and backup important data before writing, wiping, or running the test.

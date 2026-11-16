@@ -39,6 +39,25 @@ objem prevádza na výšku zrážok, prevod treba kalibrovať podľa novej ploch
 otvoru (`200 cm²`): pri tejto ploche zodpovedá `1 mm` zrážok objemu `20 ml`
 (pri pôvodných `55 cm²` by to bolo `5,5 ml`).
 
+## Nastavenie Python ovládača
+
+Voľba zbernej plochy sa nastavuje v `~/.comet/config.yaml` pod samostatným
+vrchným kľúčom `rainfall` (na rovnakej úrovni ako `i2c`):
+
+```yaml
+rainfall:
+  collector: original # original alebo attachment
+```
+
+- `original` — pôvodná plocha `50 × 110 mm = 55 cm²`; predvolená voľba.
+- `attachment` — plocha horného otvoru `200 cm²`; Python ovládač násobí
+  kumulatívne a hodinové zrážky faktorom `55/200 = 0,275`. Zapisovanie
+  akumulovanej základnej hodnoty prepočítava opačným faktorom.
+
+Ak kľúč `rainfall` alebo `collector` chýba, použije sa `original`. Iná
+hodnota `collector` vyvolá chybu konfigurácie. Surový počet preklopení
+zostáva bez úpravy.
+
 ## Objemový odhad
 
 Pri lineárne sa meniacich stranách obdĺžnikového prierezu je objem nástavca:
