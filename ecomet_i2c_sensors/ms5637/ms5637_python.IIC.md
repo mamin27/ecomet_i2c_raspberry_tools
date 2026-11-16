@@ -99,3 +99,12 @@ ecomet.ms5637: INFO     Temperature in Fahrenheit =      75.19 F
 ```
 
 **Note:** for more details look into ms5637_i2c_test.py
+
+### Additional details for the current Python API
+
+`MS5637.measure(accuracy=1)` accepts accuracy levels 1 through 6 and returns
+`(temperature_celsius, temperature_fahrenheit, pressure_mbar, status)`.
+`MS5637.write_register(register, stime=500)` sends the selected conversion
+command and uses `stime` as its conversion wait in milliseconds. Use
+`MS5637.sw_reset()` before measurements; a successful operation reports
+status `0`.

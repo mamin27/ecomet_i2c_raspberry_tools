@@ -329,3 +329,17 @@ R3 = 60
 ```
 
 **Note:** for more details look into pca9557_i2c_test.py
+
+### Additional details for the current Python API
+
+`set_io(pattern)` and `set_invert(pattern)` use eight-character patterns
+ordered from pin 7 at the left to pin 0 at the right. `set_io_name()` expects
+eight `[pin_number, name]` pairs (pins 0–7). Pin names may use letters,
+digits, and underscores.
+
+`write_output_port(status, pin=...)` expects the module constants
+`pca9557.Low` or `pca9557.High`, not the strings `"Low"` or `"High"`.
+`read_input_port(thr='Set', mtime=10, offset=0)` returns `(pin_states,
+status)`: status `0` means the threshold was reached, `1` means timeout, and
+`2` means an invalid threshold. `port_show_name()` accepts `setting='i'`,
+`'o'`, or `'io'`.

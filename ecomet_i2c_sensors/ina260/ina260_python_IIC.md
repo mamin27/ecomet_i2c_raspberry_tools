@@ -273,3 +273,18 @@ see directory  [INA260 test scripts](../../python_test_scripts/ina260)
 |ina260_i2c_ui_1_i_2.py    | Collecting measurements from INA chip A U&I  and chip B I        | 
 |ina260_i2c_ui_1_u_2.py  |  Collecting measurements from INA chip A U&I  and chip B U      | 
 |ina260_i2c_ui_2.py     | Collecting measurements from INA chip B U&I        | 
+
+### Additional details for the current Python API
+
+The current `measure_voltage(stime=1, unit='mV', uoffset=None)` and
+`measure_current(stime=1, unit='mA', ioffset=None)` methods return
+`(sample_count, unit, readings_by_sample)`. Offsets are in mV or mA;
+the measurement methods' default offset is `None`.
+
+`INA260_UI` accepts `chip=0`, `chip=1`, or a selector such as
+`chip='0#0x40'`. Its current constructor options include `time`, `i_unit`,
+`u_unit`, `avgc`, `ishct`, `vbusct`, and `mode`. The `measure_ui`,
+`measure_i`, and `measure_u` methods return the corresponding current and/or
+voltage measurement data. `INA260.sw_reset()` resets the device;
+`power_conversion()` converts mW and W; `conf_register_list(address=...)`
+returns decoded register information.

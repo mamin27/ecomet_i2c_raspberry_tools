@@ -47,3 +47,11 @@ Register status value:
 * INVERT - ON INVERT status
 * INVERT_N - OFF INVERT status
 see **pca9632_constat.py**
+
+### Additional details for the current Python API
+
+The class is named `PCA9632`. The module-level helpers are
+`read_pca9632()`, `software_reset(...)`, and `ledout_clear()`; the older
+description's `ledout_clean` name is not the current function name.
+`write_register(register, bits)` accepts the named bit-field forms shown
+above. `set_def_LDRx(register, mode)` sets a default LED output mode.

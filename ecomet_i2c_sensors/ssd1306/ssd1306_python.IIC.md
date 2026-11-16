@@ -150,3 +150,11 @@ video from running script:
 [![ssd1306 test sequence](ssd1306_mini.png)](zoom_display.mkv "ssd1306 display")
 
 **Note:** for more details look into ssd1306_i2c_test.py
+
+### Additional details for the current Python API
+
+`SSD1306.set_command(register, value=None, value2=None)` sends a display
+command and any command parameters; command names are defined in
+`ssd1306_constant.py`. `display(image)` writes a prepared Pillow image to the
+display. `render.canvas(device)` provides an `ImageDraw` canvas and sends its
+image to the display when the `with` block exits normally.
