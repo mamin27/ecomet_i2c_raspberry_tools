@@ -2,6 +2,7 @@
 
 import argparse
 import logging
+import sys
 
 from ecomet_i2c_sensors.chirp import Chirp
 from ecomet_i2c_sensors.chirp import chirp_constant
@@ -24,7 +25,11 @@ def main():
 
     try:
         print("Chirp soil moisture sensor:")
-        moisture = sensor.read_moisture()
+        try:
+            moisture = sensor.read_moisture()
+        except OSError as exc:
+            logging.error("No valid moisture reading: %s", exc)
+            return 1
         moisture_percent = sensor.moisture_to_percent(moisture)
         print("Soil moisture (relative): {:.1f} %".format(moisture_percent))
         print("Soil moisture (raw): {}".format(moisture))
@@ -51,4 +56,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

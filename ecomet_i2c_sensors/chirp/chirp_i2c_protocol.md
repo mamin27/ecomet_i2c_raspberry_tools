@@ -10,6 +10,8 @@ manufacturer's [Chirp documentation](https://wemakethings.net/chirp/).
 | Value | Name | Operation |
 |---:|---|---|
 | `0x00` | Moisture | Read two bytes of capacitive moisture data. |
+| `0x01` | Set address | Write this command followed by the new 7-bit I2C address; firmware stores it in EEPROM. |
+| `0x02` | Get address | Read the address byte currently stored in EEPROM. |
 | `0x03` | Request light measurement | Write this command to start a light measurement. |
 | `0x04` | Light | Read two bytes of light data after requesting a measurement. |
 | `0x05` | Temperature | Read two bytes of temperature data. |
@@ -70,6 +72,11 @@ outside the calibrated range are clamped. The wet endpoint should be measured
 in the intended wet reference condition; immersion in water is not a
 volumetric soil-moisture calibration.
 
+The published ATtiny44 firmware measures capacitance with its 10-bit ADC, so
+valid moisture readings are `0–1023`. The driver retries an I2C error or an
+out-of-range reading up to three times, then reports an error instead of
+converting invalid data into a percentage.
+
 The light register reports a timer count, not lux. For the published
 firmware's 250 kHz clock and 1:256 timer prescaler, one count is `1.024 ms`;
 `0xFFFF` indicates timer overflow and is reported as no valid duration.
@@ -78,6 +85,26 @@ and depends on the LED and firmware. During measurement, firmware briefly
 forward-biases the LED to discharge its junction capacitance, then immediately
 reverse-biases it and measures the discharge time. This pulse is not intended
 to be a visible status blink, so absence of a visible flash is expected.
+
+## Address and EEPROM setup
+
+The sensor firmware handles command `0x01` by writing the following byte to
+EEPROM address `0x01`. Command `0x02` reads back that stored byte. A newly
+programmed address takes effect as the I2C slave address after the sensor is
+reset or power-cycled. Program one sensor at a time if multiple devices
+currently share the same address.
+
+The address utility supports ten slots, `0x20` through `0x29`:
+
+```shell
+python3 python_test_scripts/chirp/chirp_set_address.py 0x21 --current-address 0x20
+```
+
+This only writes the address byte. It does not erase the EEPROM or modify the
+light threshold. In the cited firmware, an erased light-threshold word
+(`0xFFFF`) is initialized automatically during startup from a light
+measurement and then written back to EEPROM; this behavior is independent of
+setting the I2C address.
 
 ## Python usage
 

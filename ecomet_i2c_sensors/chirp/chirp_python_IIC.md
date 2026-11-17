@@ -32,13 +32,15 @@ does not chirp.
 |---|---|
 | `Chirp(address=0x20, busnum=None, i2c=None, ...)` | Initialize the sensor interface. Supports the common I2C driver options. |
 | `read_register(register)` | Return an unsigned 16-bit, big-endian value. `register` can be `MOISTURE`, `LIGHT`, `TEMPERATURE`, or the corresponding register number. |
-| `read_moisture()` | Return the raw capacitive moisture reading. |
+| `read_moisture()` | Return a valid raw capacitive moisture reading (`0–1023`), retrying transient I2C errors or out-of-range data up to three times. Raises `IOError` if all attempts fail. |
 | `read_moisture_percent()` | Return relative moisture from the configured dry/wet calibration, clamped to `0–100 %`. This is not volumetric water content. |
 | `moisture_to_percent(raw)` | Convert an already-read raw moisture value using the configured calibration. |
 | `read_temperature()` | Return the raw temperature register value. The driver does not convert it to degrees; not all firmware implements this register. |
 | `read_light()` | Request a light measurement, wait for it to complete, and return the raw light reading. |
 | `read_light_duration_ms()` | Return the LED discharge time in milliseconds, or `None` if the light timer overflowed. This is not illuminance in lux. |
 | `reset()` | Send the Chirp reset command. |
+| `set_address(address)` | Store a new I2C address in EEPROM (`0x20–0x29`). The sensor listens at it after reset or power cycle. |
+| `get_stored_address()` | Read the I2C address byte stored in EEPROM. |
 | `close()` | Close the underlying I2C bus. |
 
 The timing and calibration values are configured in
@@ -61,7 +63,7 @@ accepted for compatibility, but `i2c.sensor.chirp` takes precedence. If both
 sections are absent, the driver defaults to 20 ms, 9 seconds, and the
 calibration above. All four values can be overridden when constructing
 `Chirp(...)`. Calibration must use two different integer readings in the
-`0–65535` range. The resulting percentage is a relative scale for this sensor
+`0–1023` range. The resulting percentage is a relative scale for this sensor
 and setup, not an absolute soil-water percentage. Unsupported register names
 or numbers raise `ValueError`; I2C errors are propagated to the caller.
 
@@ -81,6 +83,17 @@ finally:
 Hardware test script: `python_test_scripts/chirp/chirp_i2c_test.py`.
 It accepts `--address` and `--bus`; use `--skip-light` to avoid the longer
 light measurement.
+
+To assign an address, connect only one sensor at its current address and run:
+
+```shell
+python3 python_test_scripts/chirp/chirp_set_address.py 0x21 --current-address 0x20
+```
+
+The script writes and verifies the address EEPROM byte, then asks you to
+power-cycle the sensor. It does not erase or initialize the rest of EEPROM;
+the firmware's light-threshold initialization remains unchanged. The ten
+supported address slots are `0x20` through `0x29`.
 
 See [chirp_i2c_protocol.md](chirp_i2c_protocol.md) for register numbers,
 commands, and read timing.

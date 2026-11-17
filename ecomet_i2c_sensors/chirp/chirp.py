@@ -12,6 +12,8 @@ _DEFAULT_REGISTER_READ_DELAY = 0.02
 _DEFAULT_LIGHT_MEASUREMENT_DELAY = 9.0
 _DEFAULT_MOISTURE_DRY_RAW = 244
 _DEFAULT_MOISTURE_WET_RAW = 534
+_MOISTURE_READ_ATTEMPTS = 3
+_MOISTURE_RETRY_DELAY = 0.1
 _LIGHT_TIMER_TICK_MS = 1.024
 _LIGHT_TIMEOUT_RAW = 0xFFFF
 
@@ -61,9 +63,17 @@ def _validate_delay(name, value):
 
 def _validate_moisture_calibration(name, value):
     if isinstance(value, bool) or not isinstance(value, int):
-        raise ValueError("{} must be an integer from 0 to 65535".format(name))
-    if not 0 <= value <= 0xFFFF:
-        raise ValueError("{} must be an integer from 0 to 65535".format(name))
+        raise ValueError(
+            "{} must be an integer from 0 to {}".format(
+                name, chirp_constant.MOISTURE_MAX_RAW
+            )
+        )
+    if not 0 <= value <= chirp_constant.MOISTURE_MAX_RAW:
+        raise ValueError(
+            "{} must be an integer from 0 to {}".format(
+                name, chirp_constant.MOISTURE_MAX_RAW
+            )
+        )
     return value
 
 
@@ -127,6 +137,34 @@ class Chirp:
         """Close the underlying I2C bus."""
         self._device.close()
 
+    def set_address(self, address):
+        """Store a new I2C address in the sensor EEPROM.
+
+        The sensor continues listening at its current address until reset or
+        power-cycled. Assign only one connected sensor at a time.
+        """
+        if (
+            isinstance(address, bool)
+            or not isinstance(address, int)
+            or not chirp_constant.CHIRP_ADDRESS_MIN
+            <= address
+            <= chirp_constant.CHIRP_ADDRESS_MAX
+        ):
+            raise ValueError(
+                "address must be from 0x{:02X} to 0x{:02X}".format(
+                    chirp_constant.CHIRP_ADDRESS_MIN,
+                    chirp_constant.CHIRP_ADDRESS_MAX
+                )
+            )
+        self._device.writeRaw8(chirp_constant.SET_ADDRESS)
+        self._device.writeRaw8(address)
+
+    def get_stored_address(self):
+        """Read the I2C address byte stored in sensor EEPROM."""
+        self._device.writeRaw8(chirp_constant.GET_ADDRESS)
+        time.sleep(self.register_read_delay)
+        return self._device.readRaw8()
+
     def read_register(self, register):
         """Read a 16-bit big-endian sensor register by name or register number."""
         if isinstance(register, str):
@@ -149,8 +187,32 @@ class Chirp:
         return value
 
     def read_moisture(self):
-        """Return the raw 16-bit capacitive moisture reading."""
-        return self.read_register("MOISTURE")
+        """Return a valid raw capacitive reading, retrying transient failures."""
+        last_error = None
+        for attempt in range(1, _MOISTURE_READ_ATTEMPTS + 1):
+            try:
+                raw = self.read_register("MOISTURE")
+                if raw > chirp_constant.MOISTURE_MAX_RAW:
+                    raise IOError(
+                        "out-of-range moisture reading: {} (maximum {})".format(
+                            raw, chirp_constant.MOISTURE_MAX_RAW
+                        )
+                    )
+                return raw
+            except OSError as exc:
+                last_error = exc
+                self._logger.warning(
+                    "Moisture read attempt %d/%d failed: %s",
+                    attempt, _MOISTURE_READ_ATTEMPTS, exc
+                )
+                if attempt < _MOISTURE_READ_ATTEMPTS:
+                    time.sleep(_MOISTURE_RETRY_DELAY)
+
+        raise IOError(
+            "unable to read a valid Chirp moisture value after {} attempts".format(
+                _MOISTURE_READ_ATTEMPTS
+            )
+        ) from last_error
 
     def read_moisture_percent(self):
         """Return relative moisture from the configured dry/wet calibration."""
@@ -161,9 +223,13 @@ class Chirp:
         if (
             isinstance(raw, bool)
             or not isinstance(raw, int)
-            or not 0 <= raw <= 0xFFFF
+            or not 0 <= raw <= chirp_constant.MOISTURE_MAX_RAW
         ):
-            raise ValueError("raw moisture must be an integer from 0 to 65535")
+            raise ValueError(
+                "raw moisture must be an integer from 0 to {}".format(
+                    chirp_constant.MOISTURE_MAX_RAW
+                )
+            )
         percent = (
             (raw - self.moisture_dry_raw) /
             (self.moisture_wet_raw - self.moisture_dry_raw) * 100.0
