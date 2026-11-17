@@ -10,6 +10,10 @@ from ecomet_i2c_sensors.chirp import chirp_constant
 
 _DEFAULT_REGISTER_READ_DELAY = 0.02
 _DEFAULT_LIGHT_MEASUREMENT_DELAY = 9.0
+_DEFAULT_MOISTURE_DRY_RAW = 244
+_DEFAULT_MOISTURE_WET_RAW = 534
+_LIGHT_TIMER_TICK_MS = 1.024
+_LIGHT_TIMEOUT_RAW = 0xFFFF
 
 _READ_REGISTERS = {
     "MOISTURE": chirp_constant.MOISTURE,
@@ -18,7 +22,7 @@ _READ_REGISTERS = {
 }
 
 
-def _load_delays():
+def _load_config():
     config_path = os.path.expanduser("~/.comet/config.yaml")
     if not os.path.isfile(config_path):
         return {}
@@ -45,6 +49,14 @@ def _validate_delay(name, value):
     return float(value)
 
 
+def _validate_moisture_calibration(name, value):
+    if isinstance(value, bool) or not isinstance(value, int):
+        raise ValueError("{} must be an integer from 0 to 65535".format(name))
+    if not 0 <= value <= 0xFFFF:
+        raise ValueError("{} must be an integer from 0 to 65535".format(name))
+    return value
+
+
 class Chirp:
     """Read raw moisture, light, and temperature values from a Chirp sensor."""
 
@@ -55,9 +67,11 @@ class Chirp:
         i2c=None,
         register_read_delay=None,
         light_measurement_delay=None,
+        moisture_dry_raw=None,
+        moisture_wet_raw=None,
         **kwargs
     ):
-        config = _load_delays()
+        config = _load_config()
         if register_read_delay is None:
             register_read_delay = config.get(
                 "register_read_delay", _DEFAULT_REGISTER_READ_DELAY
@@ -66,12 +80,28 @@ class Chirp:
             light_measurement_delay = config.get(
                 "light_measurement_delay", _DEFAULT_LIGHT_MEASUREMENT_DELAY
             )
+        if moisture_dry_raw is None:
+            moisture_dry_raw = config.get(
+                "moisture_dry_raw", _DEFAULT_MOISTURE_DRY_RAW
+            )
+        if moisture_wet_raw is None:
+            moisture_wet_raw = config.get(
+                "moisture_wet_raw", _DEFAULT_MOISTURE_WET_RAW
+            )
         register_read_delay = _validate_delay(
             "register_read_delay", register_read_delay
         )
         light_measurement_delay = _validate_delay(
             "light_measurement_delay", light_measurement_delay
         )
+        moisture_dry_raw = _validate_moisture_calibration(
+            "moisture_dry_raw", moisture_dry_raw
+        )
+        moisture_wet_raw = _validate_moisture_calibration(
+            "moisture_wet_raw", moisture_wet_raw
+        )
+        if moisture_dry_raw == moisture_wet_raw:
+            raise ValueError("moisture dry and wet calibration values must differ")
 
         if i2c is None:
             import ecomet_i2c_sensors.i2c as i2c
@@ -80,6 +110,8 @@ class Chirp:
         self._device = i2c.get_i2c_device(address, busnum, **kwargs)
         self.register_read_delay = register_read_delay
         self.light_measurement_delay = light_measurement_delay
+        self.moisture_dry_raw = moisture_dry_raw
+        self.moisture_wet_raw = moisture_wet_raw
 
     def close(self):
         """Close the underlying I2C bus."""
@@ -110,6 +142,24 @@ class Chirp:
         """Return the raw 16-bit capacitive moisture reading."""
         return self.read_register("MOISTURE")
 
+    def read_moisture_percent(self):
+        """Return relative moisture from the configured dry/wet calibration."""
+        return self.moisture_to_percent(self.read_moisture())
+
+    def moisture_to_percent(self, raw):
+        """Convert a raw moisture reading to the calibrated relative scale."""
+        if (
+            isinstance(raw, bool)
+            or not isinstance(raw, int)
+            or not 0 <= raw <= 0xFFFF
+        ):
+            raise ValueError("raw moisture must be an integer from 0 to 65535")
+        percent = (
+            (raw - self.moisture_dry_raw) /
+            (self.moisture_wet_raw - self.moisture_dry_raw) * 100.0
+        )
+        return min(100.0, max(0.0, percent))
+
     def read_temperature(self):
         """Return the raw 16-bit temperature reading (not converted to degrees)."""
         return self.read_register("TEMPERATURE")
@@ -119,6 +169,13 @@ class Chirp:
         self._device.writeRaw8(chirp_constant.REQUEST_LIGHT_MEASUREMENT)
         time.sleep(self.light_measurement_delay)
         return self.read_register("LIGHT")
+
+    def read_light_duration_ms(self):
+        """Return LED discharge duration in ms, or None if the timer overflowed."""
+        raw = self.read_light()
+        if raw == _LIGHT_TIMEOUT_RAW:
+            return None
+        return raw * _LIGHT_TIMER_TICK_MS
 
     def reset(self):
         """Send the sensor reset command."""

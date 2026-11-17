@@ -18,7 +18,10 @@ manufacturer's [Chirp documentation](https://wemakethings.net/chirp/).
 The moisture, light, and temperature readings are unsigned 16-bit values
 transmitted most-significant byte first. The published interface describes
 these as sensor readings but does not specify a conversion scale or
-temperature unit; the Python driver therefore returns raw values.
+temperature unit; the Python driver therefore returns raw values. The linked
+firmware source does not implement a temperature-register read in sensor
+mode, so only use that register if the installed firmware explicitly supports
+it.
 
 ## Read sequence and timing
 
@@ -48,6 +51,30 @@ measurements after reset. Any I2C communication during this startup period
 switches the device into sensor mode. In sensor mode it responds to I2C
 requests without making alarm sounds.
 
+## Engineering units and calibration
+
+The moisture register reports a device-specific raw capacitive reading, not
+water content in `m³/m³` or percent by volume. The driver can map two measured
+endpoints to a relative `0–100 %` scale. The default endpoints below are
+calibration values supplied for one sensor:
+
+```yaml
+chirp:
+  moisture_dry_raw: 244
+  moisture_wet_raw: 534
+```
+
+In this relative scale, `244` maps to `0 %` and `534` to `100 %`. Values
+outside the calibrated range are clamped. The wet endpoint should be measured
+in the intended wet reference condition; immersion in water is not a
+volumetric soil-moisture calibration.
+
+The light register reports a timer count, not lux. For the published
+firmware's 250 kHz clock and 1:256 timer prescaler, one count is `1.024 ms`;
+`0xFFFF` indicates timer overflow and is reported as no valid duration.
+Converting this duration to lux requires calibration against a light meter
+and depends on the LED and firmware.
+
 ## Python usage
 
 ```python
@@ -55,9 +82,8 @@ from ecomet_i2c_sensors.chirp import Chirp
 
 sensor = Chirp()
 try:
-    moisture = sensor.read_register(0x00)
-    temperature = sensor.read_register("TEMPERATURE")
-    light = sensor.read_light()
+    moisture_percent = sensor.read_moisture_percent()
+    light_duration_ms = sensor.read_light_duration_ms()
 finally:
     sensor.close()
 ```
