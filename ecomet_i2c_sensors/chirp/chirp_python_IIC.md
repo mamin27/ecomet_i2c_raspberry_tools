@@ -41,25 +41,29 @@ does not chirp.
 | `reset()` | Send the Chirp reset command. |
 | `close()` | Close the underlying I2C bus. |
 
-The timing values are configured in `~/.comet/config.yaml` under the top-level
-`chirp` key (at the same level as `i2c`):
+The timing and calibration values are configured in
+`~/.comet/config.yaml` under `i2c.sensor.chirp`, alongside other sensor
+configuration:
 
 ```yaml
-chirp:
-  register_read_delay: 0.02
-  light_measurement_delay: 9.0
-  moisture_dry_raw: 244
-  moisture_wet_raw: 534
+i2c:
+  sensor:
+    chirp:
+      register_read_delay: 0.02
+      light_measurement_delay: 15.0
+      moisture_dry_raw: 244
+      moisture_wet_raw: 534
 ```
 
 The delays are in seconds. The moisture calibration values are raw counts
-measured at the dry and wet endpoints. If the file or `chirp` section is
-absent, the driver defaults to 20 ms, 9 seconds, and the calibration above.
-All four values can be overridden when constructing `Chirp(...)`. Calibration
-must use two different integer readings in the `0–65535` range. The resulting
-percentage is a relative scale for this sensor and setup, not an absolute
-soil-water percentage. Unsupported register names or numbers raise
-`ValueError`; I2C errors are propagated to the caller.
+measured at the dry and wet endpoints. A top-level `chirp` section is also
+accepted for compatibility, but `i2c.sensor.chirp` takes precedence. If both
+sections are absent, the driver defaults to 20 ms, 9 seconds, and the
+calibration above. All four values can be overridden when constructing
+`Chirp(...)`. Calibration must use two different integer readings in the
+`0–65535` range. The resulting percentage is a relative scale for this sensor
+and setup, not an absolute soil-water percentage. Unsupported register names
+or numbers raise `ValueError`; I2C errors are propagated to the caller.
 
 ## Example
 

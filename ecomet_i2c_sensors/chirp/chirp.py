@@ -35,9 +35,19 @@ def _load_config():
 
     if not isinstance(config, dict):
         raise ValueError("config.yaml must contain a YAML mapping")
-    chirp_config = config.get("chirp", {})
+
+    i2c_config = config.get("i2c", {})
+    if not isinstance(i2c_config, dict):
+        raise ValueError("i2c config must be a YAML mapping")
+    sensor_config = i2c_config.get("sensor", {})
+    if sensor_config is None:
+        sensor_config = {}
+    if not isinstance(sensor_config, dict):
+        raise ValueError("i2c.sensor config must be a YAML mapping")
+
+    chirp_config = sensor_config.get("chirp", config.get("chirp", {}))
     if not isinstance(chirp_config, dict):
-        raise ValueError("chirp config must be a YAML mapping")
+        raise ValueError("Chirp config must be a YAML mapping")
     return chirp_config
 
 

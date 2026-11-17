@@ -34,13 +34,14 @@ To read light, first write `0x03`, wait for the measurement, then read
 register `0x04`. The firmware example allows up to 9 seconds for this
 measurement. The Python driver defaults to 9 seconds plus the 20 ms register
 read interval; both delays are configurable in `~/.comet/config.yaml` under
-`chirp.register_read_delay` and `chirp.light_measurement_delay`, or at
-initialization.
+`i2c.sensor.chirp`, or at initialization.
 
 ```yaml
-chirp:
-  register_read_delay: 0.02
-  light_measurement_delay: 9.0
+i2c:
+  sensor:
+    chirp:
+      register_read_delay: 0.02
+      light_measurement_delay: 15.0
 ```
 
 Both settings are in seconds. If either setting is omitted, its default value
