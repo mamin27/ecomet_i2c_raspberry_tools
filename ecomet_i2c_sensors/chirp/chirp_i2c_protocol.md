@@ -74,7 +74,10 @@ The light register reports a timer count, not lux. For the published
 firmware's 250 kHz clock and 1:256 timer prescaler, one count is `1.024 ms`;
 `0xFFFF` indicates timer overflow and is reported as no valid duration.
 Converting this duration to lux requires calibration against a light meter
-and depends on the LED and firmware.
+and depends on the LED and firmware. During measurement, firmware briefly
+forward-biases the LED to discharge its junction capacitance, then immediately
+reverse-biases it and measures the discharge time. This pulse is not intended
+to be a visible status blink, so absence of a visible flash is expected.
 
 ## Python usage
 

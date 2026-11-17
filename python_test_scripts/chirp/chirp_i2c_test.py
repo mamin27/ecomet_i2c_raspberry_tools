@@ -36,6 +36,7 @@ def main():
                     sensor.light_measurement_delay
                 )
             )
+            print("No visible LED blink is expected during this measurement.")
             light_duration = sensor.read_light_duration_ms()
             if light_duration is None:
                 print("Ambient light: timer overflow (too dark or no valid reading)")
