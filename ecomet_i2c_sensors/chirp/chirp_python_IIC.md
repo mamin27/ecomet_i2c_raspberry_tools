@@ -1,0 +1,75 @@
+# Chirp Python I2C API
+
+The Chirp is a capacitive soil-moisture sensor with an I2C slave interface.
+This package provides the `Chirp` driver, register constants, and a hardware
+test script.
+
+## Files and initialization
+
+`chirp.py` contains the `Chirp` class; `chirp_constant.py` defines the I2C
+address, commands, registers, and default protocol delays. The default 7-bit
+I2C address is `0x20`.
+
+```python
+from ecomet_i2c_sensors.chirp import Chirp
+
+sensor = Chirp()
+try:
+    moisture = sensor.read_moisture()
+    temperature = sensor.read_temperature()
+    light = sensor.read_light()
+finally:
+    sensor.close()
+```
+
+The device begins in its normal alarm mode after reset. Receiving I2C
+communication switches it into sensor mode, where it responds to reads and
+does not chirp.
+
+## Python API
+
+| Function | Description and result |
+|---|---|
+| `Chirp(address=0x20, busnum=None, i2c=None, ...)` | Initialize the sensor interface. Supports the common I2C driver options. |
+| `read_register(register)` | Return an unsigned 16-bit, big-endian value. `register` can be `MOISTURE`, `LIGHT`, `TEMPERATURE`, or the corresponding register number. |
+| `read_moisture()` | Return the raw capacitive moisture reading. |
+| `read_temperature()` | Return the raw temperature register value. The driver does not convert it to degrees. |
+| `read_light()` | Request a light measurement, wait for it to complete, and return the raw light reading. |
+| `reset()` | Send the Chirp reset command. |
+| `close()` | Close the underlying I2C bus. |
+
+The timing values are configured in `~/.comet/config.yaml` under the top-level
+`chirp` key (at the same level as `i2c`):
+
+```yaml
+chirp:
+  register_read_delay: 0.02
+  light_measurement_delay: 9.0
+```
+
+Both delays are in seconds. If the file or `chirp` section is absent, the
+driver defaults to 20 ms and 9 seconds respectively. Either value can also be
+overridden by passing `register_read_delay` or `light_measurement_delay` to
+`Chirp(...)`. Delays must be non-negative numbers. Unsupported register names
+or numbers raise `ValueError`; I2C errors are propagated to the caller.
+
+## Example
+
+```python
+from ecomet_i2c_sensors.chirp import Chirp
+
+sensor = Chirp()
+try:
+    print("Moisture:", sensor.read_moisture())
+    print("Temperature (raw):", sensor.read_temperature())
+    print("Light:", sensor.read_light())
+finally:
+    sensor.close()
+```
+
+Hardware test script: `python_test_scripts/chirp/chirp_i2c_test.py`.
+It accepts `--address` and `--bus`; use `--skip-light` to avoid the longer
+light measurement.
+
+See [chirp_i2c_protocol.md](chirp_i2c_protocol.md) for register numbers,
+commands, and read timing.
